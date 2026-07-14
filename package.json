@@ -1,0 +1,19 @@
+{
+  "name": "madein-net",
+  "version": "1.0.0",
+  "description": "Madein.net — qo'lda yasalgan asarlar uchun galereya sayti (backend bilan)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "session-file-store": "^1.5.0",
+    "bcryptjs": "^2.4.3",
+    "multer": "^2.0.1"
+  }
+}

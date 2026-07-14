@@ -1,0 +1,4545 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Madein.net — qo'lda yasalgan asarlar</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ============ RESET ============ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+    
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ============ THEME TOKENS ============ */
+    :root {
+      --font-display: 'Big Shoulders Display', sans-serif;
+      --font-body: 'Manrope', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 6px;
+      --radius-md: 14px;
+      --radius-lg: 26px;
+      --transition-theme: background-color .5s ease, color .5s ease, border-color .5s ease, box-shadow .5s ease;
+    }
+
+    body[data-theme="tungi"] {
+      --bg: #131319;
+      --bg-alt: #191922;
+      --surface: #1e1f2a;
+      --surface-2: #252634;
+      --text: #efe9db;
+      --text-dim: #9995a8;
+      --accent: #e2543f;
+      --accent-2: #d9a441;
+      --border: rgba(239, 233, 219, 0.1);
+      --stamp-ink: var(--accent);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      --glow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    body[data-theme="yorug"] {
+      --bg: #f1ead9;
+      --bg-alt: #e9dfc8;
+      --surface: #fffdf8;
+      --surface-2: #f6efe0;
+      --text: #241c13;
+      --text-dim: #7a6f5c;
+      --accent: #b23a2e;
+      --accent-2: #1f2a44;
+      --border: rgba(36, 28, 19, 0.12);
+      --stamp-ink: var(--accent);
+      --shadow: 0 16px 40px rgba(36, 28, 19, 0.12);
+      --glow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    body[data-theme="cyberpunk"] {
+      --bg: #0a0612;
+      --bg-alt: #120a1e;
+      --surface: #160d26;
+      --surface-2: #1c1132;
+      --text: #f2e9ff;
+      --text-dim: #a08fc4;
+      --accent: #ff2e88;
+      --accent-2: #00e5ff;
+      --border: rgba(255, 255, 255, 0.1);
+      --stamp-ink: var(--accent-2);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      --glow: 0 0 24px rgba(255, 46, 136, 0.35);
+    }
+
+    body[data-theme="custom"] {
+      --bg: #131319;
+      --bg-alt: #191922;
+      --surface: #1e1f2a;
+      --surface-2: #252634;
+      --text: #efe9db;
+      --text-dim: #9995a8;
+      --border: rgba(239, 233, 219, 0.1);
+      --stamp-ink: var(--accent);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      --glow: 0 0 18px color-mix(in srgb, var(--accent) 40%, transparent);
+      /* --accent and --accent-2 are set inline via JS */
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      transition: var(--transition-theme);
+    }
+
+    /* ============ UTIL ============ */
+    .hidden {
+      display: none !important;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* subtle grain / texture overlay for atmosphere */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2000;
+      opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    /* ============ LOADING SCREEN ============ */
+    #loadingScreen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      transition: opacity .5s ease, visibility .5s ease;
+    }
+
+    #loadingScreen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-stamp {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ============ STAMP LOGO ============ */
+    .stamp-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .stamp-mark svg {
+      display: block;
+    }
+
+    .stamp-ring-text {
+      fill: var(--stamp-ink);
+      font-family: var(--font-mono);
+      font-size: 8.6px;
+      letter-spacing: 2.5px;
+      font-weight: 600;
+    }
+
+    .stamp-core {
+      fill: none;
+      stroke: var(--stamp-ink);
+    }
+
+    /* ============ AUTH SCREEN ============ */
+    .auth-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 32px 20px;
+      overflow: hidden;
+      background:
+        radial-gradient(680px 480px at 14% 8%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 60%),
+        radial-gradient(620px 520px at 88% 92%, color-mix(in srgb, var(--accent-2) 18%, transparent), transparent 60%),
+        var(--bg);
+    }
+
+    .auth-bg-decor {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 900px;
+      height: 900px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: rotateSlow 90s linear infinite;
+      pointer-events: none;
+    }
+
+    .auth-bg-decor::before {
+      content: '';
+      position: absolute;
+      inset: 60px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+    }
+
+    .auth-bg-decor::after {
+      content: '';
+      position: absolute;
+      inset: 130px;
+      border: 1px dashed var(--border);
+      border-radius: 50%;
+    }
+
+    .auth-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: .5;
+      pointer-events: none;
+      animation: blobFloat 14s ease-in-out infinite;
+    }
+
+    .auth-blob.b1 {
+      width: 260px;
+      height: 260px;
+      top: 8%;
+      left: 8%;
+      background: color-mix(in srgb, var(--accent) 55%, transparent);
+    }
+
+    .auth-blob.b2 {
+      width: 220px;
+      height: 220px;
+      bottom: 10%;
+      right: 10%;
+      background: color-mix(in srgb, var(--accent-2) 55%, transparent);
+      animation-delay: -6s;
+    }
+
+    @keyframes blobFloat {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(24px, -18px) scale(1.12);
+      }
+    }
+
+    @keyframes rotateSlow {
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    .auth-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      background: color-mix(in srgb, var(--surface) 92%, transparent);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 44px 38px 38px;
+      box-shadow: var(--shadow), 0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent);
+      animation: cardIn .7s cubic-bezier(.16, 1, .3, 1) both;
+      overflow: hidden;
+    }
+
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(28px) scale(.97);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .auth-card.shake {
+      animation: shake .4s ease;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20% {
+        transform: translateX(-8px);
+      }
+
+      40% {
+        transform: translateX(7px);
+      }
+
+      60% {
+        transform: translateX(-5px);
+      }
+
+      80% {
+        transform: translateX(3px);
+      }
+    }
+
+    .auth-logo-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .auth-wordmark {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 34px;
+      letter-spacing: .5px;
+      text-align: center;
+    }
+
+    .auth-wordmark span {
+      color: var(--accent);
+    }
+
+    .auth-tagline {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 14.5px;
+      margin-top: 2px;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: var(--bg-alt);
+      border-radius: 999px;
+      padding: 4px;
+      margin-bottom: 26px;
+      position: relative;
+    }
+
+    .auth-tabs button {
+      flex: 1;
+      padding: 10px 0;
+      border: none;
+      background: none;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--text-dim);
+      position: relative;
+      z-index: 1;
+      transition: color .3s ease;
+    }
+
+    .auth-tabs button.active {
+      color: var(--bg);
+    }
+
+    .auth-tabs .tab-pill {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      left: 4px;
+      width: calc(50% - 4px);
+      border-radius: 999px;
+      background: var(--accent);
+      transition: transform .35s cubic-bezier(.65, 0, .35, 1);
+    }
+
+    .auth-tabs button.tab-register.active~.tab-pill,
+    .auth-tabs.reg .tab-pill {
+      transform: translateX(100%);
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .auth-form.hidden {
+      display: none;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 11px 13px;
+      font-size: 14.5px;
+      color: var(--text);
+      width: 100%;
+      min-width: 0;
+      transition: border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+    }
+
+    .field-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .field-row .field {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 13px 22px;
+      font-weight: 800;
+      font-size: 14.5px;
+      letter-spacing: .2px;
+      transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: var(--glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-block {
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .btn-sm {
+      padding: 8px 15px;
+      font-size: 12.5px;
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      pointer-events: none;
+    }
+
+    .auth-guest-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 22px 0 16px;
+      color: var(--text-dim);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+
+    .auth-guest-divider::before,
+    .auth-guest-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .btn-guest {
+      width: 100%;
+      background: transparent;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      color: var(--text-dim);
+      font-weight: 700;
+      font-size: 13.5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transition: border-color .25s ease, color .25s ease, background .25s ease;
+    }
+
+    .btn-guest:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      background: color-mix(in srgb, var(--accent) 6%, transparent);
+    }
+
+    .btn-guest small {
+      font-weight: 500;
+      font-size: 11.5px;
+      color: var(--text-dim);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    /* ---- guest banner in navbar ---- */
+    .guest-banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 16%, var(--bg-alt)), color-mix(in srgb, var(--accent-2) 16%, var(--bg-alt)));
+      border-bottom: 1px solid var(--border);
+      padding: 9px 16px;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .guest-banner b {
+      font-weight: 800;
+    }
+
+    .guest-banner button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .guest-banner.hidden {
+      display: none;
+    }
+
+    /* ---- lightweight gate modal for guests trying protected actions ---- */
+    .gate-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4000;
+      padding: 20px;
+    }
+
+    .gate-modal-overlay.hidden {
+      display: none;
+    }
+
+    .gate-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 30px 28px;
+      max-width: 360px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow);
+      animation: cardIn .4s cubic-bezier(.16, 1, .3, 1) both;
+    }
+
+    .gate-modal h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .gate-modal p {
+      color: var(--text-dim);
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .gate-modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .gate-modal-actions .btn {
+      flex: 1;
+    }
+
+    .form-error {
+      font-size: 13px;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      display: none;
+    }
+
+    .form-error.show {
+      display: block;
+      animation: cardIn .3s ease both;
+    }
+
+    /* ============ NAVBAR ============ */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 21px;
+    }
+
+    .nav-logo span {
+      color: var(--accent);
+    }
+
+    .nav-logo-mark {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .auth-logo-mark {
+      width: 92px;
+      height: 92px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+    }
+
+    .nav-links button {
+      background: none;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--text-dim);
+      transition: background .25s ease, color .25s ease;
+    }
+
+    .nav-links button.active {
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .nav-links button:hover {
+      color: var(--text);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-2px) rotate(-6deg);
+      border-color: var(--accent);
+    }
+
+    .avatar-menu {
+      position: relative;
+    }
+
+    .avatar-btn {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 14px 5px 5px;
+    }
+
+    .avatar-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12.5px;
+      font-family: var(--font-mono);
+    }
+
+    .avatar-btn .uname {
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      min-width: 170px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: all .25s ease;
+      z-index: 50;
+    }
+
+    .dropdown.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .dropdown button:hover {
+      background: var(--bg-alt);
+    }
+
+    /* ============ VIEWS ============ */
+    .view {
+      display: none;
+      animation: viewIn .5s cubic-bezier(.16, 1, .3, 1) both;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    @keyframes viewIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .view-hero {
+      padding: 52px 28px 30px;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 18px;
+      height: 1.5px;
+      background: var(--accent);
+    }
+
+    .view-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.02;
+      margin-bottom: 12px;
+    }
+
+    .view-title span {
+      color: var(--accent);
+    }
+
+    .view-sub {
+      color: var(--text-dim);
+      font-size: 15px;
+      max-width: 560px;
+      line-height: 1.6;
+    }
+
+    .privacy-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 9px 15px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 12.5px;
+      color: var(--text-dim);
+    }
+
+    .privacy-note .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulseDot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .35;
+      }
+    }
+
+    .view-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 28px 20px;
+      flex-wrap: wrap;
+    }
+
+    .view-toolbar .btn {
+      white-space: nowrap;
+    }
+
+    /* ============ GALLERY GRID ============ */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 22px;
+      padding: 0 28px 70px;
+    }
+
+    .work-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+
+    .work-card.reveal {
+      animation: cardReveal .6s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes cardReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .work-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+      border-color: var(--accent);
+    }
+
+    .work-thumb {
+      width: 100%;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: var(--bg-alt);
+      position: relative;
+    }
+
+    .work-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+
+    .work-card:hover .work-thumb img {
+      transform: scale(1.08);
+    }
+
+    /* ===== Kollaj (bir nechta rasm bitta kartada) ===== */
+    .collage {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      gap: 2px;
+    }
+    .collage img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .5s ease;
+    }
+    .collage.n-1 { grid-template-columns: 1fr; }
+    .collage.n-2 { grid-template-columns: 1fr 1fr; }
+    .collage.n-3 {
+      grid-template-columns: 1.3fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+    .collage.n-3 img:nth-child(1) {
+      grid-row: 1 / span 2;
+    }
+
+    .work-card:hover .collage img,
+    .feed-card:hover .collage img {
+      transform: scale(1.06);
+    }
+
+    .work-tag {
+      position: absolute;
+      top: 10px;
+      left: -8px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: .5px;
+      padding: 4px 12px 4px 16px;
+      transform: rotate(-4deg);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .work-status {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      backdrop-filter: blur(6px);
+    }
+
+    .work-status.sale {
+      background: color-mix(in srgb, var(--accent-2) 85%, transparent);
+      color: #111;
+    }
+
+    .work-status.expo {
+      background: rgba(0, 0, 0, .55);
+      color: #fff;
+    }
+
+    .work-body {
+      padding: 15px 16px 17px;
+    }
+
+    .work-title {
+      font-weight: 800;
+      font-size: 15.5px;
+      margin-bottom: 4px;
+    }
+
+    .work-meta {
+      font-size: 12px;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .work-price {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .work-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    /* ============ PUBLIC FEED (Instagram-style, cheksiz aylanma) ============ */
+    .feed-list {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 0 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .feed-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    .feed-card.reveal {
+      animation: cardReveal .5s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    .feed-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+    }
+
+    .feed-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .feed-head-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.25;
+      min-width: 0;
+    }
+
+    .feed-fullname {
+      font-weight: 700;
+      font-size: 13.5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .feed-username {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    .feed-thumb {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--bg-alt);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feed-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .feed-status {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      backdrop-filter: blur(6px);
+    }
+
+    .feed-status.sale {
+      background: color-mix(in srgb, var(--accent-2) 85%, transparent);
+      color: #111;
+    }
+
+    .feed-status.expo {
+      background: rgba(0, 0, 0, .55);
+      color: #fff;
+    }
+
+    .feed-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px 0;
+    }
+
+    .like-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 2px;
+      color: var(--text);
+      font-family: inherit;
+    }
+
+    .like-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--text);
+      fill: none;
+      stroke-width: 2;
+      transition: transform .18s cubic-bezier(.34, 1.56, .64, 1), fill .18s ease, stroke .18s ease;
+    }
+
+    .like-btn.liked svg {
+      fill: var(--accent);
+      stroke: var(--accent);
+      transform: scale(1.12);
+    }
+
+    .like-btn.pop svg {
+      animation: likePop .32s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    @keyframes likePop {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.35); }
+      100% { transform: scale(1.12); }
+    }
+
+    .like-count {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      min-width: 14px;
+    }
+
+    .comment-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 2px;
+      color: var(--text);
+      font-family: inherit;
+    }
+
+    .comment-btn svg {
+      width: 23px;
+      height: 23px;
+      stroke: var(--text);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .comment-count {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      min-width: 14px;
+    }
+
+    /* ============ COMMENT MODAL ============ */
+    .comments-modal-content {
+      max-width: 480px;
+      width: 100%;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      max-height: 82vh;
+    }
+
+    .comments-modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .comments-modal-head h3 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 19px;
+    }
+
+    .comments-list {
+      overflow-y: auto;
+      padding: 8px 20px;
+      flex: 1;
+      min-height: 120px;
+    }
+
+    .comment-item {
+      display: flex;
+      gap: 10px;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comment-item:last-child {
+      border-bottom: none;
+    }
+
+    .comment-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 11.5px;
+      flex-shrink: 0;
+    }
+
+    .comment-body {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .comment-line {
+      font-size: 13.5px;
+      line-height: 1.45;
+      word-wrap: break-word;
+    }
+
+    .comment-line b {
+      font-weight: 700;
+      margin-right: 5px;
+    }
+
+    .comment-foot {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 3px;
+    }
+
+    .comment-time {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    .comment-delete {
+      background: none;
+      border: none;
+      font-size: 11px;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .comment-delete:hover {
+      color: var(--accent);
+    }
+
+    .comments-empty {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13.5px;
+      padding: 30px 10px;
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .comment-form input {
+      flex: 1;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 16px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13.5px;
+    }
+
+    .comment-form input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .comment-form button {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 13.5px;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 6px 4px;
+      opacity: .4;
+    }
+
+    /* ============ CONTACT SELLER BUTTON ============ */
+    .contact-seller-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 2px;
+      color: var(--accent);
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 12.5px;
+      margin-left: auto;
+    }
+
+    .contact-seller-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* ============ MESSAGES NAV BADGE ============ */
+    .msg-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      margin-left: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+
+    /* ============ CONVERSATIONS LIST ============ */
+    .conversations-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .conversation-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 8px;
+      background: var(--surface);
+      cursor: pointer;
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .conversation-item:hover {
+      border-color: var(--accent);
+    }
+
+    .conversation-item.unread {
+      border-color: var(--accent);
+    }
+
+    .conversation-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .conversation-body {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .conversation-name {
+      font-weight: 700;
+      font-size: 14.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .conversation-preview {
+      font-size: 13px;
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+
+    .conversation-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .conversation-time {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    .conversation-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ============ CHAT MODAL ============ */
+    .chat-modal-content {
+      max-width: 480px;
+    }
+
+    .chat-work-ref {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 3px;
+    }
+
+    .chat-messages-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 14px 20px;
+    }
+
+    .chat-bubble-row {
+      display: flex;
+    }
+
+    .chat-bubble-row.me {
+      justify-content: flex-end;
+    }
+
+    .chat-bubble {
+      max-width: 75%;
+      padding: 9px 13px;
+      border-radius: 14px;
+      font-size: 13.5px;
+      line-height: 1.4;
+      word-wrap: break-word;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+    }
+
+    .chat-bubble-row.me .chat-bubble {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .chat-bubble-time {
+      display: block;
+      font-size: 10px;
+      opacity: .65;
+      margin-top: 4px;
+      font-family: var(--font-mono);
+    }
+
+    .comment-form button.active {
+      opacity: 1;
+    }
+
+    .feed-body {
+      padding: 8px 14px 16px;
+    }
+
+    .feed-title {
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 3px;
+    }
+
+    .feed-meta {
+      font-size: 12px;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .feed-price {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .feed-sentinel {
+      display: flex;
+      justify-content: center;
+      padding: 10px 0 60px;
+    }
+
+    .feed-sentinel.hidden { visibility: hidden; }
+
+    .feed-spinner {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      animation: spin .8s linear infinite;
+    }
+
+    .feed-end {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+      padding: 10px 0 60px;
+    }
+
+    .feed-end.hidden { display: none; }
+
+    /* empty state */
+    .empty-state {
+      grid-column: 1/-1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 70px 20px;
+      text-align: center;
+      color: var(--text-dim);
+      gap: 14px;
+    }
+
+    .empty-stamp {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: 2px dashed var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      animation: floaty 3.5s ease-in-out infinite;
+    }
+
+    @keyframes floaty {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .empty-state h3 {
+      color: var(--text);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 22px;
+    }
+
+    /* ============ PROFILE VIEW ============ */
+    .profile-header {
+      display: flex;
+      gap: 26px;
+      align-items: center;
+      padding: 52px 28px 34px;
+      flex-wrap: wrap;
+    }
+
+    .profile-avatar {
+      width: 94px;
+      height: 94px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 34px;
+      flex-shrink: 0;
+      box-shadow: var(--glow);
+    }
+
+    .profile-avatar img,
+    .feed-avatar img,
+    .avatar-circle img,
+    .conversation-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .feed-head {
+      cursor: pointer;
+    }
+
+    .avatar-upload-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .avatar-upload-preview {
+      width: 64px;
+      height: 64px;
+      font-size: 22px;
+    }
+
+    .field-hint {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    .privacy-block {
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .privacy-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      padding: 5px 0;
+      cursor: pointer;
+    }
+
+    .privacy-toggle input {
+      accent-color: var(--accent);
+      width: 15px;
+      height: 15px;
+    }
+
+    .user-profile-bio {
+      padding: 0 28px 8px;
+      color: var(--text-dim);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .user-profile-contact {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      padding: 0 28px 24px;
+    }
+
+    .user-profile-contact-item {
+      font-size: 13.5px;
+      color: var(--text);
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 999px;
+    }
+
+    .user-profile-contact-item a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 30px;
+      margin-bottom: 4px;
+    }
+
+    .profile-info .p-username {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .profile-info .p-meta {
+      color: var(--text-dim);
+      font-size: 13.5px;
+    }
+
+    .profile-stats {
+      display: flex;
+      gap: 26px;
+      margin-left: auto;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat b {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .stat span {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .profile-edit-card {
+      margin: 0 28px 30px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .profile-edit-card h4 {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .edit-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .section-label {
+      padding: 0 28px 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ============ MODALS ============ */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .6);
+      backdrop-filter: blur(6px);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 480px;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 30px;
+      transform: scale(.92) translateY(20px);
+      transition: transform .35s cubic-bezier(.16, 1, .3, 1);
+      box-shadow: var(--shadow);
+    }
+
+    .modal-backdrop.open .modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-head h3 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 22px;
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-alt);
+      border: none;
+      font-size: 16px;
+    }
+
+    .upload-drop {
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .25s ease, background .25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload-drop:hover {
+      border-color: var(--accent);
+    }
+
+    .upload-drop input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-drop .preview {
+      max-height: 170px;
+      border-radius: var(--radius-sm);
+      margin: 0 auto 10px;
+      overflow: hidden;
+    }
+
+    .upload-drop .preview img {
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .upload-drop p {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* Yuklash formasidagi kollaj (bir nechta rasm) preview */
+    .upload-drop.has-multi {
+      cursor: default;
+    }
+    .upload-multi-preview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .upload-multi-preview .thumb {
+      position: relative;
+      aspect-ratio: 1/1;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--bg-alt);
+    }
+    .upload-multi-preview .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .upload-multi-preview .thumb.empty {
+      border: 1.5px dashed var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: var(--text-dim);
+    }
+    .upload-multi-preview .thumb .remove-thumb {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.65);
+      color: #fff;
+      border: none;
+      font-size: 12px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+      padding: 0;
+      pointer-events: auto;
+    }
+
+    .lightbox-content {
+      max-width: 640px;
+      width: 100%;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .lightbox-img {
+      width: 100%;
+      max-height: 56vh;
+      object-fit: cover;
+      background: var(--bg-alt);
+    }
+
+    .lightbox-collage {
+      width: 100%;
+      height: 56vh;
+      background: var(--bg-alt);
+    }
+    .lightbox-collage.collage img {
+      max-height: 56vh;
+    }
+
+    .lightbox-body {
+      padding: 24px 28px 28px;
+    }
+
+    .lightbox-body h3 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .lightbox-body p {
+      color: var(--text-dim);
+      font-size: 14.5px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .lightbox-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+
+    .chip.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ============ THEME PANEL ============ */
+    .theme-fab {
+      position: fixed;
+      bottom: 26px;
+      right: 26px;
+      z-index: 400;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .3s ease;
+    }
+
+    .theme-fab:hover {
+      transform: rotate(18deg) scale(1.06);
+    }
+
+    .theme-panel {
+      position: fixed;
+      bottom: 92px;
+      right: 26px;
+      z-index: 400;
+      width: 250px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(12px) scale(.96);
+      transition: all .3s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .theme-panel.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .theme-panel h4 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    .theme-inline-block {
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .theme-fab-inline {
+      position: static;
+      width: 48px;
+      height: 48px;
+      font-size: 20px;
+    }
+
+    .theme-panel-inline {
+      position: absolute;
+      top: 58px;
+      bottom: auto;
+      left: 0;
+      right: auto;
+    }
+
+    .theme-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .theme-opt {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-alt);
+      transition: border-color .2s ease, transform .2s ease;
+    }
+
+    .theme-opt:hover {
+      transform: translateY(-2px);
+    }
+
+    .theme-opt.active {
+      border-color: var(--accent);
+    }
+
+    .theme-opt .swatch {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+    }
+
+    .theme-opt span {
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .custom-color-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .custom-color-row input[type="color"] {
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 50%;
+      overflow: hidden;
+      padding: 0;
+      background: none;
+      cursor: pointer;
+    }
+
+    .custom-color-row label {
+      font-size: 12px;
+      color: var(--text-dim);
+      flex: 1;
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar {
+      width: 9px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 99px;
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+    }
+
+    /* ============ MOBILE BOTTOM TAB BAR (hidden by default, shown on mobile below) ============ */
+    .bottom-tabbar {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 200;
+      align-items: center;
+      justify-content: space-around;
+      gap: 4px;
+      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border);
+    }
+
+    .bottom-tabbar button {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      background: none;
+      border: none;
+      padding: 6px 4px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--text-dim);
+      position: relative;
+      transition: color .25s ease, background .25s ease;
+    }
+
+    .bottom-tabbar button .tab-icon {
+      font-size: 19px;
+      line-height: 1;
+    }
+
+    .bottom-tabbar button.active {
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+    }
+
+    .bottom-tabbar button .msg-badge {
+      position: absolute;
+      top: 2px;
+      right: calc(50% - 22px);
+    }
+
+    /* responsive */
+    @media (max-width:720px) {
+      .navbar .nav-links {
+        display: none;
+      }
+
+      .profile-stats {
+        margin-left: 0;
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .view-hero,
+      .profile-header {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .view-toolbar,
+      .gallery-grid,
+      .section-label,
+      .profile-edit-card {
+        padding-left: 18px;
+        padding-right: 18px;
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .navbar {
+        padding: 14px 16px;
+      }
+
+      .nav-right {
+        gap: 6px;
+      }
+
+      .nav-right #openUploadBtn {
+        padding: 7px 12px;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
+      .avatar-btn .uname {
+        display: none;
+      }
+
+      .field-row {
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .main-app {
+        padding-bottom: 74px;
+      }
+
+      .bottom-tabbar {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+
+<body data-theme="tungi">
+
+  <div id="loadingScreen">
+    <div class="loader-stamp"></div>
+  </div>
+
+  <!-- ============ AUTH SCREEN ============ -->
+  <section id="authScreen" class="auth-screen hidden">
+    <div class="auth-bg-decor"></div>
+    <div class="auth-blob b1"></div>
+    <div class="auth-blob b2"></div>
+    <div class="auth-card" id="authCard">
+      <div class="auth-logo-row">
+        <img src="/assets/logo-icon.png" alt="Madein.net" class="auth-logo-mark">
+        <div class="auth-wordmark">Madein<span>.net</span></div>
+      </div>
+      <p class="auth-tagline" data-i18n="auth.tagline">Qo'lingiz bilan yaratgan rasm, haykal va mulajlaringizni saqlang — sotuvga qo'ying yoki
+        shunchaki ko'rgazmaga qo'ying.</p>
+
+      <div class="auth-tabs" id="authTabs">
+        <button type="button" class="tab tab-login active" data-tab="login" data-i18n="auth.tabLogin">Kirish</button>
+        <button type="button" class="tab tab-register" data-tab="register" data-i18n="auth.tabRegister">Ro'yxatdan o'tish</button>
+        <div class="tab-pill"></div>
+      </div>
+
+      <form id="loginForm" class="auth-form active">
+        <div class="field">
+          <label data-i18n="auth.loginUsername">Foydalanuvchi nomi</label>
+          <input type="text" id="loginUsername" autocomplete="username" required placeholder="masalan: dilnoza_art" data-i18n-ph="auth.loginUsernamePh">
+        </div>
+        <div class="field">
+          <label data-i18n="auth.loginPassword">Parol</label>
+          <input type="password" id="loginPassword" autocomplete="current-password" required placeholder="••••••••">
+        </div>
+        <div class="form-error" id="loginError"></div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="auth.loginBtn">Kirish</button>
+      </form>
+
+      <form id="registerForm" class="auth-form hidden">
+        <div class="field">
+          <label data-i18n="auth.regFullname">To'liq ism</label>
+          <input type="text" id="regFullname" required placeholder="Ism Familiya" data-i18n-ph="auth.regFullnamePh">
+        </div>
+        <div class="field">
+          <label data-i18n="auth.regUsername">Foydalanuvchi nomi</label>
+          <input type="text" id="regUsername" required placeholder="lotin harflari, bo'shliqsiz" data-i18n-ph="auth.regUsernamePh">
+        </div>
+        <div class="field">
+          <label data-i18n="auth.regEmail">Email</label>
+          <input type="email" id="regEmail" required placeholder="you@example.com">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label data-i18n="auth.regPassword">Parol</label>
+            <input type="password" id="regPassword" required placeholder="kamida 4 belgi" data-i18n-ph="auth.regPasswordPh">
+          </div>
+          <div class="field">
+            <label data-i18n="auth.regPassword2">Tasdiqlash</label>
+            <input type="password" id="regPassword2" required placeholder="qayta kiriting" data-i18n-ph="auth.regPassword2Ph">
+          </div>
+        </div>
+        <div class="form-error" id="registerError"></div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="auth.regBtn">Akkaunt yaratish</button>
+      </form>
+
+      <div class="auth-guest-divider"><span data-i18n="auth.or">yoki</span></div>
+      <button type="button" class="btn-guest" id="guestBtn">
+        <span data-i18n="auth.guestBtn">Hozircha shunchaki ko'rib chiqish</span>
+        <small data-i18n="auth.guestBtnSmall">Ro'yxatdan o'tishni keyinroq amalga oshirasiz</small>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ MAIN APP ============ -->
+  <div id="mainApp" class="main-app hidden">
+    <nav class="navbar">
+      <div class="nav-left">
+        <div class="nav-logo">
+          <img src="/assets/logo-icon.png" alt="Madein.net" class="nav-logo-mark">
+          Madein<span>.net</span>
+        </div>
+        <div class="nav-links">
+          <button data-view="home" class="active" data-i18n="nav.home">Bosh sahifa</button>
+          <button data-view="profile" data-i18n="nav.profile">Profil</button>
+          <button data-view="messages"><span data-i18n="nav.messages">Xabarlar</span><span class="msg-badge hidden" id="navMsgBadge">0</span></button>
+        </div>
+      </div>
+      <div class="nav-right">
+        <button class="btn btn-primary btn-sm" id="openUploadBtn" data-i18n="nav.newWork">+ Yangi asar</button>
+        <div class="avatar-menu" id="avatarMenu">
+          <button class="avatar-btn" id="avatarBtn">
+            <div class="avatar-circle" id="avatarInitials">?</div>
+            <span class="uname" id="navUsername">—</span>
+          </button>
+          <div class="dropdown" id="avatarDropdown">
+            <button id="gotoProfileBtn" data-i18n="nav.myProfile">Profilim</button>
+            <button id="logoutBtn" data-i18n="nav.logout">Chiqish</button>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm hidden" id="navRegisterBtn" data-i18n="nav.register">Ro'yxatdan o'tish</button>
+      </div>
+    </nav>
+
+    <nav class="bottom-tabbar nav-links" id="bottomTabbar">
+      <button data-view="home" class="active">
+        <span class="tab-icon">🏠</span>
+        <span data-i18n="nav.home">Bosh sahifa</span>
+      </button>
+      <button data-view="profile">
+        <span class="tab-icon">👤</span>
+        <span data-i18n="nav.profile">Profil</span>
+      </button>
+      <button data-view="messages">
+        <span class="tab-icon">💬</span>
+        <span data-i18n="nav.messages">Xabarlar</span>
+        <span class="msg-badge hidden" id="navMsgBadgeMobile">0</span>
+      </button>
+      <button id="openUploadBtnMobile">
+        <span class="tab-icon">➕</span>
+        <span data-i18n="nav.newWork">Yangi asar</span>
+      </button>
+    </nav>
+
+    <div class="guest-banner hidden" id="guestBanner">
+      <span data-i18n-html="guest.banner">Siz saytni <b>mehmon</b> sifatida ko'ryapsiz — asar yuklash, layk va komentariya qoldirish uchun ro'yxatdan o'ting.</span>
+      <button id="guestBannerBtn" data-i18n="guest.registerBtn">Ro'yxatdan o'tish</button>
+    </div>
+
+    <main>
+      <!-- HOME VIEW -->
+      <section id="homeView" class="view active">
+        <div class="view-hero">
+          <div class="eyebrow" data-i18n="home.eyebrow">Lenta</div>
+          <h1 class="view-title" data-i18n-html="home.title">Barcha <span>ijodkorlar</span>ning asarlari</h1>
+          <p class="view-sub" data-i18n="home.sub">Platformadagi barcha foydalanuvchilar yuklagan asarlar — eng yangisidan boshlab.</p>
+        </div>
+        <div id="feedList" class="feed-list"></div>
+        <div id="feedSentinel" class="feed-sentinel">
+          <div class="feed-spinner"></div>
+        </div>
+        <div id="feedEnd" class="feed-end hidden" data-i18n="feed.end">Boshqa asar qolmadi.</div>
+      </section>
+
+      <!-- PROFILE VIEW -->
+      <section id="profileView" class="view">
+        <div class="profile-header">
+          <div class="profile-avatar" id="profileAvatar">?</div>
+          <div class="profile-info">
+            <h2 id="profileFullname">—</h2>
+            <div class="p-username" id="profileUsernameTag">@—</div>
+            <div class="p-meta" id="profileMeta">—</div>
+          </div>
+          <div class="profile-stats">
+            <div class="stat"><b id="statTotal">0</b><span data-i18n="profile.stat.total">Jami</span></div>
+            <div class="stat"><b id="statSale">0</b><span data-i18n="profile.stat.sale">Sotuvda</span></div>
+            <div class="stat"><b id="statExpo">0</b><span data-i18n="profile.stat.expo">Ko'rgazmada</span></div>
+          </div>
+        </div>
+
+        <div class="view-toolbar">
+          <button class="btn btn-ghost btn-sm" id="editProfileBtn" data-i18n="profile.editBtn">Ma'lumotlarni tahrirlash</button>
+          <button class="btn btn-primary btn-sm" id="openUploadBtn2" data-i18n="nav.newWork">+ Yangi asar</button>
+        </div>
+
+        <div class="profile-edit-card hidden" id="editProfileCard">
+          <h4 data-i18n="profile.edit.title">Profil ma'lumotlari</h4>
+
+          <div class="theme-inline-block">
+            <button class="theme-fab theme-fab-inline" id="themeFab" title="Stilni o'zgartirish" data-i18n-title="theme.fabTitle">🎨</button>
+            <div class="theme-panel theme-panel-inline" id="themePanel">
+              <h4 data-i18n="theme.title">Sayt stili</h4>
+              <div class="theme-options">
+                <div class="theme-opt" data-theme="tungi">
+                  <div class="swatch" style="background:#e2543f;"></div><span data-i18n="theme.tungi">Tungi</span>
+                </div>
+                <div class="theme-opt" data-theme="yorug">
+                  <div class="swatch" style="background:#b23a2e;"></div><span data-i18n="theme.yorug">Yorug'</span>
+                </div>
+                <div class="theme-opt" data-theme="cyberpunk">
+                  <div class="swatch" style="background:linear-gradient(135deg,#ff2e88,#00e5ff);"></div><span data-i18n="theme.cyberpunk">Cyberpunk</span>
+                </div>
+                <div class="theme-opt" data-theme="custom">
+                  <div class="swatch" id="customSwatch" style="background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);">
+                  </div><span data-i18n="theme.custom">Maxsus</span>
+                </div>
+              </div>
+              <div class="custom-color-row">
+                <input type="color" id="customColorInput" value="#e2543f">
+                <label data-i18n="theme.customPick">O'zingiz rang tanlang</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="avatar-upload-row">
+            <div class="profile-avatar avatar-upload-preview" id="editAvatarPreview">?</div>
+            <div>
+              <button type="button" class="btn btn-ghost btn-sm" id="changeAvatarBtn" data-i18n="profile.edit.changeAvatar">Rasm tanlash</button>
+              <input type="file" id="avatarFileInput" accept="image/*" class="hidden">
+              <div class="field-hint" data-i18n="profile.edit.avatarHint">JPG yoki PNG, 8MB gacha</div>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label data-i18n="profile.edit.fullname">To'liq ism</label><input type="text" id="editFullname"></div>
+            <div class="field"><label data-i18n="profile.edit.email">Email</label><input type="email" id="editEmail"></div>
+          </div>
+          <div class="field"><label data-i18n="profile.edit.bio">Bio</label><textarea id="editBio" rows="2"
+              placeholder="O'zingiz haqingizda qisqacha..." data-i18n-ph="profile.edit.bioPh"></textarea></div>
+          <div class="field-row">
+            <div class="field"><label data-i18n="profile.edit.phone">Telefon raqami</label><input type="tel" id="editPhone" placeholder="+998 90 123 45 67"></div>
+            <div class="field"><label data-i18n="profile.edit.social">Ijtimoiy tarmoq havolasi</label><input type="text" id="editSocial" placeholder="instagram.com/..."></div>
+          </div>
+          <div class="field lang-field">
+            <label for="langSelect" data-i18n="profile.language">Sayt tili</label>
+            <select id="langSelect">
+              <option value="uz">O'zbekcha</option>
+              <option value="en">English</option>
+              <option value="zh">中文</option>
+              <option value="hi">हिन्दी</option>
+              <option value="es">Español</option>
+              <option value="ar">العربية</option>
+            </select>
+          </div>
+          <div class="privacy-block">
+            <div class="field-hint" style="margin-bottom:6px;" data-i18n="profile.edit.privacyTitle">Boshqalar profilingizda nimani ko'ra olishini tanlang:</div>
+            <label class="privacy-toggle"><input type="checkbox" id="privacyPhone"> <span data-i18n="profile.edit.privacyPhone">Telefon raqamimni ko'rsatish</span></label>
+            <label class="privacy-toggle"><input type="checkbox" id="privacySocial"> <span data-i18n="profile.edit.privacySocial">Ijtimoiy tarmoq havolamni ko'rsatish</span></label>
+            <label class="privacy-toggle"><input type="checkbox" id="privacyEmail"> <span data-i18n="profile.edit.privacyEmail">Emailimni ko'rsatish</span></label>
+          </div>
+          <div class="edit-actions">
+            <button class="btn btn-primary btn-sm" id="saveProfileBtn" data-i18n="profile.edit.save">Saqlash</button>
+            <button class="btn btn-ghost btn-sm" id="cancelEditBtn" data-i18n="profile.edit.cancel">Bekor qilish</button>
+          </div>
+        </div>
+
+        <div class="section-label" data-i18n="profile.myWorks">Mening asarlarim</div>
+        <div id="profileGrid" class="gallery-grid"></div>
+      </section>
+
+      <!-- MESSAGES VIEW -->
+      <section id="messagesView" class="view">
+        <div class="view-hero">
+          <div class="eyebrow" data-i18n="messages.eyebrow">Muloqot</div>
+          <h1 class="view-title" data-i18n-html="messages.title">Sotuvchilar bilan <span>xabarlar</span></h1>
+          <p class="view-sub" data-i18n="messages.sub">Sotuvdagi asar haqida savol berish yoki sotuvchi bilan bog'lanish uchun suhbatlaringiz shu yerda.</p>
+        </div>
+        <div id="conversationsList" class="conversations-list"></div>
+      </section>
+
+      <!-- PUBLIC USER PROFILE VIEW -->
+      <section id="userProfileView" class="view">
+        <button class="btn btn-ghost btn-sm" id="backFromUserProfile" style="margin-bottom:18px;" data-i18n="userProfile.back">← Orqaga</button>
+        <div class="profile-header">
+          <div class="profile-avatar" id="upAvatar">?</div>
+          <div class="profile-info">
+            <h2 id="upFullname">—</h2>
+            <div class="p-username" id="upUsernameTag">@—</div>
+            <div class="p-meta" id="upMeta">—</div>
+          </div>
+          <div class="profile-stats">
+            <div class="stat"><b id="upStatTotal">0</b><span data-i18n="profile.stat.total">Jami</span></div>
+            <div class="stat"><b id="upStatSale">0</b><span data-i18n="profile.stat.sale">Sotuvda</span></div>
+            <div class="stat"><b id="upStatExpo">0</b><span data-i18n="profile.stat.expo">Ko'rgazmada</span></div>
+          </div>
+        </div>
+        <div class="user-profile-bio" id="upBio"></div>
+        <div class="user-profile-contact" id="upContact"></div>
+        <div class="section-label" data-i18n="userProfile.works">Asarlari</div>
+        <div id="upGrid" class="gallery-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ============ UPLOAD MODAL ============ -->
+  <div class="modal-backdrop" id="uploadModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 data-i18n="upload.title">Yangi asar yuklash</h3>
+        <button class="modal-close" id="closeUploadModal">✕</button>
+      </div>
+      <form id="uploadForm">
+        <div class="field" style="margin-bottom:14px;">
+          <label data-i18n="upload.imagesLabel">Rasmlar (1 tadan 3 tagacha, kollaj bo'lib ko'rinadi)</label>
+          <div class="upload-drop" id="uploadDrop">
+            <div class="upload-multi-preview hidden" id="uploadMultiPreview"></div>
+            <p id="uploadDropText" data-i18n="upload.dropDefault">Rasm tanlash uchun bosing yoki shu yerga tashlang — bir vaqtda 3 tagacha</p>
+            <input type="file" id="uploadFile" accept="image/*" multiple>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:14px;">
+          <label data-i18n="upload.titleLabel">Sarlavha</label>
+          <input type="text" id="workTitle" required placeholder="Masalan: «Kuz manzarasi»" data-i18n-ph="upload.titlePh">
+        </div>
+        <div class="field-row" style="margin-bottom:14px;">
+          <div class="field">
+            <label data-i18n="upload.typeLabel">Turi</label>
+            <select id="workType">
+              <option value="rasm" data-i18n="upload.type.rasm">Rasm (chizma)</option>
+              <option value="haykal" data-i18n="upload.type.haykal">Haykal</option>
+              <option value="mulaj" data-i18n="upload.type.mulaj">Mulaj</option>
+              <option value="boshqa" data-i18n="upload.type.boshqa">Boshqa</option>
+            </select>
+          </div>
+          <div class="field">
+            <label data-i18n="upload.statusLabel">Holati</label>
+            <select id="workStatus">
+              <option value="expo" data-i18n="upload.status.expo">Faqat ko'rgazma</option>
+              <option value="sale" data-i18n="upload.status.sale">Sotuvda</option>
+            </select>
+          </div>
+        </div>
+        <div class="field hidden" id="priceField" style="margin-bottom:14px;">
+          <div class="field-row">
+            <div class="field" style="flex:2;">
+              <label data-i18n="upload.priceLabel">Narx</label>
+              <input type="number" id="workPrice" min="0" placeholder="masalan: 150000">
+            </div>
+            <div class="field" style="flex:1;">
+              <label data-i18n="upload.currencyLabel">Valyuta</label>
+              <select id="workCurrency">
+                <option value="UZS">so'm</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="RUB">RUB</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:18px;">
+          <label data-i18n="upload.descLabel">Tavsif</label>
+          <textarea id="workDesc" rows="3" placeholder="Asar haqida qisqacha ma'lumot..." data-i18n-ph="upload.descPh"></textarea>
+        </div>
+        <div class="form-error" id="uploadError"></div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="upload.save">Saqlash</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ LIGHTBOX MODAL ============ -->
+  <div class="modal-backdrop" id="lightbox">
+    <div class="modal lightbox-content">
+      <div class="lightbox-collage" id="lightboxImg"></div>
+      <div class="lightbox-body">
+        <div class="modal-head" style="margin-bottom:6px;">
+          <h3 id="lightboxTitle">—</h3>
+          <button class="modal-close" id="closeLightbox">✕</button>
+        </div>
+        <p id="lightboxDesc">—</p>
+        <div class="lightbox-tags">
+          <span class="chip" id="lightboxType">—</span>
+          <span class="chip accent" id="lightboxStatus">—</span>
+          <span class="chip" id="lightboxDate">—</span>
+        </div>
+        <div class="edit-actions" style="margin-top:18px;">
+          <button class="btn btn-ghost btn-sm" id="deleteWorkBtn" data-i18n="lightbox.delete">O'chirish</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ COMMENTS MODAL ============ -->
+  <div class="modal-backdrop" id="commentsModal">
+    <div class="modal comments-modal-content">
+      <div class="comments-modal-head">
+        <h3 data-i18n="comments.title">Komentlar</h3>
+        <button class="modal-close" id="closeCommentsModal">✕</button>
+      </div>
+      <div class="comments-list" id="commentsList"></div>
+      <form class="comment-form" id="commentForm">
+        <input type="text" id="commentInput" placeholder="Koment yozing..." maxlength="500" autocomplete="off" data-i18n-ph="comments.ph">
+        <button type="submit" id="commentSubmitBtn" data-i18n="comments.send">Yuborish</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ CHAT MODAL (sotuvchi bilan aloqa) ============ -->
+  <div class="modal-backdrop" id="chatModal">
+    <div class="modal comments-modal-content chat-modal-content">
+      <div class="comments-modal-head">
+        <div>
+          <h3 id="chatWithName">—</h3>
+          <div class="chat-work-ref hidden" id="chatWorkRef"></div>
+        </div>
+        <button class="modal-close" id="closeChatModal">✕</button>
+      </div>
+      <div class="comments-list chat-messages-list" id="chatMessagesList"></div>
+      <form class="comment-form" id="chatForm">
+        <input type="text" id="chatInput" placeholder="Xabar yozing..." maxlength="1000" autocomplete="off" data-i18n-ph="chat.ph">
+        <button type="submit" id="chatSubmitBtn" data-i18n="comments.send">Yuborish</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ GATE MODAL (mehmonlar uchun) ============ -->
+  <div class="gate-modal-overlay hidden" id="gateModal">
+    <div class="gate-modal">
+      <h3 data-i18n="gate.title">Ro'yxatdan o'ting</h3>
+      <p data-i18n="gate.desc">Siz hozircha mehmon sifatida ko'ryapsiz. Bu amal uchun akkaunt kerak — istasangiz hoziroq, istasangiz keyinroq ro'yxatdan o'ting.</p>
+      <div class="gate-modal-actions">
+        <button class="btn btn-ghost" id="gateModalLater" data-i18n="gate.later">Keyinroq</button>
+        <button class="btn btn-primary" id="gateModalRegister" data-i18n="gate.register">Ro'yxatdan o'tish</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      /* ===================== I18N =====================
+         Only translates the site's own interface (buttons, labels, empty
+         states, system messages). Anything a person typed themselves —
+         names, bios, work titles/descriptions, comments, chat messages —
+         is never touched and always stays exactly as they wrote it. */
+      const I18N = {
+        uz: {
+          _locale: 'uz-UZ', _dir: 'ltr', _name: "O'zbekcha",
+          "auth.tagline": "Qo'lingiz bilan yaratgan rasm, haykal va mulajlaringizni saqlang — sotuvga qo'ying yoki shunchaki ko'rgazmaga qo'ying.",
+          "auth.tabLogin": "Kirish", "auth.tabRegister": "Ro'yxatdan o'tish",
+          "auth.loginUsername": "Foydalanuvchi nomi", "auth.loginUsernamePh": "masalan: dilnoza_art",
+          "auth.loginPassword": "Parol", "auth.loginBtn": "Kirish",
+          "common.serverError": "Server xatoligi",
+          "auth.loginErrorDefault": "Foydalanuvchi nomi yoki parol noto'g'ri.",
+          "auth.regFullname": "To'liq ism", "auth.regFullnamePh": "Ism Familiya",
+          "auth.regUsername": "Foydalanuvchi nomi", "auth.regUsernamePh": "lotin harflari, bo'shliqsiz",
+          "auth.regEmail": "Email",
+          "auth.regPassword": "Parol", "auth.regPasswordPh": "kamida 4 belgi",
+          "auth.regPassword2": "Tasdiqlash", "auth.regPassword2Ph": "qayta kiriting",
+          "auth.regBtn": "Akkaunt yaratish",
+          "auth.regErrorShort": "Parol kamida 4 belgidan iborat bo'lishi kerak.",
+          "auth.regErrorMismatch": "Parollar mos kelmadi.",
+          "auth.regErrorDefault": "Ro'yxatdan o'tishda xatolik.",
+          "auth.or": "yoki",
+          "auth.guestBtn": "Hozircha shunchaki ko'rib chiqish",
+          "auth.guestBtnSmall": "Ro'yxatdan o'tishni keyinroq amalga oshirasiz",
+          "nav.home": "Bosh sahifa", "nav.profile": "Profil", "nav.messages": "Xabarlar",
+          "nav.newWork": "+ Yangi asar", "nav.myProfile": "Profilim", "nav.logout": "Chiqish",
+          "nav.register": "Ro'yxatdan o'tish",
+          "guest.banner": "Siz saytni <b>mehmon</b> sifatida ko'ryapsiz — asar yuklash, layk va komentariya qoldirish uchun ro'yxatdan o'ting.",
+          "guest.registerBtn": "Ro'yxatdan o'tish",
+          "home.eyebrow": "Lenta", "home.title": "Barcha <span>ijodkorlar</span>ning asarlari",
+          "home.sub": "Platformadagi barcha foydalanuvchilar yuklagan asarlar — eng yangisidan boshlab.",
+          "feed.end": "Boshqa asar qolmadi.",
+          "feed.empty.title": "Hali hech narsa yo'q", "feed.empty.desc": "Birinchi bo'lib asar yuklang — u shu yerda paydo bo'ladi.",
+          "profile.empty.desc": "Birinchi asaringizni yuklab, koleksiyangizni boshlang.",
+          "feed.likeAria": "Layk", "feed.commentAria": "Komentlar",
+          "feed.contactAria": "Sotuvchi bilan bog'lanish", "feed.contactLabel": "Bog'lanish",
+          "feed.sale": "Sotuvda", "feed.expo": "Ko'rgazma",
+          "profile.stat.total": "Jami", "profile.stat.sale": "Sotuvda", "profile.stat.expo": "Ko'rgazmada",
+          "profile.editBtn": "Ma'lumotlarni tahrirlash",
+          "profile.edit.title": "Profil ma'lumotlari", "profile.edit.changeAvatar": "Rasm tanlash",
+          "profile.edit.avatarHint": "JPG yoki PNG, 8MB gacha",
+          "profile.edit.fullname": "To'liq ism", "profile.edit.email": "Email",
+          "profile.edit.bio": "Bio", "profile.edit.bioPh": "O'zingiz haqingizda qisqacha...",
+          "profile.edit.phone": "Telefon raqami", "profile.edit.social": "Ijtimoiy tarmoq havolasi",
+          "profile.edit.privacyTitle": "Boshqalar profilingizda nimani ko'ra olishini tanlang:",
+          "profile.edit.privacyPhone": "Telefon raqamimni ko'rsatish",
+          "profile.edit.privacySocial": "Ijtimoiy tarmoq havolamni ko'rsatish",
+          "profile.edit.privacyEmail": "Emailimni ko'rsatish",
+          "profile.edit.save": "Saqlash", "profile.edit.cancel": "Bekor qilish",
+          "profile.myWorks": "Mening asarlarim", "profile.language": "Sayt tili",
+          "profile.joined": "A'zo bo'lgan",
+          "profile.avatarUploadFail": "Rasmni yuklab bo'lmadi. Qayta urinib ko'ring.",
+          "messages.eyebrow": "Muloqot", "messages.title": "Sotuvchilar bilan <span>xabarlar</span>",
+          "messages.sub": "Sotuvdagi asar haqida savol berish yoki sotuvchi bilan bog'lanish uchun suhbatlaringiz shu yerda.",
+          "messages.empty.title": "Hali suhbatlar yo'q",
+          "messages.empty.desc": "Sotuvdagi biror asar ostidagi \"Bog'lanish\" tugmasini bosib, sotuvchiga xabar yozing.",
+          "messages.loadFail.title": "Yuklab bo'lmadi", "messages.loadFail.desc": "Internet aloqasini tekshirib, qayta urinib ko'ring.",
+          "messages.you": "Siz",
+          "userProfile.back": "← Orqaga", "userProfile.works": "Asarlari",
+          "userProfile.notFound.title": "Topilmadi", "userProfile.notFound.desc": "Bu foydalanuvchi mavjud emas.",
+          "userProfile.contactBtn": "Xabar yozish",
+          "upload.title": "Yangi asar yuklash",
+          "upload.imagesLabel": "Rasmlar (1 tadan 3 tagacha, kollaj bo'lib ko'rinadi)",
+          "upload.dropDefault": "Rasm tanlash uchun bosing yoki shu yerga tashlang — bir vaqtda 3 tagacha",
+          "upload.dropChosen": "{n}/{max} rasm tanlandi — yana qo'shish uchun bosing",
+          "upload.dropFull": "3 ta rasm tanlandi — kollaj bo'lib ko'rinadi",
+          "upload.titleLabel": "Sarlavha", "upload.titlePh": "Masalan: «Kuz manzarasi»",
+          "upload.typeLabel": "Turi", "upload.type.rasm": "Rasm (chizma)", "upload.type.haykal": "Haykal",
+          "upload.type.mulaj": "Mulaj", "upload.type.boshqa": "Boshqa",
+          "upload.statusLabel": "Holati", "upload.status.expo": "Faqat ko'rgazma", "upload.status.sale": "Sotuvda",
+          "upload.priceLabel": "Narx", "upload.currencyLabel": "Valyuta",
+          "upload.descLabel": "Tavsif", "upload.descPh": "Asar haqida qisqacha ma'lumot...",
+          "upload.save": "Saqlash", "upload.removeAria": "O'chirish",
+          "upload.errNoImage": "Iltimos, kamida bitta rasm tanlang.",
+          "upload.errGeneric": "Saqlashda xatolik yuz berdi. Qayta urinib ko'ring.",
+          "lightbox.delete": "O'chirish", "lightbox.noDesc": "Tavsif kiritilmagan.",
+          "lightbox.workTagFallback": "Asar",
+          "comments.title": "Komentlar", "comments.ph": "Koment yozing...", "comments.send": "Yuborish",
+          "comments.empty": "Hali komentlar yo'q. Birinchi bo'lib yozing!",
+          "comments.loading": "Yuklanmoqda...", "comments.loadFail": "Komentlarni yuklab bo'lmadi.",
+          "comments.delete": "O'chirish",
+          "chat.ph": "Xabar yozing...", "chat.workRefPrefix": "Asar haqida",
+          "chat.loadFail": "Suhbatni yuklab bo'lmadi.", "chat.empty": "Hali xabar yo'q. Birinchi bo'lib yozing!",
+          "chat.sendFail": "Xabar yuborilmadi. Qayta urinib ko'ring.",
+          "gate.title": "Ro'yxatdan o'ting",
+          "gate.desc": "Siz hozircha mehmon sifatida ko'ryapsiz. Bu amal uchun akkaunt kerak — istasangiz hoziroq, istasangiz keyinroq ro'yxatdan o'ting.",
+          "gate.later": "Keyinroq", "gate.register": "Ro'yxatdan o'tish",
+          "theme.fabTitle": "Stilni o'zgartirish", "theme.title": "Sayt stili",
+          "theme.tungi": "Tungi", "theme.yorug": "Yorug'", "theme.cyberpunk": "Cyberpunk", "theme.custom": "Maxsus",
+          "theme.customPick": "O'zingiz rang tanlang"
+        },
+        en: {
+          _locale: 'en-US', _dir: 'ltr', _name: "English",
+          "auth.tagline": "Keep the paintings, sculptures and models you made by hand — put them up for sale or just for show.",
+          "auth.tabLogin": "Log in", "auth.tabRegister": "Sign up",
+          "auth.loginUsername": "Username", "auth.loginUsernamePh": "e.g. dilnoza_art",
+          "auth.loginPassword": "Password", "auth.loginBtn": "Log in",
+          "common.serverError": "Server error",
+          "auth.loginErrorDefault": "Incorrect username or password.",
+          "auth.regFullname": "Full name", "auth.regFullnamePh": "First Last",
+          "auth.regUsername": "Username", "auth.regUsernamePh": "Latin letters, no spaces",
+          "auth.regEmail": "Email",
+          "auth.regPassword": "Password", "auth.regPasswordPh": "at least 4 characters",
+          "auth.regPassword2": "Confirm", "auth.regPassword2Ph": "type it again",
+          "auth.regBtn": "Create account",
+          "auth.regErrorShort": "Password must be at least 4 characters.",
+          "auth.regErrorMismatch": "Passwords don't match.",
+          "auth.regErrorDefault": "Something went wrong while signing up.",
+          "auth.or": "or",
+          "auth.guestBtn": "Just browse for now",
+          "auth.guestBtnSmall": "You can register later",
+          "nav.home": "Home", "nav.profile": "Profile", "nav.messages": "Messages",
+          "nav.newWork": "+ New work", "nav.myProfile": "My profile", "nav.logout": "Log out",
+          "nav.register": "Sign up",
+          "guest.banner": "You're browsing as a <b>guest</b> — sign up to upload work, like, and comment.",
+          "guest.registerBtn": "Sign up",
+          "home.eyebrow": "Feed", "home.title": "Works from <span>all creators</span>",
+          "home.sub": "Everything uploaded on the platform — newest first.",
+          "feed.end": "No more works to show.",
+          "feed.empty.title": "Nothing here yet", "feed.empty.desc": "Upload the first piece and start your collection.",
+          "profile.empty.desc": "Upload your first piece to start your collection.",
+          "feed.likeAria": "Like", "feed.commentAria": "Comments",
+          "feed.contactAria": "Contact the seller", "feed.contactLabel": "Contact",
+          "feed.sale": "For sale", "feed.expo": "On display",
+          "profile.stat.total": "Total", "profile.stat.sale": "For sale", "profile.stat.expo": "On display",
+          "profile.editBtn": "Edit details",
+          "profile.edit.title": "Profile details", "profile.edit.changeAvatar": "Choose photo",
+          "profile.edit.avatarHint": "JPG or PNG, up to 8MB",
+          "profile.edit.fullname": "Full name", "profile.edit.email": "Email",
+          "profile.edit.bio": "Bio", "profile.edit.bioPh": "A short line about yourself...",
+          "profile.edit.phone": "Phone number", "profile.edit.social": "Social media link",
+          "profile.edit.privacyTitle": "Choose what others can see on your profile:",
+          "profile.edit.privacyPhone": "Show my phone number",
+          "profile.edit.privacySocial": "Show my social media link",
+          "profile.edit.privacyEmail": "Show my email",
+          "profile.edit.save": "Save", "profile.edit.cancel": "Cancel",
+          "profile.myWorks": "My works", "profile.language": "Site language",
+          "profile.joined": "Joined",
+          "profile.avatarUploadFail": "Couldn't upload the photo. Please try again.",
+          "messages.eyebrow": "Conversations", "messages.title": "Messages with <span>sellers</span>",
+          "messages.sub": "Ask about a piece for sale or reach out to a seller — your chats live here.",
+          "messages.empty.title": "No conversations yet",
+          "messages.empty.desc": "Tap \"Contact\" under any piece for sale to message the seller.",
+          "messages.loadFail.title": "Couldn't load", "messages.loadFail.desc": "Check your connection and try again.",
+          "messages.you": "You",
+          "userProfile.back": "← Back", "userProfile.works": "Works",
+          "userProfile.notFound.title": "Not found", "userProfile.notFound.desc": "This user doesn't exist.",
+          "userProfile.contactBtn": "Send a message",
+          "upload.title": "Upload a new work",
+          "upload.imagesLabel": "Photos (1 to 3, shown as a collage)",
+          "upload.dropDefault": "Click to choose photos or drop them here — up to 3 at a time",
+          "upload.dropChosen": "{n}/{max} photos chosen — click to add more",
+          "upload.dropFull": "3 photos chosen — shown as a collage",
+          "upload.titleLabel": "Title", "upload.titlePh": "e.g. \"Autumn landscape\"",
+          "upload.typeLabel": "Type", "upload.type.rasm": "Painting / drawing", "upload.type.haykal": "Sculpture",
+          "upload.type.mulaj": "Model", "upload.type.boshqa": "Other",
+          "upload.statusLabel": "Status", "upload.status.expo": "Display only", "upload.status.sale": "For sale",
+          "upload.priceLabel": "Price", "upload.currencyLabel": "Currency",
+          "upload.descLabel": "Description", "upload.descPh": "A short description of the piece...",
+          "upload.save": "Save", "upload.removeAria": "Remove",
+          "upload.errNoImage": "Please choose at least one photo.",
+          "upload.errGeneric": "Something went wrong while saving. Please try again.",
+          "lightbox.delete": "Delete", "lightbox.noDesc": "No description provided.",
+          "lightbox.workTagFallback": "Work",
+          "comments.title": "Comments", "comments.ph": "Write a comment...", "comments.send": "Send",
+          "comments.empty": "No comments yet. Be the first to write one!",
+          "comments.loading": "Loading...", "comments.loadFail": "Couldn't load comments.",
+          "comments.delete": "Delete",
+          "chat.ph": "Write a message...", "chat.workRefPrefix": "About",
+          "chat.loadFail": "Couldn't load the conversation.", "chat.empty": "No messages yet. Be the first to write one!",
+          "chat.sendFail": "Message not sent. Please try again.",
+          "gate.title": "Please sign up",
+          "gate.desc": "You're currently browsing as a guest. This action needs an account — you can sign up now or later.",
+          "gate.later": "Later", "gate.register": "Sign up",
+          "theme.fabTitle": "Change style", "theme.title": "Site style",
+          "theme.tungi": "Night", "theme.yorug": "Light", "theme.cyberpunk": "Cyberpunk", "theme.custom": "Custom",
+          "theme.customPick": "Pick your own color"
+        },
+        zh: {
+          _locale: 'zh-CN', _dir: 'ltr', _name: "中文",
+          "auth.tagline": "保存您亲手制作的绘画、雕塑和模型 — 可以出售，也可以只是展示。",
+          "auth.tabLogin": "登录", "auth.tabRegister": "注册",
+          "auth.loginUsername": "用户名", "auth.loginUsernamePh": "例如：dilnoza_art",
+          "auth.loginPassword": "密码", "auth.loginBtn": "登录",
+          "common.serverError": "服务器错误",
+          "auth.loginErrorDefault": "用户名或密码不正确。",
+          "auth.regFullname": "全名", "auth.regFullnamePh": "姓名",
+          "auth.regUsername": "用户名", "auth.regUsernamePh": "拉丁字母，无空格",
+          "auth.regEmail": "邮箱",
+          "auth.regPassword": "密码", "auth.regPasswordPh": "至少4个字符",
+          "auth.regPassword2": "确认密码", "auth.regPassword2Ph": "再次输入",
+          "auth.regBtn": "创建账户",
+          "auth.regErrorShort": "密码必须至少4个字符。",
+          "auth.regErrorMismatch": "两次输入的密码不一致。",
+          "auth.regErrorDefault": "注册时出错。",
+          "auth.or": "或",
+          "auth.guestBtn": "先随便看看",
+          "auth.guestBtnSmall": "您可以稍后注册",
+          "nav.home": "首页", "nav.profile": "个人资料", "nav.messages": "消息",
+          "nav.newWork": "+ 新作品", "nav.myProfile": "我的主页", "nav.logout": "退出登录",
+          "nav.register": "注册",
+          "guest.banner": "您正以<b>访客</b>身份浏览 — 注册后即可上传作品、点赞和评论。",
+          "guest.registerBtn": "注册",
+          "home.eyebrow": "动态", "home.title": "<span>所有创作者</span>的作品",
+          "home.sub": "平台上所有用户上传的作品 — 按最新排序。",
+          "feed.end": "没有更多作品了。",
+          "feed.empty.title": "这里还什么都没有", "feed.empty.desc": "上传您的第一件作品，开始您的收藏吧。",
+          "profile.empty.desc": "上传您的第一件作品，开始您的收藏吧。",
+          "feed.likeAria": "点赞", "feed.commentAria": "评论",
+          "feed.contactAria": "联系卖家", "feed.contactLabel": "联系",
+          "feed.sale": "出售中", "feed.expo": "展览中",
+          "profile.stat.total": "总数", "profile.stat.sale": "出售中", "profile.stat.expo": "展览中",
+          "profile.editBtn": "编辑资料",
+          "profile.edit.title": "个人资料信息", "profile.edit.changeAvatar": "选择照片",
+          "profile.edit.avatarHint": "JPG 或 PNG，最大 8MB",
+          "profile.edit.fullname": "全名", "profile.edit.email": "邮箱",
+          "profile.edit.bio": "简介", "profile.edit.bioPh": "简单介绍一下自己...",
+          "profile.edit.phone": "电话号码", "profile.edit.social": "社交媒体链接",
+          "profile.edit.privacyTitle": "选择他人可以在您的主页上看到的内容：",
+          "profile.edit.privacyPhone": "显示我的电话号码",
+          "profile.edit.privacySocial": "显示我的社交媒体链接",
+          "profile.edit.privacyEmail": "显示我的邮箱",
+          "profile.edit.save": "保存", "profile.edit.cancel": "取消",
+          "profile.myWorks": "我的作品", "profile.language": "网站语言",
+          "profile.joined": "加入时间",
+          "profile.avatarUploadFail": "照片上传失败，请重试。",
+          "messages.eyebrow": "交流", "messages.title": "与<span>卖家</span>的消息",
+          "messages.sub": "在这里可以询问出售中的作品，或联系卖家 — 所有对话都在这里。",
+          "messages.empty.title": "还没有对话",
+          "messages.empty.desc": "点击出售中作品下方的“联系”按钮，给卖家发消息。",
+          "messages.loadFail.title": "加载失败", "messages.loadFail.desc": "请检查网络连接后重试。",
+          "messages.you": "我",
+          "userProfile.back": "← 返回", "userProfile.works": "作品",
+          "userProfile.notFound.title": "未找到", "userProfile.notFound.desc": "该用户不存在。",
+          "userProfile.contactBtn": "发消息",
+          "upload.title": "上传新作品",
+          "upload.imagesLabel": "照片（1至3张，将以拼图形式展示）",
+          "upload.dropDefault": "点击选择照片或拖放到此处 — 一次最多3张",
+          "upload.dropChosen": "已选择 {n}/{max} 张照片 — 点击继续添加",
+          "upload.dropFull": "已选择3张照片 — 将以拼图形式展示",
+          "upload.titleLabel": "标题", "upload.titlePh": "例如：《秋日风景》",
+          "upload.typeLabel": "类型", "upload.type.rasm": "绘画", "upload.type.haykal": "雕塑",
+          "upload.type.mulaj": "模型", "upload.type.boshqa": "其他",
+          "upload.statusLabel": "状态", "upload.status.expo": "仅展示", "upload.status.sale": "出售中",
+          "upload.priceLabel": "价格", "upload.currencyLabel": "货币",
+          "upload.descLabel": "描述", "upload.descPh": "简单描述一下这件作品...",
+          "upload.save": "保存", "upload.removeAria": "移除",
+          "upload.errNoImage": "请至少选择一张照片。",
+          "upload.errGeneric": "保存时出错，请重试。",
+          "lightbox.delete": "删除", "lightbox.noDesc": "未提供描述。",
+          "lightbox.workTagFallback": "作品",
+          "comments.title": "评论", "comments.ph": "写评论...", "comments.send": "发送",
+          "comments.empty": "还没有评论，快来抢沙发吧！",
+          "comments.loading": "加载中...", "comments.loadFail": "评论加载失败。",
+          "comments.delete": "删除",
+          "chat.ph": "输入消息...", "chat.workRefPrefix": "关于",
+          "chat.loadFail": "对话加载失败。", "chat.empty": "还没有消息，快来发第一条吧！",
+          "chat.sendFail": "消息发送失败，请重试。",
+          "gate.title": "请注册",
+          "gate.desc": "您目前以访客身份浏览。此操作需要账户 — 您可以现在注册，也可以稍后再说。",
+          "gate.later": "稍后", "gate.register": "注册",
+          "theme.fabTitle": "更改样式", "theme.title": "网站样式",
+          "theme.tungi": "夜间", "theme.yorug": "明亮", "theme.cyberpunk": "赛博朋克", "theme.custom": "自定义",
+          "theme.customPick": "选择您自己的颜色"
+        },
+        hi: {
+          _locale: 'hi-IN', _dir: 'ltr', _name: "हिन्दी",
+          "auth.tagline": "अपने हाथों से बनाई गई पेंटिंग, मूर्तियाँ और मॉडल सहेजें — बिक्री के लिए रखें या बस प्रदर्शित करें।",
+          "auth.tabLogin": "लॉग इन करें", "auth.tabRegister": "साइन अप करें",
+          "auth.loginUsername": "उपयोगकर्ता नाम", "auth.loginUsernamePh": "उदाहरण: dilnoza_art",
+          "auth.loginPassword": "पासवर्ड", "auth.loginBtn": "लॉग इन करें",
+          "common.serverError": "सर्वर त्रुटि",
+          "auth.loginErrorDefault": "उपयोगकर्ता नाम या पासवर्ड गलत है।",
+          "auth.regFullname": "पूरा नाम", "auth.regFullnamePh": "नाम उपनाम",
+          "auth.regUsername": "उपयोगकर्ता नाम", "auth.regUsernamePh": "लैटिन अक्षर, बिना स्पेस",
+          "auth.regEmail": "ईमेल",
+          "auth.regPassword": "पासवर्ड", "auth.regPasswordPh": "कम से कम 4 अक्षर",
+          "auth.regPassword2": "पुष्टि करें", "auth.regPassword2Ph": "दोबारा लिखें",
+          "auth.regBtn": "खाता बनाएं",
+          "auth.regErrorShort": "पासवर्ड कम से कम 4 अक्षरों का होना चाहिए।",
+          "auth.regErrorMismatch": "पासवर्ड मेल नहीं खाते।",
+          "auth.regErrorDefault": "साइन अप करते समय त्रुटि हुई।",
+          "auth.or": "या",
+          "auth.guestBtn": "अभी सिर्फ़ देखें",
+          "auth.guestBtnSmall": "आप बाद में साइन अप कर सकते हैं",
+          "nav.home": "होम", "nav.profile": "प्रोफ़ाइल", "nav.messages": "संदेश",
+          "nav.newWork": "+ नई कृति", "nav.myProfile": "मेरी प्रोफ़ाइल", "nav.logout": "लॉग आउट",
+          "nav.register": "साइन अप करें",
+          "guest.banner": "आप <b>अतिथि</b> के रूप में देख रहे हैं — अपलोड, लाइक और कमेंट के लिए साइन अप करें।",
+          "guest.registerBtn": "साइन अप करें",
+          "home.eyebrow": "फ़ीड", "home.title": "<span>सभी कलाकारों</span> की कृतियाँ",
+          "home.sub": "मंच पर सभी उपयोगकर्ताओं द्वारा अपलोड की गई कृतियाँ — नवीनतम पहले।",
+          "feed.end": "और कोई कृति नहीं है।",
+          "feed.empty.title": "अभी तक कुछ भी नहीं है", "feed.empty.desc": "अपनी पहली कृति अपलोड करके संग्रह शुरू करें।",
+          "profile.empty.desc": "अपनी पहली कृति अपलोड करके अपना संग्रह शुरू करें।",
+          "feed.likeAria": "लाइक", "feed.commentAria": "टिप्पणियाँ",
+          "feed.contactAria": "विक्रेता से संपर्क करें", "feed.contactLabel": "संपर्क करें",
+          "feed.sale": "बिक्री के लिए", "feed.expo": "प्रदर्शन में",
+          "profile.stat.total": "कुल", "profile.stat.sale": "बिक्री के लिए", "profile.stat.expo": "प्रदर्शन में",
+          "profile.editBtn": "जानकारी संपादित करें",
+          "profile.edit.title": "प्रोफ़ाइल जानकारी", "profile.edit.changeAvatar": "फ़ोटो चुनें",
+          "profile.edit.avatarHint": "JPG या PNG, 8MB तक",
+          "profile.edit.fullname": "पूरा नाम", "profile.edit.email": "ईमेल",
+          "profile.edit.bio": "बायो", "profile.edit.bioPh": "अपने बारे में संक्षेप में लिखें...",
+          "profile.edit.phone": "फ़ोन नंबर", "profile.edit.social": "सोशल मीडिया लिंक",
+          "profile.edit.privacyTitle": "चुनें कि अन्य लोग आपकी प्रोफ़ाइल पर क्या देख सकते हैं:",
+          "profile.edit.privacyPhone": "मेरा फ़ोन नंबर दिखाएं",
+          "profile.edit.privacySocial": "मेरा सोशल मीडिया लिंक दिखाएं",
+          "profile.edit.privacyEmail": "मेरा ईमेल दिखाएं",
+          "profile.edit.save": "सहेजें", "profile.edit.cancel": "रद्द करें",
+          "profile.myWorks": "मेरी कृतियाँ", "profile.language": "साइट की भाषा",
+          "profile.joined": "शामिल हुए",
+          "profile.avatarUploadFail": "फ़ोटो अपलोड नहीं हो सकी। फिर कोशिश करें।",
+          "messages.eyebrow": "बातचीत", "messages.title": "<span>विक्रेताओं</span> के साथ संदेश",
+          "messages.sub": "बिक्री की किसी कृति के बारे में पूछें या विक्रेता से संपर्क करें — आपकी बातचीत यहाँ है।",
+          "messages.empty.title": "अभी तक कोई बातचीत नहीं",
+          "messages.empty.desc": "बिक्री की किसी कृति के नीचे \"संपर्क करें\" दबाकर विक्रेता को संदेश भेजें।",
+          "messages.loadFail.title": "लोड नहीं हो सका", "messages.loadFail.desc": "अपना इंटरनेट कनेक्शन जांचें और फिर कोशिश करें।",
+          "messages.you": "आप",
+          "userProfile.back": "← वापस", "userProfile.works": "कृतियाँ",
+          "userProfile.notFound.title": "नहीं मिला", "userProfile.notFound.desc": "यह उपयोगकर्ता मौजूद नहीं है।",
+          "userProfile.contactBtn": "संदेश भेजें",
+          "upload.title": "नई कृति अपलोड करें",
+          "upload.imagesLabel": "फ़ोटो (1 से 3 तक, कोलाज के रूप में दिखेंगी)",
+          "upload.dropDefault": "फ़ोटो चुनने के लिए क्लिक करें या यहाँ छोड़ें — एक बार में 3 तक",
+          "upload.dropChosen": "{n}/{max} फ़ोटो चुनी गईं — और जोड़ने के लिए क्लिक करें",
+          "upload.dropFull": "3 फ़ोटो चुनी गईं — कोलाज के रूप में दिखेंगी",
+          "upload.titleLabel": "शीर्षक", "upload.titlePh": "उदाहरण: «शरद ऋतु का दृश्य»",
+          "upload.typeLabel": "प्रकार", "upload.type.rasm": "पेंटिंग / चित्र", "upload.type.haykal": "मूर्ति",
+          "upload.type.mulaj": "मॉडल", "upload.type.boshqa": "अन्य",
+          "upload.statusLabel": "स्थिति", "upload.status.expo": "केवल प्रदर्शन", "upload.status.sale": "बिक्री के लिए",
+          "upload.priceLabel": "मूल्य", "upload.currencyLabel": "मुद्रा",
+          "upload.descLabel": "विवरण", "upload.descPh": "कृति के बारे में संक्षिप्त जानकारी...",
+          "upload.save": "सहेजें", "upload.removeAria": "हटाएं",
+          "upload.errNoImage": "कृपया कम से कम एक फ़ोटो चुनें।",
+          "upload.errGeneric": "सहेजने में त्रुटि हुई। फिर कोशिश करें।",
+          "lightbox.delete": "हटाएं", "lightbox.noDesc": "कोई विवरण नहीं दिया गया।",
+          "lightbox.workTagFallback": "कृति",
+          "comments.title": "टिप्पणियाँ", "comments.ph": "टिप्पणी लिखें...", "comments.send": "भेजें",
+          "comments.empty": "अभी तक कोई टिप्पणी नहीं। पहले आप लिखें!",
+          "comments.loading": "लोड हो रहा है...", "comments.loadFail": "टिप्पणियाँ लोड नहीं हो सकीं।",
+          "comments.delete": "हटाएं",
+          "chat.ph": "संदेश लिखें...", "chat.workRefPrefix": "इस बारे में",
+          "chat.loadFail": "बातचीत लोड नहीं हो सकी।", "chat.empty": "अभी तक कोई संदेश नहीं। पहले आप लिखें!",
+          "chat.sendFail": "संदेश नहीं भेजा जा सका। फिर कोशिश करें।",
+          "gate.title": "कृपया साइन अप करें",
+          "gate.desc": "आप अभी अतिथि के रूप में देख रहे हैं। इस कार्य के लिए खाता चाहिए — अभी या बाद में साइन अप करें।",
+          "gate.later": "बाद में", "gate.register": "साइन अप करें",
+          "theme.fabTitle": "शैली बदलें", "theme.title": "साइट शैली",
+          "theme.tungi": "रात्रि", "theme.yorug": "उजला", "theme.cyberpunk": "साइबरपंक", "theme.custom": "कस्टम",
+          "theme.customPick": "अपना रंग चुनें"
+        },
+        es: {
+          _locale: 'es-ES', _dir: 'ltr', _name: "Español",
+          "auth.tagline": "Guarda las pinturas, esculturas y maquetas que hiciste a mano — publícalas en venta o solo para mostrarlas.",
+          "auth.tabLogin": "Iniciar sesión", "auth.tabRegister": "Registrarse",
+          "auth.loginUsername": "Nombre de usuario", "auth.loginUsernamePh": "p. ej.: dilnoza_art",
+          "auth.loginPassword": "Contraseña", "auth.loginBtn": "Iniciar sesión",
+          "common.serverError": "Error del servidor",
+          "auth.loginErrorDefault": "Nombre de usuario o contraseña incorrectos.",
+          "auth.regFullname": "Nombre completo", "auth.regFullnamePh": "Nombre Apellido",
+          "auth.regUsername": "Nombre de usuario", "auth.regUsernamePh": "letras latinas, sin espacios",
+          "auth.regEmail": "Correo electrónico",
+          "auth.regPassword": "Contraseña", "auth.regPasswordPh": "mínimo 4 caracteres",
+          "auth.regPassword2": "Confirmar", "auth.regPassword2Ph": "vuelve a escribirla",
+          "auth.regBtn": "Crear cuenta",
+          "auth.regErrorShort": "La contraseña debe tener al menos 4 caracteres.",
+          "auth.regErrorMismatch": "Las contraseñas no coinciden.",
+          "auth.regErrorDefault": "Ocurrió un error al registrarse.",
+          "auth.or": "o",
+          "auth.guestBtn": "Solo quiero explorar por ahora",
+          "auth.guestBtnSmall": "Puedes registrarte más tarde",
+          "nav.home": "Inicio", "nav.profile": "Perfil", "nav.messages": "Mensajes",
+          "nav.newWork": "+ Nueva obra", "nav.myProfile": "Mi perfil", "nav.logout": "Cerrar sesión",
+          "nav.register": "Registrarse",
+          "guest.banner": "Estás navegando como <b>invitado</b> — regístrate para subir obras, dar like y comentar.",
+          "guest.registerBtn": "Registrarse",
+          "home.eyebrow": "Novedades", "home.title": "Obras de <span>todos los creadores</span>",
+          "home.sub": "Todo lo que los usuarios han subido a la plataforma — lo más reciente primero.",
+          "feed.end": "No hay más obras.",
+          "feed.empty.title": "Todavía no hay nada aquí", "feed.empty.desc": "Sube tu primera obra y empieza tu colección.",
+          "profile.empty.desc": "Sube tu primera obra y empieza tu colección.",
+          "feed.likeAria": "Me gusta", "feed.commentAria": "Comentarios",
+          "feed.contactAria": "Contactar al vendedor", "feed.contactLabel": "Contactar",
+          "feed.sale": "En venta", "feed.expo": "En exhibición",
+          "profile.stat.total": "Total", "profile.stat.sale": "En venta", "profile.stat.expo": "En exhibición",
+          "profile.editBtn": "Editar datos",
+          "profile.edit.title": "Datos del perfil", "profile.edit.changeAvatar": "Elegir foto",
+          "profile.edit.avatarHint": "JPG o PNG, hasta 8MB",
+          "profile.edit.fullname": "Nombre completo", "profile.edit.email": "Correo electrónico",
+          "profile.edit.bio": "Biografía", "profile.edit.bioPh": "Cuéntanos algo breve sobre ti...",
+          "profile.edit.phone": "Número de teléfono", "profile.edit.social": "Enlace de red social",
+          "profile.edit.privacyTitle": "Elige qué pueden ver otros en tu perfil:",
+          "profile.edit.privacyPhone": "Mostrar mi número de teléfono",
+          "profile.edit.privacySocial": "Mostrar mi enlace de red social",
+          "profile.edit.privacyEmail": "Mostrar mi correo electrónico",
+          "profile.edit.save": "Guardar", "profile.edit.cancel": "Cancelar",
+          "profile.myWorks": "Mis obras", "profile.language": "Idioma del sitio",
+          "profile.joined": "Se unió el",
+          "profile.avatarUploadFail": "No se pudo subir la foto. Inténtalo de nuevo.",
+          "messages.eyebrow": "Conversaciones", "messages.title": "Mensajes con <span>vendedores</span>",
+          "messages.sub": "Pregunta sobre alguna obra en venta o contacta a un vendedor — tus chats están aquí.",
+          "messages.empty.title": "Todavía no hay conversaciones",
+          "messages.empty.desc": "Toca \"Contactar\" bajo cualquier obra en venta para escribirle al vendedor.",
+          "messages.loadFail.title": "No se pudo cargar", "messages.loadFail.desc": "Revisa tu conexión e inténtalo de nuevo.",
+          "messages.you": "Tú",
+          "userProfile.back": "← Atrás", "userProfile.works": "Obras",
+          "userProfile.notFound.title": "No encontrado", "userProfile.notFound.desc": "Este usuario no existe.",
+          "userProfile.contactBtn": "Enviar mensaje",
+          "upload.title": "Subir una nueva obra",
+          "upload.imagesLabel": "Fotos (de 1 a 3, se muestran como collage)",
+          "upload.dropDefault": "Haz clic para elegir fotos o arrástralas aquí — hasta 3 a la vez",
+          "upload.dropChosen": "{n}/{max} fotos elegidas — haz clic para añadir más",
+          "upload.dropFull": "3 fotos elegidas — se mostrarán como collage",
+          "upload.titleLabel": "Título", "upload.titlePh": "p. ej.: «Paisaje de otoño»",
+          "upload.typeLabel": "Tipo", "upload.type.rasm": "Pintura / dibujo", "upload.type.haykal": "Escultura",
+          "upload.type.mulaj": "Maqueta", "upload.type.boshqa": "Otro",
+          "upload.statusLabel": "Estado", "upload.status.expo": "Solo exhibición", "upload.status.sale": "En venta",
+          "upload.priceLabel": "Precio", "upload.currencyLabel": "Moneda",
+          "upload.descLabel": "Descripción", "upload.descPh": "Una breve descripción de la obra...",
+          "upload.save": "Guardar", "upload.removeAria": "Quitar",
+          "upload.errNoImage": "Por favor elige al menos una foto.",
+          "upload.errGeneric": "Ocurrió un error al guardar. Inténtalo de nuevo.",
+          "lightbox.delete": "Eliminar", "lightbox.noDesc": "Sin descripción.",
+          "lightbox.workTagFallback": "Obra",
+          "comments.title": "Comentarios", "comments.ph": "Escribe un comentario...", "comments.send": "Enviar",
+          "comments.empty": "Aún no hay comentarios. ¡Sé el primero en escribir uno!",
+          "comments.loading": "Cargando...", "comments.loadFail": "No se pudieron cargar los comentarios.",
+          "comments.delete": "Eliminar",
+          "chat.ph": "Escribe un mensaje...", "chat.workRefPrefix": "Sobre",
+          "chat.loadFail": "No se pudo cargar la conversación.", "chat.empty": "Aún no hay mensajes. ¡Sé el primero en escribir uno!",
+          "chat.sendFail": "No se pudo enviar el mensaje. Inténtalo de nuevo.",
+          "gate.title": "Regístrate",
+          "gate.desc": "Por ahora estás navegando como invitado. Esta acción requiere una cuenta — puedes registrarte ahora o más tarde.",
+          "gate.later": "Más tarde", "gate.register": "Registrarse",
+          "theme.fabTitle": "Cambiar estilo", "theme.title": "Estilo del sitio",
+          "theme.tungi": "Nocturno", "theme.yorug": "Claro", "theme.cyberpunk": "Cyberpunk", "theme.custom": "Personalizado",
+          "theme.customPick": "Elige tu propio color"
+        },
+        ar: {
+          _locale: 'ar-SA', _dir: 'rtl', _name: "العربية",
+          "auth.tagline": "احفظ اللوحات والمنحوتات والمجسمات التي صنعتها بيديك — اعرضها للبيع أو للعرض فقط.",
+          "auth.tabLogin": "تسجيل الدخول", "auth.tabRegister": "إنشاء حساب",
+          "auth.loginUsername": "اسم المستخدم", "auth.loginUsernamePh": "مثال: dilnoza_art",
+          "auth.loginPassword": "كلمة المرور", "auth.loginBtn": "تسجيل الدخول",
+          "common.serverError": "خطأ في الخادم",
+          "auth.loginErrorDefault": "اسم المستخدم أو كلمة المرور غير صحيحة.",
+          "auth.regFullname": "الاسم الكامل", "auth.regFullnamePh": "الاسم واللقب",
+          "auth.regUsername": "اسم المستخدم", "auth.regUsernamePh": "أحرف لاتينية بدون مسافات",
+          "auth.regEmail": "البريد الإلكتروني",
+          "auth.regPassword": "كلمة المرور", "auth.regPasswordPh": "4 أحرف على الأقل",
+          "auth.regPassword2": "تأكيد كلمة المرور", "auth.regPassword2Ph": "أعد كتابتها",
+          "auth.regBtn": "إنشاء حساب",
+          "auth.regErrorShort": "يجب ألا تقل كلمة المرور عن 4 أحرف.",
+          "auth.regErrorMismatch": "كلمتا المرور غير متطابقتين.",
+          "auth.regErrorDefault": "حدث خطأ أثناء إنشاء الحساب.",
+          "auth.or": "أو",
+          "auth.guestBtn": "تصفّح فقط الآن",
+          "auth.guestBtnSmall": "يمكنك التسجيل لاحقًا",
+          "nav.home": "الرئيسية", "nav.profile": "الملف الشخصي", "nav.messages": "الرسائل",
+          "nav.newWork": "+ عمل جديد", "nav.myProfile": "ملفي الشخصي", "nav.logout": "تسجيل الخروج",
+          "nav.register": "إنشاء حساب",
+          "guest.banner": "أنت تتصفح كـ<b>ضيف</b> — سجّل للتمكن من رفع الأعمال والإعجاب والتعليق.",
+          "guest.registerBtn": "إنشاء حساب",
+          "home.eyebrow": "الواجهة", "home.title": "أعمال <span>جميع المبدعين</span>",
+          "home.sub": "كل ما رفعه المستخدمون على المنصة — الأحدث أولاً.",
+          "feed.end": "لا مزيد من الأعمال.",
+          "feed.empty.title": "لا يوجد شيء هنا بعد", "feed.empty.desc": "ارفع أول عمل لك وابدأ مجموعتك.",
+          "profile.empty.desc": "ارفع أول عمل لك لتبدأ مجموعتك.",
+          "feed.likeAria": "إعجاب", "feed.commentAria": "التعليقات",
+          "feed.contactAria": "التواصل مع البائع", "feed.contactLabel": "تواصل",
+          "feed.sale": "للبيع", "feed.expo": "للعرض",
+          "profile.stat.total": "الإجمالي", "profile.stat.sale": "للبيع", "profile.stat.expo": "للعرض",
+          "profile.editBtn": "تعديل البيانات",
+          "profile.edit.title": "بيانات الملف الشخصي", "profile.edit.changeAvatar": "اختيار صورة",
+          "profile.edit.avatarHint": "JPG أو PNG، حتى 8 ميغابايت",
+          "profile.edit.fullname": "الاسم الكامل", "profile.edit.email": "البريد الإلكتروني",
+          "profile.edit.bio": "نبذة", "profile.edit.bioPh": "اكتب نبذة قصيرة عن نفسك...",
+          "profile.edit.phone": "رقم الهاتف", "profile.edit.social": "رابط التواصل الاجتماعي",
+          "profile.edit.privacyTitle": "اختر ما يمكن للآخرين رؤيته في ملفك الشخصي:",
+          "profile.edit.privacyPhone": "إظهار رقم هاتفي",
+          "profile.edit.privacySocial": "إظهار رابط التواصل الاجتماعي الخاص بي",
+          "profile.edit.privacyEmail": "إظهار بريدي الإلكتروني",
+          "profile.edit.save": "حفظ", "profile.edit.cancel": "إلغاء",
+          "profile.myWorks": "أعمالي", "profile.language": "لغة الموقع",
+          "profile.joined": "تاريخ الانضمام",
+          "profile.avatarUploadFail": "تعذّر رفع الصورة. حاول مرة أخرى.",
+          "messages.eyebrow": "المحادثات", "messages.title": "رسائل مع <span>البائعين</span>",
+          "messages.sub": "اسأل عن عمل معروض للبيع أو تواصل مع بائع — محادثاتك هنا.",
+          "messages.empty.title": "لا توجد محادثات بعد",
+          "messages.empty.desc": "اضغط زر \"تواصل\" أسفل أي عمل معروض للبيع لمراسلة البائع.",
+          "messages.loadFail.title": "تعذّر التحميل", "messages.loadFail.desc": "تحقق من اتصالك بالإنترنت وحاول مرة أخرى.",
+          "messages.you": "أنت",
+          "userProfile.back": "→ رجوع", "userProfile.works": "الأعمال",
+          "userProfile.notFound.title": "غير موجود", "userProfile.notFound.desc": "هذا المستخدم غير موجود.",
+          "userProfile.contactBtn": "إرسال رسالة",
+          "upload.title": "رفع عمل جديد",
+          "upload.imagesLabel": "صور (من 1 إلى 3، تُعرض كصورة مجمّعة)",
+          "upload.dropDefault": "اضغط لاختيار صور أو اسحبها هنا — حتى 3 في المرة الواحدة",
+          "upload.dropChosen": "تم اختيار {n}/{max} صور — اضغط لإضافة المزيد",
+          "upload.dropFull": "تم اختيار 3 صور — ستُعرض كصورة مجمّعة",
+          "upload.titleLabel": "العنوان", "upload.titlePh": "مثال: «منظر الخريف»",
+          "upload.typeLabel": "النوع", "upload.type.rasm": "لوحة / رسم", "upload.type.haykal": "منحوتة",
+          "upload.type.mulaj": "مجسم", "upload.type.boshqa": "أخرى",
+          "upload.statusLabel": "الحالة", "upload.status.expo": "للعرض فقط", "upload.status.sale": "للبيع",
+          "upload.priceLabel": "السعر", "upload.currencyLabel": "العملة",
+          "upload.descLabel": "الوصف", "upload.descPh": "وصف مختصر للعمل...",
+          "upload.save": "حفظ", "upload.removeAria": "إزالة",
+          "upload.errNoImage": "الرجاء اختيار صورة واحدة على الأقل.",
+          "upload.errGeneric": "حدث خطأ أثناء الحفظ. حاول مرة أخرى.",
+          "lightbox.delete": "حذف", "lightbox.noDesc": "لا يوجد وصف.",
+          "lightbox.workTagFallback": "عمل",
+          "comments.title": "التعليقات", "comments.ph": "اكتب تعليقًا...", "comments.send": "إرسال",
+          "comments.empty": "لا توجد تعليقات بعد. كن أول من يكتب!",
+          "comments.loading": "جارٍ التحميل...", "comments.loadFail": "تعذّر تحميل التعليقات.",
+          "comments.delete": "حذف",
+          "chat.ph": "اكتب رسالة...", "chat.workRefPrefix": "بخصوص",
+          "chat.loadFail": "تعذّر تحميل المحادثة.", "chat.empty": "لا توجد رسائل بعد. كن أول من يكتب!",
+          "chat.sendFail": "تعذّر إرسال الرسالة. حاول مرة أخرى.",
+          "gate.title": "الرجاء إنشاء حساب",
+          "gate.desc": "أنت تتصفح حاليًا كضيف. تتطلب هذه العملية حسابًا — يمكنك التسجيل الآن أو لاحقًا.",
+          "gate.later": "لاحقًا", "gate.register": "إنشاء حساب",
+          "theme.fabTitle": "تغيير النمط", "theme.title": "نمط الموقع",
+          "theme.tungi": "ليلي", "theme.yorug": "فاتح", "theme.cyberpunk": "سايبربانك", "theme.custom": "مخصص",
+          "theme.customPick": "اختر لونك الخاص"
+        }
+      };
+
+      let currentLang = localStorage.getItem('madein_lang') || 'uz';
+      if (!I18N[currentLang]) currentLang = 'uz';
+
+      function t(key, vars) {
+        const dict = I18N[currentLang] || I18N.uz;
+        let str = dict[key];
+        if (str === undefined) str = (I18N.uz[key] !== undefined) ? I18N.uz[key] : key;
+        if (vars) Object.keys(vars).forEach(k => { str = str.replace('{' + k + '}', vars[k]); });
+        return str;
+      }
+
+      /* Applies the current interface language to every static element
+         marked with data-i18n / data-i18n-ph / data-i18n-title.
+         This never touches user-authored content (names, bios, work
+         titles/descriptions, comments, chat messages), since those live in
+         separate elements that have no data-i18n attribute at all. */
+      function applyI18n() {
+        document.documentElement.lang = currentLang;
+        document.documentElement.dir = I18N[currentLang]._dir || 'ltr';
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          el.textContent = t(el.getAttribute('data-i18n'));
+        });
+        document.querySelectorAll('[data-i18n-html]').forEach(el => {
+          el.innerHTML = t(el.getAttribute('data-i18n-html'));
+        });
+        document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+          el.setAttribute('placeholder', t(el.getAttribute('data-i18n-ph')));
+        });
+        document.querySelectorAll('[data-i18n-title]').forEach(el => {
+          el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
+        });
+        const langSelect = document.getElementById('langSelect');
+        if (langSelect) langSelect.value = currentLang;
+        /* re-render any already-built dynamic UI (labels/buttons only —
+           the underlying user content in WORKS/FEED is left untouched
+           and simply redrawn with the new chrome around it) */
+        if (typeof renderGrids === 'function' && typeof CURRENT_USER !== 'undefined') {
+          try { renderGrids(); renderProfileHeader(); } catch (e) { /* not ready yet */ }
+        }
+        if (typeof FEED !== 'undefined' && FEED.length) {
+          try {
+            const list = document.getElementById('feedList');
+            if (list) { list.innerHTML = ''; appendFeedItems(FEED); }
+          } catch (e) { /* not ready yet */ }
+        }
+      }
+
+      function setLanguage(lang) {
+        if (!I18N[lang]) return;
+        currentLang = lang;
+        localStorage.setItem('madein_lang', lang);
+        applyI18n();
+      }
+
+      /* ===================== API HELPER =====================
+         Talks to the real backend (server.js) instead of window.storage,
+         so this works once deployed to any normal web host. */
+      async function api(path, opts) {
+        opts = opts || {};
+        opts.credentials = 'include';
+        const res = await fetch(path, opts);
+        let data = null;
+        try { data = await res.json(); } catch (e) { /* no body */ }
+        if (!res.ok) throw new Error((data && data.error) || t('common.serverError'));
+        return data;
+      }
+      function apiJSON(path, method, body) {
+        return api(path, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+      }
+
+      /* ===================== STATE ===================== */
+      let CURRENT_USER = null; // { username, fullname, email, bio, joined, theme }
+      let IS_GUEST = false;    // true when browsing without an account (registration postponed)
+      let WORKS = [];          // current user's own works (profile view)
+      let FEED = [];           // public feed items (home view)
+      let feedOffset = 0;
+      let feedHasMore = true;
+      let feedLoading = false;
+      let currentTheme = { mode: 'tungi', custom: '#e2543f' };
+      let pendingDeleteId = null;
+      let uploadImageBlobs = [];
+      const MAX_UPLOAD_IMAGES = 3;
+
+      const $ = (sel) => document.querySelector(sel);
+      const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+      /* ===================== INIT ===================== */
+      async function init() {
+        applyI18n();
+        try {
+          const data = await api('/api/me');
+          if (data && data.user) {
+            CURRENT_USER = data.user;
+            await enterApp();
+          } else {
+            $('#authScreen').classList.remove('hidden');
+          }
+        } catch (e) {
+          $('#authScreen').classList.remove('hidden');
+        }
+        document.getElementById('loadingScreen').classList.add('fade-out');
+        bindAuthEvents();
+        bindAppEvents();
+      }
+
+      /* ===================== AUTH ===================== */
+      function bindAuthEvents() {
+        $$('#authTabs .tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            $$('#authTabs .tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const isReg = tab.dataset.tab === 'register';
+            $('#authTabs').classList.toggle('reg', isReg);
+            $('#loginForm').classList.toggle('active', !isReg);
+            $('#loginForm').classList.toggle('hidden', isReg);
+            $('#registerForm').classList.toggle('active', isReg);
+            $('#registerForm').classList.toggle('hidden', !isReg);
+          });
+        });
+
+        $('#loginForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const uname = $('#loginUsername').value.trim().toLowerCase();
+          const pass = $('#loginPassword').value;
+          const errEl = $('#loginError');
+          errEl.classList.remove('show');
+          try {
+            const data = await apiJSON('/api/login', 'POST', { username: uname, password: pass });
+            CURRENT_USER = data.user;
+            await enterApp();
+          } catch (err) {
+            errEl.textContent = err.message || t('auth.loginErrorDefault');
+            errEl.classList.add('show');
+            $('#authCard').classList.add('shake');
+            setTimeout(() => $('#authCard').classList.remove('shake'), 400);
+          }
+        });
+
+        $('#registerForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const fullname = $('#regFullname').value.trim();
+          const uname = $('#regUsername').value.trim().toLowerCase().replace(/\s+/g, '_');
+          const email = $('#regEmail').value.trim();
+          const pass = $('#regPassword').value;
+          const pass2 = $('#regPassword2').value;
+          const errEl = $('#registerError');
+          errEl.classList.remove('show');
+
+          if (pass.length < 4) {
+            errEl.textContent = t('auth.regErrorShort');
+            errEl.classList.add('show'); return;
+          }
+          if (pass !== pass2) {
+            errEl.textContent = t('auth.regErrorMismatch');
+            errEl.classList.add('show'); return;
+          }
+
+          try {
+            const data = await apiJSON('/api/register', 'POST', { username: uname, password: pass, fullname, email });
+            CURRENT_USER = data.user;
+            await enterApp();
+          } catch (err) {
+            errEl.textContent = err.message || t('auth.regErrorDefault');
+            errEl.classList.add('show');
+          }
+        });
+
+        $('#guestBtn').addEventListener('click', () => {
+          IS_GUEST = true;
+          CURRENT_USER = null;
+          enterApp();
+        });
+      }
+
+      /* Bring the person back to the auth screen (e.g. a guest who decides to
+         register), landing on the requested tab. */
+      function goToAuth(tab) {
+        closeGateModal();
+        $('#mainApp').classList.add('hidden');
+        $('#authScreen').classList.remove('hidden');
+        const wantReg = tab === 'register';
+        $$('#authTabs .tab').forEach(t => t.classList.toggle('active', (t.dataset.tab === 'register') === wantReg));
+        $('#authTabs').classList.toggle('reg', wantReg);
+        $('#loginForm').classList.toggle('active', !wantReg);
+        $('#loginForm').classList.toggle('hidden', wantReg);
+        $('#registerForm').classList.toggle('active', wantReg);
+        $('#registerForm').classList.toggle('hidden', !wantReg);
+      }
+
+      /* Gate modal — shown when a guest attempts something that needs an account. */
+      function openGateModal() { $('#gateModal').classList.remove('hidden'); }
+      function closeGateModal() { $('#gateModal').classList.add('hidden'); }
+      function guarded(fn) {
+        return (...args) => {
+          if (IS_GUEST) { openGateModal(); return; }
+          return fn(...args);
+        };
+      }
+
+      async function enterApp() {
+        $('#authScreen').classList.add('hidden');
+        $('#mainApp').classList.remove('hidden');
+        $('#avatarMenu').classList.toggle('hidden', IS_GUEST);
+        $('#navRegisterBtn').classList.toggle('hidden', !IS_GUEST);
+        $('#guestBanner').classList.toggle('hidden', !IS_GUEST);
+
+        if (IS_GUEST) {
+          WORKS = [];
+        } else {
+          try {
+            const data = await api('/api/works');
+            WORKS = data.works || [];
+          } catch (e) { WORKS = []; }
+        }
+
+        currentTheme = (CURRENT_USER && CURRENT_USER.theme) || { mode: 'tungi', custom: '#e2543f' };
+        applyTheme(currentTheme);
+
+        renderProfileHeader();
+        renderGrids();
+
+        feedOffset = 0;
+        feedHasMore = true;
+        FEED = [];
+        $('#feedList').innerHTML = '';
+        setupFeedObserver();
+        loadFeedPage();
+
+        if (!IS_GUEST) {
+          refreshUnreadBadge();
+          startUnreadPolling();
+        } else {
+          $$('.msg-badge').forEach(b => b.classList.add('hidden'));
+        }
+      }
+
+      /* ===================== NAVBAR / VIEWS ===================== */
+      function bindAppEvents() {
+        $$('.nav-links button[data-view]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (IS_GUEST && (btn.dataset.view === 'profile' || btn.dataset.view === 'messages')) { openGateModal(); return; }
+            switchView(btn.dataset.view);
+          });
+        });
+        $('#openUploadBtnMobile').addEventListener('click', guarded(openUploadModal));
+        $('#gotoProfileBtn').addEventListener('click', () => { switchView('profile'); $('#avatarDropdown').classList.remove('open'); });
+        $('#avatarBtn').addEventListener('click', () => $('#avatarDropdown').classList.toggle('open'));
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('.avatar-menu')) $('#avatarDropdown').classList.remove('open');
+        });
+        $('#logoutBtn').addEventListener('click', async () => {
+          try { await api('/api/logout', { method: 'POST' }); } catch (e) { /* ignore */ }
+          CURRENT_USER = null;
+          IS_GUEST = false;
+          WORKS = [];
+          FEED = [];
+          feedOffset = 0;
+          feedHasMore = true;
+          $('#feedList').innerHTML = '';
+          closeCommentsModal();
+          closeChatModal();
+          stopUnreadPolling();
+          $$('.msg-badge').forEach(b => b.classList.add('hidden'));
+          $('#mainApp').classList.add('hidden');
+          $('#authScreen').classList.remove('hidden');
+          $('#loginForm').reset(); $('#registerForm').reset();
+        });
+
+        /* Guests get nudged toward the auth screen instead of performing
+           account-only actions; registration stays fully optional/postponable. */
+        $('#navRegisterBtn').addEventListener('click', () => goToAuth('register'));
+        $('#guestBannerBtn').addEventListener('click', () => goToAuth('register'));
+        $('#gateModalLater').addEventListener('click', closeGateModal);
+        $('#gateModalRegister').addEventListener('click', () => goToAuth('register'));
+        $('#gateModal').addEventListener('click', (e) => { if (e.target === $('#gateModal')) closeGateModal(); });
+
+        $('#openUploadBtn').addEventListener('click', guarded(openUploadModal));
+        $('#openUploadBtn2').addEventListener('click', guarded(openUploadModal));
+        $('#closeUploadModal').addEventListener('click', closeUploadModal);
+        $('#uploadModal').addEventListener('click', (e) => { if (e.target === $('#uploadModal')) closeUploadModal(); });
+
+        $('#uploadFile').addEventListener('change', handleFileSelect);
+        $('#workStatus').addEventListener('change', () => {
+          $('#priceField').classList.toggle('hidden', $('#workStatus').value !== 'sale');
+        });
+        $('#uploadForm').addEventListener('submit', handleUploadSubmit);
+
+        $('#closeLightbox').addEventListener('click', closeLightbox);
+        $('#lightbox').addEventListener('click', (e) => { if (e.target === $('#lightbox')) closeLightbox(); });
+        $('#deleteWorkBtn').addEventListener('click', handleDeleteWork);
+
+        $('#closeCommentsModal').addEventListener('click', closeCommentsModal);
+        $('#commentsModal').addEventListener('click', (e) => { if (e.target === $('#commentsModal')) closeCommentsModal(); });
+
+        $('#closeChatModal').addEventListener('click', closeChatModal);
+        $('#chatModal').addEventListener('click', (e) => { if (e.target === $('#chatModal')) closeChatModal(); });
+        $('#chatForm').addEventListener('submit', submitChatMessage);
+        $('#commentForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          if (IS_GUEST) { openGateModal(); return; }
+          submitComment(e);
+        });
+        $('#commentInput').addEventListener('input', (e) => {
+          $('#commentSubmitBtn').classList.toggle('active', e.target.value.trim().length > 0);
+        });
+
+        $('#editProfileBtn').addEventListener('click', guarded(openEditProfile));
+        $('#cancelEditBtn').addEventListener('click', () => $('#editProfileCard').classList.add('hidden'));
+        $('#saveProfileBtn').addEventListener('click', saveProfile);
+        $('#changeAvatarBtn').addEventListener('click', () => $('#avatarFileInput').click());
+        $('#avatarFileInput').addEventListener('change', handleAvatarFileSelect);
+        $('#backFromUserProfile').addEventListener('click', () => switchView('home'));
+
+        /* language selector — changes only the site's own interface text;
+           everyone else's names, bios, work titles/descriptions and
+           comments keep showing exactly as they wrote them */
+        const langSelect = $('#langSelect');
+        if (langSelect) {
+          langSelect.value = currentLang;
+          langSelect.addEventListener('change', (e) => setLanguage(e.target.value));
+        }
+
+        /* theme panel */
+        $('#themeFab').addEventListener('click', () => $('#themePanel').classList.toggle('open'));
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('#themePanel') && !e.target.closest('#themeFab')) $('#themePanel').classList.remove('open');
+        });
+        $$('.theme-opt').forEach(opt => {
+          opt.addEventListener('click', async () => {
+            currentTheme.mode = opt.dataset.theme;
+            applyTheme(currentTheme);
+            await persistTheme();
+          });
+        });
+        $('#customColorInput').addEventListener('input', async (e) => {
+          currentTheme.mode = 'custom';
+          currentTheme.custom = e.target.value;
+          applyTheme(currentTheme);
+          await persistTheme();
+        });
+      }
+
+      async function persistTheme() {
+        try {
+          await apiJSON('/api/theme', 'PUT', currentTheme);
+          if (CURRENT_USER) CURRENT_USER.theme = currentTheme;
+        } catch (e) { /* non-critical */ }
+      }
+
+      function switchView(view) {
+        $$('.nav-links button[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+        $('#homeView').classList.toggle('active', view === 'home');
+        $('#profileView').classList.toggle('active', view === 'profile');
+        $('#messagesView').classList.toggle('active', view === 'messages');
+        $('#userProfileView').classList.toggle('active', view === 'userProfile');
+        if (view === 'profile') {
+          renderProfileHeader();
+          renderGridInto('#profileGrid', WORKS);
+        }
+        if (view === 'messages') {
+          loadConversations();
+        }
+      }
+
+      /* ===================== THEME ===================== */
+      function hexToHsl(hex) {
+        let r = parseInt(hex.slice(1, 3), 16) / 255, g = parseInt(hex.slice(3, 5), 16) / 255, b = parseInt(hex.slice(5, 7), 16) / 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        if (max === min) { h = s = 0; }
+        else {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            default: h = (r - g) / d + 4;
+          }
+          h /= 6;
+        }
+        return [h * 360, s * 100, l * 100];
+      }
+      function hslToHex(h, s, l) {
+        s /= 100; l /= 100;
+        const c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs((h / 60) % 2 - 1)), m = l - c / 2;
+        let r = 0, g = 0, b = 0;
+        if (h < 60) { r = c; g = x; } else if (h < 120) { r = x; g = c; } else if (h < 180) { g = c; b = x; }
+        else if (h < 240) { g = x; b = c; } else if (h < 300) { r = x; b = c; } else { r = c; b = x; }
+        const toHex = v => Math.round((v + m) * 255).toString(16).padStart(2, '0');
+        return '#' + toHex(r) + toHex(g) + toHex(b);
+      }
+
+      function applyTheme(theme) {
+        document.body.dataset.theme = theme.mode;
+        $$('.theme-opt').forEach(o => o.classList.toggle('active', o.dataset.theme === theme.mode));
+        if (theme.mode === 'custom') {
+          const hex = theme.custom || '#e2543f';
+          const [h, s, l] = hexToHsl(hex);
+          const accent2 = hslToHex((h + 40) % 360, Math.min(s + 5, 100), Math.min(l + 12, 78));
+          document.body.style.setProperty('--accent', hex);
+          document.body.style.setProperty('--accent-2', accent2);
+          $('#customColorInput').value = hex;
+          $('#customSwatch').style.background = hex;
+        } else {
+          document.body.style.removeProperty('--accent');
+          document.body.style.removeProperty('--accent-2');
+        }
+      }
+
+      /* ===================== PROFILE ===================== */
+      function initials(name) {
+        if (!name) return '?';
+        return name.trim().split(/\s+/).slice(0, 2).map(w => w[0].toUpperCase()).join('');
+      }
+      function avatarInner(avatarUrl, name) {
+        return avatarUrl ? `<img src="${avatarUrl}" alt="">` : initials(name);
+      }
+      function fmtDate(iso) {
+        try {
+          const locale = (I18N[currentLang] && I18N[currentLang]._locale) || 'uz-UZ';
+          return new Date(iso).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
+        } catch (e) { return ''; }
+      }
+
+      const CURRENCY_LABELS = { UZS: "so'm", USD: 'USD', EUR: 'EUR', RUB: 'RUB' };
+      function fmtPrice(price, currency) {
+        const locale = (I18N[currentLang] && I18N[currentLang]._locale) || 'uz-UZ';
+        const label = CURRENCY_LABELS[currency] || "so'm";
+        return Number(price).toLocaleString(locale) + ' ' + label;
+      }
+
+      function renderProfileHeader() {
+        const u = CURRENT_USER;
+        if (!u) return;
+        $('#navUsername').textContent = u.username;
+        $('#avatarInitials').innerHTML = avatarInner(u.avatar, u.fullname || u.username);
+        $('#profileAvatar').innerHTML = avatarInner(u.avatar, u.fullname || u.username);
+        $('#profileFullname').textContent = u.fullname || u.username;
+        $('#profileUsernameTag').textContent = '@' + u.username;
+        $('#profileMeta').textContent = (u.email ? u.email + ' · ' : '') + t('profile.joined') + ': ' + fmtDate(u.joined);
+        $('#statTotal').textContent = WORKS.length;
+        $('#statSale').textContent = WORKS.filter(w => w.status === 'sale').length;
+        $('#statExpo').textContent = WORKS.filter(w => w.status === 'expo').length;
+      }
+
+      function openEditProfile() {
+        const u = CURRENT_USER;
+        $('#editFullname').value = u.fullname || '';
+        $('#editEmail').value = u.email || '';
+        $('#editBio').value = u.bio || '';
+        $('#editPhone').value = u.phone || '';
+        $('#editSocial').value = u.social || '';
+        const privacy = u.privacy || { phone: true, social: true, email: false };
+        $('#privacyPhone').checked = !!privacy.phone;
+        $('#privacySocial').checked = !!privacy.social;
+        $('#privacyEmail').checked = !!privacy.email;
+        $('#editAvatarPreview').innerHTML = avatarInner(u.avatar, u.fullname || u.username);
+        $('#editProfileCard').classList.remove('hidden');
+      }
+      async function saveProfile() {
+        try {
+          const data = await apiJSON('/api/profile', 'PUT', {
+            fullname: $('#editFullname').value.trim(),
+            email: $('#editEmail').value.trim(),
+            bio: $('#editBio').value.trim(),
+            phone: $('#editPhone').value.trim(),
+            social: $('#editSocial').value.trim(),
+            privacy: {
+              phone: $('#privacyPhone').checked,
+              social: $('#privacySocial').checked,
+              email: $('#privacyEmail').checked
+            }
+          });
+          CURRENT_USER = data.user;
+          $('#editProfileCard').classList.add('hidden');
+          renderProfileHeader();
+        } catch (e) { /* keep the edit card open so the person can retry */ }
+      }
+
+      async function handleAvatarFileSelect(e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const fd = new FormData();
+        fd.append('avatar', file);
+        try {
+          const data = await api('/api/profile/avatar', { method: 'POST', body: fd });
+          CURRENT_USER = data.user;
+          $('#editAvatarPreview').innerHTML = avatarInner(CURRENT_USER.avatar, CURRENT_USER.fullname || CURRENT_USER.username);
+          renderProfileHeader();
+        } catch (err) {
+          alert(err.message || t('profile.avatarUploadFail'));
+        }
+        e.target.value = '';
+      }
+
+      /* ===================== PUBLIC USER PROFILE ===================== */
+      let UP_WORKS = [];
+      let UP_USERNAME = null;
+
+      async function openUserProfile(username) {
+        if (!username) return;
+        if (CURRENT_USER && username === CURRENT_USER.username) { switchView('profile'); return; }
+        UP_USERNAME = username;
+        switchView('userProfile');
+        $('#upFullname').textContent = username;
+        $('#upUsernameTag').textContent = '@' + username;
+        $('#upAvatar').innerHTML = '?';
+        $('#upBio').textContent = '';
+        $('#upContact').innerHTML = '';
+        $('#upGrid').innerHTML = '<div class="feed-spinner" style="margin:30px auto;"></div>';
+        try {
+          const data = await api('/api/users/' + encodeURIComponent(username));
+          renderUserProfile(data.profile, data.works || []);
+        } catch (e) {
+          $('#upGrid').innerHTML = `<div class="empty-state"><h3>${t('userProfile.notFound.title')}</h3><p>${t('userProfile.notFound.desc')}</p></div>`;
+        }
+      }
+
+      function renderUserProfile(profile, works) {
+        UP_WORKS = works;
+        $('#upAvatar').innerHTML = avatarInner(profile.avatar, profile.fullname || profile.username);
+        $('#upFullname').textContent = profile.fullname || profile.username;
+        $('#upUsernameTag').textContent = '@' + profile.username;
+        $('#upMeta').textContent = t('profile.joined') + ': ' + fmtDate(profile.joined);
+        $('#upBio').textContent = profile.bio || '';
+        $('#upStatTotal').textContent = works.length;
+        $('#upStatSale').textContent = works.filter(w => w.status === 'sale').length;
+        $('#upStatExpo').textContent = works.filter(w => w.status === 'expo').length;
+
+        const contactBits = [];
+        if (profile.phone) contactBits.push(`<div class="user-profile-contact-item">📞 ${escapeHtml(profile.phone)}</div>`);
+        if (profile.social) {
+          const href = /^https?:\/\//i.test(profile.social) ? profile.social : 'https://' + profile.social;
+          contactBits.push(`<div class="user-profile-contact-item">🔗 <a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(profile.social)}</a></div>`);
+        }
+        if (profile.email) contactBits.push(`<div class="user-profile-contact-item">✉️ ${escapeHtml(profile.email)}</div>`);
+        if (!CURRENT_USER || profile.username !== CURRENT_USER.username) {
+          contactBits.push(`<button class="btn btn-primary btn-sm" id="upContactSellerBtn">${t('userProfile.contactBtn')}</button>`);
+        }
+        $('#upContact').innerHTML = contactBits.join('');
+        const msgBtn = $('#upContactSellerBtn');
+        if (msgBtn) msgBtn.addEventListener('click', guarded(() => openChat(profile.username)));
+
+        renderGridInto('#upGrid', works);
+      }
+
+      /* ===================== GALLERY RENDER =====================
+         typeLabels/status text are the site's own vocabulary (categories,
+         not user text), so they translate along with the interface. */
+      function typeLabel(type) {
+        const key = 'upload.type.' + type;
+        return I18N.uz[key] !== undefined ? t(key) : t('lightbox.workTagFallback');
+      }
+
+      function workImages(w) {
+        if (Array.isArray(w.images) && w.images.length) return w.images;
+        return w.image ? [w.image] : [];
+      }
+
+      function collageHTML(images, alt) {
+        const imgs = images && images.length ? images.slice(0, 3) : [];
+        return `<div class="collage n-${imgs.length}">${imgs.map(src =>
+          `<img src="${src}" alt="${escapeHtml(alt)}" loading="lazy">`).join('')}</div>`;
+      }
+
+      function workCardHTML(w) {
+        return `
+      <div class="work-card" data-id="${w.id}">
+        <div class="work-thumb">
+          ${collageHTML(workImages(w), w.title)}
+          <div class="work-tag">${typeLabel(w.type)}</div>
+          <div class="work-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
+        </div>
+        <div class="work-body">
+          <div class="work-title">${escapeHtml(w.title)}</div>
+          <div class="work-meta">
+            <span>${fmtDate(w.createdAt)}</span>
+            ${w.status === 'sale' && w.price ? `<span class="work-price">${fmtPrice(w.price, w.currency)}</span>` : ''}
+          </div>
+        </div>
+      </div>`;
+      }
+      function escapeHtml(s) {
+        const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML;
+      }
+
+      function renderGrids() {
+        renderGridInto('#profileGrid', WORKS);
+      }
+
+      function renderGridInto(sel, works) {
+        const el = $(sel);
+        if (!el) return;
+        if (!works.length) {
+          el.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-stamp">🖌️</div>
+          <h3>${t('feed.empty.title')}</h3>
+          <p>${t('profile.empty.desc')}</p>
+        </div>`;
+          return;
+        }
+        const sorted = [...works].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        el.innerHTML = sorted.map(w => workCardHTML(w)).join('');
+        el.querySelectorAll('.work-card').forEach(card => {
+          card.addEventListener('click', () => openLightbox(card.dataset.id, works));
+        });
+        /* staggered reveal */
+        const cards = el.querySelectorAll('.work-card');
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+              setTimeout(() => entry.target.classList.add('reveal'), i * 40);
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        cards.forEach(c => io.observe(c));
+      }
+
+      /* ===================== PUBLIC FEED (barcha foydalanuvchilar) ===================== */
+      function likeIconSVG() {
+        return `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.4 2 4.5 5.8 4c2-.3 3.9.7 5 2.3l1.2 1.6 1.2-1.6c1.1-1.6 3-2.6 5-2.3 3.8.5 5.4 4.4 3.8 7.8-2.5 4.6-10 9.2-10 9.2z"/></svg>`;
+      }
+
+      function commentIconSVG() {
+        return `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`;
+      }
+
+      function messageIconSVG() {
+        return `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3V4z"/></svg>`;
+      }
+
+      function feedCardHTML(w) {
+        return `
+      <article class="feed-card" data-id="${w.id}">
+        <div class="feed-head" data-username="${escapeHtml(w.username)}" role="button" tabindex="0">
+          <div class="feed-avatar">${avatarInner(w.avatar, w.fullname || w.username)}</div>
+          <div class="feed-head-text">
+            <div class="feed-fullname">${escapeHtml(w.fullname || w.username)}</div>
+            <div class="feed-username">@${escapeHtml(w.username)}</div>
+          </div>
+        </div>
+        <div class="feed-thumb">
+          ${collageHTML(workImages(w), w.title)}
+          <div class="feed-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
+        </div>
+        <div class="feed-actions">
+          <button class="like-btn ${w.likedByMe ? 'liked' : ''}" data-id="${w.id}" aria-label="${t('feed.likeAria')}">
+            ${likeIconSVG()}
+            <span class="like-count">${w.likesCount}</span>
+          </button>
+          <button class="comment-btn" data-id="${w.id}" aria-label="${t('feed.commentAria')}">
+            ${commentIconSVG()}
+            <span class="comment-count">${w.commentsCount || 0}</span>
+          </button>
+          ${w.status === 'sale' && (!CURRENT_USER || w.username !== CURRENT_USER.username) ? `
+          <button class="contact-seller-btn" data-username="${escapeHtml(w.username)}" data-workid="${w.id}" data-worktitle="${escapeHtml(w.title)}" aria-label="${t('feed.contactAria')}">
+            ${messageIconSVG()}
+            <span>${t('feed.contactLabel')}</span>
+          </button>` : ''}
+        </div>
+        <div class="feed-body">
+          <div class="feed-title">${escapeHtml(w.title)}</div>
+          <div class="feed-meta">
+            <span>${fmtDate(w.createdAt)}</span>
+            ${w.status === 'sale' && w.price ? `<span class="feed-price">${fmtPrice(w.price, w.currency)}</span>` : ''}
+          </div>
+        </div>
+      </article>`;
+      }
+
+      const feedRevealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('reveal');
+            feedRevealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08 });
+
+      function appendFeedItems(items) {
+        const list = $('#feedList');
+        const frag = document.createElement('div');
+        frag.innerHTML = items.map(w => feedCardHTML(w)).join('');
+        Array.from(frag.children).forEach(card => {
+          list.appendChild(card);
+          card.querySelector('.like-btn').addEventListener('click', () => toggleLike(card.dataset.id));
+          card.querySelector('.comment-btn').addEventListener('click', () => openCommentsModal(card.dataset.id));
+          const headEl = card.querySelector('.feed-head');
+          if (headEl) headEl.addEventListener('click', () => openUserProfile(headEl.dataset.username));
+          const contactBtn = card.querySelector('.contact-seller-btn');
+          if (contactBtn) {
+            contactBtn.addEventListener('click', guarded(() => openChat(contactBtn.dataset.username, {
+              id: contactBtn.dataset.workid,
+              title: contactBtn.dataset.worktitle
+            })));
+          }
+          feedRevealObserver.observe(card);
+        });
+        if (!list.children.length) {
+          list.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-stamp">🖼️</div>
+          <h3>${t('feed.empty.title')}</h3>
+          <p>${t('feed.empty.desc')}</p>
+        </div>`;
+        }
+      }
+
+      async function loadFeedPage() {
+        if (feedLoading || !feedHasMore) return;
+        feedLoading = true;
+        $('#feedSentinel').classList.remove('hidden');
+        try {
+          const data = await api('/api/feed?offset=' + feedOffset + '&limit=8');
+          const items = data.items || [];
+          FEED = FEED.concat(items);
+          feedOffset += items.length;
+          feedHasMore = !!data.hasMore;
+          appendFeedItems(items);
+        } catch (e) { /* keep hasMore as-is, allow retry on next scroll */ }
+        feedLoading = false;
+        $('#feedSentinel').classList.toggle('hidden', !feedHasMore);
+        $('#feedEnd').classList.toggle('hidden', feedHasMore || !FEED.length);
+      }
+
+      let feedScrollObserver = null;
+      function setupFeedObserver() {
+        if (feedScrollObserver) feedScrollObserver.disconnect();
+        feedScrollObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) loadFeedPage();
+          });
+        }, { rootMargin: '400px' });
+        feedScrollObserver.observe($('#feedSentinel'));
+      }
+
+      async function toggleLike(id) {
+        if (IS_GUEST) { openGateModal(); return; }
+        const item = FEED.find(w => w.id === id);
+        if (!item) return;
+        const btn = document.querySelector(`.like-btn[data-id="${id}"]`);
+
+        /* optimistik yangilash — bosilgan zahoti javob beradi */
+        const wasLiked = item.likedByMe;
+        item.likedByMe = !wasLiked;
+        item.likesCount += wasLiked ? -1 : 1;
+        updateLikeBtn(btn, item);
+
+        try {
+          const res = await apiJSON('/api/works/' + id + '/like', 'POST');
+          item.likedByMe = res.liked;
+          item.likesCount = res.likesCount;
+          updateLikeBtn(btn, item);
+        } catch (e) {
+          /* xatolik bo'lsa, orqaga qaytaramiz */
+          item.likedByMe = wasLiked;
+          item.likesCount += wasLiked ? 1 : -1;
+          updateLikeBtn(btn, item);
+        }
+      }
+
+      function updateLikeBtn(btn, item) {
+        if (!btn) return;
+        btn.classList.toggle('liked', item.likedByMe);
+        btn.querySelector('.like-count').textContent = item.likesCount;
+        btn.classList.remove('pop');
+        void btn.offsetWidth;
+        btn.classList.add('pop');
+      }
+
+      /* ===================== KOMENTLAR ===================== */
+      let activeCommentsWorkId = null;
+
+      function commentCountEls(id) {
+        return $$(`.comment-btn[data-id="${id}"] .comment-count`);
+      }
+      function setCommentCount(id, n) {
+        commentCountEls(id).forEach(el => el.textContent = n);
+        const item = FEED.find(w => w.id === id);
+        if (item) item.commentsCount = n;
+      }
+
+      function commentItemHTML(c) {
+        const canDelete = CURRENT_USER && (c.username === CURRENT_USER.username);
+        return `
+      <div class="comment-item" data-id="${c.id}">
+        <div class="comment-avatar">${initials(c.fullname || c.username)}</div>
+        <div class="comment-body">
+          <div class="comment-line"><b>${escapeHtml(c.fullname || c.username)}</b>${escapeHtml(c.text)}</div>
+          <div class="comment-foot">
+            <span class="comment-time">${fmtDate(c.createdAt)}</span>
+            ${canDelete ? `<button class="comment-delete" data-id="${c.id}">${t('comments.delete')}</button>` : ''}
+          </div>
+        </div>
+      </div>`;
+      }
+
+      function renderComments(items) {
+        const list = $('#commentsList');
+        if (!items.length) {
+          list.innerHTML = `<div class="comments-empty">${t('comments.empty')}</div>`;
+          return;
+        }
+        list.innerHTML = items.map(c => commentItemHTML(c)).join('');
+        list.querySelectorAll('.comment-delete').forEach(btn => {
+          btn.addEventListener('click', () => deleteComment(btn.dataset.id));
+        });
+      }
+
+      async function openCommentsModal(workId) {
+        activeCommentsWorkId = workId;
+        $('#commentInput').value = '';
+        $('#commentSubmitBtn').classList.remove('active');
+        $('#commentsList').innerHTML = `<div class="comments-empty">${t('comments.loading')}</div>`;
+        $('#commentsModal').classList.add('open');
+        try {
+          const data = await api('/api/works/' + workId + '/comments');
+          renderComments(data.items || []);
+        } catch (e) {
+          $('#commentsList').innerHTML = `<div class="comments-empty">${t('comments.loadFail')}</div>`;
+        }
+      }
+
+      function closeCommentsModal() {
+        $('#commentsModal').classList.remove('open');
+        activeCommentsWorkId = null;
+      }
+
+      async function submitComment(e) {
+        e.preventDefault();
+        const input = $('#commentInput');
+        const text = input.value.trim();
+        if (!text || !activeCommentsWorkId) return;
+        const workId = activeCommentsWorkId;
+        $('#commentSubmitBtn').disabled = true;
+        try {
+          const data = await apiJSON('/api/works/' + workId + '/comments', 'POST', { text });
+          const list = $('#commentsList');
+          const emptyEl = list.querySelector('.comments-empty');
+          if (emptyEl) list.innerHTML = '';
+          list.insertAdjacentHTML('beforeend', commentItemHTML(data.comment));
+          const newBtn = list.lastElementChild.querySelector('.comment-delete');
+          if (newBtn) newBtn.addEventListener('click', () => deleteComment(newBtn.dataset.id));
+          list.scrollTop = list.scrollHeight;
+          setCommentCount(workId, data.commentsCount);
+          input.value = '';
+          $('#commentSubmitBtn').classList.remove('active');
+        } catch (e) { /* jim, foydalanuvchi qayta urinishi mumkin */ }
+        $('#commentSubmitBtn').disabled = false;
+      }
+
+      async function deleteComment(commentId) {
+        if (!activeCommentsWorkId) return;
+        const workId = activeCommentsWorkId;
+        try {
+          const data = await api('/api/works/' + workId + '/comments/' + commentId, { method: 'DELETE' });
+          const el = $('#commentsList').querySelector(`.comment-item[data-id="${commentId}"]`);
+          if (el) el.remove();
+          if (!$('#commentsList').children.length) {
+            $('#commentsList').innerHTML = `<div class="comments-empty">${t('comments.empty')}</div>`;
+          }
+          setCommentCount(workId, data.commentsCount);
+        } catch (e) { /* jim */ }
+      }
+
+      /* ===================== XABARLAR (sotuvchi bilan aloqa) ===================== */
+      let CHAT_WITH = null; // username of the person we're currently chatting with
+      let unreadPollTimer = null;
+
+      function startUnreadPolling() {
+        stopUnreadPolling();
+        unreadPollTimer = setInterval(refreshUnreadBadge, 20000);
+      }
+      function stopUnreadPolling() {
+        if (unreadPollTimer) { clearInterval(unreadPollTimer); unreadPollTimer = null; }
+      }
+
+      async function refreshUnreadBadge() {
+        if (IS_GUEST || !CURRENT_USER) return;
+        try {
+          const data = await api('/api/conversations/unread-count');
+          const n = (data && data.count) || 0;
+          $$('.msg-badge').forEach(badge => {
+            badge.textContent = n > 99 ? '99+' : String(n);
+            badge.classList.toggle('hidden', n === 0);
+          });
+        } catch (e) { /* non-critical */ }
+      }
+
+      function fmtChatTime(iso) {
+        const d = new Date(iso);
+        return d.toLocaleString('uz-UZ', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      }
+
+      function conversationItemHTML(c) {
+        return `
+      <div class="conversation-item ${c.unread ? 'unread' : ''}" data-username="${escapeHtml(c.username)}">
+        <div class="conversation-avatar">${avatarInner(c.avatar, c.fullname || c.username)}</div>
+        <div class="conversation-body">
+          <div class="conversation-name">${escapeHtml(c.fullname || c.username)}</div>
+          <div class="conversation-preview">${escapeHtml(c.lastFrom === (CURRENT_USER && CURRENT_USER.username) ? t('messages.you') + ': ' + (c.lastMessage || '') : (c.lastMessage || ''))}</div>
+        </div>
+        <div class="conversation-meta">
+          <div class="conversation-time">${c.updatedAt ? fmtChatTime(c.updatedAt) : ''}</div>
+          ${c.unread ? '<div class="conversation-dot"></div>' : ''}
+        </div>
+      </div>`;
+      }
+
+      async function loadConversations() {
+        const list = $('#conversationsList');
+        try {
+          const data = await api('/api/conversations');
+          const items = data.items || [];
+          if (!items.length) {
+            list.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-stamp">💬</div>
+            <h3>${t('messages.empty.title')}</h3>
+            <p>${t('messages.empty.desc')}</p>
+          </div>`;
+            return;
+          }
+          list.innerHTML = items.map(c => conversationItemHTML(c)).join('');
+          list.querySelectorAll('.conversation-item').forEach(el => {
+            el.addEventListener('click', () => openChat(el.dataset.username));
+          });
+        } catch (e) {
+          list.innerHTML = `<div class="empty-state"><h3>${t('messages.loadFail.title')}</h3><p>${t('messages.loadFail.desc')}</p></div>`;
+        }
+      }
+
+      function chatBubbleHTML(m) {
+        const mine = m.from === (CURRENT_USER && CURRENT_USER.username);
+        return `
+      <div class="chat-bubble-row ${mine ? 'me' : ''}">
+        <div class="chat-bubble">
+          ${m.workTitle ? `<div style="font-size:11.5px;opacity:.8;margin-bottom:3px;">🖼️ ${escapeHtml(m.workTitle)}</div>` : ''}
+          ${escapeHtml(m.text)}
+          <span class="chat-bubble-time">${fmtChatTime(m.createdAt)}</span>
+        </div>
+      </div>`;
+      }
+
+      async function openChat(username, workRef) {
+        CHAT_WITH = username;
+        $('#chatWithName').textContent = username;
+        $('#chatMessagesList').innerHTML = '<div class="feed-spinner" style="margin:20px auto;"></div>';
+        const workRefEl = $('#chatWorkRef');
+        if (workRef && workRef.title) {
+          workRefEl.textContent = t('chat.workRefPrefix') + ": " + workRef.title;
+          workRefEl.classList.remove('hidden');
+          workRefEl.dataset.workid = workRef.id || '';
+          workRefEl.dataset.worktitle = workRef.title || '';
+        } else {
+          workRefEl.classList.add('hidden');
+          workRefEl.dataset.workid = '';
+          workRefEl.dataset.worktitle = '';
+        }
+        $('#chatModal').classList.add('open');
+        $('#chatInput').value = '';
+
+        try {
+          const data = await api('/api/conversations/' + encodeURIComponent(username) + '/messages');
+          $('#chatWithName').textContent = (data.otherUser && data.otherUser.fullname) || username;
+          renderChatMessages(data.items || []);
+          refreshUnreadBadge();
+        } catch (e) {
+          $('#chatMessagesList').innerHTML = `<div class="comments-empty">${t('chat.loadFail')}</div>`;
+        }
+      }
+
+      function renderChatMessages(items) {
+        const list = $('#chatMessagesList');
+        if (!items.length) {
+          list.innerHTML = `<div class="comments-empty">${t('chat.empty')}</div>`;
+        } else {
+          list.innerHTML = items.map(m => chatBubbleHTML(m)).join('');
+        }
+        list.scrollTop = list.scrollHeight;
+      }
+
+      function closeChatModal() {
+        $('#chatModal').classList.remove('open');
+        CHAT_WITH = null;
+      }
+
+      async function submitChatMessage(e) {
+        e.preventDefault();
+        if (IS_GUEST) { openGateModal(); return; }
+        if (!CHAT_WITH) return;
+        const input = $('#chatInput');
+        const text = input.value.trim();
+        if (!text) return;
+        const workRefEl = $('#chatWorkRef');
+        const payload = { text };
+        if (workRefEl && !workRefEl.classList.contains('hidden')) {
+          payload.workId = workRefEl.dataset.workid || undefined;
+          payload.workTitle = workRefEl.dataset.worktitle || undefined;
+        }
+        input.value = '';
+        try {
+          const data = await apiJSON('/api/conversations/' + encodeURIComponent(CHAT_WITH) + '/messages', 'POST', payload);
+          const list = $('#chatMessagesList');
+          const empty = list.querySelector('.comments-empty');
+          if (empty) list.innerHTML = '';
+          list.insertAdjacentHTML('beforeend', chatBubbleHTML(data.message));
+          list.scrollTop = list.scrollHeight;
+        } catch (err) {
+          input.value = text;
+          alert(err.message || t('chat.sendFail'));
+        }
+      }
+
+      function prependToFeed(work) {
+        const item = {
+          id: work.id,
+          title: work.title,
+          type: work.type,
+          status: work.status,
+          price: work.price,
+          currency: work.currency,
+          desc: work.desc,
+          image: work.image,
+          images: workImages(work),
+          createdAt: work.createdAt,
+          username: CURRENT_USER.username,
+          fullname: CURRENT_USER.fullname || CURRENT_USER.username,
+          avatar: CURRENT_USER.avatar || null,
+          likesCount: 0,
+          likedByMe: false,
+          commentsCount: 0
+        };
+        FEED.unshift(item);
+        feedOffset += 1;
+        const list = $('#feedList');
+        const emptyState = list.querySelector('.empty-state');
+        if (emptyState) list.innerHTML = '';
+        const frag = document.createElement('div');
+        frag.innerHTML = feedCardHTML(item);
+        const card = frag.firstElementChild;
+        list.insertBefore(card, list.firstChild);
+        card.querySelector('.like-btn').addEventListener('click', () => toggleLike(card.dataset.id));
+        card.querySelector('.comment-btn').addEventListener('click', () => openCommentsModal(card.dataset.id));
+        const headEl = card.querySelector('.feed-head');
+        if (headEl) headEl.addEventListener('click', () => openUserProfile(headEl.dataset.username));
+        card.classList.add('reveal');
+      }
+
+      /* ===================== UPLOAD ===================== */
+      function openUploadModal() {
+        $('#uploadForm').reset();
+        uploadImageBlobs = [];
+        renderUploadPreview();
+        $('#priceField').classList.add('hidden');
+        $('#uploadError').classList.remove('show');
+        $('#uploadModal').classList.add('open');
+      }
+      function closeUploadModal() { $('#uploadModal').classList.remove('open'); }
+
+      function renderUploadPreview() {
+        const wrap = $('#uploadMultiPreview');
+        const dropText = $('#uploadDropText');
+        const fileInput = $('#uploadFile');
+
+        if (!uploadImageBlobs.length) {
+          wrap.classList.add('hidden');
+          wrap.innerHTML = '';
+          dropText.textContent = t('upload.dropDefault');
+          fileInput.disabled = false;
+          return;
+        }
+
+        wrap.classList.remove('hidden');
+        wrap.innerHTML = uploadImageBlobs.map((blob, i) => `
+          <div class="thumb">
+            <img src="${URL.createObjectURL(blob)}" alt="">
+            <button type="button" class="remove-thumb" data-idx="${i}" aria-label="${t('upload.removeAria')}">✕</button>
+          </div>`).join('') +
+          (uploadImageBlobs.length < MAX_UPLOAD_IMAGES
+            ? `<div class="thumb empty">+</div>`.repeat(MAX_UPLOAD_IMAGES - uploadImageBlobs.length)
+            : '');
+
+        wrap.querySelectorAll('.remove-thumb').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const idx = Number(btn.dataset.idx);
+            uploadImageBlobs.splice(idx, 1);
+            renderUploadPreview();
+          });
+        });
+
+        dropText.textContent = uploadImageBlobs.length < MAX_UPLOAD_IMAGES
+          ? t('upload.dropChosen', { n: uploadImageBlobs.length, max: MAX_UPLOAD_IMAGES })
+          : t('upload.dropFull');
+        // to'liq bo'lganda inputni bosish orqali qayta ochilmasin (foydalanuvchi avval o'chirsin)
+        fileInput.disabled = uploadImageBlobs.length >= MAX_UPLOAD_IMAGES;
+      }
+
+      function resizeToBlob(file) {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            const img = new Image();
+            img.onload = () => {
+              const maxDim = 1600; // backend stores real files, so we can keep more detail than the old base64 approach
+              let { width, height } = img;
+              if (width > maxDim || height > maxDim) {
+                if (width > height) { height = Math.round(height * maxDim / width); width = maxDim; }
+                else { width = Math.round(width * maxDim / height); height = maxDim; }
+              }
+              const canvas = document.createElement('canvas');
+              canvas.width = width; canvas.height = height;
+              canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+              canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.85);
+            };
+            img.src = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function handleFileSelect(e) {
+        const files = Array.from(e.target.files || []);
+        if (!files.length) return;
+        const room = MAX_UPLOAD_IMAGES - uploadImageBlobs.length;
+        const chosen = files.slice(0, room);
+        const blobs = await Promise.all(chosen.map(resizeToBlob));
+        uploadImageBlobs.push(...blobs);
+        renderUploadPreview();
+        e.target.value = ''; // xuddi shu fayllarni qayta tanlash imkonini saqlab qolish
+      }
+
+      async function handleUploadSubmit(e) {
+        e.preventDefault();
+        const errEl = $('#uploadError');
+        errEl.classList.remove('show');
+        if (!uploadImageBlobs.length) {
+          errEl.textContent = t('upload.errNoImage');
+          errEl.classList.add('show');
+          return;
+        }
+        const fd = new FormData();
+        uploadImageBlobs.forEach((blob, i) => fd.append('images', blob, `asar-${i + 1}.jpg`));
+        fd.append('title', $('#workTitle').value.trim());
+        fd.append('type', $('#workType').value);
+        fd.append('status', $('#workStatus').value);
+        fd.append('price', $('#workStatus').value === 'sale' ? (Number($('#workPrice').value) || 0) : 0);
+        fd.append('currency', $('#workCurrency').value);
+        fd.append('desc', $('#workDesc').value.trim());
+        try {
+          const data = await api('/api/works', { method: 'POST', body: fd });
+          WORKS.push(data.work);
+          closeUploadModal();
+          renderGrids();
+          renderProfileHeader();
+          prependToFeed(data.work);
+        } catch (err) {
+          errEl.textContent = err.message || t('upload.errGeneric');
+          errEl.classList.add('show');
+        }
+      }
+
+      /* ===================== LIGHTBOX ===================== */
+      function openLightbox(id, sourceWorks) {
+        const list = sourceWorks || WORKS;
+        const w = list.find(x => x.id === id);
+        if (!w) return;
+        const isMine = list === WORKS;
+        pendingDeleteId = isMine ? id : null;
+        $('#deleteWorkBtn').classList.toggle('hidden', !isMine);
+        $('#lightboxImg').innerHTML = collageHTML(workImages(w), w.title);
+        $('#lightboxImg').className = 'lightbox-collage';
+        $('#lightboxTitle').textContent = w.title;
+        $('#lightboxDesc').textContent = w.desc || t('lightbox.noDesc');
+        $('#lightboxType').textContent = typeLabel(w.type);
+        $('#lightboxStatus').textContent = w.status === 'sale' ? (w.price ? fmtPrice(w.price, w.currency) : t('feed.sale')) : t('upload.status.expo');
+        $('#lightboxDate').textContent = fmtDate(w.createdAt);
+        $('#lightbox').classList.add('open');
+      }
+      function closeLightbox() { $('#lightbox').classList.remove('open'); pendingDeleteId = null; $('#deleteWorkBtn').classList.remove('hidden'); }
+
+      async function handleDeleteWork() {
+        if (!pendingDeleteId) return;
+        try {
+          await api('/api/works/' + pendingDeleteId, { method: 'DELETE' });
+          WORKS = WORKS.filter(w => w.id !== pendingDeleteId);
+          FEED = FEED.filter(w => w.id !== pendingDeleteId);
+          const feedCard = document.querySelector(`.feed-card[data-id="${pendingDeleteId}"]`);
+          if (feedCard) feedCard.remove();
+          closeLightbox();
+          renderGrids();
+          renderProfileHeader();
+        } catch (e) {
+          closeLightbox();
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+
+</html>
