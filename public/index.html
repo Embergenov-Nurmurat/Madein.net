@@ -626,6 +626,120 @@
       display: none;
     }
 
+    /* ---- mute banner shown to a currently muted user ---- */
+    .mute-banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--accent-2) 20%, var(--bg-alt)), color-mix(in srgb, var(--accent) 12%, var(--bg-alt)));
+      border-bottom: 1px solid var(--border);
+      padding: 9px 16px;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .mute-banner.hidden {
+      display: none;
+    }
+
+    /* ---- admin corner: user list ---- */
+    .admin-user-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 8px;
+      background: var(--surface);
+      flex-wrap: wrap;
+    }
+
+    .admin-user-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: var(--accent);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .admin-user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .admin-user-info {
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .admin-user-name {
+      font-weight: 700;
+    }
+
+    .admin-user-uname {
+      color: var(--text-dim);
+      font-size: 12.5px;
+    }
+
+    .admin-status-line {
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .admin-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    .admin-badge.ok {
+      background: color-mix(in srgb, #4caf6f 20%, transparent);
+      color: #4caf6f;
+    }
+
+    .admin-badge.banned {
+      background: color-mix(in srgb, var(--accent) 20%, transparent);
+      color: var(--accent);
+    }
+
+    .admin-badge.muted {
+      background: color-mix(in srgb, var(--accent-2) 25%, transparent);
+      color: var(--accent-2);
+    }
+
+    .admin-badge.admin {
+      background: color-mix(in srgb, gold 25%, transparent);
+      color: #b8860b;
+    }
+
+    .admin-user-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .admin-user-actions .btn {
+      padding: 6px 12px;
+      font-size: 12.5px;
+    }
+
+    .admin-mod-form .field {
+      margin-bottom: 14px;
+    }
+
     /* ---- lightweight gate modal for guests trying protected actions ---- */
     .gate-modal-overlay {
       position: fixed;
@@ -2468,6 +2582,17 @@
     </div>
   </section>
 
+  <!-- ============ BANNED SCREEN ============ -->
+  <section id="bannedScreen" class="auth-screen hidden">
+    <div class="auth-bg-decor"></div>
+    <div class="auth-card">
+      <h2 data-i18n="ban.title">Hisobingiz bloklangan</h2>
+      <p id="bannedUntilText" class="view-sub"></p>
+      <p id="bannedReasonText" class="view-sub"></p>
+      <button type="button" class="btn btn-primary btn-block" id="bannedLogoutBtn" data-i18n="nav.logout">Chiqish</button>
+    </div>
+  </section>
+
   <!-- ============ MAIN APP ============ -->
   <div id="mainApp" class="main-app hidden">
     <nav class="navbar">
@@ -2480,6 +2605,7 @@
           <button data-view="home" class="active" data-i18n="nav.home">Bosh sahifa</button>
           <button data-view="profile" data-i18n="nav.profile">Profil</button>
           <button data-view="messages"><span data-i18n="nav.messages">Xabarlar</span><span class="msg-badge hidden" id="navMsgBadge">0</span></button>
+          <button data-view="admin" id="navAdminBtn" class="hidden" data-i18n="admin.nav">Administrator burchagi</button>
         </div>
       </div>
       <div class="nav-right">
@@ -2516,11 +2642,19 @@
         <span class="tab-icon">➕</span>
         <span data-i18n="nav.newWork">Yangi asar</span>
       </button>
+      <button data-view="admin" id="navAdminBtnMobile" class="hidden">
+        <span class="tab-icon">🛡️</span>
+        <span data-i18n="admin.nav">Administrator burchagi</span>
+      </button>
     </nav>
 
     <div class="guest-banner hidden" id="guestBanner">
       <span data-i18n-html="guest.banner">Siz saytni <b>mehmon</b> sifatida ko'ryapsiz — asar yuklash, layk va komentariya qoldirish uchun ro'yxatdan o'ting.</span>
       <button id="guestBannerBtn" data-i18n="guest.registerBtn">Ro'yxatdan o'tish</button>
+    </div>
+
+    <div class="mute-banner hidden" id="muteBanner">
+      <span id="muteBannerText" data-i18n="mute.banner">Siz vaqtincha jimlik jazosidasiz — komment, xabar yozish va yangi asar yuklash mumkin emas.</span>
     </div>
 
     <main>
@@ -2610,6 +2744,7 @@
             <label for="langSelect" data-i18n="profile.language">Sayt tili</label>
             <select id="langSelect">
               <option value="uz">O'zbekcha</option>
+              <option value="ru">Русский</option>
               <option value="en">English</option>
               <option value="zh">中文</option>
               <option value="hi">हिन्दी</option>
@@ -2617,6 +2752,15 @@
               <option value="ar">العربية</option>
             </select>
           </div>
+          <div class="field lang-field" id="adminActivateBlock">
+            <label for="adminPasswordInput" data-i18n="admin.activate.label">Administrator rejimi</label>
+            <div class="field-row" style="align-items:flex-start;">
+              <input type="password" id="adminPasswordInput" style="flex:1;" data-i18n-ph="admin.activate.ph" placeholder="Maxfiy parolni kiriting">
+              <button type="button" class="btn btn-ghost btn-sm" id="adminActivateBtn" style="white-space:nowrap;" data-i18n="admin.activate.btn">Ishga tushirish</button>
+            </div>
+            <div class="field-hint" id="adminActivateMsg"></div>
+          </div>
+          <div class="field-hint" id="adminAlreadyOn" style="margin-bottom:14px;" data-i18n="admin.activate.already">Administrator rejimi ushbu hisobda faol.</div>
           <div class="privacy-block">
             <div class="field-hint" style="margin-bottom:6px;" data-i18n="profile.edit.privacyTitle">Boshqalar profilingizda nimani ko'ra olishini tanlang:</div>
             <label class="privacy-toggle"><input type="checkbox" id="privacyPhone"> <span data-i18n="profile.edit.privacyPhone">Telefon raqamimni ko'rsatish</span></label>
@@ -2664,7 +2808,39 @@
         <div class="section-label" data-i18n="userProfile.works">Asarlari</div>
         <div id="upGrid" class="gallery-grid"></div>
       </section>
+
+      <!-- ADMIN CORNER VIEW -->
+      <section id="adminView" class="view">
+        <div class="view-hero">
+          <div class="eyebrow" data-i18n="admin.eyebrow">Boshqaruv</div>
+          <h1 class="view-title" data-i18n-html="admin.title">Administrator <span>burchagi</span></h1>
+          <p class="view-sub" data-i18n="admin.sub">Barcha foydalanuvchilar — ban yoki mut bering, muddatidan avval olib tashlang.</p>
+        </div>
+        <div id="adminUsersList"></div>
+      </section>
     </main>
+  </div>
+
+  <!-- ============ ADMIN MODERATION MODAL (ban / mute) ============ -->
+  <div class="modal-backdrop" id="adminModModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="adminModModalTitle" data-i18n="admin.mod.title">Foydalanuvchiga cheklov qo'yish</h3>
+        <button class="modal-close" id="closeAdminModModal">✕</button>
+      </div>
+      <form id="adminModForm" class="admin-mod-form">
+        <div class="field">
+          <label data-i18n="admin.mod.minutes">Muddat (daqiqada)</label>
+          <input type="number" id="adminModMinutes" min="1" value="60" required>
+        </div>
+        <div class="field">
+          <label data-i18n="admin.mod.reason">Sabab (ixtiyoriy)</label>
+          <textarea id="adminModReason" rows="2" data-i18n-ph="admin.mod.reasonPh" placeholder="Qoidabuzarlik sababi..."></textarea>
+        </div>
+        <div class="form-error" id="adminModError"></div>
+        <button type="submit" class="btn btn-primary btn-block" id="adminModSubmit" data-i18n="admin.mod.confirm">Tasdiqlash</button>
+      </form>
+    </div>
   </div>
 
   <!-- ============ UPLOAD MODAL ============ -->
@@ -2894,7 +3070,42 @@
           "gate.later": "Keyinroq", "gate.register": "Ro'yxatdan o'tish",
           "theme.fabTitle": "Stilni o'zgartirish", "theme.title": "Sayt stili",
           "theme.tungi": "Tungi", "theme.yorug": "Yorug'", "theme.cyberpunk": "Cyberpunk", "theme.custom": "Maxsus",
-          "theme.customPick": "O'zingiz rang tanlang"
+          "theme.customPick": "O'zingiz rang tanlang",
+          "admin.nav": "Administrator burchagi",
+          "admin.activate.label": "Administrator rejimi",
+          "admin.activate.ph": "Maxfiy parolni kiriting",
+          "admin.activate.btn": "Ishga tushirish",
+          "admin.activate.already": "Administrator rejimi ushbu hisobda faol.",
+          "admin.activate.fail": "Parol noto'g'ri yoki xatolik yuz berdi.",
+          "admin.eyebrow": "Boshqaruv",
+          "admin.title": "Administrator <span>burchagi</span>",
+          "admin.sub": "Barcha foydalanuvchilar — ban yoki mut bering, muddatidan avval olib tashlang.",
+          "admin.loading": "Yuklanmoqda...",
+          "admin.loadFail": "Foydalanuvchilarni yuklab bo'lmadi.",
+          "admin.empty": "Hozircha foydalanuvchilar yo'q.",
+          "admin.badge.admin": "Administrator", "admin.badge.banned": "Ban", "admin.badge.muted": "Mut",
+          "admin.badge.ok": "Faol",
+          "admin.status.bannedUntil": "Ban muddati: {date} gacha",
+          "admin.status.mutedUntil": "Mut muddati: {date} gacha",
+          "admin.action.ban": "Ban berish", "admin.action.unban": "Bandan chiqarish",
+          "admin.action.mute": "Mut berish", "admin.action.unmute": "Mutdan chiqarish",
+          "admin.actionFail": "Amalni bajarib bo'lmadi.",
+          "admin.confirm.unban": "Ushbu foydalanuvchining ban muddatini muddatidan avval bekor qilmoqchimisiz?",
+          "admin.confirm.unmute": "Ushbu foydalanuvchining mut muddatini muddatidan avval bekor qilmoqchimisiz?",
+          "admin.mod.title": "Foydalanuvchiga cheklov qo'yish",
+          "admin.mod.titleBan": "@{username} ni ban qilish",
+          "admin.mod.titleMute": "@{username} ni mut qilish",
+          "admin.mod.minutes": "Muddat (daqiqada)",
+          "admin.mod.reason": "Sabab (ixtiyoriy)",
+          "admin.mod.reasonPh": "Qoidabuzarlik sababi...",
+          "admin.mod.confirm": "Tasdiqlash",
+          "admin.mod.errMinutes": "Muddatni to'g'ri kiriting (kamida 1 daqiqa).",
+          "ban.title": "Hisobingiz bloklangan",
+          "ban.until": "Ban muddati: {date} gacha.",
+          "ban.reason": "Sabab: {reason}",
+          "mute.banner": "Siz vaqtincha jimlik jazosidasiz — komment, xabar yozish va yangi asar yuklash mumkin emas.",
+          "mute.bannerReason": "Siz {date} gacha jimlik jazosidasiz. Sabab: {reason}",
+          "mute.bannerNoReason": "Siz {date} gacha jimlik jazosidasiz — komment, xabar yozish va yangi asar yuklash mumkin emas."
         },
         en: {
           _locale: 'en-US', _dir: 'ltr', _name: "English",
@@ -2981,7 +3192,42 @@
           "gate.later": "Later", "gate.register": "Sign up",
           "theme.fabTitle": "Change style", "theme.title": "Site style",
           "theme.tungi": "Night", "theme.yorug": "Light", "theme.cyberpunk": "Cyberpunk", "theme.custom": "Custom",
-          "theme.customPick": "Pick your own color"
+          "theme.customPick": "Pick your own color",
+          "admin.nav": "Admin corner",
+          "admin.activate.label": "Administrator mode",
+          "admin.activate.ph": "Enter the secret password",
+          "admin.activate.btn": "Activate",
+          "admin.activate.already": "Administrator mode is active on this account.",
+          "admin.activate.fail": "Wrong password or something went wrong.",
+          "admin.eyebrow": "Moderation",
+          "admin.title": "Admin <span>corner</span>",
+          "admin.sub": "All users — ban or mute them, or lift a restriction early.",
+          "admin.loading": "Loading...",
+          "admin.loadFail": "Couldn't load users.",
+          "admin.empty": "No users yet.",
+          "admin.badge.admin": "Admin", "admin.badge.banned": "Banned", "admin.badge.muted": "Muted",
+          "admin.badge.ok": "Active",
+          "admin.status.bannedUntil": "Banned until {date}",
+          "admin.status.mutedUntil": "Muted until {date}",
+          "admin.action.ban": "Ban", "admin.action.unban": "Unban",
+          "admin.action.mute": "Mute", "admin.action.unmute": "Unmute",
+          "admin.actionFail": "Couldn't complete the action.",
+          "admin.confirm.unban": "Lift this user's ban early?",
+          "admin.confirm.unmute": "Lift this user's mute early?",
+          "admin.mod.title": "Restrict a user",
+          "admin.mod.titleBan": "Ban @{username}",
+          "admin.mod.titleMute": "Mute @{username}",
+          "admin.mod.minutes": "Duration (minutes)",
+          "admin.mod.reason": "Reason (optional)",
+          "admin.mod.reasonPh": "Reason for the violation...",
+          "admin.mod.confirm": "Confirm",
+          "admin.mod.errMinutes": "Enter a valid duration (at least 1 minute).",
+          "ban.title": "Your account is blocked",
+          "ban.until": "Ban expires: {date}.",
+          "ban.reason": "Reason: {reason}",
+          "mute.banner": "You're temporarily muted — you can't comment, message, or upload new work.",
+          "mute.bannerReason": "You're muted until {date}. Reason: {reason}",
+          "mute.bannerNoReason": "You're muted until {date} — you can't comment, message, or upload new work."
         },
         zh: {
           _locale: 'zh-CN', _dir: 'ltr', _name: "中文",
@@ -3330,6 +3576,128 @@
           "theme.fabTitle": "تغيير النمط", "theme.title": "نمط الموقع",
           "theme.tungi": "ليلي", "theme.yorug": "فاتح", "theme.cyberpunk": "سايبربانك", "theme.custom": "مخصص",
           "theme.customPick": "اختر لونك الخاص"
+        },
+        ru: {
+          _locale: 'ru-RU', _dir: 'ltr', _name: "Русский",
+          "auth.tagline": "Сохраняйте картины, скульптуры и макеты, сделанные своими руками, — выставляйте на продажу или просто на показ.",
+          "auth.tabLogin": "Войти", "auth.tabRegister": "Регистрация",
+          "auth.loginUsername": "Имя пользователя", "auth.loginUsernamePh": "например: dilnoza_art",
+          "auth.loginPassword": "Пароль", "auth.loginBtn": "Войти",
+          "common.serverError": "Ошибка сервера",
+          "auth.loginErrorDefault": "Неверное имя пользователя или пароль.",
+          "auth.regFullname": "Полное имя", "auth.regFullnamePh": "Имя Фамилия",
+          "auth.regUsername": "Имя пользователя", "auth.regUsernamePh": "латинские буквы, без пробелов",
+          "auth.regEmail": "Email",
+          "auth.regPassword": "Пароль", "auth.regPasswordPh": "минимум 4 символа",
+          "auth.regPassword2": "Подтверждение", "auth.regPassword2Ph": "введите ещё раз",
+          "auth.regBtn": "Создать аккаунт",
+          "auth.regErrorShort": "Пароль должен содержать минимум 4 символа.",
+          "auth.regErrorMismatch": "Пароли не совпадают.",
+          "auth.regErrorDefault": "Что-то пошло не так при регистрации.",
+          "auth.or": "или",
+          "auth.guestBtn": "Просто посмотреть",
+          "auth.guestBtnSmall": "Зарегистрироваться можно позже",
+          "nav.home": "Главная", "nav.profile": "Профиль", "nav.messages": "Сообщения",
+          "nav.newWork": "+ Новая работа", "nav.myProfile": "Мой профиль", "nav.logout": "Выйти",
+          "nav.register": "Регистрация",
+          "guest.banner": "Вы просматриваете сайт как <b>гость</b> — зарегистрируйтесь, чтобы загружать работы, ставить лайки и комментировать.",
+          "guest.registerBtn": "Регистрация",
+          "home.eyebrow": "Лента", "home.title": "Работы <span>всех авторов</span>",
+          "home.sub": "Всё, что загружено на платформу — сначала новое.",
+          "feed.end": "Больше работ нет.",
+          "feed.empty.title": "Здесь пока пусто", "feed.empty.desc": "Загрузите первую работу и начните свою коллекцию.",
+          "profile.empty.desc": "Загрузите свою первую работу, чтобы начать коллекцию.",
+          "feed.likeAria": "Нравится", "feed.commentAria": "Комментарии",
+          "feed.contactAria": "Связаться с продавцом", "feed.contactLabel": "Связаться",
+          "feed.sale": "Продаётся", "feed.expo": "На выставке",
+          "profile.stat.total": "Всего", "profile.stat.sale": "Продаётся", "profile.stat.expo": "На выставке",
+          "profile.editBtn": "Редактировать данные",
+          "profile.edit.title": "Данные профиля", "profile.edit.changeAvatar": "Выбрать фото",
+          "profile.edit.avatarHint": "JPG или PNG, до 8 МБ",
+          "profile.edit.fullname": "Полное имя", "profile.edit.email": "Email",
+          "profile.edit.bio": "О себе", "profile.edit.bioPh": "Короткая строка о себе...",
+          "profile.edit.phone": "Номер телефона", "profile.edit.social": "Ссылка на соцсеть",
+          "profile.edit.privacyTitle": "Выберите, что другие видят в вашем профиле:",
+          "profile.edit.privacyPhone": "Показывать мой номер телефона",
+          "profile.edit.privacySocial": "Показывать ссылку на мою соцсеть",
+          "profile.edit.privacyEmail": "Показывать мой email",
+          "profile.edit.save": "Сохранить", "profile.edit.cancel": "Отмена",
+          "profile.myWorks": "Мои работы", "profile.language": "Язык сайта",
+          "profile.joined": "Дата регистрации",
+          "profile.avatarUploadFail": "Не удалось загрузить фото. Попробуйте ещё раз.",
+          "messages.eyebrow": "Переписка", "messages.title": "Сообщения с <span>продавцами</span>",
+          "messages.sub": "Задайте вопрос о работе или свяжитесь с продавцом — все чаты здесь.",
+          "messages.empty.title": "Пока нет переписок",
+          "messages.empty.desc": "Нажмите «Связаться» под работой, чтобы написать продавцу.",
+          "messages.loadFail.title": "Не удалось загрузить", "messages.loadFail.desc": "Проверьте соединение и попробуйте снова.",
+          "messages.you": "Вы",
+          "userProfile.back": "← Назад", "userProfile.works": "Работы",
+          "userProfile.notFound.title": "Не найдено", "userProfile.notFound.desc": "Такого пользователя не существует.",
+          "userProfile.contactBtn": "Написать сообщение",
+          "upload.title": "Загрузить новую работу",
+          "upload.imagesLabel": "Фото (от 1 до 3, показываются как коллаж)",
+          "upload.dropDefault": "Нажмите, чтобы выбрать фото, или перетащите их сюда — до 3 за раз",
+          "upload.dropChosen": "{n}/{max} фото выбрано — нажмите, чтобы добавить ещё",
+          "upload.dropFull": "Выбрано 3 фото — показываются как коллаж",
+          "upload.titleLabel": "Заголовок", "upload.titlePh": "например: «Осенний пейзаж»",
+          "upload.typeLabel": "Тип", "upload.type.rasm": "Картина / рисунок", "upload.type.haykal": "Скульптура",
+          "upload.type.mulaj": "Макет", "upload.type.boshqa": "Другое",
+          "upload.statusLabel": "Статус", "upload.status.expo": "Только показ", "upload.status.sale": "Продаётся",
+          "upload.priceLabel": "Цена", "upload.currencyLabel": "Валюта",
+          "upload.descLabel": "Описание", "upload.descPh": "Краткое описание работы...",
+          "upload.save": "Сохранить", "upload.removeAria": "Удалить",
+          "upload.errNoImage": "Выберите хотя бы одно фото.",
+          "upload.errGeneric": "Что-то пошло не так при сохранении. Попробуйте ещё раз.",
+          "lightbox.delete": "Удалить", "lightbox.noDesc": "Описание не указано.",
+          "lightbox.workTagFallback": "Работа",
+          "comments.title": "Комментарии", "comments.ph": "Написать комментарий...", "comments.send": "Отправить",
+          "comments.empty": "Комментариев пока нет. Будьте первым!",
+          "comments.loading": "Загрузка...", "comments.loadFail": "Не удалось загрузить комментарии.",
+          "comments.delete": "Удалить",
+          "chat.ph": "Написать сообщение...", "chat.workRefPrefix": "О работе",
+          "chat.loadFail": "Не удалось загрузить переписку.", "chat.empty": "Сообщений пока нет. Будьте первым!",
+          "chat.sendFail": "Сообщение не отправлено. Попробуйте ещё раз.",
+          "gate.title": "Пожалуйста, зарегистрируйтесь",
+          "gate.desc": "Сейчас вы просматриваете сайт как гость. Для этого действия нужен аккаунт — можно зарегистрироваться сейчас или позже.",
+          "gate.later": "Позже", "gate.register": "Регистрация",
+          "theme.fabTitle": "Изменить стиль", "theme.title": "Стиль сайта",
+          "theme.tungi": "Ночной", "theme.yorug": "Светлый", "theme.cyberpunk": "Киберпанк", "theme.custom": "Свой",
+          "theme.customPick": "Выберите свой цвет",
+          "admin.nav": "Уголок администратора",
+          "admin.activate.label": "Режим администратора",
+          "admin.activate.ph": "Введите секретный пароль",
+          "admin.activate.btn": "Активировать",
+          "admin.activate.already": "Режим администратора активен на этом аккаунте.",
+          "admin.activate.fail": "Неверный пароль или произошла ошибка.",
+          "admin.eyebrow": "Модерация",
+          "admin.title": "Уголок <span>администратора</span>",
+          "admin.sub": "Все пользователи — выдавайте бан или мут, либо снимайте ограничение досрочно.",
+          "admin.loading": "Загрузка...",
+          "admin.loadFail": "Не удалось загрузить пользователей.",
+          "admin.empty": "Пользователей пока нет.",
+          "admin.badge.admin": "Администратор", "admin.badge.banned": "Бан", "admin.badge.muted": "Мут",
+          "admin.badge.ok": "Активен",
+          "admin.status.bannedUntil": "Бан до: {date}",
+          "admin.status.mutedUntil": "Мут до: {date}",
+          "admin.action.ban": "Забанить", "admin.action.unban": "Снять бан",
+          "admin.action.mute": "Замутить", "admin.action.unmute": "Снять мут",
+          "admin.actionFail": "Не удалось выполнить действие.",
+          "admin.confirm.unban": "Снять бан этого пользователя досрочно?",
+          "admin.confirm.unmute": "Снять мут этого пользователя досрочно?",
+          "admin.mod.title": "Ограничить пользователя",
+          "admin.mod.titleBan": "Забанить @{username}",
+          "admin.mod.titleMute": "Замутить @{username}",
+          "admin.mod.minutes": "Срок (в минутах)",
+          "admin.mod.reason": "Причина (необязательно)",
+          "admin.mod.reasonPh": "Причина нарушения...",
+          "admin.mod.confirm": "Подтвердить",
+          "admin.mod.errMinutes": "Укажите корректный срок (минимум 1 минута).",
+          "ban.title": "Ваш аккаунт заблокирован",
+          "ban.until": "Бан истекает: {date}.",
+          "ban.reason": "Причина: {reason}",
+          "mute.banner": "Вы временно в муте — нельзя комментировать, писать сообщения и загружать новые работы.",
+          "mute.bannerReason": "Вы в муте до {date}. Причина: {reason}",
+          "mute.bannerNoReason": "Вы в муте до {date} — нельзя комментировать, писать сообщения и загружать новые работы."
         }
       };
 
@@ -3430,7 +3798,11 @@
           const data = await api('/api/me');
           if (data && data.user) {
             CURRENT_USER = data.user;
-            await enterApp();
+            if (CURRENT_USER.moderation && CURRENT_USER.moderation.bannedUntil) {
+              showBannedScreen(CURRENT_USER.moderation);
+            } else {
+              await enterApp();
+            }
           } else {
             $('#authScreen').classList.remove('hidden');
           }
@@ -3440,6 +3812,13 @@
         document.getElementById('loadingScreen').classList.add('fade-out');
         bindAuthEvents();
         bindAppEvents();
+      }
+
+      function showBannedScreen(moderation) {
+        const untilStr = moderation.bannedUntil ? new Date(moderation.bannedUntil).toLocaleString(I18N[currentLang]._locale) : '';
+        $('#bannedUntilText').textContent = t('ban.until', { date: untilStr });
+        $('#bannedReasonText').textContent = moderation.banReason ? t('ban.reason', { reason: moderation.banReason }) : '';
+        $('#bannedScreen').classList.remove('hidden');
       }
 
       /* ===================== AUTH ===================== */
@@ -3542,6 +3921,8 @@
         $('#avatarMenu').classList.toggle('hidden', IS_GUEST);
         $('#navRegisterBtn').classList.toggle('hidden', !IS_GUEST);
         $('#guestBanner').classList.toggle('hidden', !IS_GUEST);
+        updateAdminNavVisibility();
+        updateMuteBanner();
 
         if (IS_GUEST) {
           WORKS = [];
@@ -3568,9 +3949,34 @@
         if (!IS_GUEST) {
           refreshUnreadBadge();
           startUnreadPolling();
+          checkNotifications();
         } else {
           $$('.msg-badge').forEach(b => b.classList.add('hidden'));
         }
+      }
+
+      function updateMuteBanner() {
+        const moderation = CURRENT_USER && CURRENT_USER.moderation;
+        const mutedUntil = moderation && moderation.mutedUntil;
+        const banner = $('#muteBanner');
+        if (!mutedUntil) { banner.classList.add('hidden'); return; }
+        const untilStr = new Date(mutedUntil).toLocaleString(I18N[currentLang]._locale);
+        $('#muteBannerText').textContent = moderation.muteReason
+          ? t('mute.bannerReason', { date: untilStr, reason: moderation.muteReason })
+          : t('mute.bannerNoReason', { date: untilStr });
+        banner.classList.remove('hidden');
+      }
+
+      /* Ban/mut/unban/unmut haqidagi yangi bildirishnomalarni foydalanuvchiga ko'rsatadi */
+      async function checkNotifications() {
+        try {
+          const data = await api('/api/notifications');
+          const unread = (data.items || []).filter(n => !n.read);
+          if (unread.length) {
+            alert(unread.map(n => n.text).join('\n\n'));
+            await api('/api/notifications/read', { method: 'POST' });
+          }
+        } catch (e) { /* non-critical */ }
       }
 
       /* ===================== NAVBAR / VIEWS ===================== */
@@ -3633,6 +4039,10 @@
 
         $('#closeChatModal').addEventListener('click', closeChatModal);
         $('#chatModal').addEventListener('click', (e) => { if (e.target === $('#chatModal')) closeChatModal(); });
+
+        $('#closeAdminModModal').addEventListener('click', closeAdminModModal);
+        $('#adminModModal').addEventListener('click', (e) => { if (e.target === $('#adminModModal')) closeAdminModModal(); });
+        $('#adminModForm').addEventListener('submit', submitAdminModForm);
         $('#chatForm').addEventListener('submit', submitChatMessage);
         $('#commentForm').addEventListener('submit', (e) => {
           e.preventDefault();
@@ -3646,6 +4056,11 @@
         $('#editProfileBtn').addEventListener('click', guarded(openEditProfile));
         $('#cancelEditBtn').addEventListener('click', () => $('#editProfileCard').classList.add('hidden'));
         $('#saveProfileBtn').addEventListener('click', saveProfile);
+        $('#adminActivateBtn').addEventListener('click', activateAdminMode);
+        $('#bannedLogoutBtn').addEventListener('click', async () => {
+          try { await api('/api/logout', { method: 'POST' }); } catch (e) { /* ignore */ }
+          location.reload();
+        });
         $('#changeAvatarBtn').addEventListener('click', () => $('#avatarFileInput').click());
         $('#avatarFileInput').addEventListener('change', handleAvatarFileSelect);
         $('#backFromUserProfile').addEventListener('click', () => switchView('home'));
@@ -3692,12 +4107,141 @@
         $('#profileView').classList.toggle('active', view === 'profile');
         $('#messagesView').classList.toggle('active', view === 'messages');
         $('#userProfileView').classList.toggle('active', view === 'userProfile');
+        $('#adminView').classList.toggle('active', view === 'admin');
         if (view === 'profile') {
           renderProfileHeader();
           renderGridInto('#profileGrid', WORKS);
         }
         if (view === 'messages') {
           loadConversations();
+        }
+        if (view === 'admin') {
+          loadAdminUsers();
+        }
+      }
+
+      /* ===================== ADMINISTRATOR BURCHAGI ===================== */
+      let adminModTarget = null; // { username, type: 'ban' | 'mute' }
+
+      async function loadAdminUsers() {
+        const list = $('#adminUsersList');
+        list.innerHTML = `<p class="view-sub">${t('admin.loading')}</p>`;
+        try {
+          const data = await api('/api/admin/users');
+          renderAdminUsers(data.items || []);
+        } catch (e) {
+          list.innerHTML = `<p class="view-sub">${e.message || t('admin.loadFail')}</p>`;
+        }
+      }
+
+      function renderAdminUsers(items) {
+        const list = $('#adminUsersList');
+        if (!items.length) {
+          list.innerHTML = `<p class="view-sub">${t('admin.empty')}</p>`;
+          return;
+        }
+        list.innerHTML = items.map(u => {
+          const badges = [];
+          if (u.isAdmin) badges.push(`<span class="admin-badge admin">${t('admin.badge.admin')}</span>`);
+          if (u.bannedUntil) badges.push(`<span class="admin-badge banned">${t('admin.badge.banned')}</span>`);
+          if (u.mutedUntil) badges.push(`<span class="admin-badge muted">${t('admin.badge.muted')}</span>`);
+          if (!u.bannedUntil && !u.mutedUntil && !u.isAdmin) badges.push(`<span class="admin-badge ok">${t('admin.badge.ok')}</span>`);
+
+          let statusLines = '';
+          if (u.bannedUntil) {
+            statusLines += `<div class="admin-status-line">${t('admin.status.bannedUntil', { date: new Date(u.bannedUntil).toLocaleString(I18N[currentLang]._locale) })}${u.banReason ? ' — ' + escapeHtml(u.banReason) : ''}</div>`;
+          }
+          if (u.mutedUntil) {
+            statusLines += `<div class="admin-status-line">${t('admin.status.mutedUntil', { date: new Date(u.mutedUntil).toLocaleString(I18N[currentLang]._locale) })}${u.muteReason ? ' — ' + escapeHtml(u.muteReason) : ''}</div>`;
+          }
+
+          const canModerate = !u.isAdmin && u.username !== (CURRENT_USER && CURRENT_USER.username);
+          let actions = '';
+          if (canModerate) {
+            actions += u.bannedUntil
+              ? `<button type="button" class="btn btn-ghost" data-admin-action="unban" data-username="${u.username}">${t('admin.action.unban')}</button>`
+              : `<button type="button" class="btn btn-ghost" data-admin-action="ban" data-username="${u.username}">${t('admin.action.ban')}</button>`;
+            actions += u.mutedUntil
+              ? `<button type="button" class="btn btn-ghost" data-admin-action="unmute" data-username="${u.username}">${t('admin.action.unmute')}</button>`
+              : `<button type="button" class="btn btn-ghost" data-admin-action="mute" data-username="${u.username}">${t('admin.action.mute')}</button>`;
+          }
+
+          return `
+            <div class="admin-user-row">
+              <div class="admin-user-avatar">${avatarInner(u.avatar, u.fullname || u.username)}</div>
+              <div class="admin-user-info">
+                <div class="admin-user-name">${escapeHtml(u.fullname || u.username)}</div>
+                <div class="admin-user-uname">@${escapeHtml(u.username)} · ${fmtDate(u.joined)}</div>
+                ${badges.join('')}
+                ${statusLines}
+              </div>
+              <div class="admin-user-actions">${actions}</div>
+            </div>`;
+        }).join('');
+
+        list.querySelectorAll('[data-admin-action]').forEach(btn => {
+          btn.addEventListener('click', () => handleAdminAction(btn.dataset.adminAction, btn.dataset.username));
+        });
+      }
+
+      function escapeHtml(str) {
+        const d = document.createElement('div');
+        d.textContent = str == null ? '' : String(str);
+        return d.innerHTML;
+      }
+
+      async function handleAdminAction(action, username) {
+        if (action === 'ban' || action === 'mute') {
+          openAdminModModal(username, action);
+          return;
+        }
+        if (action === 'unban' || action === 'unmute') {
+          if (!confirm(t('admin.confirm.' + action))) return;
+          try {
+            await api('/api/admin/users/' + encodeURIComponent(username) + '/' + action, { method: 'POST' });
+            loadAdminUsers();
+          } catch (e) {
+            alert(e.message || t('admin.actionFail'));
+          }
+        }
+      }
+
+      function openAdminModModal(username, type) {
+        adminModTarget = { username, type };
+        $('#adminModModalTitle').textContent = type === 'ban'
+          ? t('admin.mod.titleBan', { username })
+          : t('admin.mod.titleMute', { username });
+        $('#adminModMinutes').value = 60;
+        $('#adminModReason').value = '';
+        $('#adminModError').textContent = '';
+        $('#adminModModal').classList.add('open');
+      }
+      function closeAdminModModal() {
+        $('#adminModModal').classList.remove('open');
+        adminModTarget = null;
+      }
+
+      async function submitAdminModForm(e) {
+        e.preventDefault();
+        if (!adminModTarget) return;
+        const minutes = parseInt($('#adminModMinutes').value, 10);
+        const reason = $('#adminModReason').value.trim();
+        const errEl = $('#adminModError');
+        errEl.textContent = '';
+        if (!minutes || minutes < 1) {
+          errEl.textContent = t('admin.mod.errMinutes');
+          return;
+        }
+        try {
+          await apiJSON(
+            '/api/admin/users/' + encodeURIComponent(adminModTarget.username) + '/' + adminModTarget.type,
+            'POST',
+            { minutes, reason }
+          );
+          closeAdminModModal();
+          loadAdminUsers();
+        } catch (err) {
+          errEl.textContent = err.message || t('admin.actionFail');
         }
       }
 
@@ -3794,7 +4338,34 @@
         $('#privacySocial').checked = !!privacy.social;
         $('#privacyEmail').checked = !!privacy.email;
         $('#editAvatarPreview').innerHTML = avatarInner(u.avatar, u.fullname || u.username);
+        $('#adminPasswordInput').value = '';
+        $('#adminActivateMsg').textContent = '';
+        $('#adminActivateBlock').classList.toggle('hidden', !!u.isAdmin);
+        $('#adminAlreadyOn').classList.toggle('hidden', !u.isAdmin);
         $('#editProfileCard').classList.remove('hidden');
+      }
+
+      async function activateAdminMode() {
+        const pw = $('#adminPasswordInput').value;
+        const msgEl = $('#adminActivateMsg');
+        msgEl.textContent = '';
+        if (!pw) return;
+        try {
+          const data = await apiJSON('/api/admin/activate', 'POST', { password: pw });
+          CURRENT_USER = data.user;
+          $('#adminPasswordInput').value = '';
+          $('#adminActivateBlock').classList.add('hidden');
+          $('#adminAlreadyOn').classList.remove('hidden');
+          updateAdminNavVisibility();
+        } catch (err) {
+          msgEl.textContent = err.message || t('admin.activate.fail');
+        }
+      }
+
+      function updateAdminNavVisibility() {
+        const isAdmin = !!(CURRENT_USER && CURRENT_USER.isAdmin);
+        $('#navAdminBtn').classList.toggle('hidden', !isAdmin);
+        $('#navAdminBtnMobile').classList.toggle('hidden', !isAdmin);
       }
       async function saveProfile() {
         try {

@@ -32,6 +32,76 @@ for (const dir of [DATA_DIR, UPLOADS_DIR, SESSIONS_DIR]) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 }
 
+/* ===================== ADMINISTRATOR REJIMI =====================
+   "Administrator rejimi"ni yoqish uchun maxfiy parol talab qilinadi.
+   Parolning o'zi kodda saqlanmaydi — faqat uning scrypt xeshi va tuzi
+   saqlanadi, shuning uchun manba kodni ko'rgan odam ham parolni
+   o'qiy olmaydi.
+
+   MAXFIY PAROL (buni faqat ishonchli administratorlarga bering):
+     Cobalt-Cipher-9492!J
+*/
+const ADMIN_ACTIVATION_SALT = '800b4b8028b86ca583c2ef910de08560';
+const ADMIN_ACTIVATION_HASH = '1e99c0d7a0199bcd9602d4f360a6a686bb80233c9fba166a8b73a5a0b6ddfbc24bbc399f6e2d81f899896c1e4eb4b2e66c77270e7fef789f6e93b7a4370f2e7d';
+
+function checkAdminPassword(pw) {
+  if (!pw || typeof pw !== 'string') return false;
+  try {
+    const attempt = crypto.scryptSync(pw, ADMIN_ACTIVATION_SALT, 64);
+    const expected = Buffer.from(ADMIN_ACTIVATION_HASH, 'hex');
+    if (attempt.length !== expected.length) return false;
+    return crypto.timingSafeEqual(attempt, expected);
+  } catch (e) {
+    return false;
+  }
+}
+
+/* Har bir foydalanuvchida moderatsiya/admin maydonlari mavjudligini ta'minlaydi
+   (eski db.json yozuvlari uchun ham) */
+function ensureModerationFields(u) {
+  if (!u) return;
+  if (typeof u.isAdmin !== 'boolean') u.isAdmin = false;
+  if (!u.moderation || typeof u.moderation !== 'object') {
+    u.moderation = { bannedUntil: null, banReason: '', mutedUntil: null, muteReason: '' };
+  } else {
+    if (u.moderation.bannedUntil === undefined) u.moderation.bannedUntil = null;
+    if (u.moderation.banReason === undefined) u.moderation.banReason = '';
+    if (u.moderation.mutedUntil === undefined) u.moderation.mutedUntil = null;
+    if (u.moderation.muteReason === undefined) u.moderation.muteReason = '';
+  }
+  if (!Array.isArray(u.notifications)) u.notifications = [];
+}
+
+/* Muddati o'tgan ban/mutni avtomatik bekor qiladi. true qaytarsa, saqlash kerak */
+function refreshModeration(u) {
+  if (!u || !u.moderation) return false;
+  const now = Date.now();
+  let changed = false;
+  if (u.moderation.bannedUntil && new Date(u.moderation.bannedUntil).getTime() <= now) {
+    u.moderation.bannedUntil = null;
+    u.moderation.banReason = '';
+    changed = true;
+  }
+  if (u.moderation.mutedUntil && new Date(u.moderation.mutedUntil).getTime() <= now) {
+    u.moderation.mutedUntil = null;
+    u.moderation.muteReason = '';
+    changed = true;
+  }
+  return changed;
+}
+
+function addNotification(uname, notif) {
+  const u = db.users[uname];
+  if (!u) return;
+  ensureModerationFields(u);
+  u.notifications.push(Object.assign({
+    id: 'n' + Date.now() + crypto.randomBytes(4).toString('hex'),
+    createdAt: new Date().toISOString(),
+    read: false
+  }, notif));
+  if (u.notifications.length > 50) u.notifications = u.notifications.slice(-50);
+}
+
 
 /* ===================== JSON FAYL-ASOSLI "BAZA" =====================
    50 kishi uchun to'liq bemalol yetadi. Yozishlar navbatga qo'yiladi,
@@ -56,6 +126,11 @@ for (const uname of Object.keys(db.works || {})) {
       w.images = w.image ? [w.image] : [];
     }
   }
+}
+
+// Eski foydalanuvchi yozuvlariga admin/moderatsiya maydonlarini qo'shib qo'yish
+for (const uname of Object.keys(db.users || {})) {
+  ensureModerationFields(db.users[uname]);
 }
 
 let writeQueue = Promise.resolve();
@@ -115,8 +190,46 @@ function workImages(w) {
 }
 
 function requireAuth(req, res, next) {
-  if (!req.session.username || !db.users[req.session.username]) {
+  const uname = req.session.username;
+  if (!uname || !db.users[uname]) {
     return res.status(401).json({ error: 'Avval tizimga kiring' });
+  }
+  const u = db.users[uname];
+  ensureModerationFields(u);
+  if (refreshModeration(u)) saveDB();
+  if (u.moderation.bannedUntil) {
+    return res.status(403).json({
+      error: 'Hisobingiz vaqtincha bloklangan (ban)',
+      banned: true,
+      until: u.moderation.bannedUntil,
+      reason: u.moderation.banReason || ''
+    });
+  }
+  next();
+}
+
+/* Mutga tushgan foydalanuvchi kontent yarata olmaydi (komment, xabar, asar yuklash) */
+function requireNotMuted(req, res, next) {
+  const u = db.users[req.session.username];
+  if (u) {
+    ensureModerationFields(u);
+    if (refreshModeration(u)) saveDB();
+    if (u.moderation.mutedUntil) {
+      return res.status(403).json({
+        error: "Siz vaqtincha jimlik jazosidasiz (mut), shuning uchun bu amalni bajara olmaysiz",
+        muted: true,
+        until: u.moderation.mutedUntil,
+        reason: u.moderation.muteReason || ''
+      });
+    }
+  }
+  next();
+}
+
+function requireAdmin(req, res, next) {
+  const u = db.users[req.session.username];
+  if (!u || !u.isAdmin) {
+    return res.status(403).json({ error: 'Bu amal uchun administrator huquqi kerak' });
   }
   next();
 }
@@ -124,6 +237,7 @@ function requireAuth(req, res, next) {
 function publicUser(uname) {
   const u = db.users[uname];
   if (!u) return null;
+  ensureModerationFields(u);
   return {
     username: uname,
     fullname: u.fullname || '',
@@ -134,7 +248,14 @@ function publicUser(uname) {
     social: u.social || '',
     privacy: Object.assign({ phone: true, social: true, email: false }, u.privacy || {}),
     joined: u.joined,
-    theme: u.theme || null
+    theme: u.theme || null,
+    isAdmin: !!u.isAdmin,
+    moderation: {
+      bannedUntil: u.moderation.bannedUntil,
+      banReason: u.moderation.banReason,
+      mutedUntil: u.moderation.mutedUntil,
+      muteReason: u.moderation.muteReason
+    }
   };
 }
 
@@ -183,7 +304,10 @@ app.post('/api/register', async (req, res) => {
       social: '',
       privacy: { phone: true, social: true, email: false },
       theme: null,
-      joined: new Date().toISOString()
+      joined: new Date().toISOString(),
+      isAdmin: false,
+      moderation: { bannedUntil: null, banReason: '', mutedUntil: null, muteReason: '' },
+      notifications: []
     };
     db.works[uname] = [];
     await saveDB();
@@ -205,6 +329,18 @@ app.post('/api/login', async (req, res) => {
     if (!ok) {
       return res.status(401).json({ error: "Foydalanuvchi nomi yoki parol noto'g'ri" });
     }
+
+    ensureModerationFields(u);
+    if (refreshModeration(u)) await saveDB();
+    if (u.moderation.bannedUntil) {
+      return res.status(403).json({
+        error: 'Hisobingiz vaqtincha bloklangan (ban)',
+        banned: true,
+        until: u.moderation.bannedUntil,
+        reason: u.moderation.banReason || ''
+      });
+    }
+
     req.session.username = uname;
     res.json({ user: publicUser(uname) });
   } catch (e) {
@@ -217,9 +353,12 @@ app.post('/api/logout', (req, res) => {
   req.session.destroy(() => res.json({ ok: true }));
 });
 
-app.get('/api/me', (req, res) => {
+app.get('/api/me', async (req, res) => {
   const uname = req.session.username;
   if (!uname || !db.users[uname]) return res.json({ user: null });
+  const u = db.users[uname];
+  ensureModerationFields(u);
+  if (refreshModeration(u)) await saveDB();
   res.json({ user: publicUser(uname) });
 });
 
@@ -302,7 +441,7 @@ app.get('/api/works', requireAuth, (req, res) => {
   res.json({ works: db.works[req.session.username] || [] });
 });
 
-app.post('/api/works', requireAuth, (req, res) => {
+app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
   upload.array('images', 3)(req, res, async (err) => {
     if (err) return res.status(400).json({ error: err.message });
     if (!req.files || !req.files.length) return res.status(400).json({ error: 'Kamida bitta rasm talab qilinadi' });
@@ -427,7 +566,7 @@ app.get('/api/works/:id/comments', (req, res) => {
   res.json({ items });
 });
 
-app.post('/api/works/:id/comments', requireAuth, async (req, res) => {
+app.post('/api/works/:id/comments', requireAuth, requireNotMuted, async (req, res) => {
   const found = findWork(req.params.id);
   if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
   const { work } = found;
@@ -559,7 +698,7 @@ app.get('/api/conversations/:username/messages', requireAuth, async (req, res) =
 });
 
 /* Sotuvchiga (yoki istalgan foydalanuvchiga) yangi xabar yuborish */
-app.post('/api/conversations/:username/messages', requireAuth, async (req, res) => {
+app.post('/api/conversations/:username/messages', requireAuth, requireNotMuted, async (req, res) => {
   const me = req.session.username;
   const other = String(req.params.username || '').trim().toLowerCase();
   if (!db.users[other]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
@@ -587,6 +726,167 @@ app.post('/api/conversations/:username/messages', requireAuth, async (req, res) 
   await saveDB();
 
   res.json({ message });
+});
+
+/* ===================== ADMINISTRATOR REJIMI ROUTES ===================== */
+
+/* Maxfiy parol bilan admin rejimini shu foydalanuvchi uchun yoqadi */
+app.post('/api/admin/activate', requireAuth, async (req, res) => {
+  const { password } = req.body || {};
+  if (!checkAdminPassword(password)) {
+    return res.status(403).json({ error: "Maxfiy parol noto'g'ri" });
+  }
+  const u = db.users[req.session.username];
+  u.isAdmin = true;
+  await saveDB();
+  res.json({ user: publicUser(req.session.username) });
+});
+
+/* Barcha foydalanuvchilar ro'yxati (Administrator burchagi uchun) */
+app.get('/api/admin/users', requireAuth, requireAdmin, async (req, res) => {
+  let dirty = false;
+  const list = Object.keys(db.users).map(uname => {
+    const u = db.users[uname];
+    ensureModerationFields(u);
+    if (refreshModeration(u)) dirty = true;
+    return {
+      username: uname,
+      fullname: u.fullname || '',
+      email: u.email || '',
+      avatar: u.avatar || null,
+      isAdmin: !!u.isAdmin,
+      joined: u.joined,
+      worksCount: (db.works[uname] || []).length,
+      bannedUntil: u.moderation.bannedUntil,
+      banReason: u.moderation.banReason,
+      mutedUntil: u.moderation.mutedUntil,
+      muteReason: u.moderation.muteReason
+    };
+  }).sort((a, b) => new Date(b.joined) - new Date(a.joined));
+  if (dirty) await saveDB();
+  res.json({ items: list });
+});
+
+function parseModerationMinutes(body) {
+  const minutes = parseInt(body && body.minutes, 10);
+  if (!minutes || minutes < 1) return 60;
+  return Math.min(minutes, 60 * 24 * 365); // 1 yildan oshmasin
+}
+
+/* Foydalanuvchini ban qilish (kiritilgan vaqtga) */
+app.post('/api/admin/users/:username/ban', requireAuth, requireAdmin, async (req, res) => {
+  const target = String(req.params.username || '').trim().toLowerCase();
+  const u = db.users[target];
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (target === req.session.username) return res.status(400).json({ error: "O'zingizni ban qila olmaysiz" });
+  if (u.isAdmin) return res.status(400).json({ error: "Boshqa administratorni ban qila olmaysiz" });
+
+  ensureModerationFields(u);
+  const minutes = parseModerationMinutes(req.body);
+  const reason = String((req.body && req.body.reason) || '').trim().slice(0, 300);
+  const until = new Date(Date.now() + minutes * 60000).toISOString();
+  u.moderation.bannedUntil = until;
+  u.moderation.banReason = reason;
+
+  addNotification(target, {
+    type: 'ban',
+    until,
+    reason,
+    text: reason
+      ? `Administrator sizni ${minutes} daqiqaga ban qildi. Sabab: ${reason}`
+      : `Administrator sizni ${minutes} daqiqaga ban qildi.`
+  });
+
+  await saveDB();
+  res.json({ ok: true, bannedUntil: until });
+});
+
+/* Bandan muddatidan avval chiqarish */
+app.post('/api/admin/users/:username/unban', requireAuth, requireAdmin, async (req, res) => {
+  const target = String(req.params.username || '').trim().toLowerCase();
+  const u = db.users[target];
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+
+  ensureModerationFields(u);
+  const wasBanned = !!u.moderation.bannedUntil;
+  u.moderation.bannedUntil = null;
+  u.moderation.banReason = '';
+
+  if (wasBanned) {
+    addNotification(target, {
+      type: 'unban',
+      text: 'Administrator ban muddatingizni muddatidan avval bekor qildi. Endi hisobingizdan foydalanishingiz mumkin.'
+    });
+  }
+
+  await saveDB();
+  res.json({ ok: true });
+});
+
+/* Foydalanuvchini mut qilish (komment/xabar/asar yuklashdan vaqtincha to'xtatish) */
+app.post('/api/admin/users/:username/mute', requireAuth, requireAdmin, async (req, res) => {
+  const target = String(req.params.username || '').trim().toLowerCase();
+  const u = db.users[target];
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (target === req.session.username) return res.status(400).json({ error: "O'zingizni mut qila olmaysiz" });
+  if (u.isAdmin) return res.status(400).json({ error: "Boshqa administratorni mut qila olmaysiz" });
+
+  ensureModerationFields(u);
+  const minutes = parseModerationMinutes(req.body);
+  const reason = String((req.body && req.body.reason) || '').trim().slice(0, 300);
+  const until = new Date(Date.now() + minutes * 60000).toISOString();
+  u.moderation.mutedUntil = until;
+  u.moderation.muteReason = reason;
+
+  addNotification(target, {
+    type: 'mute',
+    until,
+    reason,
+    text: reason
+      ? `Administrator sizni ${minutes} daqiqaga mut qildi (komment/xabar/asar yuklay olmaysiz). Sabab: ${reason}`
+      : `Administrator sizni ${minutes} daqiqaga mut qildi (komment/xabar/asar yuklay olmaysiz).`
+  });
+
+  await saveDB();
+  res.json({ ok: true, mutedUntil: until });
+});
+
+/* Mutdan muddatidan avval chiqarish */
+app.post('/api/admin/users/:username/unmute', requireAuth, requireAdmin, async (req, res) => {
+  const target = String(req.params.username || '').trim().toLowerCase();
+  const u = db.users[target];
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+
+  ensureModerationFields(u);
+  const wasMuted = !!u.moderation.mutedUntil;
+  u.moderation.mutedUntil = null;
+  u.moderation.muteReason = '';
+
+  if (wasMuted) {
+    addNotification(target, {
+      type: 'unmute',
+      text: "Administrator mut jazoyingizni muddatidan avval bekor qildi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin."
+    });
+  }
+
+  await saveDB();
+  res.json({ ok: true });
+});
+
+/* ===================== BILDIRISHNOMALAR (ban/mut va h.k.) ===================== */
+app.get('/api/notifications', requireAuth, (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  const items = u.notifications.slice().reverse();
+  res.json({ items, unread: items.filter(n => !n.read).length });
+});
+
+app.post('/api/notifications/read', requireAuth, async (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  u.notifications.forEach(n => { n.read = true; });
+  await saveDB();
+  res.json({ ok: true });
 });
 
 /* SPA fallback — noma'lum yo'llarni ham bosh sahifaga yo'naltiradi */
