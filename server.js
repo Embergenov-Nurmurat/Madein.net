@@ -72,8 +72,9 @@ function ensureModerationFields(u) {
   if (!Array.isArray(u.notifications)) u.notifications = [];
 }
 
-/* Muddati o'tgan ban/mutni avtomatik bekor qiladi. true qaytarsa, saqlash kerak */
-function refreshModeration(u) {
+/* Muddati o'tgan ban/mutni avtomatik bekor qiladi va foydalanuvchiga xabar qoldiradi.
+   true qaytarsa, saqlash kerak. `uname` berilsa, tabiiy tugash haqida bildirishnoma qo'shiladi. */
+function refreshModeration(u, uname) {
   if (!u || !u.moderation) return false;
   const now = Date.now();
   let changed = false;
@@ -81,11 +82,17 @@ function refreshModeration(u) {
     u.moderation.bannedUntil = null;
     u.moderation.banReason = '';
     changed = true;
+    if (uname) {
+      addNotification(uname, { type: 'ban-expired', text: 'Ban muddatingiz tugadi. Hisobingizdan yana foydalanishingiz mumkin.' });
+    }
   }
   if (u.moderation.mutedUntil && new Date(u.moderation.mutedUntil).getTime() <= now) {
     u.moderation.mutedUntil = null;
     u.moderation.muteReason = '';
     changed = true;
+    if (uname) {
+      addNotification(uname, { type: 'mute-expired', text: 'Mut muddatingiz tugadi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin.' });
+    }
   }
   return changed;
 }
@@ -196,7 +203,7 @@ function requireAuth(req, res, next) {
   }
   const u = db.users[uname];
   ensureModerationFields(u);
-  if (refreshModeration(u)) saveDB();
+  if (refreshModeration(u, uname)) saveDB();
   if (u.moderation.bannedUntil) {
     return res.status(403).json({
       error: 'Hisobingiz vaqtincha bloklangan (ban)',
@@ -213,7 +220,7 @@ function requireNotMuted(req, res, next) {
   const u = db.users[req.session.username];
   if (u) {
     ensureModerationFields(u);
-    if (refreshModeration(u)) saveDB();
+    if (refreshModeration(u, req.session.username)) saveDB();
     if (u.moderation.mutedUntil) {
       return res.status(403).json({
         error: "Siz vaqtincha jimlik jazosidasiz (mut), shuning uchun bu amalni bajara olmaysiz",
@@ -331,7 +338,7 @@ app.post('/api/login', async (req, res) => {
     }
 
     ensureModerationFields(u);
-    if (refreshModeration(u)) await saveDB();
+    if (refreshModeration(u, uname)) await saveDB();
     if (u.moderation.bannedUntil) {
       return res.status(403).json({
         error: 'Hisobingiz vaqtincha bloklangan (ban)',
@@ -358,7 +365,7 @@ app.get('/api/me', async (req, res) => {
   if (!uname || !db.users[uname]) return res.json({ user: null });
   const u = db.users[uname];
   ensureModerationFields(u);
-  if (refreshModeration(u)) await saveDB();
+  if (refreshModeration(u, uname)) await saveDB();
   res.json({ user: publicUser(uname) });
 });
 
@@ -748,7 +755,7 @@ app.get('/api/admin/users', requireAuth, requireAdmin, async (req, res) => {
   const list = Object.keys(db.users).map(uname => {
     const u = db.users[uname];
     ensureModerationFields(u);
-    if (refreshModeration(u)) dirty = true;
+    if (refreshModeration(u, uname)) dirty = true;
     return {
       username: uname,
       fullname: u.fullname || '',

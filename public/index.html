@@ -686,6 +686,19 @@
       font-weight: 700;
     }
 
+    .admin-user-clickable {
+      cursor: pointer;
+    }
+
+    .admin-user-name.admin-user-clickable:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .admin-user-avatar.admin-user-clickable:hover {
+      opacity: 0.85;
+    }
+
     .admin-user-uname {
       color: var(--text-dim);
       font-size: 12.5px;
@@ -3764,8 +3777,20 @@
         const res = await fetch(path, opts);
         let data = null;
         try { data = await res.json(); } catch (e) { /* no body */ }
+        if (res.status === 403 && data && data.banned) {
+          handleBannedNow(data);
+        }
         if (!res.ok) throw new Error((data && data.error) || t('common.serverError'));
         return data;
+      }
+
+      /* Ishlatilayotgan sessiya davomida admin foydalanuvchini ban qilib qo'ysa,
+         keyingi so'rov shuni aniqlab, taqiqlangan ekranni ko'rsatadi */
+      function handleBannedNow(data) {
+        stopUnreadPolling();
+        $('#mainApp').classList.add('hidden');
+        $('#authScreen').classList.add('hidden');
+        showBannedScreen({ bannedUntil: data.until, banReason: data.reason });
       }
       function apiJSON(path, method, body) {
         return api(path, {
@@ -3975,6 +4000,14 @@
           if (unread.length) {
             alert(unread.map(n => n.text).join('\n\n'));
             await api('/api/notifications/read', { method: 'POST' });
+            try {
+              const me = await api('/api/me');
+              if (me && me.user) {
+                CURRENT_USER = me.user;
+                updateMuteBanner();
+                updateAdminNavVisibility();
+              }
+            } catch (e) { /* non-critical */ }
           }
         } catch (e) { /* non-critical */ }
       }
@@ -4168,9 +4201,9 @@
 
           return `
             <div class="admin-user-row">
-              <div class="admin-user-avatar">${avatarInner(u.avatar, u.fullname || u.username)}</div>
+              <div class="admin-user-avatar admin-user-clickable" data-username="${u.username}">${avatarInner(u.avatar, u.fullname || u.username)}</div>
               <div class="admin-user-info">
-                <div class="admin-user-name">${escapeHtml(u.fullname || u.username)}</div>
+                <div class="admin-user-name admin-user-clickable" data-username="${u.username}">${escapeHtml(u.fullname || u.username)}</div>
                 <div class="admin-user-uname">@${escapeHtml(u.username)} · ${fmtDate(u.joined)}</div>
                 ${badges.join('')}
                 ${statusLines}
@@ -4178,6 +4211,10 @@
               <div class="admin-user-actions">${actions}</div>
             </div>`;
         }).join('');
+
+        list.querySelectorAll('.admin-user-clickable').forEach(el => {
+          el.addEventListener('click', () => openUserProfile(el.dataset.username));
+        });
 
         list.querySelectorAll('[data-admin-action]').forEach(btn => {
           btn.addEventListener('click', () => handleAdminAction(btn.dataset.adminAction, btn.dataset.username));
@@ -4781,7 +4818,10 @@
 
       function startUnreadPolling() {
         stopUnreadPolling();
-        unreadPollTimer = setInterval(refreshUnreadBadge, 20000);
+        unreadPollTimer = setInterval(() => {
+          refreshUnreadBadge();
+          checkNotifications();
+        }, 20000);
       }
       function stopUnreadPolling() {
         if (unreadPollTimer) { clearInterval(unreadPollTimer); unreadPollTimer = null; }
