@@ -3167,7 +3167,7 @@
         <div class="nav-links">
           <button data-view="home" class="active" data-i18n="nav.home">Bosh sahifa</button>
           <button data-view="profile" data-i18n="nav.profile">Profil</button>
-          <button data-view="saved">Saqlanganlar</button>
+          <button data-view="saved" data-i18n="nav.saved">Saqlanganlar</button>
           <button data-view="messages"><span data-i18n="nav.messages">Xabarlar</span><span class="msg-badge hidden" id="navMsgBadge">0</span></button>
           <button data-view="admin" id="navAdminBtn" class="hidden" data-i18n="admin.nav">Administrator burchagi</button>
         </div>
@@ -3175,9 +3175,9 @@
       <div class="nav-right">
         <div class="feed-search-wrap nav-search-wrap" id="navSearchWrap">
           <svg viewBox="0 0 24 24" class="feed-search-icon"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          <input type="text" id="feedSearchInput" placeholder="Qidirish...">
-          <button type="button" class="feed-search-clear" id="feedSearchClear" aria-label="Tozalash">&times;</button>
-          <button type="button" class="nav-search-close-btn" id="navSearchCloseBtn" aria-label="Yopish">&times;</button>
+          <input type="text" id="feedSearchInput" placeholder="Qidirish..." data-i18n-ph="search.placeholder">
+          <button type="button" class="feed-search-clear" id="feedSearchClear" aria-label="Tozalash" data-i18n-aria="search.clearAria">&times;</button>
+          <button type="button" class="nav-search-close-btn" id="navSearchCloseBtn" aria-label="Yopish" data-i18n-aria="search.closeAria">&times;</button>
         </div>
         <button class="btn btn-primary btn-sm" id="openUploadBtn" data-i18n="nav.newWork">+ Yangi asar</button>
         <div class="avatar-menu" id="avatarMenu">
@@ -3205,7 +3205,7 @@
       </button>
       <button data-view="saved">
         <span class="tab-icon">🔖</span>
-        <span>Saqlangan</span>
+        <span data-i18n="nav.saved">Saqlangan</span>
       </button>
       <button data-view="messages">
         <span class="tab-icon">💬</span>
@@ -3249,9 +3249,9 @@
       <!-- SAVED (BOOKMARKED) WORKS VIEW -->
       <section id="savedView" class="view">
         <div class="view-hero">
-          <div class="eyebrow">Sevimlilar</div>
-          <h1 class="view-title">Saqlangan <span>asarlar</span></h1>
-          <p class="view-sub">Keyinroq ko'rish uchun saqlab qo'ygan asarlaringiz shu yerda.</p>
+          <div class="eyebrow" data-i18n="saved.eyebrow">Sevimlilar</div>
+          <h1 class="view-title" data-i18n-html="saved.title">Saqlangan <span>asarlar</span></h1>
+          <p class="view-sub" data-i18n="saved.sub">Keyinroq ko'rish uchun saqlab qo'ygan asarlaringiz shu yerda.</p>
         </div>
         <div id="savedList" class="feed-list"></div>
       </section>
@@ -3273,10 +3273,10 @@
         </div>
 
         <div class="profile-substats" id="profileSubstats">
-          <div class="substat"><b id="statFollowers">0</b><span>Obunachi</span></div>
-          <div class="substat"><b id="statFollowing">0</b><span>Obuna</span></div>
-          <div class="substat"><b id="statLikes">0</b><span>Layk</span></div>
-          <div class="substat"><b id="statComments">0</b><span>Komment</span></div>
+          <div class="substat"><b id="statFollowers">0</b><span data-i18n="profile.stat.followers">Obunachi</span></div>
+          <div class="substat"><b id="statFollowing">0</b><span data-i18n="profile.stat.following">Obuna</span></div>
+          <div class="substat"><b id="statLikes">0</b><span data-i18n="profile.stat.likes">Layk</span></div>
+          <div class="substat"><b id="statComments">0</b><span data-i18n="profile.stat.comments">Komment</span></div>
         </div>
 
         <div class="view-toolbar">
@@ -3426,10 +3426,10 @@
         </div>
         <div id="adminStatsGrid" class="admin-stats-grid"></div>
         <div id="adminReportsSection">
-          <div class="section-label">Shikoyatlar</div>
+          <div class="section-label" data-i18n="admin.reportsLabel">Shikoyatlar</div>
           <div id="adminReportsList"></div>
         </div>
-        <div class="section-label">Foydalanuvchilar</div>
+        <div class="section-label" data-i18n="admin.usersLabel">Foydalanuvchilar</div>
         <div id="adminUsersList"></div>
       </section>
     </main>
@@ -3461,17 +3461,17 @@
   <div class="modal-backdrop" id="reportModal">
     <div class="modal">
       <div class="modal-head">
-        <h3>Shikoyat qilish</h3>
+        <h3 data-i18n="report.action">Shikoyat qilish</h3>
         <button class="modal-close" id="closeReportModal">✕</button>
       </div>
       <form id="reportForm" class="admin-mod-form">
         <div class="field-hint" id="reportModalSubject" style="margin-bottom:10px;"></div>
         <div class="field">
-          <label>Sababi</label>
-          <textarea id="reportReasonInput" rows="3" placeholder="Nima uchun shikoyat qilyapsiz? (ixtiyoriy)"></textarea>
+          <label data-i18n="report.reasonLabel">Sababi</label>
+          <textarea id="reportReasonInput" rows="3" placeholder="Nima uchun shikoyat qilyapsiz? (ixtiyoriy)" data-i18n-ph="report.reasonPh"></textarea>
         </div>
         <div class="form-error" id="reportModalError"></div>
-        <button type="submit" class="btn btn-primary btn-block">Yuborish</button>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="report.submitBtn">Yuborish</button>
       </form>
     </div>
   </div>
@@ -3755,8 +3755,63 @@
           "notif.unban": "Administrator ban muddatingizni muddatidan avval bekor qildi. Endi hisobingizdan foydalanishingiz mumkin.",
           "notif.unmute": "Administrator mut jazoyingizni muddatidan avval bekor qildi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin.",
           "notif.banExpired": "Ban muddatingiz tugadi. Hisobingizdan yana foydalanishingiz mumkin.",
-          "notif.muteExpired": "Mut muddatingiz tugadi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin."
-        },
+          "notif.muteExpired": "Mut muddatingiz tugadi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin.",
+          "nav.saved": "Saqlanganlar",
+          "search.placeholder": "Qidirish...",
+          "search.clearAria": "Tozalash",
+          "search.closeAria": "Yopish",
+          "saved.eyebrow": "Sevimlilar",
+          "saved.title": "Saqlangan <span>asarlar</span>",
+          "saved.sub": "Keyinroq ko'rish uchun saqlab qo'ygan asarlaringiz shu yerda.",
+          "profile.stat.followers": "Obunachi",
+          "profile.stat.following": "Obuna",
+          "profile.stat.likes": "Layk",
+          "profile.stat.comments": "Komment",
+          "admin.reportsLabel": "Shikoyatlar",
+          "admin.usersLabel": "Foydalanuvchilar",
+          "report.action": "Shikoyat qilish",
+          "report.reasonLabel": "Sababi",
+          "report.reasonPh": "Nima uchun shikoyat qilyapsiz? (ixtiyoriy)",
+          "report.submitBtn": "Yuborish",
+          "report.sentAlert": "Shikoyatingiz qabul qilindi. Ko'rib chiqamiz.",
+          "admin.stat.users": "Foydalanuvchilar",
+          "admin.stat.todayHint": "+{count} bugun",
+          "admin.stat.works": "Asarlar",
+          "admin.stat.likes": "Layklar",
+          "admin.stat.comments": "Kommentlar",
+          "admin.stat.openReports": "Ochiq shikoyatlar",
+          "admin.stat.banMute": "Ban/Mut",
+          "admin.report.typeWork": "Asar",
+          "admin.report.typeUser": "Foydalanuvchi",
+          "admin.report.subjectWork": "Asar: \"{title}\"",
+          "admin.report.subjectUser": "Foydalanuvchi: @{username}",
+          "admin.report.gone": "(allaqachon o'chirilgan)",
+          "admin.report.reporter": "Shikoyatchi: @{username} ({fullname})",
+          "admin.report.resolved": "✓ Ko'rib chiqilgan",
+          "admin.report.resolvedDeleted": " · surat o'chirildi",
+          "admin.report.resolveBtn": "Ko'rib chiqildi deb belgilash",
+          "admin.report.deleteWorkBtn": "Suratni o'chirish",
+          "admin.report.deleteConfirm": "Ushbu asarning suratini butunlay o'chirmoqchimisiz? Bu amalni bekor qilib bo'lmaydi.",
+          "admin.report.empty": "Hozircha shikoyatlar yo'q.",
+          "admin.badge.fired": "Ishdan bo'shatilgan",
+          "admin.action.fire": "Ishdan bo'shatish",
+          "admin.action.rehire": "Ishga qaytarish",
+          "admin.confirm.fire": "@{username} ni ishdan bo'shatmoqchimisiz? U administrator huquqidan mahrum bo'ladi va faqat sizning ruxsatingiz bilan qaytadan administrator bo'la oladi.",
+          "admin.confirm.rehire": "@{username} ga qaytadan administrator parolini kiritish huquqini bermoqchimisiz?",
+          "follow.subscribeBtn": "Obuna bo'lish",
+          "follow.unsubscribeBtn": "Obunani bekor qilish",
+          "follow.unfollowConfirm": "Obunani bekor qilmoqchimisiz? Bu foydalanuvchining yangi asarlari haqida endi xabardor bo'lmaysiz.",
+          "follow.stats": "{followers} obunachi · {following} kuzatmoqda",
+          "follow.short": "Obuna",
+          "follow.shortAdd": "+ Obuna",
+          "notif.follow": "{name} sizga obuna bo'ldi",
+          "save.aria": "Saqlash",
+          "share.aria": "Ulashish",
+          "feedThumb.aria": "Rasmni to'liq hajmda ko'rish",
+          "notif.someone": "Kimdir",
+          "notif.adminFired": "Boss sizni administrator lavozimidan ozod qildi. Endi oddiy foydalanuvchisiz — qaytadan administrator bo'lish uchun boss ruxsati kerak.",
+          "notif.adminRehired": "Boss sizga qaytadan administrator parolini kiritish huquqini berdi."
+       },
         en: {
           _locale: 'en-US', _dir: 'ltr', _name: "English",
           "auth.tagline": "Keep the paintings, sculptures and models you made by hand — put them up for sale or just for show.",
@@ -3885,8 +3940,63 @@
           "notif.unban": "Administrator lifted your ban early. You can use your account again.",
           "notif.unmute": "Administrator lifted your mute early. You can comment, message, and upload new work again.",
           "notif.banExpired": "Your ban has expired. You can use your account again.",
-          "notif.muteExpired": "Your mute has expired. You can comment, message, and upload new work again."
-        },
+          "notif.muteExpired": "Your mute has expired. You can comment, message, and upload new work again.",
+          "nav.saved": "Saved",
+          "search.placeholder": "Search...",
+          "search.clearAria": "Clear",
+          "search.closeAria": "Close",
+          "saved.eyebrow": "Favorites",
+          "saved.title": "Saved <span>works</span>",
+          "saved.sub": "Works you've saved to view later are here.",
+          "profile.stat.followers": "Followers",
+          "profile.stat.following": "Following",
+          "profile.stat.likes": "Likes",
+          "profile.stat.comments": "Comments",
+          "admin.reportsLabel": "Reports",
+          "admin.usersLabel": "Users",
+          "report.action": "Report",
+          "report.reasonLabel": "Reason",
+          "report.reasonPh": "Why are you reporting this? (optional)",
+          "report.submitBtn": "Submit",
+          "report.sentAlert": "Your report has been received. We'll review it.",
+          "admin.stat.users": "Users",
+          "admin.stat.todayHint": "+{count} today",
+          "admin.stat.works": "Works",
+          "admin.stat.likes": "Likes",
+          "admin.stat.comments": "Comments",
+          "admin.stat.openReports": "Open reports",
+          "admin.stat.banMute": "Ban/Mute",
+          "admin.report.typeWork": "Work",
+          "admin.report.typeUser": "User",
+          "admin.report.subjectWork": "Work: \"{title}\"",
+          "admin.report.subjectUser": "User: @{username}",
+          "admin.report.gone": "(already deleted)",
+          "admin.report.reporter": "Reporter: @{username} ({fullname})",
+          "admin.report.resolved": "✓ Reviewed",
+          "admin.report.resolvedDeleted": " · image deleted",
+          "admin.report.resolveBtn": "Mark as reviewed",
+          "admin.report.deleteWorkBtn": "Delete image",
+          "admin.report.deleteConfirm": "Do you want to permanently delete this work's image? This action cannot be undone.",
+          "admin.report.empty": "No reports yet.",
+          "admin.badge.fired": "Dismissed",
+          "admin.action.fire": "Dismiss",
+          "admin.action.rehire": "Reinstate",
+          "admin.confirm.fire": "Do you want to dismiss @{username}? They will lose admin privileges and can only become an admin again with your permission.",
+          "admin.confirm.rehire": "Do you want to allow @{username} to enter the admin password again?",
+          "follow.subscribeBtn": "Follow",
+          "follow.unsubscribeBtn": "Unfollow",
+          "follow.unfollowConfirm": "Do you want to unfollow? You will no longer be notified about this user's new works.",
+          "follow.stats": "{followers} followers · {following} following",
+          "follow.short": "Following",
+          "follow.shortAdd": "+ Follow",
+          "notif.follow": "{name} started following you",
+          "save.aria": "Save",
+          "share.aria": "Share",
+          "feedThumb.aria": "View image in full size",
+          "notif.someone": "Someone",
+          "notif.adminFired": "The boss has dismissed you from the administrator role. You are now a regular user — you'll need the boss's permission to become an administrator again.",
+          "notif.adminRehired": "The boss has given you permission to enter the administrator password again."
+       },
         zh: {
           _locale: 'zh-CN', _dir: 'ltr', _name: "中文",
           "auth.tagline": "保存您亲手制作的绘画、雕塑和模型 — 可以出售，也可以只是展示。",
@@ -4015,8 +4125,63 @@
           "notif.unban": "管理员已提前解除您的封禁。您可以再次使用账户。",
           "notif.unmute": "管理员已提前解除您的禁言。您可以再次评论、发消息和上传作品。",
           "notif.banExpired": "您的封禁期已结束。您可以再次使用账户。",
-          "notif.muteExpired": "您的禁言期已结束。您可以再次评论、发消息和上传作品。"
-        },
+          "notif.muteExpired": "您的禁言期已结束。您可以再次评论、发消息和上传作品。",
+          "nav.saved": "已保存",
+          "search.placeholder": "搜索...",
+          "search.clearAria": "清除",
+          "search.closeAria": "关闭",
+          "saved.eyebrow": "收藏",
+          "saved.title": "已保存的<span>作品</span>",
+          "saved.sub": "您保存以便稍后查看的作品都在这里。",
+          "profile.stat.followers": "粉丝",
+          "profile.stat.following": "关注",
+          "profile.stat.likes": "点赞",
+          "profile.stat.comments": "评论",
+          "admin.reportsLabel": "举报",
+          "admin.usersLabel": "用户",
+          "report.action": "举报",
+          "report.reasonLabel": "原因",
+          "report.reasonPh": "您举报的原因是什么？（可选）",
+          "report.submitBtn": "提交",
+          "report.sentAlert": "您的举报已收到，我们将进行审核。",
+          "admin.stat.users": "用户",
+          "admin.stat.todayHint": "今日 +{count}",
+          "admin.stat.works": "作品",
+          "admin.stat.likes": "点赞",
+          "admin.stat.comments": "评论",
+          "admin.stat.openReports": "待处理举报",
+          "admin.stat.banMute": "封禁/禁言",
+          "admin.report.typeWork": "作品",
+          "admin.report.typeUser": "用户",
+          "admin.report.subjectWork": "作品：《{title}》",
+          "admin.report.subjectUser": "用户：@{username}",
+          "admin.report.gone": "（已删除）",
+          "admin.report.reporter": "举报人：@{username}（{fullname}）",
+          "admin.report.resolved": "✓ 已处理",
+          "admin.report.resolvedDeleted": " · 图片已删除",
+          "admin.report.resolveBtn": "标记为已处理",
+          "admin.report.deleteWorkBtn": "删除图片",
+          "admin.report.deleteConfirm": "您要永久删除该作品的图片吗？此操作无法撤销。",
+          "admin.report.empty": "暂无举报。",
+          "admin.badge.fired": "已解职",
+          "admin.action.fire": "解职",
+          "admin.action.rehire": "恢复职务",
+          "admin.confirm.fire": "您要解除 @{username} 的职务吗？该用户将失去管理员权限，只有在您授权后才能重新成为管理员。",
+          "admin.confirm.rehire": "您要允许 @{username} 重新输入管理员密码吗？",
+          "follow.subscribeBtn": "关注",
+          "follow.unsubscribeBtn": "取消关注",
+          "follow.unfollowConfirm": "您要取消关注吗？您将不再收到该用户新作品的通知。",
+          "follow.stats": "{followers} 位粉丝 · 关注 {following} 人",
+          "follow.short": "已关注",
+          "follow.shortAdd": "+ 关注",
+          "notif.follow": "{name} 关注了您",
+          "save.aria": "保存",
+          "share.aria": "分享",
+          "feedThumb.aria": "查看大图",
+          "notif.someone": "有人",
+          "notif.adminFired": "老板已解除您的管理员职务。您现在是普通用户——需要老板许可才能再次成为管理员。",
+          "notif.adminRehired": "老板已再次授权您输入管理员密码。"
+       },
         hi: {
           _locale: 'hi-IN', _dir: 'ltr', _name: "हिन्दी",
           "auth.tagline": "अपने हाथों से बनाई गई पेंटिंग, मूर्तियाँ और मॉडल सहेजें — बिक्री के लिए रखें या बस प्रदर्शित करें।",
@@ -4145,8 +4310,63 @@
           "notif.unban": "प्रशासक ने आपका बैन समय से पहले हटा दिया। अब आप अपने खाते का उपयोग फिर से कर सकते हैं।",
           "notif.unmute": "प्रशासक ने आपका म्यूट समय से पहले हटा दिया। अब आप फिर से टिप्पणी, संदेश और कृति अपलोड कर सकते हैं।",
           "notif.banExpired": "आपका बैन समाप्त हो गया है। अब आप अपने खाते का उपयोग फिर से कर सकते हैं।",
-          "notif.muteExpired": "आपका म्यूट समाप्त हो गया है। अब आप फिर से टिप्पणी, संदेश और कृति अपलोड कर सकते हैं।"
-        },
+          "notif.muteExpired": "आपका म्यूट समाप्त हो गया है। अब आप फिर से टिप्पणी, संदेश और कृति अपलोड कर सकते हैं।",
+          "nav.saved": "सहेजे गए",
+          "search.placeholder": "खोजें...",
+          "search.clearAria": "साफ़ करें",
+          "search.closeAria": "बंद करें",
+          "saved.eyebrow": "पसंदीदा",
+          "saved.title": "सहेजी गई <span>कृतियाँ</span>",
+          "saved.sub": "बाद में देखने के लिए सहेजी गई आपकी कृतियाँ यहाँ हैं।",
+          "profile.stat.followers": "फ़ॉलोअर्स",
+          "profile.stat.following": "फ़ॉलोइंग",
+          "profile.stat.likes": "लाइक",
+          "profile.stat.comments": "टिप्पणियाँ",
+          "admin.reportsLabel": "शिकायतें",
+          "admin.usersLabel": "उपयोगकर्ता",
+          "report.action": "शिकायत करें",
+          "report.reasonLabel": "कारण",
+          "report.reasonPh": "आप शिकायत क्यों कर रहे हैं? (वैकल्पिक)",
+          "report.submitBtn": "जमा करें",
+          "report.sentAlert": "आपकी शिकायत प्राप्त हो गई है। हम इसकी समीक्षा करेंगे।",
+          "admin.stat.users": "उपयोगकर्ता",
+          "admin.stat.todayHint": "+{count} आज",
+          "admin.stat.works": "कृतियाँ",
+          "admin.stat.likes": "लाइक",
+          "admin.stat.comments": "टिप्पणियाँ",
+          "admin.stat.openReports": "खुली शिकायतें",
+          "admin.stat.banMute": "बैन/म्यूट",
+          "admin.report.typeWork": "कृति",
+          "admin.report.typeUser": "उपयोगकर्ता",
+          "admin.report.subjectWork": "कृति: \"{title}\"",
+          "admin.report.subjectUser": "उपयोगकर्ता: @{username}",
+          "admin.report.gone": "(पहले ही हटाया जा चुका है)",
+          "admin.report.reporter": "शिकायतकर्ता: @{username} ({fullname})",
+          "admin.report.resolved": "✓ समीक्षित",
+          "admin.report.resolvedDeleted": " · छवि हटाई गई",
+          "admin.report.resolveBtn": "समीक्षित के रूप में चिह्नित करें",
+          "admin.report.deleteWorkBtn": "छवि हटाएं",
+          "admin.report.deleteConfirm": "क्या आप इस कृति की छवि को स्थायी रूप से हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।",
+          "admin.report.empty": "अभी तक कोई शिकायत नहीं है।",
+          "admin.badge.fired": "बर्खास्त",
+          "admin.action.fire": "बर्खास्त करें",
+          "admin.action.rehire": "पुनर्बहाल करें",
+          "admin.confirm.fire": "क्या आप @{username} को बर्खास्त करना चाहते हैं? वे व्यवस्थापक अधिकार खो देंगे और केवल आपकी अनुमति से ही फिर से व्यवस्थापक बन सकेंगे।",
+          "admin.confirm.rehire": "क्या आप @{username} को व्यवस्थापक पासवर्ड फिर से दर्ज करने की अनुमति देना चाहते हैं?",
+          "follow.subscribeBtn": "फ़ॉलो करें",
+          "follow.unsubscribeBtn": "अनफ़ॉलो करें",
+          "follow.unfollowConfirm": "क्या आप अनफ़ॉलो करना चाहते हैं? अब आपको इस उपयोगकर्ता की नई कृतियों की सूचना नहीं मिलेगी।",
+          "follow.stats": "{followers} फ़ॉलोअर्स · {following} फ़ॉलोइंग",
+          "follow.short": "फ़ॉलो हो रहा है",
+          "follow.shortAdd": "+ फ़ॉलो",
+          "notif.follow": "{name} ने आपको फ़ॉलो करना शुरू किया",
+          "save.aria": "सहेजें",
+          "share.aria": "शेयर करें",
+          "feedThumb.aria": "छवि को पूर्ण आकार में देखें",
+          "notif.someone": "किसी ने",
+          "notif.adminFired": "बॉस ने आपको व्यवस्थापक पद से हटा दिया है। अब आप एक सामान्य उपयोगकर्ता हैं — फिर से व्यवस्थापक बनने के लिए बॉस की अनुमति चाहिए होगी।",
+          "notif.adminRehired": "बॉस ने आपको फिर से व्यवस्थापक पासवर्ड दर्ज करने का अधिकार दिया है।"
+       },
         es: {
           _locale: 'es-ES', _dir: 'ltr', _name: "Español",
           "auth.tagline": "Guarda las pinturas, esculturas y maquetas que hiciste a mano — publícalas en venta o solo para mostrarlas.",
@@ -4275,8 +4495,63 @@
           "notif.unban": "El administrador quitó tu baneo antes de tiempo. Ya puedes volver a usar tu cuenta.",
           "notif.unmute": "El administrador quitó tu silencio antes de tiempo. Ya puedes comentar, enviar mensajes y subir obras de nuevo.",
           "notif.banExpired": "Tu baneo ha terminado. Ya puedes volver a usar tu cuenta.",
-          "notif.muteExpired": "Tu silencio ha terminado. Ya puedes comentar, enviar mensajes y subir obras de nuevo."
-        },
+          "notif.muteExpired": "Tu silencio ha terminado. Ya puedes comentar, enviar mensajes y subir obras de nuevo.",
+          "nav.saved": "Guardados",
+          "search.placeholder": "Buscar...",
+          "search.clearAria": "Borrar",
+          "search.closeAria": "Cerrar",
+          "saved.eyebrow": "Favoritos",
+          "saved.title": "Obras <span>guardadas</span>",
+          "saved.sub": "Aquí están las obras que guardaste para ver más tarde.",
+          "profile.stat.followers": "Seguidores",
+          "profile.stat.following": "Siguiendo",
+          "profile.stat.likes": "Me gusta",
+          "profile.stat.comments": "Comentarios",
+          "admin.reportsLabel": "Denuncias",
+          "admin.usersLabel": "Usuarios",
+          "report.action": "Denunciar",
+          "report.reasonLabel": "Motivo",
+          "report.reasonPh": "¿Por qué estás denunciando esto? (opcional)",
+          "report.submitBtn": "Enviar",
+          "report.sentAlert": "Tu denuncia ha sido recibida. La revisaremos.",
+          "admin.stat.users": "Usuarios",
+          "admin.stat.todayHint": "+{count} hoy",
+          "admin.stat.works": "Obras",
+          "admin.stat.likes": "Me gusta",
+          "admin.stat.comments": "Comentarios",
+          "admin.stat.openReports": "Denuncias abiertas",
+          "admin.stat.banMute": "Ban/Mute",
+          "admin.report.typeWork": "Obra",
+          "admin.report.typeUser": "Usuario",
+          "admin.report.subjectWork": "Obra: \"{title}\"",
+          "admin.report.subjectUser": "Usuario: @{username}",
+          "admin.report.gone": "(ya eliminado)",
+          "admin.report.reporter": "Denunciante: @{username} ({fullname})",
+          "admin.report.resolved": "✓ Revisado",
+          "admin.report.resolvedDeleted": " · imagen eliminada",
+          "admin.report.resolveBtn": "Marcar como revisado",
+          "admin.report.deleteWorkBtn": "Eliminar imagen",
+          "admin.report.deleteConfirm": "¿Quieres eliminar permanentemente la imagen de esta obra? Esta acción no se puede deshacer.",
+          "admin.report.empty": "Aún no hay denuncias.",
+          "admin.badge.fired": "Destituido",
+          "admin.action.fire": "Destituir",
+          "admin.action.rehire": "Reincorporar",
+          "admin.confirm.fire": "¿Quieres destituir a @{username}? Perderá los privilegios de administrador y solo podrá volver a serlo con tu permiso.",
+          "admin.confirm.rehire": "¿Quieres permitir que @{username} vuelva a introducir la contraseña de administrador?",
+          "follow.subscribeBtn": "Seguir",
+          "follow.unsubscribeBtn": "Dejar de seguir",
+          "follow.unfollowConfirm": "¿Quieres dejar de seguir? Ya no recibirás notificaciones sobre las nuevas obras de este usuario.",
+          "follow.stats": "{followers} seguidores · siguiendo a {following}",
+          "follow.short": "Siguiendo",
+          "follow.shortAdd": "+ Seguir",
+          "notif.follow": "{name} empezó a seguirte",
+          "save.aria": "Guardar",
+          "share.aria": "Compartir",
+          "feedThumb.aria": "Ver imagen a tamaño completo",
+          "notif.someone": "Alguien",
+          "notif.adminFired": "El jefe te ha destituido del cargo de administrador. Ahora eres un usuario normal — necesitarás el permiso del jefe para volver a ser administrador.",
+          "notif.adminRehired": "El jefe te ha dado permiso para introducir de nuevo la contraseña de administrador."
+       },
         ar: {
           _locale: 'ar-SA', _dir: 'rtl', _name: "العربية",
           "auth.tagline": "احفظ اللوحات والمنحوتات والمجسمات التي صنعتها بيديك — اعرضها للبيع أو للعرض فقط.",
@@ -4405,8 +4680,63 @@
           "notif.unban": "ألغى المشرف حظرك مبكرًا. يمكنك استخدام حسابك مجددًا.",
           "notif.unmute": "ألغى المشرف كتمك مبكرًا. يمكنك التعليق والمراسلة ورفع الأعمال مجددًا.",
           "notif.banExpired": "انتهت مدة حظرك. يمكنك استخدام حسابك مجددًا.",
-          "notif.muteExpired": "انتهت مدة كتمك. يمكنك التعليق والمراسلة ورفع الأعمال مجددًا."
-        },
+          "notif.muteExpired": "انتهت مدة كتمك. يمكنك التعليق والمراسلة ورفع الأعمال مجددًا.",
+          "nav.saved": "المحفوظات",
+          "search.placeholder": "بحث...",
+          "search.clearAria": "مسح",
+          "search.closeAria": "إغلاق",
+          "saved.eyebrow": "المفضلة",
+          "saved.title": "الأعمال <span>المحفوظة</span>",
+          "saved.sub": "الأعمال التي حفظتها لمشاهدتها لاحقًا موجودة هنا.",
+          "profile.stat.followers": "المتابعون",
+          "profile.stat.following": "المتابَعون",
+          "profile.stat.likes": "الإعجابات",
+          "profile.stat.comments": "التعليقات",
+          "admin.reportsLabel": "البلاغات",
+          "admin.usersLabel": "المستخدمون",
+          "report.action": "إبلاغ",
+          "report.reasonLabel": "السبب",
+          "report.reasonPh": "لماذا تبلغ عن هذا؟ (اختياري)",
+          "report.submitBtn": "إرسال",
+          "report.sentAlert": "تم استلام بلاغك. سنراجعه.",
+          "admin.stat.users": "المستخدمون",
+          "admin.stat.todayHint": "+{count} اليوم",
+          "admin.stat.works": "الأعمال",
+          "admin.stat.likes": "الإعجابات",
+          "admin.stat.comments": "التعليقات",
+          "admin.stat.openReports": "بلاغات مفتوحة",
+          "admin.stat.banMute": "حظر/كتم",
+          "admin.report.typeWork": "عمل",
+          "admin.report.typeUser": "مستخدم",
+          "admin.report.subjectWork": "العمل: \"{title}\"",
+          "admin.report.subjectUser": "المستخدم: @{username}",
+          "admin.report.gone": "(تم حذفه بالفعل)",
+          "admin.report.reporter": "المبلّغ: @{username} ({fullname})",
+          "admin.report.resolved": "✓ تمت المراجعة",
+          "admin.report.resolvedDeleted": " · تم حذف الصورة",
+          "admin.report.resolveBtn": "وضع علامة تمت المراجعة",
+          "admin.report.deleteWorkBtn": "حذف الصورة",
+          "admin.report.deleteConfirm": "هل تريد حذف صورة هذا العمل نهائيًا؟ لا يمكن التراجع عن هذا الإجراء.",
+          "admin.report.empty": "لا توجد بلاغات حتى الآن.",
+          "admin.badge.fired": "مفصول",
+          "admin.action.fire": "فصل",
+          "admin.action.rehire": "إعادة تعيين",
+          "admin.confirm.fire": "هل تريد فصل @{username}؟ سيفقد صلاحيات المشرف ولن يتمكن من العودة كمشرف إلا بإذنك.",
+          "admin.confirm.rehire": "هل تريد السماح لـ @{username} بإدخال كلمة مرور المشرف مرة أخرى؟",
+          "follow.subscribeBtn": "متابعة",
+          "follow.unsubscribeBtn": "إلغاء المتابعة",
+          "follow.unfollowConfirm": "هل تريد إلغاء المتابعة؟ لن يتم إعلامك بعد الآن بالأعمال الجديدة لهذا المستخدم.",
+          "follow.stats": "{followers} متابع · يتابع {following}",
+          "follow.short": "متابَع",
+          "follow.shortAdd": "+ متابعة",
+          "notif.follow": "بدأ {name} بمتابعتك",
+          "save.aria": "حفظ",
+          "share.aria": "مشاركة",
+          "feedThumb.aria": "عرض الصورة بالحجم الكامل",
+          "notif.someone": "شخص ما",
+          "notif.adminFired": "قام الرئيس بإعفائك من منصب المشرف. أنت الآن مستخدم عادي — ستحتاج إلى إذن الرئيس لتصبح مشرفًا مرة أخرى.",
+          "notif.adminRehired": "منحك الرئيس الإذن لإدخال كلمة مرور المشرف مرة أخرى."
+       },
         ru: {
           _locale: 'ru-RU', _dir: 'ltr', _name: "Русский",
           "auth.tagline": "Сохраняйте картины, скульптуры и макеты, сделанные своими руками, — выставляйте на продажу или просто на показ.",
@@ -4535,8 +4865,63 @@
           "notif.unban": "Администратор досрочно снял ваш бан. Вы снова можете пользоваться аккаунтом.",
           "notif.unmute": "Администратор досрочно снял ваш мут. Вы снова можете комментировать, писать сообщения и загружать работы.",
           "notif.banExpired": "Срок вашего бана истёк. Вы снова можете пользоваться аккаунтом.",
-          "notif.muteExpired": "Срок вашего мута истёк. Вы снова можете комментировать, писать сообщения и загружать работы."
-        }
+          "notif.muteExpired": "Срок вашего мута истёк. Вы снова можете комментировать, писать сообщения и загружать работы.",
+          "nav.saved": "Сохранённые",
+          "search.placeholder": "Поиск...",
+          "search.clearAria": "Очистить",
+          "search.closeAria": "Закрыть",
+          "saved.eyebrow": "Избранное",
+          "saved.title": "Сохранённые <span>работы</span>",
+          "saved.sub": "Здесь находятся работы, которые вы сохранили, чтобы посмотреть позже.",
+          "profile.stat.followers": "Подписчики",
+          "profile.stat.following": "Подписки",
+          "profile.stat.likes": "Лайки",
+          "profile.stat.comments": "Комментарии",
+          "admin.reportsLabel": "Жалобы",
+          "admin.usersLabel": "Пользователи",
+          "report.action": "Пожаловаться",
+          "report.reasonLabel": "Причина",
+          "report.reasonPh": "Почему вы жалуетесь? (необязательно)",
+          "report.submitBtn": "Отправить",
+          "report.sentAlert": "Ваша жалоба принята. Мы её рассмотрим.",
+          "admin.stat.users": "Пользователи",
+          "admin.stat.todayHint": "+{count} сегодня",
+          "admin.stat.works": "Работы",
+          "admin.stat.likes": "Лайки",
+          "admin.stat.comments": "Комментарии",
+          "admin.stat.openReports": "Открытые жалобы",
+          "admin.stat.banMute": "Бан/Мут",
+          "admin.report.typeWork": "Работа",
+          "admin.report.typeUser": "Пользователь",
+          "admin.report.subjectWork": "Работа: «{title}»",
+          "admin.report.subjectUser": "Пользователь: @{username}",
+          "admin.report.gone": "(уже удалено)",
+          "admin.report.reporter": "Заявитель: @{username} ({fullname})",
+          "admin.report.resolved": "✓ Рассмотрено",
+          "admin.report.resolvedDeleted": " · изображение удалено",
+          "admin.report.resolveBtn": "Отметить как рассмотренное",
+          "admin.report.deleteWorkBtn": "Удалить изображение",
+          "admin.report.deleteConfirm": "Вы хотите безвозвратно удалить изображение этой работы? Это действие нельзя отменить.",
+          "admin.report.empty": "Пока жалоб нет.",
+          "admin.badge.fired": "Уволен",
+          "admin.action.fire": "Уволить",
+          "admin.action.rehire": "Восстановить",
+          "admin.confirm.fire": "Вы хотите уволить @{username}? Он лишится прав администратора и сможет снова стать администратором только с вашего разрешения.",
+          "admin.confirm.rehire": "Вы хотите разрешить @{username} снова ввести пароль администратора?",
+          "follow.subscribeBtn": "Подписаться",
+          "follow.unsubscribeBtn": "Отписаться",
+          "follow.unfollowConfirm": "Вы хотите отписаться? Вы больше не будете получать уведомления о новых работах этого пользователя.",
+          "follow.stats": "{followers} подписчиков · {following} подписок",
+          "follow.short": "Подписан",
+          "follow.shortAdd": "+ Подписаться",
+          "notif.follow": "{name} подписался(ась) на вас",
+          "save.aria": "Сохранить",
+          "share.aria": "Поделиться",
+          "feedThumb.aria": "Посмотреть изображение в полном размере",
+          "notif.someone": "Кто-то",
+          "notif.adminFired": "Босс освободил вас от должности администратора. Теперь вы обычный пользователь — чтобы снова стать администратором, потребуется разрешение босса.",
+          "notif.adminRehired": "Босс снова дал вам право ввести пароль администратора."
+       }
       };
 
       let currentLang = localStorage.getItem('madein_lang') || 'uz';
@@ -4569,6 +4954,9 @@
         });
         document.querySelectorAll('[data-i18n-title]').forEach(el => {
           el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
+        });
+        document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+          el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
         });
         const langSelect = document.getElementById('langSelect');
         if (langSelect) langSelect.value = currentLang;
@@ -4843,9 +5231,9 @@
           case 'unmute': return t('notif.unmute');
           case 'ban-expired': return t('notif.banExpired');
           case 'mute-expired': return t('notif.muteExpired');
-          case 'follow': return (n.from || 'Kimdir') + " sizga obuna bo'ldi";
-          case 'admin-fired': return "Boss sizni administrator lavozimidan ozod qildi. Endi oddiy foydalanuvchisiz — qaytadan administrator bo'lish uchun boss ruxsati kerak.";
-          case 'admin-rehired': return "Boss sizga qaytadan administrator parolini kiritish huquqini berdi.";
+          case 'follow': return t('notif.follow', { name: n.from || t('notif.someone') });
+          case 'admin-fired': return t('notif.adminFired');
+          case 'admin-rehired': return t('notif.adminRehired');
           default: return n.text || '';
         }
       }
@@ -5110,7 +5498,7 @@
           const badges = [];
           if (u.isBoss) badges.push(`<span class="admin-badge admin">Boss</span>`);
           else if (u.isAdmin) badges.push(`<span class="admin-badge admin">${t('admin.badge.admin')}</span>`);
-          if (u.adminAccessRevoked) badges.push(`<span class="admin-badge banned">Ishdan bo'shatilgan</span>`);
+          if (u.adminAccessRevoked) badges.push(`<span class="admin-badge banned">${t('admin.badge.fired')}</span>`);
           if (u.bannedUntil) badges.push(`<span class="admin-badge banned">${t('admin.badge.banned')}</span>`);
           if (u.mutedUntil) badges.push(`<span class="admin-badge muted">${t('admin.badge.muted')}</span>`);
           if (!u.bannedUntil && !u.mutedUntil && !u.isAdmin && !u.isBoss) badges.push(`<span class="admin-badge ok">${t('admin.badge.ok')}</span>`);
@@ -5140,9 +5528,9 @@
           }
           if (iAmBoss && !isSelf && !u.isBoss) {
             if (u.isAdmin) {
-              actions += `<button type="button" class="btn btn-ghost" data-admin-action="fire" data-username="${u.username}">Ishdan bo'shatish</button>`;
+              actions += `<button type="button" class="btn btn-ghost" data-admin-action="fire" data-username="${u.username}">${t('admin.action.fire')}</button>`;
             } else if (u.adminAccessRevoked) {
-              actions += `<button type="button" class="btn btn-ghost" data-admin-action="rehire" data-username="${u.username}">Ishga qaytarish</button>`;
+              actions += `<button type="button" class="btn btn-ghost" data-admin-action="rehire" data-username="${u.username}">${t('admin.action.rehire')}</button>`;
             }
           }
 
@@ -5183,7 +5571,7 @@
           }
         }
         if (action === 'fire') {
-          if (!confirm(`@${username} ni ishdan bo'shatmoqchimisiz? U administrator huquqidan mahrum bo'ladi va faqat sizning ruxsatingiz bilan qaytadan administrator bo'la oladi.`)) return;
+          if (!confirm(t('admin.confirm.fire', { username }))) return;
           try {
             await api('/api/admin/users/' + encodeURIComponent(username) + '/fire', { method: 'POST' });
             loadAdminUsers();
@@ -5192,7 +5580,7 @@
           }
         }
         if (action === 'rehire') {
-          if (!confirm(`@${username} ga qaytadan administrator parolini kiritish huquqini bermoqchimisiz?`)) return;
+          if (!confirm(t('admin.confirm.rehire', { username }))) return;
           try {
             await api('/api/admin/users/' + encodeURIComponent(username) + '/rehire', { method: 'POST' });
             loadAdminUsers();
@@ -5247,12 +5635,12 @@
         try {
           const s = await api('/api/admin/stats');
           grid.innerHTML = [
-            ['Foydalanuvchilar', s.usersCount, '+' + s.todayUsers + ' bugun'],
-            ['Asarlar', s.worksCount, '+' + s.todayWorks + ' bugun'],
-            ['Layklar', s.likesCount, ''],
-            ['Kommentlar', s.commentsCount, ''],
-            ['Ochiq shikoyatlar', s.openReports, ''],
-            ['Ban/Mut', s.bannedCount + ' / ' + s.mutedCount, '']
+            [t('admin.stat.users'), s.usersCount, t('admin.stat.todayHint', { count: s.todayUsers })],
+            [t('admin.stat.works'), s.worksCount, t('admin.stat.todayHint', { count: s.todayWorks })],
+            [t('admin.stat.likes'), s.likesCount, ''],
+            [t('admin.stat.comments'), s.commentsCount, ''],
+            [t('admin.stat.openReports'), s.openReports, ''],
+            [t('admin.stat.banMute'), s.bannedCount + ' / ' + s.mutedCount, '']
           ].map(([label, value, hint]) => `
         <div class="admin-stat-card">
           <div class="admin-stat-value">${value}</div>
@@ -5266,29 +5654,29 @@
 
       function reportItemHTML(r) {
         const date = fmtDate(r.createdAt);
-        const subject = r.type === 'work' ? ('Asar: "' + escapeHtml(r.targetTitle || '') + '"') : ('Foydalanuvchi: @' + escapeHtml(r.targetId));
-        const goneNote = !r.targetExists ? ' <span class="admin-report-gone">(allaqachon o\'chirilgan)</span>' : '';
+        const subject = r.type === 'work' ? t('admin.report.subjectWork', { title: escapeHtml(r.targetTitle || '') }) : t('admin.report.subjectUser', { username: escapeHtml(r.targetId) });
+        const goneNote = !r.targetExists ? ' <span class="admin-report-gone">' + t('admin.report.gone') + '</span>' : '';
         const canDeleteWork = r.type === 'work' && r.targetExists && r.status !== 'resolved';
         return `
       <div class="admin-report-card ${r.status === 'resolved' ? 'resolved' : ''}" data-id="${r.id}">
         <div class="admin-report-head">
-          <span class="admin-report-type">${r.type === 'work' ? '🖼️ Asar' : '👤 Foydalanuvchi'}</span>
+          <span class="admin-report-type">${r.type === 'work' ? '🖼️ ' + t('admin.report.typeWork') : '👤 ' + t('admin.report.typeUser')}</span>
           <span class="admin-report-date">${date}</span>
         </div>
         <div class="admin-report-body">
           ${r.type === 'work' && r.targetImage ? `<img class="admin-report-thumb" src="${r.targetImage}" alt="" loading="lazy">` : ''}
           <div class="admin-report-main">
             <div class="admin-report-subject">${subject}${goneNote}</div>
-            <div class="admin-report-reporter">Shikoyatchi: @${escapeHtml(r.reporter)} (${escapeHtml(r.reporterFullname || r.reporter)})</div>
+            <div class="admin-report-reporter">${t('admin.report.reporter', { username: escapeHtml(r.reporter), fullname: escapeHtml(r.reporterFullname || r.reporter) })}</div>
             ${r.reason ? `<div class="admin-report-reason">"${escapeHtml(r.reason)}"</div>` : ''}
           </div>
         </div>
         <div class="admin-report-actions">
           ${r.status === 'resolved'
-            ? `<div class="admin-report-status">✓ Ko'rib chiqilgan${r.action === 'deleted' ? ' · surat o\'chirildi' : ''}</div>`
+            ? `<div class="admin-report-status">${t('admin.report.resolved')}${r.action === 'deleted' ? t('admin.report.resolvedDeleted') : ''}</div>`
             : `
-          <button class="btn btn-ghost btn-sm admin-report-resolve" data-id="${r.id}">Ko'rib chiqildi deb belgilash</button>
-          ${canDeleteWork ? `<button class="btn btn-ghost btn-sm admin-report-delete-work" data-workid="${r.targetId}" data-id="${r.id}">Suratni o'chirish</button>` : ''}`}
+          <button class="btn btn-ghost btn-sm admin-report-resolve" data-id="${r.id}">${t('admin.report.resolveBtn')}</button>
+          ${canDeleteWork ? `<button class="btn btn-ghost btn-sm admin-report-delete-work" data-workid="${r.targetId}" data-id="${r.id}">${t('admin.report.deleteWorkBtn')}</button>` : ''}`}
         </div>
       </div>`;
       }
@@ -5300,7 +5688,7 @@
           const data = await api('/api/admin/reports');
           const items = data.items || [];
           if (!items.length) {
-            list.innerHTML = `<p class="view-sub">Hozircha shikoyatlar yo'q.</p>`;
+            list.innerHTML = `<p class="view-sub">${t('admin.report.empty')}</p>`;
             return;
           }
           list.innerHTML = items.map(reportItemHTML).join('');
@@ -5318,7 +5706,7 @@
           });
           list.querySelectorAll('.admin-report-delete-work').forEach(btn => {
             btn.addEventListener('click', async () => {
-              if (!confirm("Ushbu asarning suratini butunlay o'chirmoqchimisiz? Bu amalni bekor qilib bo'lmaydi.")) return;
+              if (!confirm(t('admin.report.deleteConfirm'))) return;
               btn.disabled = true;
               try {
                 await api('/api/admin/works/' + encodeURIComponent(btn.dataset.workid), { method: 'DELETE' });
@@ -5559,11 +5947,11 @@
         $('#upStatTotal').textContent = works.length;
         $('#upStatSale').textContent = works.filter(w => w.status === 'sale').length;
         $('#upStatExpo').textContent = works.filter(w => w.status === 'expo').length;
-        $('#upFollowStats').textContent = (profile.followersCount || 0) + ' obunachi · ' + (profile.followingCount || 0) + ' kuzatmoqda';
+        $('#upFollowStats').textContent = t('follow.stats', { followers: profile.followersCount || 0, following: profile.followingCount || 0 });
 
         const contactBits = [];
         if (!profile.isSelf) {
-          contactBits.push(`<button class="btn ${profile.isFollowing ? 'btn-ghost' : 'btn-primary'} btn-sm" id="upFollowBtn" data-username="${escapeHtml(profile.username)}" data-following="${profile.isFollowing ? '1' : '0'}">${profile.isFollowing ? "Obunani bekor qilish" : "Obuna bo'lish"}</button>`);
+          contactBits.push(`<button class="btn ${profile.isFollowing ? 'btn-ghost' : 'btn-primary'} btn-sm" id="upFollowBtn" data-username="${escapeHtml(profile.username)}" data-following="${profile.isFollowing ? '1' : '0'}">${profile.isFollowing ? t('follow.unsubscribeBtn') : t('follow.subscribeBtn')}</button>`);
         }
         if (profile.phone) contactBits.push(`<div class="user-profile-contact-item">📞 ${escapeHtml(profile.phone)}</div>`);
         if (profile.social) {
@@ -5573,7 +5961,7 @@
         if (profile.email) contactBits.push(`<div class="user-profile-contact-item">✉️ ${escapeHtml(profile.email)}</div>`);
         if (!CURRENT_USER || profile.username !== CURRENT_USER.username) {
           contactBits.push(`<button class="btn btn-primary btn-sm" id="upContactSellerBtn">${t('userProfile.contactBtn')}</button>`);
-          contactBits.push(`<button class="report-link" id="upReportBtn">Shikoyat qilish</button>`);
+          contactBits.push(`<button class="report-link" id="upReportBtn">${t('report.action')}</button>`);
         }
         $('#upContact').innerHTML = contactBits.join('');
         const msgBtn = $('#upContactSellerBtn');
@@ -5588,7 +5976,7 @@
 
       /* Foydalanuvchiga obuna bo'lish / bekor qilish, so'ng profilni qayta chizish */
       async function toggleFollow(username, isFollowing) {
-        if (isFollowing && !confirm("Obunani bekor qilmoqchimisiz? Bu foydalanuvchining yangi asarlari haqida endi xabardor bo'lmaysiz.")) return;
+        if (isFollowing && !confirm(t('follow.unfollowConfirm'))) return;
         try {
           await apiJSON('/api/users/' + encodeURIComponent(username) + '/follow', 'POST');
           const data = await api('/api/users/' + encodeURIComponent(username));
@@ -5603,14 +5991,14 @@
         const username = btn.dataset.username;
         if (btn.disabled) return;
         const wasFollowing = btn.classList.contains('following');
-        if (wasFollowing && !confirm("Obunani bekor qilmoqchimisiz? Bu foydalanuvchining yangi asarlari haqida endi xabardor bo'lmaysiz.")) return;
+        if (wasFollowing && !confirm(t('follow.unfollowConfirm'))) return;
         btn.disabled = true;
         try {
           const data = await apiJSON('/api/users/' + encodeURIComponent(username) + '/follow', 'POST');
           const following = !!data.following;
           document.querySelectorAll('.feed-follow-btn[data-username="' + CSS.escape(username) + '"]').forEach(b => {
             b.classList.toggle('following', following);
-            b.textContent = following ? 'Obuna' : '+ Obuna';
+            b.textContent = following ? t('follow.short') : t('follow.shortAdd');
           });
           Object.values(ALL_ITEMS_BY_ID).forEach(item => {
             if (item.username === username) item.isFollowing = following;
@@ -5729,9 +6117,9 @@
             <div class="feed-username">@${escapeHtml(w.username)}</div>
           </div>
           ${CURRENT_USER && w.username !== CURRENT_USER.username ? `
-          <button type="button" class="feed-follow-btn ${w.isFollowing ? 'following' : ''}" data-username="${escapeHtml(w.username)}" aria-label="Obuna bo'lish">${w.isFollowing ? "Obuna" : '+ Obuna'}</button>` : ''}
+          <button type="button" class="feed-follow-btn ${w.isFollowing ? 'following' : ''}" data-username="${escapeHtml(w.username)}" aria-label="${t('follow.subscribeBtn')}">${w.isFollowing ? t('follow.short') : t('follow.shortAdd')}</button>` : ''}
         </div>
-        <div class="feed-thumb" data-id="${w.id}" role="button" tabindex="0" aria-label="Rasmni to'liq hajmda ko'rish">
+        <div class="feed-thumb" data-id="${w.id}" role="button" tabindex="0" aria-label="${t('feedThumb.aria')}">
           ${collageHTML(workImages(w), w.title)}
           <div class="feed-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
         </div>
@@ -5744,10 +6132,10 @@
             ${commentIconSVG()}
             <span class="comment-count">${w.commentsCount || 0}</span>
           </button>
-          <button class="save-btn ${w.savedByMe ? 'saved' : ''}" data-id="${w.id}" aria-label="Saqlash">
+          <button class="save-btn ${w.savedByMe ? 'saved' : ''}" data-id="${w.id}" aria-label="${t('save.aria')}">
             ${saveIconSVG()}
           </button>
-          <button class="share-btn" data-id="${w.id}" data-title="${escapeHtml(w.title)}" aria-label="Ulashish">
+          <button class="share-btn" data-id="${w.id}" data-title="${escapeHtml(w.title)}" aria-label="${t('share.aria')}">
             ${shareIconSVG()}
           </button>
           ${w.status === 'sale' && (!CURRENT_USER || w.username !== CURRENT_USER.username) ? `
@@ -5762,7 +6150,7 @@
             <span>${fmtDate(w.createdAt)}</span>
             ${w.status === 'sale' && w.price ? `<span class="feed-price">${fmtPrice(w.price, w.currency)}</span>` : ''}
           </div>
-          <button class="report-link" data-type="work" data-id="${w.id}" data-title="${escapeHtml(w.title)}">Shikoyat qilish</button>
+          <button class="report-link" data-type="work" data-id="${w.id}" data-title="${escapeHtml(w.title)}">${t('report.action')}</button>
         </div>
       </article>`;
       }
@@ -5885,7 +6273,7 @@
             : '/api/users/' + reportTarget.id + '/report';
           await apiJSON(path, 'POST', { reason });
           closeReportModal();
-          alert("Shikoyatingiz qabul qilindi. Ko'rib chiqamiz.");
+          alert(t('report.sentAlert'));
         } catch (e2) {
           $('#reportModalError').textContent = (e2 && e2.message) || t('common.serverError');
         }
