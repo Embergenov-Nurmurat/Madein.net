@@ -1499,8 +1499,9 @@
     }
 
     .comment-line b {
-      font-weight: 700;
-      margin-right: 5px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-right: 6px;
     }
 
     .comment-foot {
@@ -2209,8 +2210,98 @@
       height: 56vh;
       background: var(--bg-alt);
     }
-    .lightbox-collage.collage img {
+    .lightbox-collage .collage img {
       max-height: 56vh;
+      cursor: zoom-in;
+    }
+
+    /* ---- full-size image viewer ---- */
+    .image-viewer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 6, 10, 0.94);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 40px;
+    }
+
+    .image-viewer-overlay.open {
+      display: flex;
+    }
+
+    .image-viewer-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      user-select: none;
+    }
+
+    .image-viewer-close {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: background .2s ease;
+    }
+
+    .image-viewer-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .image-viewer-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: none;
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: background .2s ease;
+    }
+
+    .image-viewer-nav:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .image-viewer-nav.prev { left: 16px; }
+    .image-viewer-nav.next { right: 16px; }
+
+    .image-viewer-counter {
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+    }
+
+    @media (max-width: 640px) {
+      .image-viewer-overlay { padding: 16px; }
+      .image-viewer-nav { width: 40px; height: 40px; font-size: 22px; }
+      .image-viewer-nav.prev { left: 6px; }
+      .image-viewer-nav.next { right: 6px; }
     }
 
     .lightbox-body {
@@ -2943,6 +3034,15 @@
     </div>
   </div>
 
+  <!-- ============ FULL-SIZE IMAGE VIEWER ============ -->
+  <div class="image-viewer-overlay" id="imageViewerModal">
+    <button class="image-viewer-close" id="closeImageViewer">✕</button>
+    <button class="image-viewer-nav prev hidden" id="imageViewerPrev">‹</button>
+    <img class="image-viewer-img" id="imageViewerImg" src="" alt="">
+    <button class="image-viewer-nav next hidden" id="imageViewerNext">›</button>
+    <div class="image-viewer-counter hidden" id="imageViewerCounter">1 / 1</div>
+  </div>
+
   <!-- ============ COMMENTS MODAL ============ -->
   <div class="modal-backdrop" id="commentsModal">
     <div class="modal comments-modal-content">
@@ -3118,7 +3218,15 @@
           "ban.reason": "Sabab: {reason}",
           "mute.banner": "Siz vaqtincha jimlik jazosidasiz — komment, xabar yozish va yangi asar yuklash mumkin emas.",
           "mute.bannerReason": "Siz {date} gacha jimlik jazosidasiz. Sabab: {reason}",
-          "mute.bannerNoReason": "Siz {date} gacha jimlik jazosidasiz — komment, xabar yozish va yangi asar yuklash mumkin emas."
+          "mute.bannerNoReason": "Siz {date} gacha jimlik jazosidasiz — komment, xabar yozish va yangi asar yuklash mumkin emas.",
+          "notif.banReason": "Administrator sizni {date} gacha ban qildi. Sabab: {reason}",
+          "notif.banNoReason": "Administrator sizni {date} gacha ban qildi.",
+          "notif.muteReason": "Administrator sizni {date} gacha mut qildi (komment/xabar/asar yuklay olmaysiz). Sabab: {reason}",
+          "notif.muteNoReason": "Administrator sizni {date} gacha mut qildi (komment/xabar/asar yuklay olmaysiz).",
+          "notif.unban": "Administrator ban muddatingizni muddatidan avval bekor qildi. Endi hisobingizdan foydalanishingiz mumkin.",
+          "notif.unmute": "Administrator mut jazoyingizni muddatidan avval bekor qildi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin.",
+          "notif.banExpired": "Ban muddatingiz tugadi. Hisobingizdan yana foydalanishingiz mumkin.",
+          "notif.muteExpired": "Mut muddatingiz tugadi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin."
         },
         en: {
           _locale: 'en-US', _dir: 'ltr', _name: "English",
@@ -3240,7 +3348,15 @@
           "ban.reason": "Reason: {reason}",
           "mute.banner": "You're temporarily muted — you can't comment, message, or upload new work.",
           "mute.bannerReason": "You're muted until {date}. Reason: {reason}",
-          "mute.bannerNoReason": "You're muted until {date} — you can't comment, message, or upload new work."
+          "mute.bannerNoReason": "You're muted until {date} — you can't comment, message, or upload new work.",
+          "notif.banReason": "Administrator banned you until {date}. Reason: {reason}",
+          "notif.banNoReason": "Administrator banned you until {date}.",
+          "notif.muteReason": "Administrator muted you until {date} (you can't comment, message, or upload new work). Reason: {reason}",
+          "notif.muteNoReason": "Administrator muted you until {date} (you can't comment, message, or upload new work).",
+          "notif.unban": "Administrator lifted your ban early. You can use your account again.",
+          "notif.unmute": "Administrator lifted your mute early. You can comment, message, and upload new work again.",
+          "notif.banExpired": "Your ban has expired. You can use your account again.",
+          "notif.muteExpired": "Your mute has expired. You can comment, message, and upload new work again."
         },
         zh: {
           _locale: 'zh-CN', _dir: 'ltr', _name: "中文",
@@ -3710,7 +3826,15 @@
           "ban.reason": "Причина: {reason}",
           "mute.banner": "Вы временно в муте — нельзя комментировать, писать сообщения и загружать новые работы.",
           "mute.bannerReason": "Вы в муте до {date}. Причина: {reason}",
-          "mute.bannerNoReason": "Вы в муте до {date} — нельзя комментировать, писать сообщения и загружать новые работы."
+          "mute.bannerNoReason": "Вы в муте до {date} — нельзя комментировать, писать сообщения и загружать новые работы.",
+          "notif.banReason": "Администратор забанил вас до {date}. Причина: {reason}",
+          "notif.banNoReason": "Администратор забанил вас до {date}.",
+          "notif.muteReason": "Администратор замутил вас до {date} (нельзя комментировать/писать сообщения/загружать работы). Причина: {reason}",
+          "notif.muteNoReason": "Администратор замутил вас до {date} (нельзя комментировать/писать сообщения/загружать работы).",
+          "notif.unban": "Администратор досрочно снял ваш бан. Вы снова можете пользоваться аккаунтом.",
+          "notif.unmute": "Администратор досрочно снял ваш мут. Вы снова можете комментировать, писать сообщения и загружать работы.",
+          "notif.banExpired": "Срок вашего бана истёк. Вы снова можете пользоваться аккаунтом.",
+          "notif.muteExpired": "Срок вашего мута истёк. Вы снова можете комментировать, писать сообщения и загружать работы."
         }
       };
 
@@ -3992,13 +4116,30 @@
         banner.classList.remove('hidden');
       }
 
+      /* Server faqat type/until/reason kabi xom ma'lumot qaytaradi — matnni
+         foydalanuvchi hozir tanlagan tilda shu yerda tuzamiz */
+      function notificationText(n) {
+        const untilStr = n.until ? new Date(n.until).toLocaleString(I18N[currentLang]._locale) : '';
+        switch (n.type) {
+          case 'ban':
+            return n.reason ? t('notif.banReason', { date: untilStr, reason: n.reason }) : t('notif.banNoReason', { date: untilStr });
+          case 'mute':
+            return n.reason ? t('notif.muteReason', { date: untilStr, reason: n.reason }) : t('notif.muteNoReason', { date: untilStr });
+          case 'unban': return t('notif.unban');
+          case 'unmute': return t('notif.unmute');
+          case 'ban-expired': return t('notif.banExpired');
+          case 'mute-expired': return t('notif.muteExpired');
+          default: return n.text || '';
+        }
+      }
+
       /* Ban/mut/unban/unmut haqidagi yangi bildirishnomalarni foydalanuvchiga ko'rsatadi */
       async function checkNotifications() {
         try {
           const data = await api('/api/notifications');
           const unread = (data.items || []).filter(n => !n.read);
           if (unread.length) {
-            alert(unread.map(n => n.text).join('\n\n'));
+            alert(unread.map(notificationText).join('\n\n'));
             await api('/api/notifications/read', { method: 'POST' });
             try {
               const me = await api('/api/me');
@@ -4066,6 +4207,24 @@
         $('#closeLightbox').addEventListener('click', closeLightbox);
         $('#lightbox').addEventListener('click', (e) => { if (e.target === $('#lightbox')) closeLightbox(); });
         $('#deleteWorkBtn').addEventListener('click', handleDeleteWork);
+
+        $('#lightboxImg').addEventListener('click', (e) => {
+          const img = e.target.closest('img');
+          if (!img) return;
+          const imgs = Array.from($('#lightboxImg').querySelectorAll('img'));
+          const idx = imgs.indexOf(img);
+          openImageViewer(LIGHTBOX_IMAGES.length ? LIGHTBOX_IMAGES : imgs.map(i => i.src), idx);
+        });
+        $('#closeImageViewer').addEventListener('click', closeImageViewer);
+        $('#imageViewerModal').addEventListener('click', (e) => { if (e.target === $('#imageViewerModal')) closeImageViewer(); });
+        $('#imageViewerPrev').addEventListener('click', () => imageViewerStep(-1));
+        $('#imageViewerNext').addEventListener('click', () => imageViewerStep(1));
+        document.addEventListener('keydown', (e) => {
+          if (!$('#imageViewerModal').classList.contains('open')) return;
+          if (e.key === 'Escape') closeImageViewer();
+          if (e.key === 'ArrowLeft') imageViewerStep(-1);
+          if (e.key === 'ArrowRight') imageViewerStep(1);
+        });
 
         $('#closeCommentsModal').addEventListener('click', closeCommentsModal);
         $('#commentsModal').addEventListener('click', (e) => { if (e.target === $('#commentsModal')) closeCommentsModal(); });
@@ -4219,12 +4378,6 @@
         list.querySelectorAll('[data-admin-action]').forEach(btn => {
           btn.addEventListener('click', () => handleAdminAction(btn.dataset.adminAction, btn.dataset.username));
         });
-      }
-
-      function escapeHtml(str) {
-        const d = document.createElement('div');
-        d.textContent = str == null ? '' : String(str);
-        return d.innerHTML;
       }
 
       async function handleAdminAction(action, username) {
@@ -5114,6 +5267,8 @@
       }
 
       /* ===================== LIGHTBOX ===================== */
+      let LIGHTBOX_IMAGES = [];
+
       function openLightbox(id, sourceWorks) {
         const list = sourceWorks || WORKS;
         const w = list.find(x => x.id === id);
@@ -5121,7 +5276,8 @@
         const isMine = list === WORKS;
         pendingDeleteId = isMine ? id : null;
         $('#deleteWorkBtn').classList.toggle('hidden', !isMine);
-        $('#lightboxImg').innerHTML = collageHTML(workImages(w), w.title);
+        LIGHTBOX_IMAGES = workImages(w);
+        $('#lightboxImg').innerHTML = collageHTML(LIGHTBOX_IMAGES, w.title);
         $('#lightboxImg').className = 'lightbox-collage';
         $('#lightboxTitle').textContent = w.title;
         $('#lightboxDesc').textContent = w.desc || t('lightbox.noDesc');
@@ -5131,6 +5287,32 @@
         $('#lightbox').classList.add('open');
       }
       function closeLightbox() { $('#lightbox').classList.remove('open'); pendingDeleteId = null; $('#deleteWorkBtn').classList.remove('hidden'); }
+
+      /* ===================== TO'LIQ HAJMDAGI RASM KO'RUVCHI ===================== */
+      let IMAGE_VIEWER_IMAGES = [];
+      let IMAGE_VIEWER_INDEX = 0;
+
+      function openImageViewer(images, index) {
+        if (!images || !images.length) return;
+        IMAGE_VIEWER_IMAGES = images;
+        IMAGE_VIEWER_INDEX = Math.max(0, Math.min(index || 0, images.length - 1));
+        renderImageViewer();
+        $('#imageViewerModal').classList.add('open');
+      }
+      function renderImageViewer() {
+        $('#imageViewerImg').src = IMAGE_VIEWER_IMAGES[IMAGE_VIEWER_INDEX];
+        const multi = IMAGE_VIEWER_IMAGES.length > 1;
+        $('#imageViewerPrev').classList.toggle('hidden', !multi);
+        $('#imageViewerNext').classList.toggle('hidden', !multi);
+        $('#imageViewerCounter').classList.toggle('hidden', !multi);
+        if (multi) $('#imageViewerCounter').textContent = (IMAGE_VIEWER_INDEX + 1) + ' / ' + IMAGE_VIEWER_IMAGES.length;
+      }
+      function closeImageViewer() { $('#imageViewerModal').classList.remove('open'); }
+      function imageViewerStep(delta) {
+        if (!IMAGE_VIEWER_IMAGES.length) return;
+        IMAGE_VIEWER_INDEX = (IMAGE_VIEWER_INDEX + delta + IMAGE_VIEWER_IMAGES.length) % IMAGE_VIEWER_IMAGES.length;
+        renderImageViewer();
+      }
 
       async function handleDeleteWork() {
         if (!pendingDeleteId) return;

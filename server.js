@@ -83,7 +83,7 @@ function refreshModeration(u, uname) {
     u.moderation.banReason = '';
     changed = true;
     if (uname) {
-      addNotification(uname, { type: 'ban-expired', text: 'Ban muddatingiz tugadi. Hisobingizdan yana foydalanishingiz mumkin.' });
+      addNotification(uname, { type: 'ban-expired' });
     }
   }
   if (u.moderation.mutedUntil && new Date(u.moderation.mutedUntil).getTime() <= now) {
@@ -91,7 +91,7 @@ function refreshModeration(u, uname) {
     u.moderation.muteReason = '';
     changed = true;
     if (uname) {
-      addNotification(uname, { type: 'mute-expired', text: 'Mut muddatingiz tugadi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin.' });
+      addNotification(uname, { type: 'mute-expired' });
     }
   }
   return changed;
@@ -795,14 +795,7 @@ app.post('/api/admin/users/:username/ban', requireAuth, requireAdmin, async (req
   u.moderation.bannedUntil = until;
   u.moderation.banReason = reason;
 
-  addNotification(target, {
-    type: 'ban',
-    until,
-    reason,
-    text: reason
-      ? `Administrator sizni ${minutes} daqiqaga ban qildi. Sabab: ${reason}`
-      : `Administrator sizni ${minutes} daqiqaga ban qildi.`
-  });
+  addNotification(target, { type: 'ban', until, reason });
 
   await saveDB();
   res.json({ ok: true, bannedUntil: until });
@@ -820,10 +813,7 @@ app.post('/api/admin/users/:username/unban', requireAuth, requireAdmin, async (r
   u.moderation.banReason = '';
 
   if (wasBanned) {
-    addNotification(target, {
-      type: 'unban',
-      text: 'Administrator ban muddatingizni muddatidan avval bekor qildi. Endi hisobingizdan foydalanishingiz mumkin.'
-    });
+    addNotification(target, { type: 'unban' });
   }
 
   await saveDB();
@@ -845,14 +835,7 @@ app.post('/api/admin/users/:username/mute', requireAuth, requireAdmin, async (re
   u.moderation.mutedUntil = until;
   u.moderation.muteReason = reason;
 
-  addNotification(target, {
-    type: 'mute',
-    until,
-    reason,
-    text: reason
-      ? `Administrator sizni ${minutes} daqiqaga mut qildi (komment/xabar/asar yuklay olmaysiz). Sabab: ${reason}`
-      : `Administrator sizni ${minutes} daqiqaga mut qildi (komment/xabar/asar yuklay olmaysiz).`
-  });
+  addNotification(target, { type: 'mute', until, reason });
 
   await saveDB();
   res.json({ ok: true, mutedUntil: until });
@@ -870,10 +853,7 @@ app.post('/api/admin/users/:username/unmute', requireAuth, requireAdmin, async (
   u.moderation.muteReason = '';
 
   if (wasMuted) {
-    addNotification(target, {
-      type: 'unmute',
-      text: "Administrator mut jazoyingizni muddatidan avval bekor qildi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin."
-    });
+    addNotification(target, { type: 'unmute' });
   }
 
   await saveDB();
