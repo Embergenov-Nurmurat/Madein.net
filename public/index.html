@@ -1279,6 +1279,35 @@
       padding: 12px 14px;
     }
 
+    .feed-follow-btn {
+      flex-shrink: 0;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      background: transparent;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 11.5px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .15s ease, color .15s ease, border-color .15s ease;
+      white-space: nowrap;
+    }
+    .feed-follow-btn:hover {
+      background: color-mix(in srgb, var(--accent) 14%, transparent);
+    }
+    .feed-follow-btn.following {
+      border-color: var(--border);
+      color: var(--text-dim);
+      background: var(--bg-alt);
+    }
+    .feed-follow-btn.following:hover {
+      border-color: #e5484d;
+      color: #e5484d;
+      background: color-mix(in srgb, #e5484d 10%, transparent);
+    }
+    .feed-follow-btn:disabled { opacity: .6; cursor: default; }
+
     .feed-avatar {
       width: 36px;
       height: 36px;
@@ -1298,6 +1327,7 @@
       flex-direction: column;
       line-height: 1.25;
       min-width: 0;
+      flex: 1;
     }
 
     .feed-fullname {
@@ -1674,48 +1704,107 @@
       align-items: center;
       margin-bottom: 18px;
     }
+    .feed-filter-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
     .feed-search-wrap {
       position: relative;
-      flex: 1 1 220px;
-      min-width: 180px;
+      flex: 0 1 240px;
+      min-width: 150px;
+      margin-left: auto;
     }
     .feed-search-icon {
       position: absolute;
-      left: 12px;
+      left: 13px;
       top: 50%;
       transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
       color: var(--text-dim);
       pointer-events: none;
+      transition: color .15s ease;
     }
     .feed-search-wrap input {
       width: 100%;
-      padding: 10px 12px 10px 34px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      font-family: inherit;
-      font-size: 13.5px;
-    }
-    .feed-filter-bar select {
-      padding: 10px 10px;
-      border-radius: var(--radius-sm);
+      padding: 9px 30px 9px 36px;
+      border-radius: 999px;
       border: 1px solid var(--border);
       background: var(--surface);
       color: var(--text);
       font-family: inherit;
       font-size: 13px;
+      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .feed-search-wrap input::placeholder { color: var(--text-dim); }
+    .feed-search-wrap input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+    }
+    .feed-search-wrap input:focus + .feed-search-icon,
+    .feed-search-wrap:focus-within .feed-search-icon {
+      color: var(--accent);
+    }
+    .feed-search-clear {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 22px;
+      height: 22px;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      line-height: 1;
+      transition: background .15s ease, color .15s ease;
+    }
+    .feed-search-clear.show { display: flex; }
+    .feed-search-clear:hover {
+      background: color-mix(in srgb, var(--text) 10%, transparent);
+      color: var(--text);
+    }
+    .feed-filter-bar select {
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 12.5px;
+      cursor: pointer;
+      transition: border-color .15s ease;
+    }
+    .feed-filter-bar select:hover,
+    .feed-filter-bar select:focus {
+      border-color: var(--accent);
+      outline: none;
     }
     .feed-following-toggle {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       font-size: 12.5px;
       color: var(--text-dim);
       cursor: pointer;
       white-space: nowrap;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      transition: border-color .15s ease;
+    }
+    .feed-following-toggle:hover { border-color: var(--accent); }
+
+    @media (max-width: 640px) {
+      .feed-search-wrap { flex: 1 1 100%; margin-left: 0; order: -1; }
     }
 
     /* ============ ADMIN: STATS GRID ============ */
@@ -1764,7 +1853,23 @@
       color: var(--text-dim);
       margin-bottom: 6px;
     }
+    .admin-report-body {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .admin-report-thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .admin-report-main { min-width: 0; flex: 1; }
     .admin-report-subject { font-weight: 700; margin-bottom: 4px; }
+    .admin-report-gone { color: var(--text-dim); font-weight: 400; font-size: 12px; }
     .admin-report-reporter { font-size: 12.5px; color: var(--text-dim); margin-bottom: 4px; }
     .admin-report-reason {
       font-size: 13px;
@@ -1772,7 +1877,20 @@
       color: var(--text);
       margin-bottom: 8px;
     }
+    .admin-report-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
     .admin-report-status { font-size: 12.5px; color: var(--accent); font-weight: 700; }
+    .admin-report-delete-work {
+      color: #e5484d;
+      border-color: #e5484d;
+    }
+    .admin-report-delete-work:hover {
+      background: color-mix(in srgb, #e5484d 12%, transparent);
+    }
 
     .conversation-item {
       display: flex;
@@ -2073,10 +2191,56 @@
       cursor: pointer;
     }
 
-    .privacy-toggle input {
-      accent-color: var(--accent);
-      width: 15px;
-      height: 15px;
+    /* ============ CUSTOM CHECKBOXES (chiroyli galochkalar) ============ */
+    .privacy-toggle input[type="checkbox"],
+    .feed-following-toggle input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin: 0;
+      border: 1.5px solid var(--border);
+      border-radius: 5px;
+      background: var(--surface);
+      position: relative;
+      cursor: pointer;
+      transition: background .15s ease, border-color .15s ease, transform .1s ease;
+    }
+
+    .privacy-toggle input[type="checkbox"]::after,
+    .feed-following-toggle input[type="checkbox"]::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 1px;
+      width: 5px;
+      height: 9px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg) scale(0);
+      transition: transform .18s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    .privacy-toggle input[type="checkbox"]:checked,
+    .feed-following-toggle input[type="checkbox"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .privacy-toggle input[type="checkbox"]:checked::after,
+    .feed-following-toggle input[type="checkbox"]:checked::after {
+      transform: rotate(45deg) scale(1);
+    }
+
+    .privacy-toggle input[type="checkbox"]:hover,
+    .feed-following-toggle input[type="checkbox"]:hover {
+      border-color: var(--accent);
+    }
+
+    .privacy-toggle input[type="checkbox"]:active,
+    .feed-following-toggle input[type="checkbox"]:active {
+      transform: scale(.9);
     }
 
     .user-profile-bio {
@@ -2148,6 +2312,37 @@
       color: var(--text-dim);
       text-transform: uppercase;
       letter-spacing: .5px;
+    }
+
+    .profile-substats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 0 28px 20px;
+    }
+
+    .substat {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 16px;
+    }
+
+    .substat b {
+      font-family: var(--font-display);
+      font-size: 15.5px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .substat span {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: .4px;
     }
 
     .profile-edit-card {
@@ -2723,6 +2918,7 @@
       .view-toolbar,
       .gallery-grid,
       .section-label,
+      .profile-substats,
       .profile-edit-card {
         padding-left: 18px;
         padding-right: 18px;
@@ -2926,24 +3122,27 @@
           <p class="view-sub" data-i18n="home.sub">Platformadagi barcha foydalanuvchilar yuklagan asarlar — eng yangisidan boshlab.</p>
         </div>
         <div class="feed-filter-bar">
+          <div class="feed-filter-controls">
+            <select id="feedTypeSelect">
+              <option value="">Barcha turlar</option>
+              <option value="rasm">Rasm</option>
+              <option value="haykal">Haykal</option>
+              <option value="mulaj">Mulaj</option>
+              <option value="boshqa">Boshqa</option>
+            </select>
+            <select id="feedSortSelect">
+              <option value="new">Eng yangi</option>
+              <option value="top">Eng ko'p yoqtirilgan</option>
+            </select>
+            <label class="feed-following-toggle">
+              <input type="checkbox" id="feedFollowingOnly"> <span>Faqat kuzatuvchilarim</span>
+            </label>
+          </div>
           <div class="feed-search-wrap">
             <svg viewBox="0 0 24 24" class="feed-search-icon"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            <input type="text" id="feedSearchInput" placeholder="Asar yoki ijodkor nomi bo'yicha qidirish...">
+            <input type="text" id="feedSearchInput" placeholder="Qidirish...">
+            <button type="button" class="feed-search-clear" id="feedSearchClear" aria-label="Tozalash">&times;</button>
           </div>
-          <select id="feedTypeSelect">
-            <option value="">Barcha turlar</option>
-            <option value="rasm">Rasm</option>
-            <option value="haykal">Haykal</option>
-            <option value="mulaj">Mulaj</option>
-            <option value="boshqa">Boshqa</option>
-          </select>
-          <select id="feedSortSelect">
-            <option value="new">Eng yangi</option>
-            <option value="top">Eng ko'p yoqtirilgan</option>
-          </select>
-          <label class="feed-following-toggle">
-            <input type="checkbox" id="feedFollowingOnly"> <span>Faqat kuzatuvchilarim</span>
-          </label>
         </div>
         <div id="feedList" class="feed-list"></div>
         <div id="feedSentinel" class="feed-sentinel">
@@ -2976,6 +3175,13 @@
             <div class="stat"><b id="statSale">0</b><span data-i18n="profile.stat.sale">Sotuvda</span></div>
             <div class="stat"><b id="statExpo">0</b><span data-i18n="profile.stat.expo">Ko'rgazmada</span></div>
           </div>
+        </div>
+
+        <div class="profile-substats" id="profileSubstats">
+          <div class="substat"><b id="statFollowers">0</b><span>Obunachi</span></div>
+          <div class="substat"><b id="statFollowing">0</b><span>Obuna</span></div>
+          <div class="substat"><b id="statLikes">0</b><span>Layk</span></div>
+          <div class="substat"><b id="statComments">0</b><span>Komment</span></div>
         </div>
 
         <div class="view-toolbar">
@@ -4403,6 +4609,7 @@
           Object.keys(ALL_ITEMS_BY_ID).forEach(k => delete ALL_ITEMS_BY_ID[k]);
           $('#feedList').innerHTML = '';
           $('#feedSearchInput').value = '';
+          $('#feedSearchClear').classList.remove('show');
           $('#feedTypeSelect').value = '';
           $('#feedSortSelect').value = 'new';
           $('#feedFollowingOnly').checked = false;
@@ -4431,11 +4638,18 @@
         /* Lenta: qidiruv, kategoriya, saralash, faqat kuzatuvchilarim */
         let feedSearchTimer = null;
         $('#feedSearchInput').addEventListener('input', (e) => {
+          $('#feedSearchClear').classList.toggle('show', !!e.target.value);
           clearTimeout(feedSearchTimer);
           feedSearchTimer = setTimeout(() => {
             feedQuery.q = e.target.value.trim();
             resetAndReloadFeed();
           }, 350);
+        });
+        $('#feedSearchClear').addEventListener('click', () => {
+          $('#feedSearchInput').value = '';
+          $('#feedSearchClear').classList.remove('show');
+          feedQuery.q = '';
+          resetAndReloadFeed();
         });
         $('#feedTypeSelect').addEventListener('change', (e) => {
           feedQuery.type = e.target.value;
@@ -4724,18 +4938,29 @@
       function reportItemHTML(r) {
         const date = fmtDate(r.createdAt);
         const subject = r.type === 'work' ? ('Asar: "' + escapeHtml(r.targetTitle || '') + '"') : ('Foydalanuvchi: @' + escapeHtml(r.targetId));
+        const goneNote = !r.targetExists ? ' <span class="admin-report-gone">(allaqachon o\'chirilgan)</span>' : '';
+        const canDeleteWork = r.type === 'work' && r.targetExists && r.status !== 'resolved';
         return `
       <div class="admin-report-card ${r.status === 'resolved' ? 'resolved' : ''}" data-id="${r.id}">
         <div class="admin-report-head">
           <span class="admin-report-type">${r.type === 'work' ? '🖼️ Asar' : '👤 Foydalanuvchi'}</span>
           <span class="admin-report-date">${date}</span>
         </div>
-        <div class="admin-report-subject">${subject}</div>
-        <div class="admin-report-reporter">Shikoyatchi: @${escapeHtml(r.reporter)} (${escapeHtml(r.reporterFullname || r.reporter)})</div>
-        ${r.reason ? `<div class="admin-report-reason">"${escapeHtml(r.reason)}"</div>` : ''}
-        ${r.status === 'resolved'
-          ? `<div class="admin-report-status">✓ Ko'rib chiqilgan</div>`
-          : `<button class="btn btn-ghost btn-sm admin-report-resolve" data-id="${r.id}">Ko'rib chiqildi deb belgilash</button>`}
+        <div class="admin-report-body">
+          ${r.type === 'work' && r.targetImage ? `<img class="admin-report-thumb" src="${r.targetImage}" alt="" loading="lazy">` : ''}
+          <div class="admin-report-main">
+            <div class="admin-report-subject">${subject}${goneNote}</div>
+            <div class="admin-report-reporter">Shikoyatchi: @${escapeHtml(r.reporter)} (${escapeHtml(r.reporterFullname || r.reporter)})</div>
+            ${r.reason ? `<div class="admin-report-reason">"${escapeHtml(r.reason)}"</div>` : ''}
+          </div>
+        </div>
+        <div class="admin-report-actions">
+          ${r.status === 'resolved'
+            ? `<div class="admin-report-status">✓ Ko'rib chiqilgan${r.action === 'deleted' ? ' · surat o\'chirildi' : ''}</div>`
+            : `
+          <button class="btn btn-ghost btn-sm admin-report-resolve" data-id="${r.id}">Ko'rib chiqildi deb belgilash</button>
+          ${canDeleteWork ? `<button class="btn btn-ghost btn-sm admin-report-delete-work" data-workid="${r.targetId}" data-id="${r.id}">Suratni o'chirish</button>` : ''}`}
+        </div>
       </div>`;
       }
 
@@ -4757,6 +4982,23 @@
                 loadAdminReports();
                 loadAdminStats();
               } catch (e) { /* jim tarzda o'tkazib yuboriladi */ }
+            });
+          });
+          list.querySelectorAll('.admin-report-thumb').forEach(img => {
+            img.addEventListener('click', () => openImageViewer([img.src], 0));
+          });
+          list.querySelectorAll('.admin-report-delete-work').forEach(btn => {
+            btn.addEventListener('click', async () => {
+              if (!confirm("Ushbu asarning suratini butunlay o'chirmoqchimisiz? Bu amalni bekor qilib bo'lmaydi.")) return;
+              btn.disabled = true;
+              try {
+                await api('/api/admin/works/' + encodeURIComponent(btn.dataset.workid), { method: 'DELETE' });
+                loadAdminReports();
+                loadAdminStats();
+              } catch (e) {
+                alert(e.message || t('admin.actionFail'));
+                btn.disabled = false;
+              }
             });
           });
         } catch (e) {
@@ -4843,6 +5085,10 @@
         $('#statTotal').textContent = WORKS.length;
         $('#statSale').textContent = WORKS.filter(w => w.status === 'sale').length;
         $('#statExpo').textContent = WORKS.filter(w => w.status === 'expo').length;
+        $('#statFollowers').textContent = u.followersCount || 0;
+        $('#statFollowing').textContent = u.followingCount || 0;
+        $('#statLikes').textContent = WORKS.reduce((sum, w) => sum + (Array.isArray(w.likes) ? w.likes.length : 0), 0);
+        $('#statComments').textContent = WORKS.reduce((sum, w) => sum + (Array.isArray(w.comments) ? w.comments.length : 0), 0);
       }
 
       function openEditProfile() {
@@ -4991,6 +5237,32 @@
         } catch (e) { /* jim tarzda o'tkazib yuboriladi */ }
       }
 
+      /* Lenta kartochkasidagi obuna tugmasi: bosilganda serverga so'rov yuboradi
+         va ushbu foydalanuvchiga tegishli barcha tugmalarni (bir necha asar
+         bo'lishi mumkin) bir vaqtda yangilaydi */
+      async function toggleFeedFollow(btn) {
+        const username = btn.dataset.username;
+        if (btn.disabled) return;
+        btn.disabled = true;
+        try {
+          const data = await apiJSON('/api/users/' + encodeURIComponent(username) + '/follow', 'POST');
+          const following = !!data.following;
+          document.querySelectorAll('.feed-follow-btn[data-username="' + CSS.escape(username) + '"]').forEach(b => {
+            b.classList.toggle('following', following);
+            b.textContent = following ? 'Obuna' : '+ Obuna';
+          });
+          Object.values(ALL_ITEMS_BY_ID).forEach(item => {
+            if (item.username === username) item.isFollowing = following;
+          });
+          if (CURRENT_USER) {
+            const prev = CURRENT_USER.followingCount || 0;
+            CURRENT_USER.followingCount = Math.max(0, prev + (following ? 1 : -1));
+            if ($('#profileView').classList.contains('active')) renderProfileHeader();
+          }
+        } catch (e) { /* jim tarzda o'tkazib yuboriladi */ }
+        btn.disabled = false;
+      }
+
       /* ===================== GALLERY RENDER =====================
          typeLabels/status text are the site's own vocabulary (categories,
          not user text), so they translate along with the interface. */
@@ -5095,6 +5367,8 @@
             <div class="feed-fullname">${escapeHtml(w.fullname || w.username)}</div>
             <div class="feed-username">@${escapeHtml(w.username)}</div>
           </div>
+          ${CURRENT_USER && w.username !== CURRENT_USER.username ? `
+          <button type="button" class="feed-follow-btn ${w.isFollowing ? 'following' : ''}" data-username="${escapeHtml(w.username)}" aria-label="Obuna bo'lish">${w.isFollowing ? "Obuna" : '+ Obuna'}</button>` : ''}
         </div>
         <div class="feed-thumb" data-id="${w.id}" role="button" tabindex="0" aria-label="Rasmni to'liq hajmda ko'rish">
           ${collageHTML(workImages(w), w.title)}
@@ -5167,6 +5441,13 @@
         card.querySelector('.comment-btn').addEventListener('click', () => openCommentsModal(id));
         const headEl = card.querySelector('.feed-head');
         if (headEl) headEl.addEventListener('click', () => openUserProfile(headEl.dataset.username));
+        const followBtn = card.querySelector('.feed-follow-btn');
+        if (followBtn) {
+          followBtn.addEventListener('click', guarded((e) => {
+            e.stopPropagation();
+            toggleFeedFollow(followBtn);
+          }));
+        }
         const contactBtn = card.querySelector('.contact-seller-btn');
         if (contactBtn) {
           contactBtn.addEventListener('click', guarded(() => openChat(contactBtn.dataset.username, {

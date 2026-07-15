@@ -576,7 +576,8 @@ app.get('/api/saved', requireAuth, (req, res) => {
       likesCount: likes.length,
       likedByMe: likes.includes(me),
       commentsCount: Array.isArray(work.comments) ? work.comments.length : 0,
-      savedByMe: true
+      savedByMe: true,
+      isFollowing: !!(u && Array.isArray(u.following) && u.following.includes(owner))
     });
   }
   items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -735,7 +736,8 @@ app.get('/api/feed', (req, res) => {
         likesCount: likes.length,
         likedByMe: likes.includes(me),
         savedByMe: !!(meUser && Array.isArray(meUser.savedWorks) && meUser.savedWorks.includes(w.id)),
-        commentsCount: comments.length
+        commentsCount: comments.length,
+        isFollowing: !!(meUser && Array.isArray(meUser.following) && meUser.following.includes(uname))
       });
     }
   }
@@ -1101,9 +1103,22 @@ app.get('/api/admin/stats', requireAuth, requireAdmin, (req, res) => {
 /* Shikoyatlar ro'yxati (Administrator burchagi uchun) */
 app.get('/api/admin/reports', requireAuth, requireAdmin, (req, res) => {
   ensureReportsArray();
-  const items = db.reports.slice().reverse().map(r => Object.assign({}, r, {
-    reporterFullname: (db.users[r.reporter] && db.users[r.reporter].fullname) || r.reporter
-  }));
+  const items = db.reports.slice().reverse().map(r => {
+    let targetImage = null;
+    let targetExists = true;
+    if (r.type === 'work') {
+      const found = findWork(r.targetId);
+      if (found) targetImage = workImages(found.work)[0] || null;
+      else targetExists = false;
+    } else if (r.type === 'user') {
+      targetExists = !!db.users[r.targetId];
+    }
+    return Object.assign({}, r, {
+      reporterFullname: (db.users[r.reporter] && db.users[r.reporter].fullname) || r.reporter,
+      targetImage,
+      targetExists
+    });
+  });
   res.json({ items });
 });
 
@@ -1115,6 +1130,28 @@ app.post('/api/admin/reports/:id/resolve', requireAuth, requireAdmin, async (req
   r.status = 'resolved';
   r.resolvedBy = req.session.username;
   r.resolvedAt = new Date().toISOString();
+  await saveDB();
+  res.json({ ok: true });
+});
+
+/* Admin: shikoyat qilingan asarni (suratni) butunlay o'chirish */
+app.delete('/api/admin/works/:id', requireAuth, requireAdmin, async (req, res) => {
+  const found = findWork(req.params.id);
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
+  const { work, owner } = found;
+  db.works[owner] = (db.works[owner] || []).filter(w => w.id !== work.id);
+  workImages(work).forEach(img => fs.unlink(path.join(__dirname, img), () => {}));
+
+  ensureReportsArray();
+  db.reports.forEach(r => {
+    if (r.type === 'work' && r.targetId === work.id && r.status === 'open') {
+      r.status = 'resolved';
+      r.resolvedBy = req.session.username;
+      r.resolvedAt = new Date().toISOString();
+      r.action = 'deleted';
+    }
+  });
+
   await saveDB();
   res.json({ ok: true });
 });
