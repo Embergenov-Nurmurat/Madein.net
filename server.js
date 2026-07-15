@@ -56,11 +56,37 @@ function checkAdminPassword(pw) {
   }
 }
 
+/* ===================== BOSS REJIMI =====================
+   Administratordan ham yuqori maxsus rol. Faqat allaqachon administrator
+   bo'lgan foydalanuvchi, o'zining "Ma'lumotlarni tahrirlash" bo'limidagi
+   maxfiy kod maydoniga quyidagi parolni kiritib, Boss rejimini yoqa oladi.
+   Parolning o'zi kodda saqlanmaydi — faqat uning scrypt xeshi va tuzi.
+
+   MAXFIY KOD (buni faqat eng ishonchli shaxsga bering):
+     Obsidian-Throne-7731!B
+*/
+const BOSS_ACTIVATION_SALT = 'e4e4a3a67dc7238bb08ff7739ccc255e';
+const BOSS_ACTIVATION_HASH = '6b5c948c2514d08081b4a1145658dc23e04860a180bc9c97d00a44f1eaa1846cc21837c410cc228d60c7f57bd5f1ae5c30ac357a50f5eb3a870ffa7486bd0c6d';
+
+function checkBossPassword(pw) {
+  if (!pw || typeof pw !== 'string') return false;
+  try {
+    const attempt = crypto.scryptSync(pw, BOSS_ACTIVATION_SALT, 64);
+    const expected = Buffer.from(BOSS_ACTIVATION_HASH, 'hex');
+    if (attempt.length !== expected.length) return false;
+    return crypto.timingSafeEqual(attempt, expected);
+  } catch (e) {
+    return false;
+  }
+}
+
 /* Har bir foydalanuvchida moderatsiya/admin maydonlari mavjudligini ta'minlaydi
    (eski db.json yozuvlari uchun ham) */
 function ensureModerationFields(u) {
   if (!u) return;
   if (typeof u.isAdmin !== 'boolean') u.isAdmin = false;
+  if (typeof u.isBoss !== 'boolean') u.isBoss = false;
+  if (typeof u.adminAccessRevoked !== 'boolean') u.adminAccessRevoked = false;
   if (!u.moderation || typeof u.moderation !== 'object') {
     u.moderation = { bannedUntil: null, banReason: '', mutedUntil: null, muteReason: '' };
   } else {
@@ -271,8 +297,29 @@ function requireNotMuted(req, res, next) {
 
 function requireAdmin(req, res, next) {
   const u = db.users[req.session.username];
-  if (!u || !u.isAdmin) {
+  if (!u || !(u.isAdmin || u.isBoss)) {
     return res.status(403).json({ error: 'Bu amal uchun administrator huquqi kerak' });
+  }
+  next();
+}
+
+/* Faqat Boss uchun (administratorlarni ishdan bo'shatish/qaytarish va h.k.) */
+function requireBoss(req, res, next) {
+  const u = db.users[req.session.username];
+  if (!u || !u.isBoss) {
+    return res.status(403).json({ error: 'Bu amal uchun boss huquqi kerak' });
+  }
+  next();
+}
+
+/* Administrator huquqi bor, lekin Boss shikoyatlar bilan ishlamaydi */
+function requireAdminNotBoss(req, res, next) {
+  const u = db.users[req.session.username];
+  if (!u || !(u.isAdmin || u.isBoss)) {
+    return res.status(403).json({ error: 'Bu amal uchun administrator huquqi kerak' });
+  }
+  if (u.isBoss) {
+    return res.status(403).json({ error: 'Boss shikoyatlar bilan ishlamaydi' });
   }
   next();
 }
@@ -293,6 +340,8 @@ function publicUser(uname) {
     joined: u.joined,
     theme: u.theme || null,
     isAdmin: !!u.isAdmin,
+    isBoss: !!u.isBoss,
+    adminAccessRevoked: !!u.adminAccessRevoked,
     followingCount: (u.following || []).length,
     followersCount: countFollowers(uname),
     savedCount: (u.savedWorks || []).length,
@@ -949,12 +998,30 @@ app.post('/api/conversations/:username/messages', requireAuth, requireNotMuted, 
 
 /* Maxfiy parol bilan admin rejimini shu foydalanuvchi uchun yoqadi */
 app.post('/api/admin/activate', requireAuth, async (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  if (u.adminAccessRevoked) {
+    return res.status(403).json({ error: "Administrator huquqingiz boss tomonidan bekor qilingan. Faqat boss ruxsati bilan qaytadan faollashtira olasiz" });
+  }
   const { password } = req.body || {};
   if (!checkAdminPassword(password)) {
     return res.status(403).json({ error: "Maxfiy parol noto'g'ri" });
   }
+  u.isAdmin = true;
+  await saveDB();
+  res.json({ user: publicUser(req.session.username) });
+});
+
+/* Boss rejimini yoqish — faqat allaqachon administrator bo'lganlar,
+   maxfiy kod orqali (Profil > Ma'lumotlarni tahrirlash bo'limida) */
+app.post('/api/admin/boss/activate', requireAuth, requireAdmin, async (req, res) => {
+  const { code } = req.body || {};
+  if (!checkBossPassword(code)) {
+    return res.status(403).json({ error: "Maxfiy kod noto'g'ri" });
+  }
   const u = db.users[req.session.username];
   u.isAdmin = true;
+  u.isBoss = true;
   await saveDB();
   res.json({ user: publicUser(req.session.username) });
 });
@@ -972,6 +1039,8 @@ app.get('/api/admin/users', requireAuth, requireAdmin, async (req, res) => {
       email: u.email || '',
       avatar: u.avatar || null,
       isAdmin: !!u.isAdmin,
+      isBoss: !!u.isBoss,
+      adminAccessRevoked: !!u.adminAccessRevoked,
       joined: u.joined,
       worksCount: (db.works[uname] || []).length,
       bannedUntil: u.moderation.bannedUntil,
@@ -996,9 +1065,11 @@ app.post('/api/admin/users/:username/ban', requireAuth, requireAdmin, async (req
   const u = db.users[target];
   if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
   if (target === req.session.username) return res.status(400).json({ error: "O'zingizni ban qila olmaysiz" });
-  if (u.isAdmin) return res.status(400).json({ error: "Boshqa administratorni ban qila olmaysiz" });
-
   ensureModerationFields(u);
+  const actor = db.users[req.session.username];
+  if (u.isBoss) return res.status(400).json({ error: "Boss'ni ban qila olmaysiz" });
+  if (u.isAdmin && !(actor && actor.isBoss)) return res.status(400).json({ error: "Boshqa administratorni ban qila olmaysiz" });
+
   const minutes = parseModerationMinutes(req.body);
   const reason = String((req.body && req.body.reason) || '').trim().slice(0, 300);
   const until = new Date(Date.now() + minutes * 60000).toISOString();
@@ -1036,9 +1107,11 @@ app.post('/api/admin/users/:username/mute', requireAuth, requireAdmin, async (re
   const u = db.users[target];
   if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
   if (target === req.session.username) return res.status(400).json({ error: "O'zingizni mut qila olmaysiz" });
-  if (u.isAdmin) return res.status(400).json({ error: "Boshqa administratorni mut qila olmaysiz" });
-
   ensureModerationFields(u);
+  const actor = db.users[req.session.username];
+  if (u.isBoss) return res.status(400).json({ error: "Boss'ni mut qila olmaysiz" });
+  if (u.isAdmin && !(actor && actor.isBoss)) return res.status(400).json({ error: "Boshqa administratorni mut qila olmaysiz" });
+
   const minutes = parseModerationMinutes(req.body);
   const reason = String((req.body && req.body.reason) || '').trim().slice(0, 300);
   const until = new Date(Date.now() + minutes * 60000).toISOString();
@@ -1065,6 +1138,41 @@ app.post('/api/admin/users/:username/unmute', requireAuth, requireAdmin, async (
   if (wasMuted) {
     addNotification(target, { type: 'unmute' });
   }
+
+  await saveDB();
+  res.json({ ok: true });
+});
+
+/* Boss: administratorni ishdan bo'shatish — u oddiy foydalanuvchi bo'lib qoladi
+   va Boss ruxsat bermaguncha administrator parolini qayta kirita olmaydi */
+app.post('/api/admin/users/:username/fire', requireAuth, requireBoss, async (req, res) => {
+  const target = String(req.params.username || '').trim().toLowerCase();
+  const u = db.users[target];
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (target === req.session.username) return res.status(400).json({ error: "O'zingizni ishdan bo'shata olmaysiz" });
+  ensureModerationFields(u);
+  if (u.isBoss) return res.status(400).json({ error: "Boss'ni ishdan bo'shata olmaysiz" });
+  if (!u.isAdmin) return res.status(400).json({ error: 'Bu foydalanuvchi administrator emas' });
+
+  u.isAdmin = false;
+  u.adminAccessRevoked = true;
+  addNotification(target, { type: 'admin-fired' });
+
+  await saveDB();
+  res.json({ ok: true });
+});
+
+/* Boss: ilgari ishdan bo'shatilgan administratorga qayta administrator
+   parolini kiritish (faollashtirish) imkonini beradi */
+app.post('/api/admin/users/:username/rehire', requireAuth, requireBoss, async (req, res) => {
+  const target = String(req.params.username || '').trim().toLowerCase();
+  const u = db.users[target];
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  ensureModerationFields(u);
+  if (!u.adminAccessRevoked) return res.status(400).json({ error: "Bu foydalanuvchi ishdan bo'shatilmagan" });
+
+  u.adminAccessRevoked = false;
+  addNotification(target, { type: 'admin-rehired' });
 
   await saveDB();
   res.json({ ok: true });
@@ -1100,7 +1208,7 @@ app.get('/api/admin/stats', requireAuth, requireAdmin, (req, res) => {
 });
 
 /* Shikoyatlar ro'yxati (Administrator burchagi uchun) */
-app.get('/api/admin/reports', requireAuth, requireAdmin, (req, res) => {
+app.get('/api/admin/reports', requireAuth, requireAdminNotBoss, (req, res) => {
   ensureReportsArray();
   const items = db.reports.slice().reverse().map(r => {
     let targetImage = null;
@@ -1122,7 +1230,7 @@ app.get('/api/admin/reports', requireAuth, requireAdmin, (req, res) => {
 });
 
 /* Shikoyatni ko'rib chiqildi deb belgilash */
-app.post('/api/admin/reports/:id/resolve', requireAuth, requireAdmin, async (req, res) => {
+app.post('/api/admin/reports/:id/resolve', requireAuth, requireAdminNotBoss, async (req, res) => {
   ensureReportsArray();
   const r = db.reports.find(x => x.id === req.params.id);
   if (!r) return res.status(404).json({ error: 'Shikoyat topilmadi' });
@@ -1134,7 +1242,7 @@ app.post('/api/admin/reports/:id/resolve', requireAuth, requireAdmin, async (req
 });
 
 /* Admin: shikoyat qilingan asarni (suratni) butunlay o'chirish */
-app.delete('/api/admin/works/:id', requireAuth, requireAdmin, async (req, res) => {
+app.delete('/api/admin/works/:id', requireAuth, requireAdminNotBoss, async (req, res) => {
   const found = findWork(req.params.id);
   if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
   const { work, owner } = found;

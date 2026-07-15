@@ -1837,10 +1837,79 @@
     }
     .feed-following-toggle:hover { border-color: var(--accent); }
 
-    @media (max-width: 640px) {
-      .nav-search-wrap { flex: 0 1 90px; min-width: 76px; }
-      .nav-search-wrap input { padding-left: 30px; padding-right: 8px; font-size: 12px; }
-      .nav-search-wrap .feed-search-icon { left: 9px; }
+    @media (max-width: 720px) {
+      /* Mobil: qidiruv maydoni faqat lupa (katta bosiladigan tugma)
+         ko'rinishida turadi, bosilganda esa butun ekran kengligida ochiladi */
+      .nav-search-wrap {
+        flex: 0 0 40px;
+        min-width: 40px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .nav-search-wrap input { display: none; }
+      .nav-search-wrap .feed-search-clear { display: none !important; }
+      .nav-search-wrap .feed-search-icon {
+        position: static;
+        left: auto; top: auto; transform: none;
+        width: 19px;
+        height: 19px;
+        color: var(--text);
+        pointer-events: none;
+      }
+      .nav-search-wrap.search-open {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 300;
+        width: auto;
+        height: auto;
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg);
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: default;
+      }
+      .nav-search-wrap.search-open .feed-search-icon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+      .nav-search-wrap.search-open input {
+        display: block;
+        position: static;
+        flex: 1;
+        width: auto;
+        padding: 10px 12px;
+      }
+      .nav-search-wrap .nav-search-close-btn { display: none; }
+      .nav-search-wrap.search-open .nav-search-close-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--text-dim);
+        font-size: 18px;
+        cursor: pointer;
+      }
+      .nav-search-wrap.search-open .nav-search-close-btn:hover {
+        background: color-mix(in srgb, var(--text) 10%, transparent);
+        color: var(--text);
+      }
     }
 
     /* ============ ADMIN: STATS GRID ============ */
@@ -3101,6 +3170,7 @@
           <svg viewBox="0 0 24 24" class="feed-search-icon"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           <input type="text" id="feedSearchInput" placeholder="Qidirish...">
           <button type="button" class="feed-search-clear" id="feedSearchClear" aria-label="Tozalash">&times;</button>
+          <button type="button" class="nav-search-close-btn" id="navSearchCloseBtn" aria-label="Yopish">&times;</button>
         </div>
         <button class="btn btn-primary btn-sm" id="openUploadBtn" data-i18n="nav.newWork">+ Yangi asar</button>
         <div class="avatar-menu" id="avatarMenu">
@@ -3161,24 +3231,6 @@
           <div class="eyebrow" data-i18n="home.eyebrow">Lenta</div>
           <h1 class="view-title" data-i18n-html="home.title">Barcha <span>ijodkorlar</span>ning asarlari</h1>
           <p class="view-sub" data-i18n="home.sub">Platformadagi barcha foydalanuvchilar yuklagan asarlar — eng yangisidan boshlab.</p>
-        </div>
-        <div class="feed-filter-bar">
-          <div class="feed-filter-controls">
-            <select id="feedTypeSelect">
-              <option value="">Barcha turlar</option>
-              <option value="rasm">Rasm</option>
-              <option value="haykal">Haykal</option>
-              <option value="mulaj">Mulaj</option>
-              <option value="boshqa">Boshqa</option>
-            </select>
-            <select id="feedSortSelect">
-              <option value="new">Eng yangi</option>
-              <option value="top">Eng ko'p yoqtirilgan</option>
-            </select>
-            <label class="feed-following-toggle">
-              <input type="checkbox" id="feedFollowingOnly"> <span>Faqat kuzatuvchilarim</span>
-            </label>
-          </div>
         </div>
         <div id="feedList" class="feed-list"></div>
         <div id="feedSentinel" class="feed-sentinel">
@@ -3299,6 +3351,16 @@
             <div class="field-hint" id="adminActivateMsg"></div>
           </div>
           <div class="field-hint" id="adminAlreadyOn" style="margin-bottom:14px;" data-i18n="admin.activate.already">Administrator rejimi ushbu hisobda faol.</div>
+          <div class="field-hint hidden" id="adminAccessRevokedNotice" style="margin-bottom:14px; color: var(--danger, #e2543f);">Administrator huquqingiz boss tomonidan bekor qilingan. Faqat boss ruxsati bilan qaytadan faollashtirishingiz mumkin.</div>
+          <div class="field lang-field hidden" id="bossActivateBlock">
+            <label for="bossCodeInput">Boss rejimi</label>
+            <div class="field-row" style="align-items:flex-start;">
+              <input type="password" id="bossCodeInput" style="flex:1;" placeholder="Maxfiy kodni kiriting">
+              <button type="button" class="btn btn-ghost btn-sm" id="bossActivateBtn" style="white-space:nowrap;">Ishga tushirish</button>
+            </div>
+            <div class="field-hint" id="bossActivateMsg"></div>
+          </div>
+          <div class="field-hint hidden" id="bossAlreadyOn" style="margin-bottom:14px;">Boss rejimi ushbu hisobda faol.</div>
           <div class="privacy-block">
             <div class="field-hint" style="margin-bottom:6px;" data-i18n="profile.edit.privacyTitle">Boshqalar profilingizda nimani ko'ra olishini tanlang:</div>
             <label class="privacy-toggle"><input type="checkbox" id="privacyPhone"> <span data-i18n="profile.edit.privacyPhone">Telefon raqamimni ko'rsatish</span></label>
@@ -3352,12 +3414,14 @@
       <section id="adminView" class="view">
         <div class="view-hero">
           <div class="eyebrow" data-i18n="admin.eyebrow">Boshqaruv</div>
-          <h1 class="view-title" data-i18n-html="admin.title">Administrator <span>burchagi</span></h1>
+          <h1 class="view-title" id="adminViewTitle" data-i18n-html="admin.title">Administrator <span>burchagi</span></h1>
           <p class="view-sub" data-i18n="admin.sub">Barcha foydalanuvchilar — ban yoki mut bering, muddatidan avval olib tashlang.</p>
         </div>
         <div id="adminStatsGrid" class="admin-stats-grid"></div>
-        <div class="section-label">Shikoyatlar</div>
-        <div id="adminReportsList"></div>
+        <div id="adminReportsSection">
+          <div class="section-label">Shikoyatlar</div>
+          <div id="adminReportsList"></div>
+        </div>
         <div class="section-label">Foydalanuvchilar</div>
         <div id="adminUsersList"></div>
       </section>
@@ -4601,6 +4665,8 @@
           case 'ban-expired': return t('notif.banExpired');
           case 'mute-expired': return t('notif.muteExpired');
           case 'follow': return (n.from || 'Kimdir') + " sizga obuna bo'ldi";
+          case 'admin-fired': return "Boss sizni administrator lavozimidan ozod qildi. Endi oddiy foydalanuvchisiz — qaytadan administrator bo'lish uchun boss ruxsati kerak.";
+          case 'admin-rehired': return "Boss sizga qaytadan administrator parolini kiritish huquqini berdi.";
           default: return n.text || '';
         }
       }
@@ -4652,9 +4718,7 @@
           $('#feedList').innerHTML = '';
           $('#feedSearchInput').value = '';
           $('#feedSearchClear').classList.remove('show');
-          $('#feedTypeSelect').value = '';
-          $('#feedSortSelect').value = 'new';
-          $('#feedFollowingOnly').checked = false;
+          closeSearchOverlay();
           closeCommentsModal();
           closeChatModal();
           stopUnreadPolling();
@@ -4699,19 +4763,24 @@
           feedQuery.q = '';
           resetAndReloadFeed();
         });
-        $('#feedTypeSelect').addEventListener('change', (e) => {
-          feedQuery.type = e.target.value;
-          resetAndReloadFeed();
-        });
-        $('#feedSortSelect').addEventListener('change', (e) => {
-          feedQuery.sort = e.target.value;
-          resetAndReloadFeed();
-        });
-        $('#feedFollowingOnly').addEventListener('change', guarded((e) => {
-          feedQuery.following = e.target.checked;
-          resetAndReloadFeed();
-        }));
 
+        /* Mobilda qidiruv maydoni faqat lupa bo'lib turadi; bosilganda
+           butun ekran kengligida ochiladi, X tugmasi bosilsa yopiladi */
+        $('#navSearchWrap').addEventListener('click', (e) => {
+          if (window.innerWidth > 720) return;
+          if (!$('#navSearchWrap').classList.contains('search-open')) {
+            openSearchOverlay();
+          }
+        });
+        $('#navSearchCloseBtn').addEventListener('click', (e) => {
+          e.stopPropagation();
+          closeSearchOverlay();
+        });
+        document.addEventListener('click', (e) => {
+          if (window.innerWidth > 720) return;
+          if (!$('#navSearchWrap').classList.contains('search-open')) return;
+          if (!e.target.closest('#navSearchWrap')) closeSearchOverlay();
+        });
         /* Shikoyat modali */
         $('#closeReportModal').addEventListener('click', closeReportModal);
         $('#reportModal').addEventListener('click', (e) => { if (e.target === $('#reportModal')) closeReportModal(); });
@@ -4768,6 +4837,7 @@
         $('#cancelEditBtn').addEventListener('click', () => $('#editProfileCard').classList.add('hidden'));
         $('#saveProfileBtn').addEventListener('click', saveProfile);
         $('#adminActivateBtn').addEventListener('click', activateAdminMode);
+        $('#bossActivateBtn').addEventListener('click', activateBossMode);
         $('#bannedLogoutBtn').addEventListener('click', async () => {
           try { await api('/api/logout', { method: 'POST' }); } catch (e) { /* ignore */ }
           location.reload();
@@ -4830,7 +4900,7 @@
         if (view === 'admin') {
           loadAdminUsers();
           loadAdminStats();
-          loadAdminReports();
+          if (!(CURRENT_USER && CURRENT_USER.isBoss)) loadAdminReports();
         }
         if (view === 'saved') {
           loadSaved();
@@ -4859,10 +4929,12 @@
         }
         list.innerHTML = items.map(u => {
           const badges = [];
-          if (u.isAdmin) badges.push(`<span class="admin-badge admin">${t('admin.badge.admin')}</span>`);
+          if (u.isBoss) badges.push(`<span class="admin-badge admin">Boss</span>`);
+          else if (u.isAdmin) badges.push(`<span class="admin-badge admin">${t('admin.badge.admin')}</span>`);
+          if (u.adminAccessRevoked) badges.push(`<span class="admin-badge banned">Ishdan bo'shatilgan</span>`);
           if (u.bannedUntil) badges.push(`<span class="admin-badge banned">${t('admin.badge.banned')}</span>`);
           if (u.mutedUntil) badges.push(`<span class="admin-badge muted">${t('admin.badge.muted')}</span>`);
-          if (!u.bannedUntil && !u.mutedUntil && !u.isAdmin) badges.push(`<span class="admin-badge ok">${t('admin.badge.ok')}</span>`);
+          if (!u.bannedUntil && !u.mutedUntil && !u.isAdmin && !u.isBoss) badges.push(`<span class="admin-badge ok">${t('admin.badge.ok')}</span>`);
 
           let statusLines = '';
           if (u.bannedUntil) {
@@ -4872,7 +4944,12 @@
             statusLines += `<div class="admin-status-line">${t('admin.status.mutedUntil', { date: new Date(u.mutedUntil).toLocaleString(I18N[currentLang]._locale) })}${u.muteReason ? ' — ' + escapeHtml(u.muteReason) : ''}</div>`;
           }
 
-          const canModerate = !u.isAdmin && u.username !== (CURRENT_USER && CURRENT_USER.username);
+          const iAmBoss = !!(CURRENT_USER && CURRENT_USER.isBoss);
+          const isSelf = u.username === (CURRENT_USER && CURRENT_USER.username);
+          /* Oddiy admin faqat oddiy foydalanuvchilarni moderatsiya qila oladi.
+             Boss esa boshqa administratorlarni ham ban/mut/ishdan bo'shata oladi
+             (lekin boss'ning o'zini yoki o'zini emas). */
+          const canModerate = !isSelf && !u.isBoss && (iAmBoss || !u.isAdmin);
           let actions = '';
           if (canModerate) {
             actions += u.bannedUntil
@@ -4881,6 +4958,13 @@
             actions += u.mutedUntil
               ? `<button type="button" class="btn btn-ghost" data-admin-action="unmute" data-username="${u.username}">${t('admin.action.unmute')}</button>`
               : `<button type="button" class="btn btn-ghost" data-admin-action="mute" data-username="${u.username}">${t('admin.action.mute')}</button>`;
+          }
+          if (iAmBoss && !isSelf && !u.isBoss) {
+            if (u.isAdmin) {
+              actions += `<button type="button" class="btn btn-ghost" data-admin-action="fire" data-username="${u.username}">Ishdan bo'shatish</button>`;
+            } else if (u.adminAccessRevoked) {
+              actions += `<button type="button" class="btn btn-ghost" data-admin-action="rehire" data-username="${u.username}">Ishga qaytarish</button>`;
+            }
           }
 
           return `
@@ -4914,6 +4998,24 @@
           if (!confirm(t('admin.confirm.' + action))) return;
           try {
             await api('/api/admin/users/' + encodeURIComponent(username) + '/' + action, { method: 'POST' });
+            loadAdminUsers();
+          } catch (e) {
+            alert(e.message || t('admin.actionFail'));
+          }
+        }
+        if (action === 'fire') {
+          if (!confirm(`@${username} ni ishdan bo'shatmoqchimisiz? U administrator huquqidan mahrum bo'ladi va faqat sizning ruxsatingiz bilan qaytadan administrator bo'la oladi.`)) return;
+          try {
+            await api('/api/admin/users/' + encodeURIComponent(username) + '/fire', { method: 'POST' });
+            loadAdminUsers();
+          } catch (e) {
+            alert(e.message || t('admin.actionFail'));
+          }
+        }
+        if (action === 'rehire') {
+          if (!confirm(`@${username} ga qaytadan administrator parolini kiritish huquqini bermoqchimisiz?`)) return;
+          try {
+            await api('/api/admin/users/' + encodeURIComponent(username) + '/rehire', { method: 'POST' });
             loadAdminUsers();
           } catch (e) {
             alert(e.message || t('admin.actionFail'));
@@ -5153,9 +5255,32 @@
         $('#editAvatarPreview').innerHTML = avatarInner(u.avatar, u.fullname || u.username);
         $('#adminPasswordInput').value = '';
         $('#adminActivateMsg').textContent = '';
-        $('#adminActivateBlock').classList.toggle('hidden', !!u.isAdmin);
+        $('#bossCodeInput').value = '';
+        $('#bossActivateMsg').textContent = '';
+        const canShowAdminActivate = !u.isAdmin && !u.adminAccessRevoked;
+        $('#adminActivateBlock').classList.toggle('hidden', !canShowAdminActivate);
         $('#adminAlreadyOn').classList.toggle('hidden', !u.isAdmin);
+        $('#adminAccessRevokedNotice').classList.toggle('hidden', !u.adminAccessRevoked);
+        $('#bossActivateBlock').classList.toggle('hidden', !(u.isAdmin && !u.isBoss));
+        $('#bossAlreadyOn').classList.toggle('hidden', !u.isBoss);
         $('#editProfileCard').classList.remove('hidden');
+      }
+
+      async function activateBossMode() {
+        const code = $('#bossCodeInput').value;
+        const msgEl = $('#bossActivateMsg');
+        msgEl.textContent = '';
+        if (!code) return;
+        try {
+          const data = await apiJSON('/api/admin/boss/activate', 'POST', { code });
+          CURRENT_USER = data.user;
+          $('#bossCodeInput').value = '';
+          $('#bossActivateBlock').classList.add('hidden');
+          $('#bossAlreadyOn').classList.remove('hidden');
+          updateAdminNavVisibility();
+        } catch (err) {
+          msgEl.textContent = err.message || t('admin.activate.fail');
+        }
       }
 
       async function activateAdminMode() {
@@ -5176,9 +5301,15 @@
       }
 
       function updateAdminNavVisibility() {
-        const isAdmin = !!(CURRENT_USER && CURRENT_USER.isAdmin);
+        const isAdmin = !!(CURRENT_USER && (CURRENT_USER.isAdmin || CURRENT_USER.isBoss));
+        const isBoss = !!(CURRENT_USER && CURRENT_USER.isBoss);
         $('#navAdminBtn').classList.toggle('hidden', !isAdmin);
         $('#navAdminBtnMobile').classList.toggle('hidden', !isAdmin);
+        const navLabel = isBoss ? 'Boss xonasi' : t('admin.nav');
+        $('#navAdminBtn').textContent = navLabel;
+        $$('#navAdminBtnMobile span').forEach(s => { if (!s.classList.contains('tab-icon')) s.textContent = navLabel; });
+        $('#adminViewTitle').innerHTML = isBoss ? 'Boss <span>xonasi</span>' : t('admin.title');
+        $('#adminReportsSection').classList.toggle('hidden', isBoss);
       }
       async function saveProfile() {
         try {
@@ -5269,7 +5400,7 @@
         const msgBtn = $('#upContactSellerBtn');
         if (msgBtn) msgBtn.addEventListener('click', guarded(() => openChat(profile.username)));
         const followBtn = $('#upFollowBtn');
-        if (followBtn) followBtn.addEventListener('click', guarded(() => toggleFollow(profile.username)));
+        if (followBtn) followBtn.addEventListener('click', guarded(() => toggleFollow(profile.username, profile.isFollowing)));
         const reportBtn = $('#upReportBtn');
         if (reportBtn) reportBtn.addEventListener('click', guarded(() => openReportModal('user', profile.username, profile.fullname || profile.username)));
 
@@ -5277,7 +5408,8 @@
       }
 
       /* Foydalanuvchiga obuna bo'lish / bekor qilish, so'ng profilni qayta chizish */
-      async function toggleFollow(username) {
+      async function toggleFollow(username, isFollowing) {
+        if (isFollowing && !confirm("Obunani bekor qilmoqchimisiz? Bu foydalanuvchining yangi asarlari haqida endi xabardor bo'lmaysiz.")) return;
         try {
           await apiJSON('/api/users/' + encodeURIComponent(username) + '/follow', 'POST');
           const data = await api('/api/users/' + encodeURIComponent(username));
@@ -5291,6 +5423,8 @@
       async function toggleFeedFollow(btn) {
         const username = btn.dataset.username;
         if (btn.disabled) return;
+        const wasFollowing = btn.classList.contains('following');
+        if (wasFollowing && !confirm("Obunani bekor qilmoqchimisiz? Bu foydalanuvchining yangi asarlari haqida endi xabardor bo'lmaysiz.")) return;
         btn.disabled = true;
         try {
           const data = await apiJSON('/api/users/' + encodeURIComponent(username) + '/follow', 'POST');
@@ -5619,6 +5753,14 @@
       }
 
       /* Qidiruv/filtr o'zgarganda lentani noldan yuklaydi */
+      function openSearchOverlay() {
+        $('#navSearchWrap').classList.add('search-open');
+        setTimeout(() => $('#feedSearchInput').focus(), 0);
+      }
+      function closeSearchOverlay() {
+        $('#navSearchWrap').classList.remove('search-open');
+      }
+
       function resetAndReloadFeed() {
         FEED = [];
         feedOffset = 0;
