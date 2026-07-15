@@ -90,3 +90,31 @@ Let's Encrypt (`certbot`) bilan HTTPS o'rnating.
 | GET    | /api/works          | Foydalanuvchining asarlari           |
 | POST   | /api/works          | Yangi asar yuklash (multipart/form)  |
 | DELETE | /api/works/:id      | Asarni o'chirish                     |
+| GET    | /api/feed?q=&type=&sort=&following= | Qidiruv/filtr bilan umumiy lenta |
+| POST   | /api/users/:username/follow | Obuna bo'lish / bekor qilish  |
+| GET    | /api/users/:username/followers | Obunachilar ro'yxati        |
+| GET    | /api/users/:username/following | Kimlarga obuna bo'lgani     |
+| POST   | /api/works/:id/save | Asarni saqlash/saqlashdan chiqarish  |
+| GET    | /api/saved          | Saqlangan asarlar ro'yxati           |
+| POST   | /api/works/:id/report | Asarga shikoyat                    |
+| POST   | /api/users/:username/report | Foydalanuvchiga shikoyat      |
+| GET    | /api/admin/stats    | Umumiy statistika (admin)            |
+| GET    | /api/admin/reports  | Shikoyatlar ro'yxati (admin)         |
+| POST   | /api/admin/reports/:id/resolve | Shikoyatni yopish (admin) |
+
+## Yangi qo'shilgan funksiyalar (savdodan tashqari)
+
+- **Rasmni to'liq hajmda ko'rish**: bosh sahifadagi (lentadagi) har qanday asar rasmiga bosilsa, u to'liq hajmda ochiladi (chapga/o'ngga o'tish bilan).
+- **Qidiruv va filtr**: lentada nom/tavsif/ijodkor bo'yicha qidirish, kategoriya bo'yicha filtr, "eng yangi/eng ko'p yoqtirilgan" saralash, "faqat kuzatuvchilarim" rejimi.
+- **Obuna (follow)**: boshqa foydalanuvchi profilida obuna bo'lish/bekor qilish, obunachilar/kuzatuvchilar soni.
+- **Saqlanganlar**: har bir asarni "bookmark" qilib, alohida "Saqlanganlar" bo'limida ko'rish.
+- **Ulashish**: asarga havola nusxalash (yoki telefonda tizim ulashish oynasi); havola orqali ochilganda o'sha asar avtomatik to'liq hajmda ochiladi.
+- **Shikoyat qilish**: asar yoki foydalanuvchiga shikoyat yuborish, admin panelda ko'rib chiqish/yopish.
+- **Admin statistika**: foydalanuvchilar, asarlar, layk/komment, ban/mut sonlari — bir qarashda.
+- **Spam himoyasi**: ro'yxatdan o'tish, kirish, komment, xabar va shikoyatlarga oddiy so'rov cheklovi (rate limit) qo'yildi.
+
+**Bu safar qo'shilmagan narsalar** (sabab bilan):
+- **Parolni email orqali tiklash / email tasdiqlash / push-bildirishnoma** — bular uchun tashqi email/SMS xizmati (masalan SMTP yoki SMS-shlyuz) ulanishi kerak; hozircha loyihada bunday xizmat sozlanmagan.
+- **Ko'p tillilik (i18n) yangi elementlar uchun** — yangi qo'shilgan matnlar hozircha faqat o'zbek tilida; saytdagi 7 tilning barchasiga tarjima qilish alohida katta ish.
+- **Video yuklash, rasm siqish/thumbnail** — server resurslarini ko'proq talab qiladi, alohida so'rovda qo'shsa bo'ladi.
+

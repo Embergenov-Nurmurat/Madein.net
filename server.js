@@ -70,6 +70,13 @@ function ensureModerationFields(u) {
     if (u.moderation.muteReason === undefined) u.moderation.muteReason = '';
   }
   if (!Array.isArray(u.notifications)) u.notifications = [];
+  if (!Array.isArray(u.following)) u.following = [];
+  if (!Array.isArray(u.savedWorks)) u.savedWorks = [];
+}
+
+/* db.reports ro'yxati mavjudligini ta'minlaydi (eski db.json fayllar uchun) */
+function ensureReportsArray() {
+  if (!Array.isArray(db.reports)) db.reports = [];
 }
 
 /* Muddati o'tgan ban/mutni avtomatik bekor qiladi va foydalanuvchiga xabar qoldiradi.
@@ -125,6 +132,35 @@ function loadDB() {
   }
 }
 let db = loadDB();
+if (!Array.isArray(db.reports)) db.reports = [];
+
+/* ===================== ODDIY SO'ROV CHEKLOVCHI (RATE LIMIT) =====================
+   Tashqi paketlarsiz, IP + amal turi bo'yicha oynali hisoblagich.
+   Ro'yxatdan o'tish, kirish, komment, xabar va shikoyatlarni spamdan himoya qiladi. */
+const rateBuckets = new Map();
+function rateLimit(key, limit, windowMs) {
+  return (req, res, next) => {
+    const ip = req.ip || (req.connection && req.connection.remoteAddress) || 'unknown';
+    const id = ip + ':' + key;
+    const now = Date.now();
+    let bucket = rateBuckets.get(id);
+    if (!bucket || now - bucket.start > windowMs) {
+      bucket = { start: now, count: 0 };
+      rateBuckets.set(id, bucket);
+    }
+    bucket.count++;
+    if (bucket.count > limit) {
+      return res.status(429).json({ error: "Juda ko'p urinish qilindi, birozdan so'ng qayta urinib ko'ring" });
+    }
+    next();
+  };
+}
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, bucket] of rateBuckets) {
+    if (now - bucket.start > 60 * 60 * 1000) rateBuckets.delete(id);
+  }
+}, 30 * 60 * 1000).unref();
 
 // Eski (bitta rasmli) asarlarni yangi `images` massiviga moslashtirish
 for (const uname of Object.keys(db.works || {})) {
@@ -257,6 +293,9 @@ function publicUser(uname) {
     joined: u.joined,
     theme: u.theme || null,
     isAdmin: !!u.isAdmin,
+    followingCount: (u.following || []).length,
+    followersCount: countFollowers(uname),
+    savedCount: (u.savedWorks || []).length,
     moderation: {
       bannedUntil: u.moderation.bannedUntil,
       banReason: u.moderation.banReason,
@@ -266,12 +305,23 @@ function publicUser(uname) {
   };
 }
 
+/* Berilgan foydalanuvchini nechta kishi kuzatib turganini hisoblaydi */
+function countFollowers(uname) {
+  let n = 0;
+  for (const other of Object.values(db.users)) {
+    if (Array.isArray(other.following) && other.following.includes(uname)) n++;
+  }
+  return n;
+}
+
 /* Boshqa foydalanuvchilarga ko'rinadigan (maxfiylik sozlamalariga rioya qiluvchi) profil ma'lumoti */
 function publicProfile(uname, viewerUsername) {
   const u = db.users[uname];
   if (!u) return null;
   const privacy = Object.assign({ phone: true, social: true, email: false }, u.privacy || {});
   const isSelf = viewerUsername && viewerUsername === uname;
+  ensureModerationFields(u);
+  const viewerUser = viewerUsername && db.users[viewerUsername];
   return {
     username: uname,
     fullname: u.fullname || '',
@@ -280,12 +330,16 @@ function publicProfile(uname, viewerUsername) {
     joined: u.joined,
     phone: (isSelf || privacy.phone) ? (u.phone || '') : null,
     social: (isSelf || privacy.social) ? (u.social || '') : null,
-    email: (isSelf || privacy.email) ? (u.email || '') : null
+    email: (isSelf || privacy.email) ? (u.email || '') : null,
+    followersCount: countFollowers(uname),
+    followingCount: (u.following || []).length,
+    isFollowing: !!(viewerUser && Array.isArray(viewerUser.following) && viewerUser.following.includes(uname)),
+    isSelf
   };
 }
 
 /* ===================== AUTH ROUTES ===================== */
-app.post('/api/register', async (req, res) => {
+app.post('/api/register', rateLimit('register', 8, 10 * 60 * 1000), async (req, res) => {
   try {
     const { username, password, fullname, email } = req.body || {};
     const uname = String(username || '').trim().toLowerCase().replace(/\s+/g, '_');
@@ -314,7 +368,9 @@ app.post('/api/register', async (req, res) => {
       joined: new Date().toISOString(),
       isAdmin: false,
       moderation: { bannedUntil: null, banReason: '', mutedUntil: null, muteReason: '' },
-      notifications: []
+      notifications: [],
+      following: [],
+      savedWorks: []
     };
     db.works[uname] = [];
     await saveDB();
@@ -327,7 +383,7 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', rateLimit('login', 15, 10 * 60 * 1000), async (req, res) => {
   try {
     const { username, password } = req.body || {};
     const uname = String(username || '').trim().toLowerCase();
@@ -435,6 +491,139 @@ app.get('/api/users/:username', (req, res) => {
   res.json({ profile, works });
 });
 
+/* ===================== OBUNA (FOLLOW) ===================== */
+app.post('/api/users/:username/follow', requireAuth, async (req, res) => {
+  const target = String(req.params.username || '').trim().toLowerCase();
+  const me = req.session.username;
+  if (target === me) return res.status(400).json({ error: "O'zingizga obuna bo'la olmaysiz" });
+  if (!db.users[target]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+
+  const u = db.users[me];
+  ensureModerationFields(u);
+  const idx = u.following.indexOf(target);
+  let following;
+  if (idx === -1) {
+    u.following.push(target);
+    following = true;
+    addNotification(target, { type: 'follow', from: me });
+  } else {
+    u.following.splice(idx, 1);
+    following = false;
+  }
+  await saveDB();
+  res.json({ following, followersCount: countFollowers(target) });
+});
+
+app.get('/api/users/:username/followers', (req, res) => {
+  const target = String(req.params.username || '').trim().toLowerCase();
+  if (!db.users[target]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  const items = Object.keys(db.users)
+    .filter(uname => Array.isArray(db.users[uname].following) && db.users[uname].following.includes(target))
+    .map(uname => ({ username: uname, fullname: db.users[uname].fullname || uname, avatar: db.users[uname].avatar || null }));
+  res.json({ items });
+});
+
+app.get('/api/users/:username/following', (req, res) => {
+  const target = String(req.params.username || '').trim().toLowerCase();
+  const u = db.users[target];
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  ensureModerationFields(u);
+  const items = (u.following || [])
+    .filter(uname => db.users[uname])
+    .map(uname => ({ username: uname, fullname: db.users[uname].fullname || uname, avatar: db.users[uname].avatar || null }));
+  res.json({ items });
+});
+
+/* ===================== SAQLANGANLAR (BOOKMARK) ===================== */
+app.post('/api/works/:id/save', requireAuth, async (req, res) => {
+  const found = findWork(req.params.id);
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  const idx = u.savedWorks.indexOf(req.params.id);
+  let saved;
+  if (idx === -1) { u.savedWorks.push(req.params.id); saved = true; }
+  else { u.savedWorks.splice(idx, 1); saved = false; }
+  await saveDB();
+  res.json({ saved });
+});
+
+app.get('/api/saved', requireAuth, (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  const me = req.session.username;
+  const items = [];
+  for (const id of u.savedWorks) {
+    const found = findWork(id);
+    if (!found) continue;
+    const { work, owner } = found;
+    const ownerUser = db.users[owner];
+    if (!ownerUser) continue;
+    const likes = Array.isArray(work.likes) ? work.likes : [];
+    items.push({
+      id: work.id,
+      title: work.title,
+      type: work.type,
+      status: work.status,
+      price: work.price,
+      currency: work.currency || 'UZS',
+      desc: work.desc,
+      images: workImages(work),
+      createdAt: work.createdAt,
+      username: owner,
+      fullname: ownerUser.fullname || owner,
+      avatar: ownerUser.avatar || null,
+      likesCount: likes.length,
+      likedByMe: likes.includes(me),
+      commentsCount: Array.isArray(work.comments) ? work.comments.length : 0,
+      savedByMe: true
+    });
+  }
+  items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  res.json({ items });
+});
+
+/* ===================== SHIKOYATLAR (REPORT) ===================== */
+app.post('/api/works/:id/report', requireAuth, rateLimit('report', 15, 10 * 60 * 1000), async (req, res) => {
+  const found = findWork(req.params.id);
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
+  ensureReportsArray();
+  const reason = String((req.body && req.body.reason) || '').trim().slice(0, 300);
+  db.reports.push({
+    id: 'r' + Date.now() + crypto.randomBytes(4).toString('hex'),
+    type: 'work',
+    targetId: found.work.id,
+    targetTitle: found.work.title,
+    targetOwner: found.owner,
+    reporter: req.session.username,
+    reason,
+    createdAt: new Date().toISOString(),
+    status: 'open'
+  });
+  await saveDB();
+  res.json({ ok: true });
+});
+
+app.post('/api/users/:username/report', requireAuth, rateLimit('report', 15, 10 * 60 * 1000), async (req, res) => {
+  const target = String(req.params.username || '').trim().toLowerCase();
+  if (!db.users[target]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  ensureReportsArray();
+  const reason = String((req.body && req.body.reason) || '').trim().slice(0, 300);
+  db.reports.push({
+    id: 'r' + Date.now() + crypto.randomBytes(4).toString('hex'),
+    type: 'user',
+    targetId: target,
+    targetTitle: db.users[target].fullname || target,
+    targetOwner: target,
+    reporter: req.session.username,
+    reason,
+    createdAt: new Date().toISOString(),
+    status: 'open'
+  });
+  await saveDB();
+  res.json({ ok: true });
+});
+
 app.put('/api/theme', requireAuth, async (req, res) => {
   const u = db.users[req.session.username];
   const { mode, custom } = req.body || {};
@@ -506,12 +695,27 @@ app.get('/api/feed', (req, res) => {
   const offset = Math.max(0, parseInt(req.query.offset, 10) || 0);
   const limit = Math.min(20, Math.max(1, parseInt(req.query.limit, 10) || 8));
   const me = req.session.username;
+  const meUser = me && db.users[me];
+
+  const q = String(req.query.q || '').trim().toLowerCase();
+  const type = String(req.query.type || '').trim().toLowerCase();
+  const onlyFollowing = req.query.following === '1' || req.query.following === 'true';
+  const sort = String(req.query.sort || 'new').trim().toLowerCase(); // 'new' | 'top'
+
+  if (onlyFollowing && !meUser) return res.json({ items: [], hasMore: false, total: 0 });
+  const followingSet = onlyFollowing ? new Set(meUser.following || []) : null;
 
   const all = [];
   for (const uname of Object.keys(db.works)) {
     const u = db.users[uname];
     if (!u) continue;
+    if (onlyFollowing && !followingSet.has(uname)) continue;
     for (const w of db.works[uname] || []) {
+      if (type && type !== 'all' && w.type !== type) continue;
+      if (q) {
+        const hay = (w.title + ' ' + (w.desc || '') + ' ' + (u.fullname || '') + ' ' + uname).toLowerCase();
+        if (!hay.includes(q)) continue;
+      }
       const likes = Array.isArray(w.likes) ? w.likes : [];
       const comments = Array.isArray(w.comments) ? w.comments : [];
       all.push({
@@ -530,11 +734,16 @@ app.get('/api/feed', (req, res) => {
         avatar: u.avatar || null,
         likesCount: likes.length,
         likedByMe: likes.includes(me),
+        savedByMe: !!(meUser && Array.isArray(meUser.savedWorks) && meUser.savedWorks.includes(w.id)),
         commentsCount: comments.length
       });
     }
   }
-  all.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  if (sort === 'top') {
+    all.sort((a, b) => (b.likesCount - a.likesCount) || (new Date(b.createdAt) - new Date(a.createdAt)));
+  } else {
+    all.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
   const page = all.slice(offset, offset + limit);
   res.json({ items: page, hasMore: offset + limit < all.length, total: all.length });
 });
@@ -573,7 +782,7 @@ app.get('/api/works/:id/comments', (req, res) => {
   res.json({ items });
 });
 
-app.post('/api/works/:id/comments', requireAuth, requireNotMuted, async (req, res) => {
+app.post('/api/works/:id/comments', requireAuth, requireNotMuted, rateLimit('comment', 30, 60 * 1000), async (req, res) => {
   const found = findWork(req.params.id);
   if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
   const { work } = found;
@@ -705,7 +914,7 @@ app.get('/api/conversations/:username/messages', requireAuth, async (req, res) =
 });
 
 /* Sotuvchiga (yoki istalgan foydalanuvchiga) yangi xabar yuborish */
-app.post('/api/conversations/:username/messages', requireAuth, requireNotMuted, async (req, res) => {
+app.post('/api/conversations/:username/messages', requireAuth, requireNotMuted, rateLimit('message', 40, 60 * 1000), async (req, res) => {
   const me = req.session.username;
   const other = String(req.params.username || '').trim().toLowerCase();
   if (!db.users[other]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
@@ -856,6 +1065,56 @@ app.post('/api/admin/users/:username/unmute', requireAuth, requireAdmin, async (
     addNotification(target, { type: 'unmute' });
   }
 
+  await saveDB();
+  res.json({ ok: true });
+});
+
+/* Umumiy statistika (Administrator burchagi uchun) */
+app.get('/api/admin/stats', requireAuth, requireAdmin, (req, res) => {
+  ensureReportsArray();
+  const usernames = Object.keys(db.users);
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+
+  let worksCount = 0, likesCount = 0, commentsCount = 0, todayUsers = 0, todayWorks = 0;
+  for (const uname of usernames) {
+    const joined = new Date(db.users[uname].joined);
+    if (joined >= today) todayUsers++;
+  }
+  for (const uname of Object.keys(db.works)) {
+    for (const w of db.works[uname] || []) {
+      worksCount++;
+      likesCount += Array.isArray(w.likes) ? w.likes.length : 0;
+      commentsCount += Array.isArray(w.comments) ? w.comments.length : 0;
+      if (new Date(w.createdAt) >= today) todayWorks++;
+    }
+  }
+  res.json({
+    usersCount: usernames.length,
+    worksCount, likesCount, commentsCount,
+    todayUsers, todayWorks,
+    openReports: db.reports.filter(r => r.status === 'open').length,
+    bannedCount: usernames.filter(u => db.users[u].moderation && db.users[u].moderation.bannedUntil).length,
+    mutedCount: usernames.filter(u => db.users[u].moderation && db.users[u].moderation.mutedUntil).length
+  });
+});
+
+/* Shikoyatlar ro'yxati (Administrator burchagi uchun) */
+app.get('/api/admin/reports', requireAuth, requireAdmin, (req, res) => {
+  ensureReportsArray();
+  const items = db.reports.slice().reverse().map(r => Object.assign({}, r, {
+    reporterFullname: (db.users[r.reporter] && db.users[r.reporter].fullname) || r.reporter
+  }));
+  res.json({ items });
+});
+
+/* Shikoyatni ko'rib chiqildi deb belgilash */
+app.post('/api/admin/reports/:id/resolve', requireAuth, requireAdmin, async (req, res) => {
+  ensureReportsArray();
+  const r = db.reports.find(x => x.id === req.params.id);
+  if (!r) return res.status(404).json({ error: 'Shikoyat topilmadi' });
+  r.status = 'resolved';
+  r.resolvedBy = req.session.username;
+  r.resolvedAt = new Date().toISOString();
   await saveDB();
   res.json({ ok: true });
 });

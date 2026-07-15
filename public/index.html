@@ -1623,6 +1623,157 @@
       gap: 2px;
     }
 
+    /* ============ SAVE / SHARE BUTTONS ============ */
+    .save-btn, .share-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 2px;
+      color: var(--text);
+      font-family: inherit;
+    }
+    .save-btn svg, .share-btn svg {
+      width: 21px;
+      height: 21px;
+      stroke: var(--text);
+      fill: none;
+      stroke-width: 2;
+      transition: transform .18s cubic-bezier(.34, 1.56, .64, 1), fill .18s ease, stroke .18s ease;
+    }
+    .save-btn.saved svg {
+      fill: var(--accent);
+      stroke: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .feed-thumb { cursor: zoom-in; }
+
+    /* ============ REPORT LINK ============ */
+    .report-link {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px 0;
+      margin-top: 6px;
+      color: var(--text-dim);
+      font-family: inherit;
+      font-size: 11.5px;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .report-link:hover { color: var(--accent); }
+
+    /* ============ HOME FEED: SEARCH / FILTER BAR ============ */
+    .feed-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .feed-search-wrap {
+      position: relative;
+      flex: 1 1 220px;
+      min-width: 180px;
+    }
+    .feed-search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+    .feed-search-wrap input {
+      width: 100%;
+      padding: 10px 12px 10px 34px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13.5px;
+    }
+    .feed-filter-bar select {
+      padding: 10px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+    }
+    .feed-following-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--text-dim);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* ============ ADMIN: STATS GRID ============ */
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .admin-stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+    .admin-stat-value {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .admin-stat-label {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    .admin-stat-hint {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* ============ ADMIN: REPORTS ============ */
+    .admin-report-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+    .admin-report-card.resolved { opacity: .6; }
+    .admin-report-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+    .admin-report-subject { font-weight: 700; margin-bottom: 4px; }
+    .admin-report-reporter { font-size: 12.5px; color: var(--text-dim); margin-bottom: 4px; }
+    .admin-report-reason {
+      font-size: 13px;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .admin-report-status { font-size: 12.5px; color: var(--accent); font-weight: 700; }
+
     .conversation-item {
       display: flex;
       align-items: center;
@@ -2708,6 +2859,7 @@
         <div class="nav-links">
           <button data-view="home" class="active" data-i18n="nav.home">Bosh sahifa</button>
           <button data-view="profile" data-i18n="nav.profile">Profil</button>
+          <button data-view="saved">Saqlanganlar</button>
           <button data-view="messages"><span data-i18n="nav.messages">Xabarlar</span><span class="msg-badge hidden" id="navMsgBadge">0</span></button>
           <button data-view="admin" id="navAdminBtn" class="hidden" data-i18n="admin.nav">Administrator burchagi</button>
         </div>
@@ -2736,6 +2888,10 @@
       <button data-view="profile">
         <span class="tab-icon">👤</span>
         <span data-i18n="nav.profile">Profil</span>
+      </button>
+      <button data-view="saved">
+        <span class="tab-icon">🔖</span>
+        <span>Saqlangan</span>
       </button>
       <button data-view="messages">
         <span class="tab-icon">💬</span>
@@ -2769,11 +2925,41 @@
           <h1 class="view-title" data-i18n-html="home.title">Barcha <span>ijodkorlar</span>ning asarlari</h1>
           <p class="view-sub" data-i18n="home.sub">Platformadagi barcha foydalanuvchilar yuklagan asarlar — eng yangisidan boshlab.</p>
         </div>
+        <div class="feed-filter-bar">
+          <div class="feed-search-wrap">
+            <svg viewBox="0 0 24 24" class="feed-search-icon"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" id="feedSearchInput" placeholder="Asar yoki ijodkor nomi bo'yicha qidirish...">
+          </div>
+          <select id="feedTypeSelect">
+            <option value="">Barcha turlar</option>
+            <option value="rasm">Rasm</option>
+            <option value="haykal">Haykal</option>
+            <option value="mulaj">Mulaj</option>
+            <option value="boshqa">Boshqa</option>
+          </select>
+          <select id="feedSortSelect">
+            <option value="new">Eng yangi</option>
+            <option value="top">Eng ko'p yoqtirilgan</option>
+          </select>
+          <label class="feed-following-toggle">
+            <input type="checkbox" id="feedFollowingOnly"> <span>Faqat kuzatuvchilarim</span>
+          </label>
+        </div>
         <div id="feedList" class="feed-list"></div>
         <div id="feedSentinel" class="feed-sentinel">
           <div class="feed-spinner"></div>
         </div>
         <div id="feedEnd" class="feed-end hidden" data-i18n="feed.end">Boshqa asar qolmadi.</div>
+      </section>
+
+      <!-- SAVED (BOOKMARKED) WORKS VIEW -->
+      <section id="savedView" class="view">
+        <div class="view-hero">
+          <div class="eyebrow">Sevimlilar</div>
+          <h1 class="view-title">Saqlangan <span>asarlar</span></h1>
+          <p class="view-sub">Keyinroq ko'rish uchun saqlab qo'ygan asarlaringiz shu yerda.</p>
+        </div>
+        <div id="savedList" class="feed-list"></div>
       </section>
 
       <!-- PROFILE VIEW -->
@@ -2908,6 +3094,7 @@
           </div>
         </div>
         <div class="user-profile-bio" id="upBio"></div>
+        <div class="field-hint" id="upFollowStats" style="margin-bottom:10px;"></div>
         <div class="user-profile-contact" id="upContact"></div>
         <div class="section-label" data-i18n="userProfile.works">Asarlari</div>
         <div id="upGrid" class="gallery-grid"></div>
@@ -2920,6 +3107,10 @@
           <h1 class="view-title" data-i18n-html="admin.title">Administrator <span>burchagi</span></h1>
           <p class="view-sub" data-i18n="admin.sub">Barcha foydalanuvchilar — ban yoki mut bering, muddatidan avval olib tashlang.</p>
         </div>
+        <div id="adminStatsGrid" class="admin-stats-grid"></div>
+        <div class="section-label">Shikoyatlar</div>
+        <div id="adminReportsList"></div>
+        <div class="section-label">Foydalanuvchilar</div>
         <div id="adminUsersList"></div>
       </section>
     </main>
@@ -2943,6 +3134,25 @@
         </div>
         <div class="form-error" id="adminModError"></div>
         <button type="submit" class="btn btn-primary btn-block" id="adminModSubmit" data-i18n="admin.mod.confirm">Tasdiqlash</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ SHIKOYAT (REPORT) MODAL ============ -->
+  <div class="modal-backdrop" id="reportModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>Shikoyat qilish</h3>
+        <button class="modal-close" id="closeReportModal">✕</button>
+      </div>
+      <form id="reportForm" class="admin-mod-form">
+        <div class="field-hint" id="reportModalSubject" style="margin-bottom:10px;"></div>
+        <div class="field">
+          <label>Sababi</label>
+          <textarea id="reportReasonInput" rows="3" placeholder="Nima uchun shikoyat qilyapsiz? (ixtiyoriy)"></textarea>
+        </div>
+        <div class="form-error" id="reportModalError"></div>
+        <button type="submit" class="btn btn-primary btn-block">Yuborish</button>
       </form>
     </div>
   </div>
@@ -3932,6 +4142,7 @@
       let feedOffset = 0;
       let feedHasMore = true;
       let feedLoading = false;
+      let feedQuery = { q: '', type: '', sort: 'new', following: false };
       let currentTheme = { mode: 'tungi', custom: '#e2543f' };
       let pendingDeleteId = null;
       let uploadImageBlobs = [];
@@ -4094,6 +4305,7 @@
         $('#feedList').innerHTML = '';
         setupFeedObserver();
         loadFeedPage();
+        maybeOpenSharedWork();
 
         if (!IS_GUEST) {
           refreshUnreadBadge();
@@ -4102,6 +4314,17 @@
         } else {
           $$('.msg-badge').forEach(b => b.classList.add('hidden'));
         }
+      }
+
+      /* Ulashilgan havola (?asar=ID) orqali kirilganda tegishli asarni to'liq hajmda ochadi */
+      async function maybeOpenSharedWork() {
+        const id = new URLSearchParams(location.search).get('asar');
+        if (!id) return;
+        for (let tries = 0; tries < 6 && feedHasMore && !ALL_ITEMS_BY_ID[id]; tries++) {
+          await loadFeedPage();
+        }
+        const item = ALL_ITEMS_BY_ID[id];
+        if (item) openImageViewer(workImages(item), 0);
       }
 
       function updateMuteBanner() {
@@ -4129,6 +4352,7 @@
           case 'unmute': return t('notif.unmute');
           case 'ban-expired': return t('notif.banExpired');
           case 'mute-expired': return t('notif.muteExpired');
+          case 'follow': return (n.from || 'Kimdir') + " sizga obuna bo'ldi";
           default: return n.text || '';
         }
       }
@@ -4157,7 +4381,7 @@
       function bindAppEvents() {
         $$('.nav-links button[data-view]').forEach(btn => {
           btn.addEventListener('click', () => {
-            if (IS_GUEST && (btn.dataset.view === 'profile' || btn.dataset.view === 'messages')) { openGateModal(); return; }
+            if (IS_GUEST && (btn.dataset.view === 'profile' || btn.dataset.view === 'messages' || btn.dataset.view === 'saved')) { openGateModal(); return; }
             switchView(btn.dataset.view);
           });
         });
@@ -4175,7 +4399,13 @@
           FEED = [];
           feedOffset = 0;
           feedHasMore = true;
+          feedQuery = { q: '', type: '', sort: 'new', following: false };
+          Object.keys(ALL_ITEMS_BY_ID).forEach(k => delete ALL_ITEMS_BY_ID[k]);
           $('#feedList').innerHTML = '';
+          $('#feedSearchInput').value = '';
+          $('#feedTypeSelect').value = '';
+          $('#feedSortSelect').value = 'new';
+          $('#feedFollowingOnly').checked = false;
           closeCommentsModal();
           closeChatModal();
           stopUnreadPolling();
@@ -4197,6 +4427,33 @@
         $('#openUploadBtn2').addEventListener('click', guarded(openUploadModal));
         $('#closeUploadModal').addEventListener('click', closeUploadModal);
         $('#uploadModal').addEventListener('click', (e) => { if (e.target === $('#uploadModal')) closeUploadModal(); });
+
+        /* Lenta: qidiruv, kategoriya, saralash, faqat kuzatuvchilarim */
+        let feedSearchTimer = null;
+        $('#feedSearchInput').addEventListener('input', (e) => {
+          clearTimeout(feedSearchTimer);
+          feedSearchTimer = setTimeout(() => {
+            feedQuery.q = e.target.value.trim();
+            resetAndReloadFeed();
+          }, 350);
+        });
+        $('#feedTypeSelect').addEventListener('change', (e) => {
+          feedQuery.type = e.target.value;
+          resetAndReloadFeed();
+        });
+        $('#feedSortSelect').addEventListener('change', (e) => {
+          feedQuery.sort = e.target.value;
+          resetAndReloadFeed();
+        });
+        $('#feedFollowingOnly').addEventListener('change', guarded((e) => {
+          feedQuery.following = e.target.checked;
+          resetAndReloadFeed();
+        }));
+
+        /* Shikoyat modali */
+        $('#closeReportModal').addEventListener('click', closeReportModal);
+        $('#reportModal').addEventListener('click', (e) => { if (e.target === $('#reportModal')) closeReportModal(); });
+        $('#reportForm').addEventListener('submit', submitReportForm);
 
         $('#uploadFile').addEventListener('change', handleFileSelect);
         $('#workStatus').addEventListener('change', () => {
@@ -4300,6 +4557,7 @@
         $('#messagesView').classList.toggle('active', view === 'messages');
         $('#userProfileView').classList.toggle('active', view === 'userProfile');
         $('#adminView').classList.toggle('active', view === 'admin');
+        $('#savedView').classList.toggle('active', view === 'saved');
         if (view === 'profile') {
           renderProfileHeader();
           renderGridInto('#profileGrid', WORKS);
@@ -4309,6 +4567,11 @@
         }
         if (view === 'admin') {
           loadAdminUsers();
+          loadAdminStats();
+          loadAdminReports();
+        }
+        if (view === 'saved') {
+          loadSaved();
         }
       }
 
@@ -4432,6 +4695,72 @@
           loadAdminUsers();
         } catch (err) {
           errEl.textContent = err.message || t('admin.actionFail');
+        }
+      }
+
+      /* ===================== ADMIN: STATISTIKA VA SHIKOYATLAR ===================== */
+      async function loadAdminStats() {
+        const grid = $('#adminStatsGrid');
+        try {
+          const s = await api('/api/admin/stats');
+          grid.innerHTML = [
+            ['Foydalanuvchilar', s.usersCount, '+' + s.todayUsers + ' bugun'],
+            ['Asarlar', s.worksCount, '+' + s.todayWorks + ' bugun'],
+            ['Layklar', s.likesCount, ''],
+            ['Kommentlar', s.commentsCount, ''],
+            ['Ochiq shikoyatlar', s.openReports, ''],
+            ['Ban/Mut', s.bannedCount + ' / ' + s.mutedCount, '']
+          ].map(([label, value, hint]) => `
+        <div class="admin-stat-card">
+          <div class="admin-stat-value">${value}</div>
+          <div class="admin-stat-label">${label}</div>
+          ${hint ? `<div class="admin-stat-hint">${hint}</div>` : ''}
+        </div>`).join('');
+        } catch (e) {
+          grid.innerHTML = `<p class="view-sub">${t('common.serverError')}</p>`;
+        }
+      }
+
+      function reportItemHTML(r) {
+        const date = fmtDate(r.createdAt);
+        const subject = r.type === 'work' ? ('Asar: "' + escapeHtml(r.targetTitle || '') + '"') : ('Foydalanuvchi: @' + escapeHtml(r.targetId));
+        return `
+      <div class="admin-report-card ${r.status === 'resolved' ? 'resolved' : ''}" data-id="${r.id}">
+        <div class="admin-report-head">
+          <span class="admin-report-type">${r.type === 'work' ? '🖼️ Asar' : '👤 Foydalanuvchi'}</span>
+          <span class="admin-report-date">${date}</span>
+        </div>
+        <div class="admin-report-subject">${subject}</div>
+        <div class="admin-report-reporter">Shikoyatchi: @${escapeHtml(r.reporter)} (${escapeHtml(r.reporterFullname || r.reporter)})</div>
+        ${r.reason ? `<div class="admin-report-reason">"${escapeHtml(r.reason)}"</div>` : ''}
+        ${r.status === 'resolved'
+          ? `<div class="admin-report-status">✓ Ko'rib chiqilgan</div>`
+          : `<button class="btn btn-ghost btn-sm admin-report-resolve" data-id="${r.id}">Ko'rib chiqildi deb belgilash</button>`}
+      </div>`;
+      }
+
+      async function loadAdminReports() {
+        const list = $('#adminReportsList');
+        list.innerHTML = `<p class="view-sub">${t('admin.loading')}</p>`;
+        try {
+          const data = await api('/api/admin/reports');
+          const items = data.items || [];
+          if (!items.length) {
+            list.innerHTML = `<p class="view-sub">Hozircha shikoyatlar yo'q.</p>`;
+            return;
+          }
+          list.innerHTML = items.map(reportItemHTML).join('');
+          list.querySelectorAll('.admin-report-resolve').forEach(btn => {
+            btn.addEventListener('click', async () => {
+              try {
+                await apiJSON('/api/admin/reports/' + btn.dataset.id + '/resolve', 'POST');
+                loadAdminReports();
+                loadAdminStats();
+              } catch (e) { /* jim tarzda o'tkazib yuboriladi */ }
+            });
+          });
+        } catch (e) {
+          list.innerHTML = `<p class="view-sub">${t('common.serverError')}</p>`;
         }
       }
 
@@ -4626,8 +4955,12 @@
         $('#upStatTotal').textContent = works.length;
         $('#upStatSale').textContent = works.filter(w => w.status === 'sale').length;
         $('#upStatExpo').textContent = works.filter(w => w.status === 'expo').length;
+        $('#upFollowStats').textContent = (profile.followersCount || 0) + ' obunachi · ' + (profile.followingCount || 0) + ' kuzatmoqda';
 
         const contactBits = [];
+        if (!profile.isSelf) {
+          contactBits.push(`<button class="btn ${profile.isFollowing ? 'btn-ghost' : 'btn-primary'} btn-sm" id="upFollowBtn" data-username="${escapeHtml(profile.username)}" data-following="${profile.isFollowing ? '1' : '0'}">${profile.isFollowing ? "Obunani bekor qilish" : "Obuna bo'lish"}</button>`);
+        }
         if (profile.phone) contactBits.push(`<div class="user-profile-contact-item">📞 ${escapeHtml(profile.phone)}</div>`);
         if (profile.social) {
           const href = /^https?:\/\//i.test(profile.social) ? profile.social : 'https://' + profile.social;
@@ -4636,12 +4969,26 @@
         if (profile.email) contactBits.push(`<div class="user-profile-contact-item">✉️ ${escapeHtml(profile.email)}</div>`);
         if (!CURRENT_USER || profile.username !== CURRENT_USER.username) {
           contactBits.push(`<button class="btn btn-primary btn-sm" id="upContactSellerBtn">${t('userProfile.contactBtn')}</button>`);
+          contactBits.push(`<button class="report-link" id="upReportBtn">Shikoyat qilish</button>`);
         }
         $('#upContact').innerHTML = contactBits.join('');
         const msgBtn = $('#upContactSellerBtn');
         if (msgBtn) msgBtn.addEventListener('click', guarded(() => openChat(profile.username)));
+        const followBtn = $('#upFollowBtn');
+        if (followBtn) followBtn.addEventListener('click', guarded(() => toggleFollow(profile.username)));
+        const reportBtn = $('#upReportBtn');
+        if (reportBtn) reportBtn.addEventListener('click', guarded(() => openReportModal('user', profile.username, profile.fullname || profile.username)));
 
         renderGridInto('#upGrid', works);
+      }
+
+      /* Foydalanuvchiga obuna bo'lish / bekor qilish, so'ng profilni qayta chizish */
+      async function toggleFollow(username) {
+        try {
+          await apiJSON('/api/users/' + encodeURIComponent(username) + '/follow', 'POST');
+          const data = await api('/api/users/' + encodeURIComponent(username));
+          renderUserProfile(data.profile, data.works || []);
+        } catch (e) { /* jim tarzda o'tkazib yuboriladi */ }
       }
 
       /* ===================== GALLERY RENDER =====================
@@ -4731,6 +5078,14 @@
         return `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3V4z"/></svg>`;
       }
 
+      function saveIconSVG() {
+        return `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>`;
+      }
+
+      function shareIconSVG() {
+        return `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.7"/><circle cx="6" cy="12" r="2.7"/><circle cx="18" cy="19" r="2.7"/><line x1="8.4" y1="10.6" x2="15.6" y2="6.4"/><line x1="8.4" y1="13.4" x2="15.6" y2="17.6"/></svg>`;
+      }
+
       function feedCardHTML(w) {
         return `
       <article class="feed-card" data-id="${w.id}">
@@ -4741,7 +5096,7 @@
             <div class="feed-username">@${escapeHtml(w.username)}</div>
           </div>
         </div>
-        <div class="feed-thumb">
+        <div class="feed-thumb" data-id="${w.id}" role="button" tabindex="0" aria-label="Rasmni to'liq hajmda ko'rish">
           ${collageHTML(workImages(w), w.title)}
           <div class="feed-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
         </div>
@@ -4753,6 +5108,12 @@
           <button class="comment-btn" data-id="${w.id}" aria-label="${t('feed.commentAria')}">
             ${commentIconSVG()}
             <span class="comment-count">${w.commentsCount || 0}</span>
+          </button>
+          <button class="save-btn ${w.savedByMe ? 'saved' : ''}" data-id="${w.id}" aria-label="Saqlash">
+            ${saveIconSVG()}
+          </button>
+          <button class="share-btn" data-id="${w.id}" data-title="${escapeHtml(w.title)}" aria-label="Ulashish">
+            ${shareIconSVG()}
           </button>
           ${w.status === 'sale' && (!CURRENT_USER || w.username !== CURRENT_USER.username) ? `
           <button class="contact-seller-btn" data-username="${escapeHtml(w.username)}" data-workid="${w.id}" data-worktitle="${escapeHtml(w.title)}" aria-label="${t('feed.contactAria')}">
@@ -4766,6 +5127,7 @@
             <span>${fmtDate(w.createdAt)}</span>
             ${w.status === 'sale' && w.price ? `<span class="feed-price">${fmtPrice(w.price, w.currency)}</span>` : ''}
           </div>
+          <button class="report-link" data-type="work" data-id="${w.id}" data-title="${escapeHtml(w.title)}">Shikoyat qilish</button>
         </div>
       </article>`;
       }
@@ -4785,17 +5147,7 @@
         frag.innerHTML = items.map(w => feedCardHTML(w)).join('');
         Array.from(frag.children).forEach(card => {
           list.appendChild(card);
-          card.querySelector('.like-btn').addEventListener('click', () => toggleLike(card.dataset.id));
-          card.querySelector('.comment-btn').addEventListener('click', () => openCommentsModal(card.dataset.id));
-          const headEl = card.querySelector('.feed-head');
-          if (headEl) headEl.addEventListener('click', () => openUserProfile(headEl.dataset.username));
-          const contactBtn = card.querySelector('.contact-seller-btn');
-          if (contactBtn) {
-            contactBtn.addEventListener('click', guarded(() => openChat(contactBtn.dataset.username, {
-              id: contactBtn.dataset.workid,
-              title: contactBtn.dataset.worktitle
-            })));
-          }
+          bindFeedCardEvents(card);
           feedRevealObserver.observe(card);
         });
         if (!list.children.length) {
@@ -4808,14 +5160,154 @@
         }
       }
 
+      /* Feed/saqlanganlar kartochkasidagi barcha bosish hodisalarini ulaydi */
+      function bindFeedCardEvents(card) {
+        const id = card.dataset.id;
+        card.querySelector('.like-btn').addEventListener('click', () => toggleLike(id));
+        card.querySelector('.comment-btn').addEventListener('click', () => openCommentsModal(id));
+        const headEl = card.querySelector('.feed-head');
+        if (headEl) headEl.addEventListener('click', () => openUserProfile(headEl.dataset.username));
+        const contactBtn = card.querySelector('.contact-seller-btn');
+        if (contactBtn) {
+          contactBtn.addEventListener('click', guarded(() => openChat(contactBtn.dataset.username, {
+            id: contactBtn.dataset.workid,
+            title: contactBtn.dataset.worktitle
+          })));
+        }
+        const thumb = card.querySelector('.feed-thumb');
+        if (thumb) {
+          thumb.addEventListener('click', () => {
+            const src = ALL_ITEMS_BY_ID[id];
+            const images = src ? workImages(src) : Array.from(thumb.querySelectorAll('img')).map(i => i.src);
+            openImageViewer(images, 0);
+          });
+        }
+        const saveBtn = card.querySelector('.save-btn');
+        if (saveBtn) saveBtn.addEventListener('click', guarded(() => toggleSave(id)));
+        const shareBtn = card.querySelector('.share-btn');
+        if (shareBtn) shareBtn.addEventListener('click', () => shareWork(shareBtn.dataset.id, shareBtn.dataset.title));
+        const reportLink = card.querySelector('.report-link');
+        if (reportLink) reportLink.addEventListener('click', guarded(() => openReportModal('work', reportLink.dataset.id, reportLink.dataset.title)));
+      }
+
+      /* Lenta va saqlanganlar ro'yxatidagi barcha asarlarni id bo'yicha tez topish uchun */
+      const ALL_ITEMS_BY_ID = {};
+      function indexItems(items) { (items || []).forEach(w => { ALL_ITEMS_BY_ID[w.id] = w; }); }
+
+      /* Asarni saqlash/saqlashdan chiqarish */
+      async function toggleSave(id) {
+        const btns = document.querySelectorAll(`.save-btn[data-id="${id}"]`);
+        try {
+          const data = await apiJSON('/api/works/' + id + '/save', 'POST');
+          btns.forEach(btn => btn.classList.toggle('saved', data.saved));
+          const item = ALL_ITEMS_BY_ID[id];
+          if (item) item.savedByMe = data.saved;
+          if (!data.saved && $('#savedView').classList.contains('active')) {
+            const card = document.querySelector(`#savedList .feed-card[data-id="${id}"]`);
+            if (card) card.remove();
+          }
+        } catch (e) { /* jim tarzda o'tkazib yuboriladi */ }
+      }
+
+      /* Asar havolasini ulashish (mavjud bo'lsa tizim ulashish oynasi, aks holda nusxalash) */
+      async function shareWork(id, title) {
+        const url = location.origin + location.pathname + '?asar=' + encodeURIComponent(id);
+        if (navigator.share) {
+          try { await navigator.share({ title: title || 'Madein.net', url }); return; } catch (e) { /* bekor qilindi */ }
+        }
+        try {
+          await navigator.clipboard.writeText(url);
+          alert("Havola nusxalandi: " + url);
+        } catch (e) {
+          prompt("Havolani nusxalang:", url);
+        }
+      }
+
+      /* ===================== SHIKOYAT (REPORT) ===================== */
+      let reportTarget = null; // { type: 'work' | 'user', id, title }
+      function openReportModal(type, id, title) {
+        reportTarget = { type, id, title };
+        $('#reportModalSubject').textContent = title ? ('"' + title + '"') : '';
+        $('#reportReasonInput').value = '';
+        $('#reportModalError').textContent = '';
+        $('#reportModal').classList.add('open');
+      }
+      function closeReportModal() { $('#reportModal').classList.remove('open'); reportTarget = null; }
+      async function submitReportForm(e) {
+        e.preventDefault();
+        if (!reportTarget) return;
+        const reason = $('#reportReasonInput').value.trim();
+        try {
+          const path = reportTarget.type === 'work'
+            ? '/api/works/' + reportTarget.id + '/report'
+            : '/api/users/' + reportTarget.id + '/report';
+          await apiJSON(path, 'POST', { reason });
+          closeReportModal();
+          alert("Shikoyatingiz qabul qilindi. Ko'rib chiqamiz.");
+        } catch (e2) {
+          $('#reportModalError').textContent = (e2 && e2.message) || t('common.serverError');
+        }
+      }
+
+      /* ===================== SAQLANGAN ASARLAR RO'YXATI ===================== */
+      async function loadSaved() {
+        const list = $('#savedList');
+        list.innerHTML = `<p class="view-sub">Yuklanmoqda...</p>`;
+        try {
+          const data = await api('/api/saved');
+          const items = data.items || [];
+          indexItems(items);
+          if (!items.length) {
+            list.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-stamp">🔖</div>
+            <h3>Hozircha bo'sh</h3>
+            <p>Yoqtirgan asarlaringizni saqlash belgisi orqali shu yerga qo'shing.</p>
+          </div>`;
+            return;
+          }
+          const frag = document.createElement('div');
+          frag.innerHTML = items.map(w => feedCardHTML(w)).join('');
+          list.innerHTML = '';
+          Array.from(frag.children).forEach(card => {
+            list.appendChild(card);
+            bindFeedCardEvents(card);
+          });
+        } catch (e) {
+          list.innerHTML = `<p class="view-sub">${t('common.serverError')}</p>`;
+        }
+      }
+
+      function feedQueryString() {
+        const p = new URLSearchParams();
+        p.set('offset', feedOffset);
+        p.set('limit', 8);
+        if (feedQuery.q) p.set('q', feedQuery.q);
+        if (feedQuery.type) p.set('type', feedQuery.type);
+        if (feedQuery.sort && feedQuery.sort !== 'new') p.set('sort', feedQuery.sort);
+        if (feedQuery.following) p.set('following', '1');
+        return p.toString();
+      }
+
+      /* Qidiruv/filtr o'zgarganda lentani noldan yuklaydi */
+      function resetAndReloadFeed() {
+        FEED = [];
+        feedOffset = 0;
+        feedHasMore = true;
+        $('#feedList').innerHTML = '';
+        $('#feedEnd').classList.add('hidden');
+        loadFeedPage();
+      }
+
       async function loadFeedPage() {
         if (feedLoading || !feedHasMore) return;
         feedLoading = true;
         $('#feedSentinel').classList.remove('hidden');
         try {
-          const data = await api('/api/feed?offset=' + feedOffset + '&limit=8');
+          const data = await api('/api/feed?' + feedQueryString());
           const items = data.items || [];
           FEED = FEED.concat(items);
+          indexItems(items);
           feedOffset += items.length;
           feedHasMore = !!data.hasMore;
           appendFeedItems(items);
@@ -4838,26 +5330,26 @@
 
       async function toggleLike(id) {
         if (IS_GUEST) { openGateModal(); return; }
-        const item = FEED.find(w => w.id === id);
+        const item = ALL_ITEMS_BY_ID[id] || FEED.find(w => w.id === id);
         if (!item) return;
-        const btn = document.querySelector(`.like-btn[data-id="${id}"]`);
+        const btns = document.querySelectorAll(`.like-btn[data-id="${id}"]`);
 
         /* optimistik yangilash — bosilgan zahoti javob beradi */
         const wasLiked = item.likedByMe;
         item.likedByMe = !wasLiked;
         item.likesCount += wasLiked ? -1 : 1;
-        updateLikeBtn(btn, item);
+        btns.forEach(btn => updateLikeBtn(btn, item));
 
         try {
           const res = await apiJSON('/api/works/' + id + '/like', 'POST');
           item.likedByMe = res.liked;
           item.likesCount = res.likesCount;
-          updateLikeBtn(btn, item);
+          btns.forEach(btn => updateLikeBtn(btn, item));
         } catch (e) {
           /* xatolik bo'lsa, orqaga qaytaramiz */
           item.likedByMe = wasLiked;
           item.likesCount += wasLiked ? 1 : -1;
-          updateLikeBtn(btn, item);
+          btns.forEach(btn => updateLikeBtn(btn, item));
         }
       }
 
@@ -4878,7 +5370,7 @@
       }
       function setCommentCount(id, n) {
         commentCountEls(id).forEach(el => el.textContent = n);
-        const item = FEED.find(w => w.id === id);
+        const item = ALL_ITEMS_BY_ID[id] || FEED.find(w => w.id === id);
         if (item) item.commentsCount = n;
       }
 
@@ -5134,9 +5626,11 @@
           avatar: CURRENT_USER.avatar || null,
           likesCount: 0,
           likedByMe: false,
+          savedByMe: false,
           commentsCount: 0
         };
         FEED.unshift(item);
+        indexItems([item]);
         feedOffset += 1;
         const list = $('#feedList');
         const emptyState = list.querySelector('.empty-state');
@@ -5145,10 +5639,7 @@
         frag.innerHTML = feedCardHTML(item);
         const card = frag.firstElementChild;
         list.insertBefore(card, list.firstChild);
-        card.querySelector('.like-btn').addEventListener('click', () => toggleLike(card.dataset.id));
-        card.querySelector('.comment-btn').addEventListener('click', () => openCommentsModal(card.dataset.id));
-        const headEl = card.querySelector('.feed-head');
-        if (headEl) headEl.addEventListener('click', () => openUserProfile(headEl.dataset.username));
+        bindFeedCardEvents(card);
         card.classList.add('reveal');
       }
 
