@@ -105,6 +105,24 @@ function ensureReportsArray() {
   if (!Array.isArray(db.reports)) db.reports = [];
 }
 
+/* Ko'rib chiqilgan (resolved) shikoyatlar shu muddatdan keyin ro'yxatdan
+   avtomatik o'chiriladi — admin panelini eski shikoyatlar bilan
+   to'ldirmaslik uchun. */
+const RESOLVED_REPORT_TTL_MS = 3 * 60 * 60 * 1000; // 3 soat
+
+/* Muddati o'tgan ko'rib chiqilgan shikoyatlarni ro'yxatdan olib tashlaydi.
+   O'zgarish bo'lsa true qaytaradi (saqlash kerakligini bildiradi). */
+function purgeResolvedReports() {
+  ensureReportsArray();
+  const now = Date.now();
+  const before = db.reports.length;
+  db.reports = db.reports.filter(r => {
+    if (r.status !== 'resolved' || !r.resolvedAt) return true;
+    return now - new Date(r.resolvedAt).getTime() < RESOLVED_REPORT_TTL_MS;
+  });
+  return db.reports.length !== before;
+}
+
 /* Muddati o'tgan ban/mutni avtomatik bekor qiladi va foydalanuvchiga xabar qoldiradi.
    true qaytarsa, saqlash kerak. `uname` berilsa, tabiiy tugash haqida bildirishnoma qo'shiladi. */
 function refreshModeration(u, uname) {
@@ -186,6 +204,12 @@ setInterval(() => {
   for (const [id, bucket] of rateBuckets) {
     if (now - bucket.start > 60 * 60 * 1000) rateBuckets.delete(id);
   }
+}, 30 * 60 * 1000).unref();
+
+/* Muddati o'tgan ko'rib chiqilgan shikoyatlarni fon rejimida vaqti-vaqti bilan
+   tozalab turadi, admin panelini hech kim ochmasa ham */
+setInterval(() => {
+  if (purgeResolvedReports()) saveDB();
 }, 30 * 60 * 1000).unref();
 
 // Eski (bitta rasmli) asarlarni yangi `images` massiviga moslashtirish
@@ -1208,8 +1232,9 @@ app.get('/api/admin/stats', requireAuth, requireAdmin, (req, res) => {
 });
 
 /* Shikoyatlar ro'yxati (Administrator burchagi uchun) */
-app.get('/api/admin/reports', requireAuth, requireAdminNotBoss, (req, res) => {
+app.get('/api/admin/reports', requireAuth, requireAdminNotBoss, async (req, res) => {
   ensureReportsArray();
+  if (purgeResolvedReports()) await saveDB();
   const items = db.reports.slice().reverse().map(r => {
     let targetImage = null;
     let targetExists = true;

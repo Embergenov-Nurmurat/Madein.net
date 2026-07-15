@@ -3358,16 +3358,16 @@
             <div class="field-hint" id="adminActivateMsg"></div>
           </div>
           <div class="field-hint" id="adminAlreadyOn" style="margin-bottom:14px;" data-i18n="admin.activate.already">Administrator rejimi ushbu hisobda faol.</div>
-          <div class="field-hint hidden" id="adminAccessRevokedNotice" style="margin-bottom:14px; color: var(--danger, #e2543f);">Administrator huquqingiz boss tomonidan bekor qilingan. Faqat boss ruxsati bilan qaytadan faollashtirishingiz mumkin.</div>
+          <div class="field-hint hidden" id="adminAccessRevokedNotice" style="margin-bottom:14px; color: var(--danger, #e2543f);" data-i18n="admin.accessRevokedNotice">Administrator huquqingiz boss tomonidan bekor qilingan. Faqat boss ruxsati bilan qaytadan faollashtirishingiz mumkin.</div>
           <div class="field lang-field hidden" id="bossActivateBlock">
-            <label for="bossCodeInput">Boss rejimi</label>
+            <label for="bossCodeInput" data-i18n="boss.activate.label">Boss rejimi</label>
             <div class="field-row" style="align-items:flex-start;">
-              <input type="password" id="bossCodeInput" style="flex:1;" placeholder="Maxfiy kodni kiriting">
-              <button type="button" class="btn btn-ghost btn-sm" id="bossActivateBtn" style="white-space:nowrap;">Ishga tushirish</button>
+              <input type="password" id="bossCodeInput" style="flex:1;" data-i18n-ph="boss.activate.ph" placeholder="Maxfiy kodni kiriting">
+              <button type="button" class="btn btn-ghost btn-sm" id="bossActivateBtn" style="white-space:nowrap;" data-i18n="admin.activate.btn">Ishga tushirish</button>
             </div>
             <div class="field-hint" id="bossActivateMsg"></div>
           </div>
-          <div class="field-hint hidden" id="bossAlreadyOn" style="margin-bottom:14px;">Boss rejimi ushbu hisobda faol.</div>
+          <div class="field-hint hidden" id="bossAlreadyOn" style="margin-bottom:14px;" data-i18n="boss.activate.already">Boss rejimi ushbu hisobda faol.</div>
           <div class="privacy-block">
             <div class="field-hint" style="margin-bottom:6px;" data-i18n="profile.edit.privacyTitle">Boshqalar profilingizda nimani ko'ra olishini tanlang:</div>
             <label class="privacy-toggle"><input type="checkbox" id="privacyPhone"> <span data-i18n="profile.edit.privacyPhone">Telefon raqamimni ko'rsatish</span></label>
@@ -3810,8 +3810,14 @@
           "feedThumb.aria": "Rasmni to'liq hajmda ko'rish",
           "notif.someone": "Kimdir",
           "notif.adminFired": "Boss sizni administrator lavozimidan ozod qildi. Endi oddiy foydalanuvchisiz — qaytadan administrator bo'lish uchun boss ruxsati kerak.",
-          "notif.adminRehired": "Boss sizga qaytadan administrator parolini kiritish huquqini berdi."
-       },
+          "notif.adminRehired": "Boss sizga qaytadan administrator parolini kiritish huquqini berdi.",
+          "admin.bossNav": "Boss xonasi",
+          "admin.bossTitle": "Boss <span>xonasi</span>",
+          "boss.activate.label": "Boss rejimi",
+          "boss.activate.ph": "Maxfiy kodni kiriting",
+          "boss.activate.already": "Boss rejimi ushbu hisobda faol.",
+          "admin.accessRevokedNotice": "Administrator huquqingiz boss tomonidan bekor qilingan. Faqat boss ruxsati bilan qaytadan faollashtirishingiz mumkin."
+      },
         en: {
           _locale: 'en-US', _dir: 'ltr', _name: "English",
           "auth.tagline": "Keep the paintings, sculptures and models you made by hand — put them up for sale or just for show.",
@@ -3995,8 +4001,14 @@
           "feedThumb.aria": "View image in full size",
           "notif.someone": "Someone",
           "notif.adminFired": "The boss has dismissed you from the administrator role. You are now a regular user — you'll need the boss's permission to become an administrator again.",
-          "notif.adminRehired": "The boss has given you permission to enter the administrator password again."
-       },
+          "notif.adminRehired": "The boss has given you permission to enter the administrator password again.",
+          "admin.bossNav": "Boss room",
+          "admin.bossTitle": "Boss <span>room</span>",
+          "boss.activate.label": "Boss mode",
+          "boss.activate.ph": "Enter the secret code",
+          "boss.activate.already": "Boss mode is active on this account.",
+          "admin.accessRevokedNotice": "Your administrator rights have been revoked by the boss. You can only reactivate them with the boss's permission."
+      },
         zh: {
           _locale: 'zh-CN', _dir: 'ltr', _name: "中文",
           "auth.tagline": "保存您亲手制作的绘画、雕塑和模型 — 可以出售，也可以只是展示。",
@@ -4180,8 +4192,14 @@
           "feedThumb.aria": "查看大图",
           "notif.someone": "有人",
           "notif.adminFired": "老板已解除您的管理员职务。您现在是普通用户——需要老板许可才能再次成为管理员。",
-          "notif.adminRehired": "老板已再次授权您输入管理员密码。"
-       },
+          "notif.adminRehired": "老板已再次授权您输入管理员密码。",
+          "admin.bossNav": "老板室",
+          "admin.bossTitle": "老板<span>室</span>",
+          "boss.activate.label": "老板模式",
+          "boss.activate.ph": "请输入密码",
+          "boss.activate.already": "此账户已启用老板模式。",
+          "admin.accessRevokedNotice": "您的管理员权限已被老板撤销。只有获得老板许可才能重新激活。"
+      },
         hi: {
           _locale: 'hi-IN', _dir: 'ltr', _name: "हिन्दी",
           "auth.tagline": "अपने हाथों से बनाई गई पेंटिंग, मूर्तियाँ और मॉडल सहेजें — बिक्री के लिए रखें या बस प्रदर्शित करें।",
@@ -4365,8 +4383,14 @@
           "feedThumb.aria": "छवि को पूर्ण आकार में देखें",
           "notif.someone": "किसी ने",
           "notif.adminFired": "बॉस ने आपको व्यवस्थापक पद से हटा दिया है। अब आप एक सामान्य उपयोगकर्ता हैं — फिर से व्यवस्थापक बनने के लिए बॉस की अनुमति चाहिए होगी।",
-          "notif.adminRehired": "बॉस ने आपको फिर से व्यवस्थापक पासवर्ड दर्ज करने का अधिकार दिया है।"
-       },
+          "notif.adminRehired": "बॉस ने आपको फिर से व्यवस्थापक पासवर्ड दर्ज करने का अधिकार दिया है।",
+          "admin.bossNav": "बॉस रूम",
+          "admin.bossTitle": "बॉस <span>रूम</span>",
+          "boss.activate.label": "बॉस मोड",
+          "boss.activate.ph": "गुप्त कोड दर्ज करें",
+          "boss.activate.already": "इस खाते में बॉस मोड सक्रिय है।",
+          "admin.accessRevokedNotice": "आपके व्यवस्थापक अधिकार बॉस द्वारा रद्द कर दिए गए हैं। आप केवल बॉस की अनुमति से ही उन्हें फिर से सक्रिय कर सकते हैं।"
+      },
         es: {
           _locale: 'es-ES', _dir: 'ltr', _name: "Español",
           "auth.tagline": "Guarda las pinturas, esculturas y maquetas que hiciste a mano — publícalas en venta o solo para mostrarlas.",
@@ -4550,8 +4574,14 @@
           "feedThumb.aria": "Ver imagen a tamaño completo",
           "notif.someone": "Alguien",
           "notif.adminFired": "El jefe te ha destituido del cargo de administrador. Ahora eres un usuario normal — necesitarás el permiso del jefe para volver a ser administrador.",
-          "notif.adminRehired": "El jefe te ha dado permiso para introducir de nuevo la contraseña de administrador."
-       },
+          "notif.adminRehired": "El jefe te ha dado permiso para introducir de nuevo la contraseña de administrador.",
+          "admin.bossNav": "Sala del jefe",
+          "admin.bossTitle": "Sala del <span>jefe</span>",
+          "boss.activate.label": "Modo jefe",
+          "boss.activate.ph": "Introduce el código secreto",
+          "boss.activate.already": "El modo jefe está activo en esta cuenta.",
+          "admin.accessRevokedNotice": "Tus derechos de administrador han sido revocados por el jefe. Solo puedes reactivarlos con el permiso del jefe."
+      },
         ar: {
           _locale: 'ar-SA', _dir: 'rtl', _name: "العربية",
           "auth.tagline": "احفظ اللوحات والمنحوتات والمجسمات التي صنعتها بيديك — اعرضها للبيع أو للعرض فقط.",
@@ -4735,8 +4765,14 @@
           "feedThumb.aria": "عرض الصورة بالحجم الكامل",
           "notif.someone": "شخص ما",
           "notif.adminFired": "قام الرئيس بإعفائك من منصب المشرف. أنت الآن مستخدم عادي — ستحتاج إلى إذن الرئيس لتصبح مشرفًا مرة أخرى.",
-          "notif.adminRehired": "منحك الرئيس الإذن لإدخال كلمة مرور المشرف مرة أخرى."
-       },
+          "notif.adminRehired": "منحك الرئيس الإذن لإدخال كلمة مرور المشرف مرة أخرى.",
+          "admin.bossNav": "غرفة الرئيس",
+          "admin.bossTitle": "غرفة <span>الرئيس</span>",
+          "boss.activate.label": "وضع الرئيس",
+          "boss.activate.ph": "أدخل الرمز السري",
+          "boss.activate.already": "وضع الرئيس مفعّل على هذا الحساب.",
+          "admin.accessRevokedNotice": "تم إلغاء صلاحيات المشرف الخاصة بك من قبل الرئيس. يمكنك إعادة تفعيلها فقط بإذن الرئيس."
+      },
         ru: {
           _locale: 'ru-RU', _dir: 'ltr', _name: "Русский",
           "auth.tagline": "Сохраняйте картины, скульптуры и макеты, сделанные своими руками, — выставляйте на продажу или просто на показ.",
@@ -4920,8 +4956,14 @@
           "feedThumb.aria": "Посмотреть изображение в полном размере",
           "notif.someone": "Кто-то",
           "notif.adminFired": "Босс освободил вас от должности администратора. Теперь вы обычный пользователь — чтобы снова стать администратором, потребуется разрешение босса.",
-          "notif.adminRehired": "Босс снова дал вам право ввести пароль администратора."
-       }
+          "notif.adminRehired": "Босс снова дал вам право ввести пароль администратора.",
+          "admin.bossNav": "Кабинет босса",
+          "admin.bossTitle": "Кабинет <span>босса</span>",
+          "boss.activate.label": "Режим босса",
+          "boss.activate.ph": "Введите секретный код",
+          "boss.activate.already": "Режим босса активен на этом аккаунте.",
+          "admin.accessRevokedNotice": "Ваши права администратора были отозваны боссом. Вы можете снова активировать их только с разрешения босса."
+      }
       };
 
       let currentLang = localStorage.getItem('madein_lang') || 'uz';
@@ -4964,7 +5006,7 @@
            the underlying user content in WORKS/FEED is left untouched
            and simply redrawn with the new chrome around it) */
         if (typeof renderGrids === 'function' && typeof CURRENT_USER !== 'undefined') {
-          try { renderGrids(); renderProfileHeader(); } catch (e) { /* not ready yet */ }
+          try { renderGrids(); renderProfileHeader(); updateAdminNavVisibility(); } catch (e) { /* not ready yet */ }
         }
         if (typeof FEED !== 'undefined' && FEED.length) {
           try {
@@ -5872,10 +5914,10 @@
         const isBoss = !!(CURRENT_USER && CURRENT_USER.isBoss);
         $('#navAdminBtn').classList.toggle('hidden', !isAdmin);
         $('#navAdminBtnMobile').classList.toggle('hidden', !isAdmin);
-        const navLabel = isBoss ? 'Boss xonasi' : t('admin.nav');
+        const navLabel = isBoss ? t('admin.bossNav') : t('admin.nav');
         $('#navAdminBtn').textContent = navLabel;
         $$('#navAdminBtnMobile span').forEach(s => { if (!s.classList.contains('tab-icon')) s.textContent = navLabel; });
-        $('#adminViewTitle').innerHTML = isBoss ? 'Boss <span>xonasi</span>' : t('admin.title');
+        $('#adminViewTitle').innerHTML = isBoss ? t('admin.bossTitle') : t('admin.title');
         $('#adminReportsSection').classList.toggle('hidden', isBoss);
       }
       async function saveProfile() {
