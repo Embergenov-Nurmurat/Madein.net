@@ -111,6 +111,36 @@
       --glow: 0 0 24px rgba(255, 46, 136, 0.35);
     }
 
+    body[data-theme="cyberpunk-blue"] {
+      --bg: #05070f;
+      --bg-alt: #090d1a;
+      --surface: #0d1424;
+      --surface-2: #121b32;
+      --text: #e7f2ff;
+      --text-dim: #7f93b8;
+      --accent: #00aaff;
+      --accent-2: #7c3aed;
+      --border: rgba(0, 200, 255, 0.14);
+      --stamp-ink: var(--accent);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      --glow: 0 0 24px rgba(0, 170, 255, 0.4);
+    }
+
+    body[data-theme="cyberpunk-yellow"] {
+      --bg: #0a0a0a;
+      --bg-alt: #121212;
+      --surface: #171717;
+      --surface-2: #1e1e1e;
+      --text: #fdf6e3;
+      --text-dim: #9c9483;
+      --accent: #ffd400;
+      --accent-2: #ff8a00;
+      --border: rgba(255, 212, 0, 0.16);
+      --stamp-ink: var(--accent);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      --glow: 0 0 24px rgba(255, 212, 0, 0.4);
+    }
+
     body[data-theme="custom"] {
       --bg: #131319;
       --bg-alt: #191922;
@@ -1714,8 +1744,12 @@
       position: relative;
       flex: 0 1 240px;
       min-width: 150px;
-      margin-left: auto;
     }
+    .nav-search-wrap {
+      flex: 0 1 220px;
+      min-width: 120px;
+    }
+    .nav-search-wrap input { padding-top: 8px; padding-bottom: 8px; }
     .feed-search-icon {
       position: absolute;
       left: 13px;
@@ -1804,7 +1838,9 @@
     .feed-following-toggle:hover { border-color: var(--accent); }
 
     @media (max-width: 640px) {
-      .feed-search-wrap { flex: 1 1 100%; margin-left: 0; order: -1; }
+      .nav-search-wrap { flex: 0 1 90px; min-width: 76px; }
+      .nav-search-wrap input { padding-left: 30px; padding-right: 8px; font-size: 12px; }
+      .nav-search-wrap .feed-search-icon { left: 9px; }
     }
 
     /* ============ ADMIN: STATS GRID ============ */
@@ -3061,6 +3097,11 @@
         </div>
       </div>
       <div class="nav-right">
+        <div class="feed-search-wrap nav-search-wrap" id="navSearchWrap">
+          <svg viewBox="0 0 24 24" class="feed-search-icon"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input type="text" id="feedSearchInput" placeholder="Qidirish...">
+          <button type="button" class="feed-search-clear" id="feedSearchClear" aria-label="Tozalash">&times;</button>
+        </div>
         <button class="btn btn-primary btn-sm" id="openUploadBtn" data-i18n="nav.newWork">+ Yangi asar</button>
         <div class="avatar-menu" id="avatarMenu">
           <button class="avatar-btn" id="avatarBtn">
@@ -3138,11 +3179,6 @@
               <input type="checkbox" id="feedFollowingOnly"> <span>Faqat kuzatuvchilarim</span>
             </label>
           </div>
-          <div class="feed-search-wrap">
-            <svg viewBox="0 0 24 24" class="feed-search-icon"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            <input type="text" id="feedSearchInput" placeholder="Qidirish...">
-            <button type="button" class="feed-search-clear" id="feedSearchClear" aria-label="Tozalash">&times;</button>
-          </div>
         </div>
         <div id="feedList" class="feed-list"></div>
         <div id="feedSentinel" class="feed-sentinel">
@@ -3205,6 +3241,12 @@
                 </div>
                 <div class="theme-opt" data-theme="cyberpunk">
                   <div class="swatch" style="background:linear-gradient(135deg,#ff2e88,#00e5ff);"></div><span data-i18n="theme.cyberpunk">Cyberpunk</span>
+                </div>
+                <div class="theme-opt" data-theme="cyberpunk-blue">
+                  <div class="swatch" style="background:linear-gradient(135deg,#00aaff,#7c3aed);"></div><span data-i18n="theme.cyberpunkBlue">Cyberpunk ko'k</span>
+                </div>
+                <div class="theme-opt" data-theme="cyberpunk-yellow">
+                  <div class="swatch" style="background:linear-gradient(135deg,#ffd400,#111);"></div><span data-i18n="theme.cyberpunkYellow">Cyberpunk sariq</span>
                 </div>
                 <div class="theme-opt" data-theme="custom">
                   <div class="swatch" id="customSwatch" style="background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);">
@@ -3598,7 +3640,7 @@
           "gate.desc": "Siz hozircha mehmon sifatida ko'ryapsiz. Bu amal uchun akkaunt kerak — istasangiz hoziroq, istasangiz keyinroq ro'yxatdan o'ting.",
           "gate.later": "Keyinroq", "gate.register": "Ro'yxatdan o'tish",
           "theme.fabTitle": "Stilni o'zgartirish", "theme.title": "Sayt stili",
-          "theme.tungi": "Tungi", "theme.yorug": "Yorug'", "theme.cyberpunk": "Cyberpunk", "theme.custom": "Maxsus",
+          "theme.tungi": "Tungi", "theme.yorug": "Yorug'", "theme.cyberpunk": "Cyberpunk", "theme.cyberpunkBlue": "Cyberpunk ko'k", "theme.cyberpunkYellow": "Cyberpunk sariq", "theme.custom": "Maxsus",
           "theme.customPick": "O'zingiz rang tanlang",
           "admin.nav": "Administrator burchagi",
           "admin.activate.label": "Administrator rejimi",
@@ -4635,10 +4677,16 @@
         $('#closeUploadModal').addEventListener('click', closeUploadModal);
         $('#uploadModal').addEventListener('click', (e) => { if (e.target === $('#uploadModal')) closeUploadModal(); });
 
-        /* Lenta: qidiruv, kategoriya, saralash, faqat kuzatuvchilarim */
+        /* Lenta: qidiruv, kategoriya, saralash, faqat kuzatuvchilarim.
+           Qidiruv endi navbar'da joylashgan, shuning uchun boshqa
+           sahifada turib yozsa ham foydalanuvchini bosh sahifaga o'tkazadi. */
         let feedSearchTimer = null;
+        $('#feedSearchInput').addEventListener('focus', () => {
+          if (!$('#homeView').classList.contains('active')) switchView('home');
+        });
         $('#feedSearchInput').addEventListener('input', (e) => {
           $('#feedSearchClear').classList.toggle('show', !!e.target.value);
+          if (!$('#homeView').classList.contains('active')) switchView('home');
           clearTimeout(feedSearchTimer);
           feedSearchTimer = setTimeout(() => {
             feedQuery.q = e.target.value.trim();

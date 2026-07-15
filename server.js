@@ -505,7 +505,6 @@ app.post('/api/users/:username/follow', requireAuth, async (req, res) => {
   if (idx === -1) {
     u.following.push(target);
     following = true;
-    addNotification(target, { type: 'follow', from: me });
   } else {
     u.following.splice(idx, 1);
     following = false;
