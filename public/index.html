@@ -1755,11 +1755,14 @@
 
     /* ============ HOME FEED: SEARCH / FILTER BAR ============ */
     .feed-filter-bar {
-      display: flex;
+      display: none;
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
       margin-bottom: 18px;
+    }
+    .feed-filter-bar.mobile-open {
+      display: flex;
     }
     .feed-filter-controls {
       display: flex;
@@ -1971,11 +1974,7 @@
 
       /* Mobil: filtr paneli (tur, saralash, narx, faqat kuzatuvchilar)
          standart holatda berkitilgan, qidiruv tugmasi bosilganda ochiladi */
-      .feed-filter-bar {
-        display: none;
-      }
       .feed-filter-bar.mobile-open {
-        display: flex;
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
@@ -3932,8 +3931,10 @@
           "admin.badge.fired": "Ishdan bo'shatilgan",
           "admin.action.fire": "Ishdan bo'shatish",
           "admin.action.rehire": "Ishga qaytarish",
+          "admin.action.promote": "Admin qilish",
           "admin.confirm.fire": "@{username} ni ishdan bo'shatmoqchimisiz? U administrator huquqidan mahrum bo'ladi va faqat sizning ruxsatingiz bilan qaytadan administrator bo'la oladi.",
           "admin.confirm.rehire": "@{username} ga qaytadan administrator parolini kiritish huquqini bermoqchimisiz?",
+          "admin.confirm.promote": "@{username} ni administrator qilmoqchimisiz? U darhol administrator huquqlarini oladi.",
           "follow.subscribeBtn": "Obuna bo'lish",
           "follow.unsubscribeBtn": "Obunani bekor qilish",
           "follow.unfollowConfirm": "Obunani bekor qilmoqchimisiz? Bu foydalanuvchining yangi asarlari haqida endi xabardor bo'lmaysiz.",
@@ -3947,6 +3948,7 @@
           "notif.someone": "Kimdir",
           "notif.adminFired": "Boss sizni administrator lavozimidan ozod qildi. Endi oddiy foydalanuvchisiz — qaytadan administrator bo'lish uchun boss ruxsati kerak.",
           "notif.adminRehired": "Boss sizga qaytadan administrator parolini kiritish huquqini berdi.",
+          "notif.adminPromoted": "Boss sizni administrator qildi. Endi Administrator burchagiga kira olasiz.",
           "admin.bossNav": "Boss xonasi",
           "admin.bossTitle": "Boss <span>xonasi</span>",
           "boss.activate.label": "Boss rejimi",
@@ -4126,8 +4128,10 @@
           "admin.badge.fired": "Dismissed",
           "admin.action.fire": "Dismiss",
           "admin.action.rehire": "Reinstate",
+          "admin.action.promote": "Make admin",
           "admin.confirm.fire": "Do you want to dismiss @{username}? They will lose admin privileges and can only become an admin again with your permission.",
           "admin.confirm.rehire": "Do you want to allow @{username} to enter the admin password again?",
+          "admin.confirm.promote": "Do you want to make @{username} an administrator? They will get admin rights immediately.",
           "follow.subscribeBtn": "Follow",
           "follow.unsubscribeBtn": "Unfollow",
           "follow.unfollowConfirm": "Do you want to unfollow? You will no longer be notified about this user's new works.",
@@ -4141,6 +4145,7 @@
           "notif.someone": "Someone",
           "notif.adminFired": "The boss has dismissed you from the administrator role. You are now a regular user — you'll need the boss's permission to become an administrator again.",
           "notif.adminRehired": "The boss has given you permission to enter the administrator password again.",
+          "notif.adminPromoted": "The boss has made you an administrator. You can now access the Administrator corner.",
           "admin.bossNav": "Boss room",
           "admin.bossTitle": "Boss <span>room</span>",
           "boss.activate.label": "Boss mode",
@@ -4320,8 +4325,10 @@
           "admin.badge.fired": "已解职",
           "admin.action.fire": "解职",
           "admin.action.rehire": "恢复职务",
+          "admin.action.promote": "设为管理员",
           "admin.confirm.fire": "您要解除 @{username} 的职务吗？该用户将失去管理员权限，只有在您授权后才能重新成为管理员。",
           "admin.confirm.rehire": "您要允许 @{username} 重新输入管理员密码吗？",
+          "admin.confirm.promote": "您要将 @{username} 设为管理员吗？该用户将立即获得管理员权限。",
           "follow.subscribeBtn": "关注",
           "follow.unsubscribeBtn": "取消关注",
           "follow.unfollowConfirm": "您要取消关注吗？您将不再收到该用户新作品的通知。",
@@ -4335,6 +4342,7 @@
           "notif.someone": "有人",
           "notif.adminFired": "老板已解除您的管理员职务。您现在是普通用户——需要老板许可才能再次成为管理员。",
           "notif.adminRehired": "老板已再次授权您输入管理员密码。",
+          "notif.adminPromoted": "老板已将您设为管理员。您现在可以进入管理员角落。",
           "admin.bossNav": "老板室",
           "admin.bossTitle": "老板<span>室</span>",
           "boss.activate.label": "老板模式",
@@ -4514,8 +4522,10 @@
           "admin.badge.fired": "बर्खास्त",
           "admin.action.fire": "बर्खास्त करें",
           "admin.action.rehire": "पुनर्बहाल करें",
+          "admin.action.promote": "व्यवस्थापक बनाएं",
           "admin.confirm.fire": "क्या आप @{username} को बर्खास्त करना चाहते हैं? वे व्यवस्थापक अधिकार खो देंगे और केवल आपकी अनुमति से ही फिर से व्यवस्थापक बन सकेंगे।",
           "admin.confirm.rehire": "क्या आप @{username} को व्यवस्थापक पासवर्ड फिर से दर्ज करने की अनुमति देना चाहते हैं?",
+          "admin.confirm.promote": "क्या आप @{username} को व्यवस्थापक बनाना चाहते हैं? उसे तुरंत व्यवस्थापक अधिकार मिल जाएंगे।",
           "follow.subscribeBtn": "फ़ॉलो करें",
           "follow.unsubscribeBtn": "अनफ़ॉलो करें",
           "follow.unfollowConfirm": "क्या आप अनफ़ॉलो करना चाहते हैं? अब आपको इस उपयोगकर्ता की नई कृतियों की सूचना नहीं मिलेगी।",
@@ -4529,6 +4539,7 @@
           "notif.someone": "किसी ने",
           "notif.adminFired": "बॉस ने आपको व्यवस्थापक पद से हटा दिया है। अब आप एक सामान्य उपयोगकर्ता हैं — फिर से व्यवस्थापक बनने के लिए बॉस की अनुमति चाहिए होगी।",
           "notif.adminRehired": "बॉस ने आपको फिर से व्यवस्थापक पासवर्ड दर्ज करने का अधिकार दिया है।",
+          "notif.adminPromoted": "बॉस ने आपको व्यवस्थापक बना दिया है। अब आप व्यवस्थापक कोने में जा सकते हैं।",
           "admin.bossNav": "बॉस रूम",
           "admin.bossTitle": "बॉस <span>रूम</span>",
           "boss.activate.label": "बॉस मोड",
@@ -4708,8 +4719,10 @@
           "admin.badge.fired": "Destituido",
           "admin.action.fire": "Destituir",
           "admin.action.rehire": "Reincorporar",
+          "admin.action.promote": "Hacer administrador",
           "admin.confirm.fire": "¿Quieres destituir a @{username}? Perderá los privilegios de administrador y solo podrá volver a serlo con tu permiso.",
           "admin.confirm.rehire": "¿Quieres permitir que @{username} vuelva a introducir la contraseña de administrador?",
+          "admin.confirm.promote": "¿Quieres convertir a @{username} en administrador? Obtendrá privilegios de administrador de inmediato.",
           "follow.subscribeBtn": "Seguir",
           "follow.unsubscribeBtn": "Dejar de seguir",
           "follow.unfollowConfirm": "¿Quieres dejar de seguir? Ya no recibirás notificaciones sobre las nuevas obras de este usuario.",
@@ -4723,6 +4736,7 @@
           "notif.someone": "Alguien",
           "notif.adminFired": "El jefe te ha destituido del cargo de administrador. Ahora eres un usuario normal — necesitarás el permiso del jefe para volver a ser administrador.",
           "notif.adminRehired": "El jefe te ha dado permiso para introducir de nuevo la contraseña de administrador.",
+          "notif.adminPromoted": "El jefe te ha convertido en administrador. Ya puedes acceder al rincón del administrador.",
           "admin.bossNav": "Sala del jefe",
           "admin.bossTitle": "Sala del <span>jefe</span>",
           "boss.activate.label": "Modo jefe",
@@ -4902,8 +4916,10 @@
           "admin.badge.fired": "مفصول",
           "admin.action.fire": "فصل",
           "admin.action.rehire": "إعادة تعيين",
+          "admin.action.promote": "تعيين كمشرف",
           "admin.confirm.fire": "هل تريد فصل @{username}؟ سيفقد صلاحيات المشرف ولن يتمكن من العودة كمشرف إلا بإذنك.",
           "admin.confirm.rehire": "هل تريد السماح لـ @{username} بإدخال كلمة مرور المشرف مرة أخرى؟",
+          "admin.confirm.promote": "هل تريد تعيين @{username} كمشرف؟ سيحصل على صلاحيات المشرف فورًا.",
           "follow.subscribeBtn": "متابعة",
           "follow.unsubscribeBtn": "إلغاء المتابعة",
           "follow.unfollowConfirm": "هل تريد إلغاء المتابعة؟ لن يتم إعلامك بعد الآن بالأعمال الجديدة لهذا المستخدم.",
@@ -4917,6 +4933,7 @@
           "notif.someone": "شخص ما",
           "notif.adminFired": "قام الرئيس بإعفائك من منصب المشرف. أنت الآن مستخدم عادي — ستحتاج إلى إذن الرئيس لتصبح مشرفًا مرة أخرى.",
           "notif.adminRehired": "منحك الرئيس الإذن لإدخال كلمة مرور المشرف مرة أخرى.",
+          "notif.adminPromoted": "قام الرئيس بتعيينك كمشرف. يمكنك الآن الدخول إلى ركن المشرف.",
           "admin.bossNav": "غرفة الرئيس",
           "admin.bossTitle": "غرفة <span>الرئيس</span>",
           "boss.activate.label": "وضع الرئيس",
@@ -5096,8 +5113,10 @@
           "admin.badge.fired": "Уволен",
           "admin.action.fire": "Уволить",
           "admin.action.rehire": "Восстановить",
+          "admin.action.promote": "Сделать админом",
           "admin.confirm.fire": "Вы хотите уволить @{username}? Он лишится прав администратора и сможет снова стать администратором только с вашего разрешения.",
           "admin.confirm.rehire": "Вы хотите разрешить @{username} снова ввести пароль администратора?",
+          "admin.confirm.promote": "Вы хотите сделать @{username} администратором? Он сразу получит права администратора.",
           "follow.subscribeBtn": "Подписаться",
           "follow.unsubscribeBtn": "Отписаться",
           "follow.unfollowConfirm": "Вы хотите отписаться? Вы больше не будете получать уведомления о новых работах этого пользователя.",
@@ -5111,6 +5130,7 @@
           "notif.someone": "Кто-то",
           "notif.adminFired": "Босс освободил вас от должности администратора. Теперь вы обычный пользователь — чтобы снова стать администратором, потребуется разрешение босса.",
           "notif.adminRehired": "Босс снова дал вам право ввести пароль администратора.",
+          "notif.adminPromoted": "Босс сделал вас администратором. Теперь вы можете зайти в уголок администратора.",
           "admin.bossNav": "Кабинет босса",
           "admin.bossTitle": "Кабинет <span>босса</span>",
           "boss.activate.label": "Режим босса",
@@ -5431,6 +5451,7 @@
           case 'follow': return t('notif.follow', { name: n.from || t('notif.someone') });
           case 'admin-fired': return t('notif.adminFired');
           case 'admin-rehired': return t('notif.adminRehired');
+          case 'admin-promoted': return t('notif.adminPromoted');
           default: return n.text || '';
         }
       }
@@ -5556,7 +5577,6 @@
         /* Mobilda qidiruv maydoni faqat lupa bo'lib turadi; bosilganda
            butun ekran kengligida ochiladi, X tugmasi bosilsa yopiladi */
         $('#navSearchWrap').addEventListener('click', (e) => {
-          if (window.innerWidth > 720) return;
           if (!$('#navSearchWrap').classList.contains('search-open')) {
             openSearchOverlay();
           }
@@ -5566,9 +5586,8 @@
           closeSearchOverlay();
         });
         document.addEventListener('click', (e) => {
-          if (window.innerWidth > 720) return;
           if (!$('#navSearchWrap').classList.contains('search-open')) return;
-          if (!e.target.closest('#navSearchWrap')) closeSearchOverlay();
+          if (!e.target.closest('#navSearchWrap') && !e.target.closest('#feedFilterBar')) closeSearchOverlay();
         });
         /* Shikoyat modali */
         $('#closeReportModal').addEventListener('click', closeReportModal);
@@ -5755,6 +5774,8 @@
               actions += `<button type="button" class="btn btn-ghost" data-admin-action="fire" data-username="${u.username}">${t('admin.action.fire')}</button>`;
             } else if (u.adminAccessRevoked) {
               actions += `<button type="button" class="btn btn-ghost" data-admin-action="rehire" data-username="${u.username}">${t('admin.action.rehire')}</button>`;
+            } else {
+              actions += `<button type="button" class="btn btn-ghost" data-admin-action="promote" data-username="${u.username}">${t('admin.action.promote')}</button>`;
             }
           }
 
@@ -5807,6 +5828,15 @@
           if (!confirm(t('admin.confirm.rehire', { username }))) return;
           try {
             await api('/api/admin/users/' + encodeURIComponent(username) + '/rehire', { method: 'POST' });
+            loadAdminUsers();
+          } catch (e) {
+            alert(e.message || t('admin.actionFail'));
+          }
+        }
+        if (action === 'promote') {
+          if (!confirm(t('admin.confirm.promote', { username }))) return;
+          try {
+            await api('/api/admin/users/' + encodeURIComponent(username) + '/promote', { method: 'POST' });
             loadAdminUsers();
           } catch (e) {
             alert(e.message || t('admin.actionFail'));

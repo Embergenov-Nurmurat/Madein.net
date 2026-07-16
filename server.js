@@ -1420,6 +1420,25 @@ app.post('/api/admin/users/:username/fire', requireAuth, requireBoss, async (req
   res.json({ ok: true });
 });
 
+/* Boss: oddiy foydalanuvchini to'g'ridan-to'g'ri administrator qiladi
+   (maxfiy parolsiz — boss uni bevosita admin rejimiga o'tkazadi) */
+app.post('/api/admin/users/:username/promote', requireAuth, requireBoss, async (req, res) => {
+  const target = String(req.params.username || '').trim().toLowerCase();
+  const u = db.users[target];
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (target === req.session.username) return res.status(400).json({ error: "O'zingizni admin qila olmaysiz" });
+  ensureModerationFields(u);
+  if (u.isBoss) return res.status(400).json({ error: "Bu foydalanuvchi allaqachon Boss" });
+  if (u.isAdmin) return res.status(400).json({ error: 'Bu foydalanuvchi allaqachon administrator' });
+
+  u.isAdmin = true;
+  u.adminAccessRevoked = false;
+  addNotification(target, { type: 'admin-promoted' });
+
+  await saveDB();
+  res.json({ ok: true, user: publicUser(target) });
+});
+
 /* Boss: ilgari ishdan bo'shatilgan administratorga qayta administrator
    parolini kiritish (faollashtirish) imkonini beradi */
 app.post('/api/admin/users/:username/rehire', requireAuth, requireBoss, async (req, res) => {
