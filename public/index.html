@@ -1197,6 +1197,13 @@
       display: block;
       transition: transform .5s ease;
     }
+    .collage video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
     .collage.n-1 { grid-template-columns: 1fr; }
     .collage.n-2 { grid-template-columns: 1fr 1fr; }
     .collage.n-3 {
@@ -1225,7 +1232,9 @@
     }
 
     .work-card:hover .collage img,
-    .feed-card:hover .collage img {
+    .feed-card:hover .collage img,
+    .work-card:hover .collage video,
+    .feed-card:hover .collage video {
       transform: scale(1.06);
     }
 
@@ -2665,6 +2674,27 @@
       object-fit: cover;
       display: block;
     }
+    .upload-multi-preview .thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
+    .upload-multi-preview .thumb-video-badge {
+      position: absolute;
+      left: 5px;
+      bottom: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, .55);
+      color: #fff;
+      pointer-events: none;
+    }
     .upload-multi-preview .thumb.empty {
       border: 1.5px dashed var(--border);
       display: flex;
@@ -2713,6 +2743,10 @@
     .lightbox-collage .collage img {
       max-height: 56vh;
       cursor: zoom-in;
+    }
+    .lightbox-collage .collage video {
+      max-height: 56vh;
+      cursor: default;
     }
 
     /* ---- full-size image viewer ---- */
@@ -3561,7 +3595,7 @@
           <div class="upload-drop" id="uploadDrop">
             <div class="upload-multi-preview hidden" id="uploadMultiPreview"></div>
             <p id="uploadDropText" data-i18n="upload.dropDefault">Rasm tanlash uchun bosing yoki shu yerga tashlang — bir vaqtda 3 tagacha</p>
-            <input type="file" id="uploadFile" accept="image/*" multiple>
+            <input type="file" id="uploadFile" accept="image/*,video/mp4,video/quicktime" multiple>
           </div>
         </div>
         <div class="field" style="margin-bottom:14px;">
@@ -3642,6 +3676,12 @@
     <img class="image-viewer-img" id="imageViewerImg" src="" alt="">
     <button class="image-viewer-nav next hidden" id="imageViewerNext">›</button>
     <div class="image-viewer-counter hidden" id="imageViewerCounter">1 / 1</div>
+  </div>
+
+  <!-- ============ FULL-SIZE VIDEO VIEWER ============ -->
+  <div class="image-viewer-overlay" id="videoViewerModal">
+    <button class="image-viewer-close" id="closeVideoViewer">✕</button>
+    <video class="image-viewer-img" id="videoViewerVideo" src="" controls autoplay playsinline loop></video>
   </div>
 
   <!-- ============ COMMENTS MODAL ============ -->
@@ -3757,8 +3797,8 @@
           "userProfile.notFound.title": "Topilmadi", "userProfile.notFound.desc": "Bu foydalanuvchi mavjud emas.",
           "userProfile.contactBtn": "Xabar yozish",
           "upload.title": "Yangi asar yuklash",
-          "upload.imagesLabel": "Rasmlar (1 tadan 3 tagacha, kollaj bo'lib ko'rinadi)",
-          "upload.dropDefault": "Rasm tanlash uchun bosing yoki shu yerga tashlang — bir vaqtda 3 tagacha",
+          "upload.imagesLabel": "Rasmlar yoki video (1-3 rasm, yoki 10 soniyagacha bitta video)",
+          "upload.dropDefault": "Rasm yoki video tanlash uchun bosing yoki shu yerga tashlang — 3 tagacha rasm, yoki 10 soniyagacha bitta video",
           "upload.dropChosen": "{n}/{max} rasm tanlandi — yana qo'shish uchun bosing",
           "upload.dropFull": "3 ta rasm tanlandi — kollaj bo'lib ko'rinadi",
           "upload.titleLabel": "Sarlavha", "upload.titlePh": "Masalan: «Kuz manzarasi»",
@@ -3768,7 +3808,10 @@
           "upload.priceLabel": "Narx", "upload.currencyLabel": "Valyuta",
           "upload.descLabel": "Tavsif", "upload.descPh": "Asar haqida qisqacha ma'lumot...",
           "upload.save": "Saqlash", "upload.removeAria": "O'chirish",
-          "upload.errNoImage": "Iltimos, kamida bitta rasm tanlang.",
+                    "upload.errNoImage": "Iltimos, kamida bitta rasm tanlang.",
+          "upload.errVideoTooLong": "Video 10 soniyadan uzun bo'lmasligi kerak.",
+          "upload.errVideoWithImages": "Video bilan birga rasm yuklab bo'lmaydi.",
+          "upload.videoNotSupported": "Brauzeringiz videoni tekshira olmadi. Iltimos, boshqa fayl tanlang.",
           "upload.errGeneric": "Saqlashda xatolik yuz berdi. Qayta urinib ko'ring.",
           "lightbox.delete": "O'chirish", "lightbox.noDesc": "Tavsif kiritilmagan.",
           "lightbox.workTagFallback": "Asar",
@@ -3948,8 +3991,8 @@
           "userProfile.notFound.title": "Not found", "userProfile.notFound.desc": "This user doesn't exist.",
           "userProfile.contactBtn": "Send a message",
           "upload.title": "Upload a new work",
-          "upload.imagesLabel": "Photos (1 to 3, shown as a collage)",
-          "upload.dropDefault": "Click to choose photos or drop them here — up to 3 at a time",
+          "upload.imagesLabel": "Photos or a video (1–3 photos, or one video up to 10s)",
+          "upload.dropDefault": "Click to choose photos/video or drop them here — up to 3 photos, or one video up to 10s",
           "upload.dropChosen": "{n}/{max} photos chosen — click to add more",
           "upload.dropFull": "3 photos chosen — shown as a collage",
           "upload.titleLabel": "Title", "upload.titlePh": "e.g. \"Autumn landscape\"",
@@ -3959,7 +4002,10 @@
           "upload.priceLabel": "Price", "upload.currencyLabel": "Currency",
           "upload.descLabel": "Description", "upload.descPh": "A short description of the piece...",
           "upload.save": "Save", "upload.removeAria": "Remove",
-          "upload.errNoImage": "Please choose at least one photo.",
+                    "upload.errNoImage": "Please choose at least one photo.",
+          "upload.errVideoTooLong": "Video must be 10 seconds or shorter.",
+          "upload.errVideoWithImages": "You can't upload a video together with photos.",
+          "upload.videoNotSupported": "Your browser could not check the video. Please choose another file.",
           "upload.errGeneric": "Something went wrong while saving. Please try again.",
           "lightbox.delete": "Delete", "lightbox.noDesc": "No description provided.",
           "lightbox.workTagFallback": "Work",
@@ -4139,8 +4185,8 @@
           "userProfile.notFound.title": "未找到", "userProfile.notFound.desc": "该用户不存在。",
           "userProfile.contactBtn": "发消息",
           "upload.title": "上传新作品",
-          "upload.imagesLabel": "照片（1至3张，将以拼图形式展示）",
-          "upload.dropDefault": "点击选择照片或拖放到此处 — 一次最多3张",
+          "upload.imagesLabel": "照片或视频（1至3张照片，或1段最长10秒的视频）",
+          "upload.dropDefault": "点击选择照片/视频或拖放到此处 — 最多3张照片，或1段最长10秒的视频",
           "upload.dropChosen": "已选择 {n}/{max} 张照片 — 点击继续添加",
           "upload.dropFull": "已选择3张照片 — 将以拼图形式展示",
           "upload.titleLabel": "标题", "upload.titlePh": "例如：《秋日风景》",
@@ -4150,7 +4196,10 @@
           "upload.priceLabel": "价格", "upload.currencyLabel": "货币",
           "upload.descLabel": "描述", "upload.descPh": "简单描述一下这件作品...",
           "upload.save": "保存", "upload.removeAria": "移除",
-          "upload.errNoImage": "请至少选择一张照片。",
+                    "upload.errNoImage": "请至少选择一张照片。",
+          "upload.errVideoTooLong": "视频时长不能超过10秒。",
+          "upload.errVideoWithImages": "不能将视频与照片一起上传。",
+          "upload.videoNotSupported": "您的浏览器无法检查该视频，请选择其他文件。",
           "upload.errGeneric": "保存时出错，请重试。",
           "lightbox.delete": "删除", "lightbox.noDesc": "未提供描述。",
           "lightbox.workTagFallback": "作品",
@@ -4330,8 +4379,8 @@
           "userProfile.notFound.title": "नहीं मिला", "userProfile.notFound.desc": "यह उपयोगकर्ता मौजूद नहीं है।",
           "userProfile.contactBtn": "संदेश भेजें",
           "upload.title": "नई कृति अपलोड करें",
-          "upload.imagesLabel": "फ़ोटो (1 से 3 तक, कोलाज के रूप में दिखेंगी)",
-          "upload.dropDefault": "फ़ोटो चुनने के लिए क्लिक करें या यहाँ छोड़ें — एक बार में 3 तक",
+          "upload.imagesLabel": "फ़ोटो या वीडियो (1 से 3 फ़ोटो, या 10 सेकंड तक का एक वीडियो)",
+          "upload.dropDefault": "फ़ोटो/वीडियो चुनने के लिए क्लिक करें या यहाँ छोड़ें — 3 फ़ोटो तक, या 10 सेकंड तक का एक वीडियो",
           "upload.dropChosen": "{n}/{max} फ़ोटो चुनी गईं — और जोड़ने के लिए क्लिक करें",
           "upload.dropFull": "3 फ़ोटो चुनी गईं — कोलाज के रूप में दिखेंगी",
           "upload.titleLabel": "शीर्षक", "upload.titlePh": "उदाहरण: «शरद ऋतु का दृश्य»",
@@ -4341,7 +4390,10 @@
           "upload.priceLabel": "मूल्य", "upload.currencyLabel": "मुद्रा",
           "upload.descLabel": "विवरण", "upload.descPh": "कृति के बारे में संक्षिप्त जानकारी...",
           "upload.save": "सहेजें", "upload.removeAria": "हटाएं",
-          "upload.errNoImage": "कृपया कम से कम एक फ़ोटो चुनें।",
+                    "upload.errNoImage": "कृपया कम से कम एक फ़ोटो चुनें।",
+          "upload.errVideoTooLong": "वीडियो 10 सेकंड से लंबा नहीं होना चाहिए।",
+          "upload.errVideoWithImages": "वीडियो के साथ फ़ोटो अपलोड नहीं की जा सकतीं।",
+          "upload.videoNotSupported": "आपका ब्राउज़र वीडियो जाँच नहीं सका। कृपया दूसरी फ़ाइल चुनें।",
           "upload.errGeneric": "सहेजने में त्रुटि हुई। फिर कोशिश करें।",
           "lightbox.delete": "हटाएं", "lightbox.noDesc": "कोई विवरण नहीं दिया गया।",
           "lightbox.workTagFallback": "कृति",
@@ -4521,8 +4573,8 @@
           "userProfile.notFound.title": "No encontrado", "userProfile.notFound.desc": "Este usuario no existe.",
           "userProfile.contactBtn": "Enviar mensaje",
           "upload.title": "Subir una nueva obra",
-          "upload.imagesLabel": "Fotos (de 1 a 3, se muestran como collage)",
-          "upload.dropDefault": "Haz clic para elegir fotos o arrástralas aquí — hasta 3 a la vez",
+          "upload.imagesLabel": "Fotos o un video (de 1 a 3 fotos, o un video de hasta 10 segundos)",
+          "upload.dropDefault": "Haz clic para elegir fotos/video o arrástralos aquí — hasta 3 fotos, o un video de hasta 10 segundos",
           "upload.dropChosen": "{n}/{max} fotos elegidas — haz clic para añadir más",
           "upload.dropFull": "3 fotos elegidas — se mostrarán como collage",
           "upload.titleLabel": "Título", "upload.titlePh": "p. ej.: «Paisaje de otoño»",
@@ -4532,7 +4584,10 @@
           "upload.priceLabel": "Precio", "upload.currencyLabel": "Moneda",
           "upload.descLabel": "Descripción", "upload.descPh": "Una breve descripción de la obra...",
           "upload.save": "Guardar", "upload.removeAria": "Quitar",
-          "upload.errNoImage": "Por favor elige al menos una foto.",
+                    "upload.errNoImage": "Por favor elige al menos una foto.",
+          "upload.errVideoTooLong": "El video no debe durar más de 10 segundos.",
+          "upload.errVideoWithImages": "No puedes subir un video junto con fotos.",
+          "upload.videoNotSupported": "Tu navegador no pudo comprobar el video. Elige otro archivo.",
           "upload.errGeneric": "Ocurrió un error al guardar. Inténtalo de nuevo.",
           "lightbox.delete": "Eliminar", "lightbox.noDesc": "Sin descripción.",
           "lightbox.workTagFallback": "Obra",
@@ -4712,8 +4767,8 @@
           "userProfile.notFound.title": "غير موجود", "userProfile.notFound.desc": "هذا المستخدم غير موجود.",
           "userProfile.contactBtn": "إرسال رسالة",
           "upload.title": "رفع عمل جديد",
-          "upload.imagesLabel": "صور (من 1 إلى 3، تُعرض كصورة مجمّعة)",
-          "upload.dropDefault": "اضغط لاختيار صور أو اسحبها هنا — حتى 3 في المرة الواحدة",
+          "upload.imagesLabel": "صور أو فيديو (من 1 إلى 3 صور، أو فيديو واحد حتى 10 ثوانٍ)",
+          "upload.dropDefault": "اضغط لاختيار صور/فيديو أو اسحبها هنا — حتى 3 صور، أو فيديو واحد حتى 10 ثوانٍ",
           "upload.dropChosen": "تم اختيار {n}/{max} صور — اضغط لإضافة المزيد",
           "upload.dropFull": "تم اختيار 3 صور — ستُعرض كصورة مجمّعة",
           "upload.titleLabel": "العنوان", "upload.titlePh": "مثال: «منظر الخريف»",
@@ -4723,7 +4778,10 @@
           "upload.priceLabel": "السعر", "upload.currencyLabel": "العملة",
           "upload.descLabel": "الوصف", "upload.descPh": "وصف مختصر للعمل...",
           "upload.save": "حفظ", "upload.removeAria": "إزالة",
-          "upload.errNoImage": "الرجاء اختيار صورة واحدة على الأقل.",
+                    "upload.errNoImage": "الرجاء اختيار صورة واحدة على الأقل.",
+          "upload.errVideoTooLong": "يجب ألا تتجاوز مدة الفيديو 10 ثوانٍ.",
+          "upload.errVideoWithImages": "لا يمكن رفع فيديو مع صور معًا.",
+          "upload.videoNotSupported": "تعذّر على متصفحك التحقق من الفيديو. الرجاء اختيار ملف آخر.",
           "upload.errGeneric": "حدث خطأ أثناء الحفظ. حاول مرة أخرى.",
           "lightbox.delete": "حذف", "lightbox.noDesc": "لا يوجد وصف.",
           "lightbox.workTagFallback": "عمل",
@@ -4903,8 +4961,8 @@
           "userProfile.notFound.title": "Не найдено", "userProfile.notFound.desc": "Такого пользователя не существует.",
           "userProfile.contactBtn": "Написать сообщение",
           "upload.title": "Загрузить новую работу",
-          "upload.imagesLabel": "Фото (от 1 до 3, показываются как коллаж)",
-          "upload.dropDefault": "Нажмите, чтобы выбрать фото, или перетащите их сюда — до 3 за раз",
+          "upload.imagesLabel": "Фото или видео (от 1 до 3 фото, или одно видео до 10 секунд)",
+          "upload.dropDefault": "Нажмите, чтобы выбрать фото/видео, или перетащите сюда — до 3 фото, или одно видео до 10 секунд",
           "upload.dropChosen": "{n}/{max} фото выбрано — нажмите, чтобы добавить ещё",
           "upload.dropFull": "Выбрано 3 фото — показываются как коллаж",
           "upload.titleLabel": "Заголовок", "upload.titlePh": "например: «Осенний пейзаж»",
@@ -4914,7 +4972,10 @@
           "upload.priceLabel": "Цена", "upload.currencyLabel": "Валюта",
           "upload.descLabel": "Описание", "upload.descPh": "Краткое описание работы...",
           "upload.save": "Сохранить", "upload.removeAria": "Удалить",
-          "upload.errNoImage": "Выберите хотя бы одно фото.",
+                    "upload.errNoImage": "Выберите хотя бы одно фото.",
+          "upload.errVideoTooLong": "Видео не должно быть длиннее 10 секунд.",
+          "upload.errVideoWithImages": "Нельзя загрузить видео вместе с фото.",
+          "upload.videoNotSupported": "Ваш браузер не смог проверить видео. Выберите другой файл.",
           "upload.errGeneric": "Что-то пошло не так при сохранении. Попробуйте ещё раз.",
           "lightbox.delete": "Удалить", "lightbox.noDesc": "Описание не указано.",
           "lightbox.workTagFallback": "Работа",
@@ -5138,8 +5199,9 @@
       let feedQuery = { q: '', type: '', sort: 'new', following: false, minPrice: '', maxPrice: '' };
       let currentTheme = { mode: 'tungi', custom: '#e2543f' };
       let pendingDeleteId = null;
-      let uploadImageBlobs = [];
+      let uploadMediaItems = []; // { type: 'image'|'video', blob, previewUrl }
       const MAX_UPLOAD_IMAGES = 3;
+      const MAX_UPLOAD_VIDEO_SECONDS = 10; // + kichik tolerantlik pastda tekshiriladi
 
       const $ = (sel) => document.querySelector(sel);
       const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -5513,6 +5575,8 @@
         $('#imageViewerModal').addEventListener('click', (e) => { if (e.target === $('#imageViewerModal')) closeImageViewer(); });
         $('#imageViewerPrev').addEventListener('click', () => imageViewerStep(-1));
         $('#imageViewerNext').addEventListener('click', () => imageViewerStep(1));
+        $('#closeVideoViewer').addEventListener('click', closeVideoViewer);
+        $('#videoViewerModal').addEventListener('click', (e) => { if (e.target === $('#videoViewerModal')) closeVideoViewer(); });
         document.addEventListener('keydown', (e) => {
           if (!$('#imageViewerModal').classList.contains('open')) return;
           if (e.key === 'Escape') closeImageViewer();
@@ -6174,7 +6238,13 @@
         return workImages(w);
       }
 
-      function collageHTML(images, alt) {
+      function collageHTML(images, alt, videoSrc) {
+        if (videoSrc) {
+          return `<div class="collage n-1 collage-video">
+            <video src="${videoSrc}" muted loop playsinline preload="metadata"></video>
+            <div class="collage-count" aria-hidden="true">${videoIconSVG()}</div>
+          </div>`;
+        }
         const imgs = images && images.length ? images.slice(0, 3) : [];
         const badge = imgs.length > 1
           ? `<div class="collage-count" aria-hidden="true">${multiImageIconSVG()} ${imgs.length}</div>`
@@ -6185,12 +6255,15 @@
       function multiImageIconSVG() {
         return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="14" height="14" rx="2"></rect><path d="M7 21h11a2 2 0 0 0 2-2V8"></path></svg>`;
       }
+      function videoIconSVG() {
+        return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="15" height="14" rx="2"></rect><path d="M17 10l5-3v10l-5-3z"></path></svg>`;
+      }
 
       function workCardHTML(w) {
         return `
       <div class="work-card" data-id="${w.id}">
         <div class="work-thumb">
-          ${collageHTML(workThumbs(w), w.title)}
+          ${collageHTML(workThumbs(w), w.title, w.video)}
           <div class="work-tag">${typeLabel(w.type)}</div>
           <div class="work-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
         </div>
@@ -6275,7 +6348,7 @@
           <button type="button" class="feed-follow-btn ${w.isFollowing ? 'following' : ''}" data-username="${escapeHtml(w.username)}" aria-label="${t('follow.subscribeBtn')}">${w.isFollowing ? t('follow.short') : t('follow.shortAdd')}</button>` : ''}
         </div>
         <div class="feed-thumb" data-id="${w.id}" role="button" tabindex="0" aria-label="${t('feedThumb.aria')}">
-          ${collageHTML(workThumbs(w), w.title)}
+          ${collageHTML(workThumbs(w), w.title, w.video)}
           <div class="feed-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
         </div>
         <div class="feed-actions">
@@ -6363,8 +6436,12 @@
         if (thumb) {
           thumb.addEventListener('click', () => {
             const src = ALL_ITEMS_BY_ID[id];
-            const images = src ? workImages(src) : Array.from(thumb.querySelectorAll('img')).map(i => i.src);
-            openImageViewer(images, 0);
+            if (src && src.video) {
+              openVideoViewer(src.video);
+            } else {
+              const images = src ? workImages(src) : Array.from(thumb.querySelectorAll('img')).map(i => i.src);
+              openImageViewer(images, 0);
+            }
             api('/api/works/' + id + '/view', { method: 'POST' }).then(res => {
               if (src) src.viewsCount = res.viewsCount;
             }).catch(() => {});
@@ -6818,6 +6895,8 @@
           desc: work.desc,
           image: work.image,
           images: workImages(work),
+          video: work.video || null,
+          mediaType: work.mediaType || (work.video ? 'video' : 'image'),
           createdAt: work.createdAt,
           username: CURRENT_USER.username,
           fullname: CURRENT_USER.fullname || CURRENT_USER.username,
@@ -6844,7 +6923,8 @@
       /* ===================== UPLOAD ===================== */
       function openUploadModal() {
         $('#uploadForm').reset();
-        uploadImageBlobs = [];
+        uploadMediaItems.forEach(item => { if (item.previewUrl) URL.revokeObjectURL(item.previewUrl); });
+        uploadMediaItems = [];
         renderUploadPreview();
         $('#priceField').classList.add('hidden');
         $('#uploadError').classList.remove('show');
@@ -6852,12 +6932,15 @@
       }
       function closeUploadModal() { $('#uploadModal').classList.remove('open'); }
 
+      /* Joriy tanlovda video bormi — bo'lsa, boshqa fayl qo'shib bo'lmaydi */
+      function uploadHasVideo() { return uploadMediaItems.some(item => item.type === 'video'); }
+
       function renderUploadPreview() {
         const wrap = $('#uploadMultiPreview');
         const dropText = $('#uploadDropText');
         const fileInput = $('#uploadFile');
 
-        if (!uploadImageBlobs.length) {
+        if (!uploadMediaItems.length) {
           wrap.classList.add('hidden');
           wrap.innerHTML = '';
           dropText.textContent = t('upload.dropDefault');
@@ -6866,29 +6949,37 @@
         }
 
         wrap.classList.remove('hidden');
-        wrap.innerHTML = uploadImageBlobs.map((blob, i) => `
+        wrap.innerHTML = uploadMediaItems.map((item, i) => `
           <div class="thumb">
-            <img src="${URL.createObjectURL(blob)}" alt="">
+            ${item.type === 'video'
+              ? `<video src="${item.previewUrl}" muted playsinline preload="metadata"></video><span class="thumb-video-badge">${videoIconSVG()}</span>`
+              : `<img src="${item.previewUrl}" alt="">`}
             <button type="button" class="remove-thumb" data-idx="${i}" aria-label="${t('upload.removeAria')}">✕</button>
           </div>`).join('') +
-          (uploadImageBlobs.length < MAX_UPLOAD_IMAGES
-            ? `<div class="thumb empty">+</div>`.repeat(MAX_UPLOAD_IMAGES - uploadImageBlobs.length)
+          (!uploadHasVideo() && uploadMediaItems.length < MAX_UPLOAD_IMAGES
+            ? `<div class="thumb empty">+</div>`.repeat(MAX_UPLOAD_IMAGES - uploadMediaItems.length)
             : '');
 
         wrap.querySelectorAll('.remove-thumb').forEach(btn => {
           btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const idx = Number(btn.dataset.idx);
-            uploadImageBlobs.splice(idx, 1);
+            const [removed] = uploadMediaItems.splice(idx, 1);
+            if (removed && removed.previewUrl) URL.revokeObjectURL(removed.previewUrl);
             renderUploadPreview();
           });
         });
 
-        dropText.textContent = uploadImageBlobs.length < MAX_UPLOAD_IMAGES
-          ? t('upload.dropChosen', { n: uploadImageBlobs.length, max: MAX_UPLOAD_IMAGES })
-          : t('upload.dropFull');
-        // to'liq bo'lganda inputni bosish orqali qayta ochilmasin (foydalanuvchi avval o'chirsin)
-        fileInput.disabled = uploadImageBlobs.length >= MAX_UPLOAD_IMAGES;
+        if (uploadHasVideo()) {
+          dropText.textContent = t('upload.dropFull');
+          fileInput.disabled = true;
+        } else {
+          dropText.textContent = uploadMediaItems.length < MAX_UPLOAD_IMAGES
+            ? t('upload.dropChosen', { n: uploadMediaItems.length, max: MAX_UPLOAD_IMAGES })
+            : t('upload.dropFull');
+          // to'liq bo'lganda inputni bosish orqali qayta ochilmasin (foydalanuvchi avval o'chirsin)
+          fileInput.disabled = uploadMediaItems.length >= MAX_UPLOAD_IMAGES;
+        }
       }
 
       function resizeToBlob(file) {
@@ -6914,13 +7005,65 @@
         });
       }
 
+      /* Videoning davomiyligini brauzerda o'qiydi (soniyalarda).
+         Aniqlab bo'lmasa (masalan format qo'llab-quvvatlanmasa) null qaytaradi. */
+      function readVideoDuration(file) {
+        return new Promise((resolve) => {
+          const url = URL.createObjectURL(file);
+          const videoEl = document.createElement('video');
+          videoEl.preload = 'metadata';
+          videoEl.onloadedmetadata = () => {
+            const dur = isFinite(videoEl.duration) ? videoEl.duration : null;
+            URL.revokeObjectURL(url);
+            resolve(dur);
+          };
+          videoEl.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
+          videoEl.src = url;
+        });
+      }
+
       async function handleFileSelect(e) {
         const files = Array.from(e.target.files || []);
         if (!files.length) return;
-        const room = MAX_UPLOAD_IMAGES - uploadImageBlobs.length;
+        const errEl = $('#uploadError');
+        errEl.classList.remove('show');
+
+        // Bitta video tanlangan bo'lsa — u yagona fayl bo'lishi kerak
+        const videoFile = files.find(f => f.type.startsWith('video/'));
+        if (videoFile) {
+          if (files.length > 1 || uploadMediaItems.length) {
+            errEl.textContent = t('upload.errVideoWithImages');
+            errEl.classList.add('show');
+            e.target.value = '';
+            return;
+          }
+          const duration = await readVideoDuration(videoFile);
+          if (duration !== null && duration > MAX_UPLOAD_VIDEO_SECONDS + 0.5) {
+            errEl.textContent = t('upload.errVideoTooLong');
+            errEl.classList.add('show');
+            e.target.value = '';
+            return;
+          }
+          // duration === null: brauzer darhol o'qiy olmadi (masalan noodatiy kodek) —
+          // baribir yuklashga ruxsat beramiz, chunki server tomonida ham
+          // davomiylik qat'iy tekshiriladi (yakuniy hakam — server)
+          uploadMediaItems = [{ type: 'video', blob: videoFile, previewUrl: URL.createObjectURL(videoFile) }];
+          renderUploadPreview();
+          e.target.value = '';
+          return;
+        }
+
+        if (uploadHasVideo()) {
+          errEl.textContent = t('upload.errVideoWithImages');
+          errEl.classList.add('show');
+          e.target.value = '';
+          return;
+        }
+
+        const room = MAX_UPLOAD_IMAGES - uploadMediaItems.length;
         const chosen = files.slice(0, room);
         const blobs = await Promise.all(chosen.map(resizeToBlob));
-        uploadImageBlobs.push(...blobs);
+        uploadMediaItems.push(...blobs.map(blob => ({ type: 'image', blob, previewUrl: URL.createObjectURL(blob) })));
         renderUploadPreview();
         e.target.value = ''; // xuddi shu fayllarni qayta tanlash imkonini saqlab qolish
       }
@@ -6929,13 +7072,20 @@
         e.preventDefault();
         const errEl = $('#uploadError');
         errEl.classList.remove('show');
-        if (!uploadImageBlobs.length) {
+        if (!uploadMediaItems.length) {
           errEl.textContent = t('upload.errNoImage');
           errEl.classList.add('show');
           return;
         }
         const fd = new FormData();
-        uploadImageBlobs.forEach((blob, i) => fd.append('images', blob, `asar-${i + 1}.jpg`));
+        uploadMediaItems.forEach((item, i) => {
+          if (item.type === 'video') {
+            const ext = (item.blob.name && item.blob.name.match(/\.\w+$/)) ? item.blob.name.match(/\.\w+$/)[0] : '.mp4';
+            fd.append('images', item.blob, `asar-video${ext}`);
+          } else {
+            fd.append('images', item.blob, `asar-${i + 1}.jpg`);
+          }
+        });
         fd.append('title', $('#workTitle').value.trim());
         fd.append('type', $('#workType').value);
         fd.append('status', $('#workStatus').value);
@@ -6966,8 +7116,12 @@
         pendingDeleteId = isMine ? id : null;
         $('#deleteWorkBtn').classList.toggle('hidden', !isMine);
         LIGHTBOX_IMAGES = workImages(w);
-        $('#lightboxImg').innerHTML = collageHTML(LIGHTBOX_IMAGES, w.title);
+        $('#lightboxImg').innerHTML = collageHTML(LIGHTBOX_IMAGES, w.title, w.video);
         $('#lightboxImg').className = 'lightbox-collage';
+        if (w.video) {
+          const videoEl = $('#lightboxImg').querySelector('video');
+          if (videoEl) { videoEl.controls = true; videoEl.loop = false; }
+        }
         $('#lightboxTitle').textContent = w.title;
         $('#lightboxDesc').textContent = w.desc || t('lightbox.noDesc');
         $('#lightboxType').textContent = typeLabel(w.type);
@@ -7004,6 +7158,19 @@
         if (!IMAGE_VIEWER_IMAGES.length) return;
         IMAGE_VIEWER_INDEX = (IMAGE_VIEWER_INDEX + delta + IMAGE_VIEWER_IMAGES.length) % IMAGE_VIEWER_IMAGES.length;
         renderImageViewer();
+      }
+
+      /* ===================== TO'LIQ HAJMDAGI VIDEO KO'RUVCHI ===================== */
+      function openVideoViewer(src) {
+        if (!src) return;
+        $('#videoViewerVideo').src = src;
+        $('#videoViewerModal').classList.add('open');
+      }
+      function closeVideoViewer() {
+        $('#videoViewerModal').classList.remove('open');
+        const v = $('#videoViewerVideo');
+        v.pause();
+        v.src = '';
       }
 
       async function handleDeleteWork() {

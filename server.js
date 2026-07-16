@@ -259,7 +259,7 @@ app.use(session({
 app.use('/uploads', express.static(UPLOADS_DIR, { maxAge: '30d' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-/* rasm yuklash (multer) */
+/* rasm/video yuklash (multer) */
 const storage = multer.diskStorage({
   destination: UPLOADS_DIR,
   filename: (req, file, cb) => {
@@ -267,16 +267,90 @@ const storage = multer.diskStorage({
     cb(null, crypto.randomBytes(14).toString('hex') + ext);
   }
 });
+
+/* Video sifatida qabul qilinadigan MIME turlari — mp4/mov (ISO-BMFF
+   asosidagi konteynerlar), shundagina davomiylikni (duration) serverda
+   ffmpeg'siz, tez va ishonchli tekshira olamiz. */
+const ALLOWED_VIDEO_MIMES = ['video/mp4', 'video/quicktime', 'video/x-m4v'];
+const MAX_VIDEO_SECONDS = 10.5; // 10 soniya + kichik tolerantlik
+
 const upload = multer({
   storage,
-  limits: { fileSize: 8 * 1024 * 1024 }, // 8MB
+  limits: { fileSize: 30 * 1024 * 1024 }, // 30MB (qisqa videolarni ham sig'diradi)
   fileFilter: (req, file, cb) => {
-    if (!file.mimetype.startsWith('image/')) {
-      return cb(new Error('Faqat rasm fayllari qabul qilinadi'));
-    }
-    cb(null, true);
+    if (file.mimetype.startsWith('image/')) return cb(null, true);
+    if (ALLOWED_VIDEO_MIMES.includes(file.mimetype)) return cb(null, true);
+    return cb(new Error('Faqat rasm yoki video (mp4/mov, 10 soniyagacha) fayllari qabul qilinadi'));
   }
 });
+
+/**
+ * MP4/MOV faylning davomiyligini (soniyalarda) ffmpeg'siz, faylning
+ * ISO-BMFF "box" tuzilmasini o'qib chiqadi (moov > mvhd). Bu formatlar
+ * (mp4, mov, m4v) bir xil konteyner tuzilmasidan foydalanadi.
+ * Agar aniqlab bo'lmasa, null qaytaradi (chaqiruvchi tomon buni xatolik
+ * sifatida emas, "tekshirib bo'lmadi" sifatida talqin qilishi kerak).
+ */
+function getMp4DurationSeconds(absPath) {
+  try {
+    const fd = fs.openSync(absPath, 'r');
+    try {
+      const fileSize = fs.fstatSync(fd).size;
+      const headerBuf = Buffer.alloc(8);
+
+      function findBox(startOffset, endOffset, targetType) {
+        let offset = startOffset;
+        while (offset + 8 <= endOffset) {
+          fs.readSync(fd, headerBuf, 0, 8, offset);
+          let size = headerBuf.readUInt32BE(0);
+          const type = headerBuf.toString('ascii', 4, 8);
+          let headerLen = 8;
+          if (size === 1) {
+            // 64-bit kengaytirilgan hajm
+            const bigBuf = Buffer.alloc(8);
+            fs.readSync(fd, bigBuf, 0, 8, offset + 8);
+            size = Number(bigBuf.readBigUInt64BE(0));
+            headerLen = 16;
+          } else if (size === 0) {
+            size = endOffset - offset; // oxirigacha
+          }
+          if (type === targetType) return { offset, size, headerLen };
+          offset += size;
+        }
+        return null;
+      }
+
+      const moov = findBox(0, fileSize, 'moov');
+      if (!moov) return null;
+      const mvhd = findBox(moov.offset + moov.headerLen, moov.offset + moov.size, 'mvhd');
+      if (!mvhd) return null;
+
+      const bodyOffset = mvhd.offset + mvhd.headerLen;
+      const versionBuf = Buffer.alloc(1);
+      fs.readSync(fd, versionBuf, 0, 1, bodyOffset);
+      const version = versionBuf[0];
+
+      let timescale, duration;
+      if (version === 1) {
+        const buf = Buffer.alloc(28);
+        fs.readSync(fd, buf, 0, 28, bodyOffset + 4);
+        timescale = buf.readUInt32BE(16);
+        duration = Number(buf.readBigUInt64BE(20));
+      } else {
+        const buf = Buffer.alloc(16);
+        fs.readSync(fd, buf, 0, 16, bodyOffset + 4);
+        timescale = buf.readUInt32BE(8);
+        duration = buf.readUInt32BE(12);
+      }
+      if (!timescale) return null;
+      return duration / timescale;
+    } finally {
+      fs.closeSync(fd);
+    }
+  } catch (e) {
+    return null;
+  }
+}
 
 function workImages(w) {
   if (Array.isArray(w.images) && w.images.length) return w.images;
@@ -711,6 +785,8 @@ app.get('/api/saved', requireAuth, (req, res) => {
       desc: work.desc,
       images: workImages(work),
       thumbs: workThumbs(work),
+      video: work.video || null,
+      mediaType: work.mediaType || (work.video ? 'video' : 'image'),
       createdAt: work.createdAt,
       username: owner,
       fullname: ownerUser.fullname || owner,
@@ -783,22 +859,67 @@ app.get('/api/works', requireAuth, (req, res) => {
 app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
   upload.array('images', 3)(req, res, async (err) => {
     if (err) return res.status(400).json({ error: err.message });
-    if (!req.files || !req.files.length) return res.status(400).json({ error: 'Kamida bitta rasm talab qilinadi' });
+    if (!req.files || !req.files.length) return res.status(400).json({ error: 'Kamida bitta rasm yoki video talab qilinadi' });
 
     const { title, type, status, price, currency, desc } = req.body || {};
     const isSale = status === 'sale';
     const CURRENCIES = ['UZS', 'USD', 'EUR', 'RUB'];
 
+    const videoFile = req.files.find(f => ALLOWED_VIDEO_MIMES.includes(f.mimetype));
+    const imageFiles = req.files.filter(f => f.mimetype.startsWith('image/'));
+
+    // Yordamchi: yuklangan fayllarni diskdan o'chirib, xatolik qaytaradi
+    function rejectWithCleanup(status, message) {
+      req.files.forEach(f => fs.unlink(f.path, () => {}));
+      return res.status(status).json({ error: message });
+    }
+
+    if (videoFile) {
+      if (req.files.length > 1) {
+        return rejectWithCleanup(400, "Video bilan birga boshqa fayl yuklab bo'lmaydi — faqat bitta video tanlang");
+      }
+      const durationSec = getMp4DurationSeconds(videoFile.path);
+      if (durationSec !== null && durationSec > MAX_VIDEO_SECONDS) {
+        return rejectWithCleanup(400, 'Video 10 soniyadan uzun bo\'lmasligi kerak');
+      }
+
+      const work = {
+        id: 'w' + Date.now() + crypto.randomBytes(4).toString('hex'),
+        title: String(title || '').slice(0, 200),
+        type: ['rasm', 'haykal', 'mulaj', 'boshqa'].includes(type) ? type : 'boshqa',
+        status: isSale ? 'sale' : 'expo',
+        price: isSale ? (Number(price) || 0) : 0,
+        currency: isSale && CURRENCIES.includes(currency) ? currency : 'UZS',
+        desc: String(desc || '').slice(0, 2000),
+        mediaType: 'video',
+        video: '/uploads/' + videoFile.filename,
+        images: [],
+        thumbs: [],
+        image: null,
+        createdAt: new Date().toISOString(),
+        likes: [],
+        comments: [],
+        views: 0
+      };
+      const uname = req.session.username;
+      if (!db.works[uname]) db.works[uname] = [];
+      db.works[uname].push(work);
+      await saveDB();
+      return res.json({ work });
+    }
+
+    if (!imageFiles.length) return rejectWithCleanup(400, 'Kamida bitta rasm yoki video talab qilinadi');
+
     // Har bir rasmni siqib, thumbnail yaratamiz (rasm sifati deyarli
     // o'zgarmaydi, lekin fayl hajmi va sahifa yuklanish tezligi yaxshilanadi)
     let thumbs;
     try {
-      thumbs = await Promise.all(req.files.map(f => compressAndThumbnail(f.path)));
+      thumbs = await Promise.all(imageFiles.map(f => compressAndThumbnail(f.path)));
     } catch (e) {
       // Siqishda xatolik bo'lsa ham, asl rasmlar bilan davom etamiz
-      thumbs = req.files.map(() => null);
+      thumbs = imageFiles.map(() => null);
     }
-    const images = req.files.map(f => '/uploads/' + f.filename);
+    const images = imageFiles.map(f => '/uploads/' + f.filename);
     const thumbImages = thumbs.map((t, i) => t ? '/uploads/' + t : images[i]);
 
     const work = {
@@ -809,6 +930,8 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
       price: isSale ? (Number(price) || 0) : 0,
       currency: isSale && CURRENCIES.includes(currency) ? currency : 'UZS',
       desc: String(desc || '').slice(0, 2000),
+      mediaType: 'image',
+      video: null,
       images,
       thumbs: thumbImages,
       image: images[0], // eski frontend/kod bilan moslik uchun
@@ -839,6 +962,7 @@ app.delete('/api/works/:id', requireAuth, async (req, res) => {
         if (img && !workImages(work).includes(img)) fs.unlink(path.join(__dirname, img), () => {});
       });
     }
+    if (work.video) fs.unlink(path.join(__dirname, work.video), () => {});
   }
   res.json({ ok: true });
 });
@@ -898,6 +1022,8 @@ app.get('/api/feed', (req, res) => {
         image: w.image,
         images: workImages(w),
         thumbs: workThumbs(w),
+        video: w.video || null,
+        mediaType: w.mediaType || (w.video ? 'video' : 'image'),
         createdAt: w.createdAt,
         username: uname,
         fullname: u.fullname || uname,
