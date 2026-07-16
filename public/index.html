@@ -6289,10 +6289,10 @@
         return workImages(w);
       }
 
-      function collageHTML(images, alt, videoSrc) {
+      function collageHTML(images, alt, videoSrc, posterSrc) {
         if (videoSrc) {
           return `<div class="collage n-1 collage-video">
-            <video src="${videoSrc}" autoplay muted loop playsinline preload="auto"></video>
+            <video src="${videoSrc}"${posterSrc ? ` poster="${posterSrc}"` : ''} autoplay muted loop playsinline preload="auto"></video>
             <div class="collage-count" aria-hidden="true">${videoIconSVG()}</div>
           </div>`;
         }
@@ -6314,7 +6314,7 @@
         return `
       <div class="work-card" data-id="${w.id}">
         <div class="work-thumb">
-          ${collageHTML(workThumbs(w), w.title, w.video)}
+          ${collageHTML(workThumbs(w), w.title, w.video, w.poster)}
           <div class="work-tag">${typeLabel(w.type)}</div>
           <div class="work-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
         </div>
@@ -6399,7 +6399,7 @@
           <button type="button" class="feed-follow-btn ${w.isFollowing ? 'following' : ''}" data-username="${escapeHtml(w.username)}" aria-label="${t('follow.subscribeBtn')}">${w.isFollowing ? t('follow.short') : t('follow.shortAdd')}</button>` : ''}
         </div>
         <div class="feed-thumb" data-id="${w.id}" role="button" tabindex="0" aria-label="${t('feedThumb.aria')}">
-          ${collageHTML(workThumbs(w), w.title, w.video)}
+          ${collageHTML(workThumbs(w), w.title, w.video, w.poster)}
           <div class="feed-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
         </div>
         <div class="feed-actions">
@@ -6488,7 +6488,7 @@
           thumb.addEventListener('click', () => {
             const src = ALL_ITEMS_BY_ID[id];
             if (src && src.video) {
-              openVideoViewer(src.video);
+              openVideoViewer(src.video, src.poster);
             } else {
               const images = src ? workImages(src) : Array.from(thumb.querySelectorAll('img')).map(i => i.src);
               openImageViewer(images, 0);
@@ -6949,6 +6949,7 @@
           image: work.image,
           images: workImages(work),
           video: work.video || null,
+          poster: work.poster || null,
           mediaType: work.mediaType || (work.video ? 'video' : 'image'),
           createdAt: work.createdAt,
           username: CURRENT_USER.username,
@@ -7169,7 +7170,7 @@
         pendingDeleteId = isMine ? id : null;
         $('#deleteWorkBtn').classList.toggle('hidden', !isMine);
         LIGHTBOX_IMAGES = workImages(w);
-        $('#lightboxImg').innerHTML = collageHTML(LIGHTBOX_IMAGES, w.title, w.video);
+        $('#lightboxImg').innerHTML = collageHTML(LIGHTBOX_IMAGES, w.title, w.video, w.poster);
         $('#lightboxImg').className = 'lightbox-collage';
         if (w.video) {
           const videoEl = $('#lightboxImg').querySelector('video');
@@ -7214,9 +7215,11 @@
       }
 
       /* ===================== TO'LIQ HAJMDAGI VIDEO KO'RUVCHI ===================== */
-      function openVideoViewer(src) {
+      function openVideoViewer(src, poster) {
         if (!src) return;
-        $('#videoViewerVideo').src = src;
+        const v = $('#videoViewerVideo');
+        v.poster = poster || '';
+        v.src = src;
         $('#videoViewerModal').classList.add('open');
       }
       function closeVideoViewer() {
@@ -7224,6 +7227,7 @@
         const v = $('#videoViewerVideo');
         v.pause();
         v.src = '';
+        v.removeAttribute('poster');
       }
 
       async function handleDeleteWork() {

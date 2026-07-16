@@ -22,6 +22,9 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const sharp = require('sharp');
+const ffmpegPath = require('ffmpeg-static');
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 const STORAGE_DIR = path.join(__dirname, 'storage');
 const DATA_DIR = path.join(STORAGE_DIR, 'data');
@@ -273,6 +276,50 @@ const storage = multer.diskStorage({
    ffmpeg'siz, tez va ishonchli tekshira olamiz. */
 const ALLOWED_VIDEO_MIMES = ['video/mp4', 'video/quicktime', 'video/x-m4v'];
 const MAX_VIDEO_SECONDS = 10.5; // 10 soniya + kichik tolerantlik
+
+/**
+ * Yuklangan videoni (mov/hevc va h.k. bo'lishi mumkin) barcha brauzerlarda
+ * ishlaydigan H.264/AAC MP4 formatiga qayta kodlaydi. iPhone'dan
+ * "High Efficiency" sozlamasida yuklangan HEVC videolar Chrome/Firefox'da
+ * dekodlanmay, ekran butunlay qora bo'lib qolishining oldini oladi.
+ */
+function transcodeVideoToMp4(inputPath, outputPath) {
+  return new Promise((resolve, reject) => {
+    ffmpeg(inputPath)
+      .videoCodec('libx264')
+      .audioCodec('aac')
+      .outputOptions([
+        '-pix_fmt yuv420p',       // eski/mobil dekoderlar bilan ham mos
+        '-profile:v main',
+        '-preset veryfast',
+        '-crf 23',
+        '-movflags +faststart',   // brauzerda tezroq boshlanishi uchun
+        '-vf', "scale='min(1280,iw)':-2"
+      ])
+      .on('error', (err) => reject(err))
+      .on('end', () => resolve())
+      .save(outputPath);
+  });
+}
+
+/**
+ * Video ichidan bitta kadrni JPEG "poster" rasm sifatida ajratib oladi —
+ * shunda video hali yuklanmasdan/ijro etilmasdan oldin ham qora ekran
+ * emas, balki haqiqiy kadr ko'rinadi (feed va profil kartochkalarida).
+ */
+function extractVideoPoster(inputPath, outputDir, filename) {
+  return new Promise((resolve, reject) => {
+    ffmpeg(inputPath)
+      .on('error', (err) => reject(err))
+      .on('end', () => resolve())
+      .screenshots({
+        timestamps: ['0.1'],
+        filename,
+        folder: outputDir,
+        size: '640x?'
+      });
+  });
+}
 
 const upload = multer({
   storage,
@@ -786,6 +833,7 @@ app.get('/api/saved', requireAuth, (req, res) => {
       images: workImages(work),
       thumbs: workThumbs(work),
       video: work.video || null,
+      poster: work.poster || null,
       mediaType: work.mediaType || (work.video ? 'video' : 'image'),
       createdAt: work.createdAt,
       username: owner,
@@ -883,6 +931,25 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
         return rejectWithCleanup(400, 'Video 10 soniyadan uzun bo\'lmasligi kerak');
       }
 
+      // Videoni har doim H.264/AAC MP4'ga qayta kodlaymiz (asl fayl mp4 yoki
+      // mov/hevc bo'lishidan qat'iy nazar) — shunda barcha brauzerlarda bir xil
+      // ishonchli tarzda ijro etiladi, va bitta poster-kadr ajratib olamiz.
+      const transcodedFilename = crypto.randomBytes(14).toString('hex') + '.mp4';
+      const transcodedPath = path.join(UPLOADS_DIR, transcodedFilename);
+      const posterFilename = crypto.randomBytes(14).toString('hex') + '.jpg';
+
+      try {
+        await transcodeVideoToMp4(videoFile.path, transcodedPath);
+        await extractVideoPoster(transcodedPath, UPLOADS_DIR, posterFilename);
+      } catch (e) {
+        fs.unlink(transcodedPath, () => {});
+        fs.unlink(path.join(UPLOADS_DIR, posterFilename), () => {});
+        return rejectWithCleanup(400, "Videoni qayta ishlashda xatolik yuz berdi. Boshqa video tanlab ko'ring.");
+      }
+
+      // Asl yuklangan fayl endi kerak emas — qayta kodlangan nusxa saqlanadi
+      fs.unlink(videoFile.path, () => {});
+
       const work = {
         id: 'w' + Date.now() + crypto.randomBytes(4).toString('hex'),
         title: String(title || '').slice(0, 200),
@@ -892,7 +959,8 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
         currency: isSale && CURRENCIES.includes(currency) ? currency : 'UZS',
         desc: String(desc || '').slice(0, 2000),
         mediaType: 'video',
-        video: '/uploads/' + videoFile.filename,
+        video: '/uploads/' + transcodedFilename,
+        poster: '/uploads/' + posterFilename,
         images: [],
         thumbs: [],
         image: null,
@@ -963,6 +1031,7 @@ app.delete('/api/works/:id', requireAuth, async (req, res) => {
       });
     }
     if (work.video) fs.unlink(path.join(__dirname, work.video), () => {});
+    if (work.poster) fs.unlink(path.join(__dirname, work.poster), () => {});
   }
   res.json({ ok: true });
 });
@@ -1023,6 +1092,7 @@ app.get('/api/feed', (req, res) => {
         images: workImages(w),
         thumbs: workThumbs(w),
         video: w.video || null,
+        poster: w.poster || null,
         mediaType: w.mediaType || (w.video ? 'video' : 'image'),
         createdAt: w.createdAt,
         username: uname,
