@@ -6292,7 +6292,7 @@
       function collageHTML(images, alt, videoSrc) {
         if (videoSrc) {
           return `<div class="collage n-1 collage-video">
-            <video src="${videoSrc}" muted loop playsinline preload="metadata"></video>
+            <video src="${videoSrc}" autoplay muted loop playsinline preload="auto"></video>
             <div class="collage-count" aria-hidden="true">${videoIconSVG()}</div>
           </div>`;
         }
