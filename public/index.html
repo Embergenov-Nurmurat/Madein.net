@@ -1968,6 +1968,27 @@
         background: color-mix(in srgb, var(--text) 10%, transparent);
         color: var(--text);
       }
+
+      /* Mobil: filtr paneli (tur, saralash, narx, faqat kuzatuvchilar)
+         standart holatda berkitilgan, qidiruv tugmasi bosilganda ochiladi */
+      .feed-filter-bar {
+        display: none;
+      }
+      .feed-filter-bar.mobile-open {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .feed-filter-bar.mobile-open .feed-filter-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .feed-filter-bar.mobile-open select,
+      .feed-filter-bar.mobile-open .feed-price-range,
+      .feed-filter-bar.mobile-open .feed-following-toggle {
+        width: 100%;
+      }
     }
 
     /* ============ ADMIN: STATS GRID ============ */
@@ -3315,7 +3336,7 @@
           <h1 class="view-title" data-i18n-html="home.title">Barcha <span>ijodkorlar</span>ning asarlari</h1>
           <p class="view-sub" data-i18n="home.sub">Platformadagi barcha foydalanuvchilar yuklagan asarlar — eng yangisidan boshlab.</p>
         </div>
-        <div class="feed-filter-bar">
+        <div class="feed-filter-bar" id="feedFilterBar">
           <div class="feed-filter-controls">
             <select id="feedTypeSelect" aria-label="Kategoriya">
               <option value="" data-i18n="filter.type.all">Barcha turlar</option>
@@ -6559,10 +6580,12 @@
       /* Qidiruv/filtr o'zgarganda lentani noldan yuklaydi */
       function openSearchOverlay() {
         $('#navSearchWrap').classList.add('search-open');
+        $('#feedFilterBar').classList.add('mobile-open');
         setTimeout(() => $('#feedSearchInput').focus(), 0);
       }
       function closeSearchOverlay() {
         $('#navSearchWrap').classList.remove('search-open');
+        $('#feedFilterBar').classList.remove('mobile-open');
       }
 
       function resetAndReloadFeed() {
