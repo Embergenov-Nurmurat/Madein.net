@@ -1184,6 +1184,7 @@
 
     /* ===== Kollaj (bir nechta rasm bitta kartada) ===== */
     .collage {
+      position: relative;
       display: grid;
       width: 100%;
       height: 100%;
@@ -1204,6 +1205,23 @@
     }
     .collage.n-3 img:nth-child(1) {
       grid-row: 1 / span 2;
+    }
+    .collage-count {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, .55);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1;
+      backdrop-filter: blur(2px);
+      pointer-events: none;
     }
 
     .work-card:hover .collage img,
@@ -1843,6 +1861,30 @@
       transition: border-color .15s ease;
     }
     .feed-following-toggle:hover { border-color: var(--accent); }
+
+    .feed-price-range {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+    .feed-price-input {
+      width: 78px;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 12.5px;
+      padding: 6px 0;
+      -moz-appearance: textfield;
+    }
+    .feed-price-input::-webkit-outer-spin-button,
+    .feed-price-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .feed-price-input:focus { outline: none; }
+    .feed-price-sep { color: var(--text-dim); font-size: 12px; }
+    .feed-price-range:focus-within { border-color: var(--accent); }
 
     @media (max-width: 720px) {
       /* Mobil: qidiruv maydoni faqat lupa (katta bosiladigan tugma)
@@ -3239,6 +3281,30 @@
           <h1 class="view-title" data-i18n-html="home.title">Barcha <span>ijodkorlar</span>ning asarlari</h1>
           <p class="view-sub" data-i18n="home.sub">Platformadagi barcha foydalanuvchilar yuklagan asarlar — eng yangisidan boshlab.</p>
         </div>
+        <div class="feed-filter-bar">
+          <div class="feed-filter-controls">
+            <select id="feedTypeSelect" aria-label="Kategoriya">
+              <option value="" data-i18n="filter.type.all">Barcha turlar</option>
+              <option value="rasm" data-i18n="upload.type.rasm">Rasm (chizma)</option>
+              <option value="haykal" data-i18n="upload.type.haykal">Haykal</option>
+              <option value="mulaj" data-i18n="upload.type.mulaj">Mulaj</option>
+              <option value="boshqa" data-i18n="upload.type.boshqa">Boshqa</option>
+            </select>
+            <select id="feedSortSelect" aria-label="Saralash">
+              <option value="new" data-i18n="filter.sort.new">Eng yangi</option>
+              <option value="top" data-i18n="filter.sort.top">Eng ko'p yoqtirilgan</option>
+            </select>
+            <div class="feed-price-range" id="feedPriceRange">
+              <input type="number" min="0" id="feedMinPrice" class="feed-price-input" data-i18n-ph="filter.price.min" placeholder="Narx, dan">
+              <span class="feed-price-sep">—</span>
+              <input type="number" min="0" id="feedMaxPrice" class="feed-price-input" data-i18n-ph="filter.price.max" placeholder="Narx, gacha">
+            </div>
+            <label class="feed-following-toggle">
+              <input type="checkbox" id="feedFollowingToggle">
+              <span data-i18n="filter.onlyFollowing">Faqat kuzatuvchilarim</span>
+            </label>
+          </div>
+        </div>
         <div id="feedList" class="feed-list"></div>
         <div id="feedSentinel" class="feed-sentinel">
           <div class="feed-spinner"></div>
@@ -3277,6 +3343,7 @@
           <div class="substat"><b id="statFollowing">0</b><span data-i18n="profile.stat.following">Obuna</span></div>
           <div class="substat"><b id="statLikes">0</b><span data-i18n="profile.stat.likes">Layk</span></div>
           <div class="substat"><b id="statComments">0</b><span data-i18n="profile.stat.comments">Komment</span></div>
+          <div class="substat"><b id="statViews">0</b><span data-i18n="profile.stat.views">Ko'rishlar</span></div>
         </div>
 
         <div class="view-toolbar">
@@ -3411,6 +3478,11 @@
           </div>
         </div>
         <div class="user-profile-bio" id="upBio"></div>
+        <div class="profile-substats" id="upSubstats">
+          <div class="substat"><b id="upStatFollowers">0</b><span data-i18n="profile.stat.followers">Obunachi</span></div>
+          <div class="substat"><b id="upStatLikes">0</b><span data-i18n="profile.stat.likes">Layk</span></div>
+          <div class="substat"><b id="upStatViews">0</b><span data-i18n="profile.stat.views">Ko'rishlar</span></div>
+        </div>
         <div class="field-hint" id="upFollowStats" style="margin-bottom:10px;"></div>
         <div class="user-profile-contact" id="upContact"></div>
         <div class="section-label" data-i18n="userProfile.works">Asarlari</div>
@@ -3757,7 +3829,7 @@
           "notif.banExpired": "Ban muddatingiz tugadi. Hisobingizdan yana foydalanishingiz mumkin.",
           "notif.muteExpired": "Mut muddatingiz tugadi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin.",
           "nav.saved": "Saqlanganlar",
-          "search.placeholder": "Qidirish...",
+          "search.placeholder": "Qidirish...", "filter.type.all": "Barcha turlar", "filter.sort.new": "Eng yangi", "filter.sort.top": "Eng ko'p yoqtirilgan", "filter.price.min": "Narx, dan", "filter.price.max": "Narx, gacha", "filter.onlyFollowing": "Faqat kuzatuvchilarim",
           "search.clearAria": "Tozalash",
           "search.closeAria": "Yopish",
           "saved.eyebrow": "Sevimlilar",
@@ -3766,7 +3838,7 @@
           "profile.stat.followers": "Obunachi",
           "profile.stat.following": "Obuna",
           "profile.stat.likes": "Layk",
-          "profile.stat.comments": "Komment",
+          "profile.stat.comments": "Komment", "profile.stat.views": "Ko'rishlar",
           "admin.reportsLabel": "Shikoyatlar",
           "admin.usersLabel": "Foydalanuvchilar",
           "report.action": "Shikoyat qilish",
@@ -3948,7 +4020,7 @@
           "notif.banExpired": "Your ban has expired. You can use your account again.",
           "notif.muteExpired": "Your mute has expired. You can comment, message, and upload new work again.",
           "nav.saved": "Saved",
-          "search.placeholder": "Search...",
+          "search.placeholder": "Search...", "filter.type.all": "All types", "filter.sort.new": "Newest", "filter.sort.top": "Most liked", "filter.price.min": "Price from", "filter.price.max": "Price to", "filter.onlyFollowing": "Only who I follow",
           "search.clearAria": "Clear",
           "search.closeAria": "Close",
           "saved.eyebrow": "Favorites",
@@ -3957,7 +4029,7 @@
           "profile.stat.followers": "Followers",
           "profile.stat.following": "Following",
           "profile.stat.likes": "Likes",
-          "profile.stat.comments": "Comments",
+          "profile.stat.comments": "Comments", "profile.stat.views": "Views",
           "admin.reportsLabel": "Reports",
           "admin.usersLabel": "Users",
           "report.action": "Report",
@@ -4139,7 +4211,7 @@
           "notif.banExpired": "您的封禁期已结束。您可以再次使用账户。",
           "notif.muteExpired": "您的禁言期已结束。您可以再次评论、发消息和上传作品。",
           "nav.saved": "已保存",
-          "search.placeholder": "搜索...",
+          "search.placeholder": "搜索...", "filter.type.all": "所有类型", "filter.sort.new": "最新", "filter.sort.top": "最多点赞", "filter.price.min": "价格从", "filter.price.max": "价格到", "filter.onlyFollowing": "仅我关注的人",
           "search.clearAria": "清除",
           "search.closeAria": "关闭",
           "saved.eyebrow": "收藏",
@@ -4148,7 +4220,7 @@
           "profile.stat.followers": "粉丝",
           "profile.stat.following": "关注",
           "profile.stat.likes": "点赞",
-          "profile.stat.comments": "评论",
+          "profile.stat.comments": "评论", "profile.stat.views": "浏览量",
           "admin.reportsLabel": "举报",
           "admin.usersLabel": "用户",
           "report.action": "举报",
@@ -4330,7 +4402,7 @@
           "notif.banExpired": "आपका बैन समाप्त हो गया है। अब आप अपने खाते का उपयोग फिर से कर सकते हैं।",
           "notif.muteExpired": "आपका म्यूट समाप्त हो गया है। अब आप फिर से टिप्पणी, संदेश और कृति अपलोड कर सकते हैं।",
           "nav.saved": "सहेजे गए",
-          "search.placeholder": "खोजें...",
+          "search.placeholder": "खोजें...", "filter.type.all": "सभी प्रकार", "filter.sort.new": "सबसे नया", "filter.sort.top": "सबसे ज़्यादा पसंद किया गया", "filter.price.min": "कीमत से", "filter.price.max": "कीमत तक", "filter.onlyFollowing": "केवल जिन्हें मैं फॉलो करता हूँ",
           "search.clearAria": "साफ़ करें",
           "search.closeAria": "बंद करें",
           "saved.eyebrow": "पसंदीदा",
@@ -4339,7 +4411,7 @@
           "profile.stat.followers": "फ़ॉलोअर्स",
           "profile.stat.following": "फ़ॉलोइंग",
           "profile.stat.likes": "लाइक",
-          "profile.stat.comments": "टिप्पणियाँ",
+          "profile.stat.comments": "टिप्पणियाँ", "profile.stat.views": "व्यूज़",
           "admin.reportsLabel": "शिकायतें",
           "admin.usersLabel": "उपयोगकर्ता",
           "report.action": "शिकायत करें",
@@ -4521,7 +4593,7 @@
           "notif.banExpired": "Tu baneo ha terminado. Ya puedes volver a usar tu cuenta.",
           "notif.muteExpired": "Tu silencio ha terminado. Ya puedes comentar, enviar mensajes y subir obras de nuevo.",
           "nav.saved": "Guardados",
-          "search.placeholder": "Buscar...",
+          "search.placeholder": "Buscar...", "filter.type.all": "Todos los tipos", "filter.sort.new": "Más reciente", "filter.sort.top": "Más gustados", "filter.price.min": "Precio desde", "filter.price.max": "Precio hasta", "filter.onlyFollowing": "Solo a quienes sigo",
           "search.clearAria": "Borrar",
           "search.closeAria": "Cerrar",
           "saved.eyebrow": "Favoritos",
@@ -4530,7 +4602,7 @@
           "profile.stat.followers": "Seguidores",
           "profile.stat.following": "Siguiendo",
           "profile.stat.likes": "Me gusta",
-          "profile.stat.comments": "Comentarios",
+          "profile.stat.comments": "Comentarios", "profile.stat.views": "Vistas",
           "admin.reportsLabel": "Denuncias",
           "admin.usersLabel": "Usuarios",
           "report.action": "Denunciar",
@@ -4712,7 +4784,7 @@
           "notif.banExpired": "انتهت مدة حظرك. يمكنك استخدام حسابك مجددًا.",
           "notif.muteExpired": "انتهت مدة كتمك. يمكنك التعليق والمراسلة ورفع الأعمال مجددًا.",
           "nav.saved": "المحفوظات",
-          "search.placeholder": "بحث...",
+          "search.placeholder": "بحث...", "filter.type.all": "جميع الأنواع", "filter.sort.new": "الأحدث", "filter.sort.top": "الأكثر إعجابًا", "filter.price.min": "السعر من", "filter.price.max": "السعر إلى", "filter.onlyFollowing": "من أتابعهم فقط",
           "search.clearAria": "مسح",
           "search.closeAria": "إغلاق",
           "saved.eyebrow": "المفضلة",
@@ -4721,7 +4793,7 @@
           "profile.stat.followers": "المتابعون",
           "profile.stat.following": "المتابَعون",
           "profile.stat.likes": "الإعجابات",
-          "profile.stat.comments": "التعليقات",
+          "profile.stat.comments": "التعليقات", "profile.stat.views": "المشاهدات",
           "admin.reportsLabel": "البلاغات",
           "admin.usersLabel": "المستخدمون",
           "report.action": "إبلاغ",
@@ -4903,7 +4975,7 @@
           "notif.banExpired": "Срок вашего бана истёк. Вы снова можете пользоваться аккаунтом.",
           "notif.muteExpired": "Срок вашего мута истёк. Вы снова можете комментировать, писать сообщения и загружать работы.",
           "nav.saved": "Сохранённые",
-          "search.placeholder": "Поиск...",
+          "search.placeholder": "Поиск...", "filter.type.all": "Все типы", "filter.sort.new": "Новые", "filter.sort.top": "Популярные", "filter.price.min": "Цена от", "filter.price.max": "Цена до", "filter.onlyFollowing": "Только те, на кого я подписан",
           "search.clearAria": "Очистить",
           "search.closeAria": "Закрыть",
           "saved.eyebrow": "Избранное",
@@ -4912,7 +4984,7 @@
           "profile.stat.followers": "Подписчики",
           "profile.stat.following": "Подписки",
           "profile.stat.likes": "Лайки",
-          "profile.stat.comments": "Комментарии",
+          "profile.stat.comments": "Комментарии", "profile.stat.views": "Просмотры",
           "admin.reportsLabel": "Жалобы",
           "admin.usersLabel": "Пользователи",
           "report.action": "Пожаловаться",
@@ -5063,7 +5135,7 @@
       let feedOffset = 0;
       let feedHasMore = true;
       let feedLoading = false;
-      let feedQuery = { q: '', type: '', sort: 'new', following: false };
+      let feedQuery = { q: '', type: '', sort: 'new', following: false, minPrice: '', maxPrice: '' };
       let currentTheme = { mode: 'tungi', custom: '#e2543f' };
       let pendingDeleteId = null;
       let uploadImageBlobs = [];
@@ -5322,7 +5394,7 @@
           FEED = [];
           feedOffset = 0;
           feedHasMore = true;
-          feedQuery = { q: '', type: '', sort: 'new', following: false };
+          feedQuery = { q: '', type: '', sort: 'new', following: false, minPrice: '', maxPrice: '' };
           Object.keys(ALL_ITEMS_BY_ID).forEach(k => delete ALL_ITEMS_BY_ID[k]);
           $('#feedList').innerHTML = '';
           $('#feedSearchInput').value = '';
@@ -5372,6 +5444,31 @@
           feedQuery.q = '';
           resetAndReloadFeed();
         });
+
+        $('#feedTypeSelect').addEventListener('change', (e) => {
+          feedQuery.type = e.target.value;
+          resetAndReloadFeed();
+        });
+        $('#feedSortSelect').addEventListener('change', (e) => {
+          feedQuery.sort = e.target.value;
+          resetAndReloadFeed();
+        });
+        $('#feedFollowingToggle').addEventListener('change', (e) => {
+          if (e.target.checked && IS_GUEST) { e.target.checked = false; openGateModal(); return; }
+          feedQuery.following = e.target.checked;
+          resetAndReloadFeed();
+        });
+        let feedPriceTimer = null;
+        function onFeedPriceInput() {
+          clearTimeout(feedPriceTimer);
+          feedPriceTimer = setTimeout(() => {
+            feedQuery.minPrice = $('#feedMinPrice').value.trim();
+            feedQuery.maxPrice = $('#feedMaxPrice').value.trim();
+            resetAndReloadFeed();
+          }, 400);
+        }
+        $('#feedMinPrice').addEventListener('input', onFeedPriceInput);
+        $('#feedMaxPrice').addEventListener('input', onFeedPriceInput);
 
         /* Mobilda qidiruv maydoni faqat lupa bo'lib turadi; bosilganda
            butun ekran kengligida ochiladi, X tugmasi bosilsa yopiladi */
@@ -5848,6 +5945,7 @@
         $('#statFollowing').textContent = u.followingCount || 0;
         $('#statLikes').textContent = WORKS.reduce((sum, w) => sum + (Array.isArray(w.likes) ? w.likes.length : 0), 0);
         $('#statComments').textContent = WORKS.reduce((sum, w) => sum + (Array.isArray(w.comments) ? w.comments.length : 0), 0);
+        $('#statViews').textContent = WORKS.reduce((sum, w) => sum + (Number(w.views) || 0), 0);
       }
 
       function openEditProfile() {
@@ -5989,6 +6087,10 @@
         $('#upStatTotal').textContent = works.length;
         $('#upStatSale').textContent = works.filter(w => w.status === 'sale').length;
         $('#upStatExpo').textContent = works.filter(w => w.status === 'expo').length;
+        const upStats = profile.stats || {};
+        $('#upStatFollowers').textContent = profile.followersCount || 0;
+        $('#upStatLikes').textContent = upStats.totalLikes || 0;
+        $('#upStatViews').textContent = upStats.totalViews || 0;
         $('#upFollowStats').textContent = t('follow.stats', { followers: profile.followersCount || 0, following: profile.followingCount || 0 });
 
         const contactBits = [];
@@ -6066,18 +6168,29 @@
         if (Array.isArray(w.images) && w.images.length) return w.images;
         return w.image ? [w.image] : [];
       }
+      // Kartalarda tez yuklanish uchun kichik nusxa (agar mavjud bo'lmasa, to'liq rasm)
+      function workThumbs(w) {
+        if (Array.isArray(w.thumbs) && w.thumbs.length) return w.thumbs;
+        return workImages(w);
+      }
 
       function collageHTML(images, alt) {
         const imgs = images && images.length ? images.slice(0, 3) : [];
+        const badge = imgs.length > 1
+          ? `<div class="collage-count" aria-hidden="true">${multiImageIconSVG()} ${imgs.length}</div>`
+          : '';
         return `<div class="collage n-${imgs.length}">${imgs.map(src =>
-          `<img src="${src}" alt="${escapeHtml(alt)}" loading="lazy">`).join('')}</div>`;
+          `<img src="${src}" alt="${escapeHtml(alt)}" loading="lazy">`).join('')}${badge}</div>`;
+      }
+      function multiImageIconSVG() {
+        return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="14" height="14" rx="2"></rect><path d="M7 21h11a2 2 0 0 0 2-2V8"></path></svg>`;
       }
 
       function workCardHTML(w) {
         return `
       <div class="work-card" data-id="${w.id}">
         <div class="work-thumb">
-          ${collageHTML(workImages(w), w.title)}
+          ${collageHTML(workThumbs(w), w.title)}
           <div class="work-tag">${typeLabel(w.type)}</div>
           <div class="work-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
         </div>
@@ -6162,7 +6275,7 @@
           <button type="button" class="feed-follow-btn ${w.isFollowing ? 'following' : ''}" data-username="${escapeHtml(w.username)}" aria-label="${t('follow.subscribeBtn')}">${w.isFollowing ? t('follow.short') : t('follow.shortAdd')}</button>` : ''}
         </div>
         <div class="feed-thumb" data-id="${w.id}" role="button" tabindex="0" aria-label="${t('feedThumb.aria')}">
-          ${collageHTML(workImages(w), w.title)}
+          ${collageHTML(workThumbs(w), w.title)}
           <div class="feed-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
         </div>
         <div class="feed-actions">
@@ -6252,6 +6365,9 @@
             const src = ALL_ITEMS_BY_ID[id];
             const images = src ? workImages(src) : Array.from(thumb.querySelectorAll('img')).map(i => i.src);
             openImageViewer(images, 0);
+            api('/api/works/' + id + '/view', { method: 'POST' }).then(res => {
+              if (src) src.viewsCount = res.viewsCount;
+            }).catch(() => {});
           });
         }
         const saveBtn = card.querySelector('.save-btn');
@@ -6358,6 +6474,8 @@
         if (feedQuery.type) p.set('type', feedQuery.type);
         if (feedQuery.sort && feedQuery.sort !== 'new') p.set('sort', feedQuery.sort);
         if (feedQuery.following) p.set('following', '1');
+        if (feedQuery.minPrice !== '') p.set('minPrice', feedQuery.minPrice);
+        if (feedQuery.maxPrice !== '') p.set('maxPrice', feedQuery.maxPrice);
         return p.toString();
       }
 
@@ -6856,6 +6974,9 @@
         $('#lightboxStatus').textContent = w.status === 'sale' ? (w.price ? fmtPrice(w.price, w.currency) : t('feed.sale')) : t('upload.status.expo');
         $('#lightboxDate').textContent = fmtDate(w.createdAt);
         $('#lightbox').classList.add('open');
+        api('/api/works/' + id + '/view', { method: 'POST' }).then(res => {
+          w.views = res.viewsCount;
+        }).catch(() => {});
       }
       function closeLightbox() { $('#lightbox').classList.remove('open'); pendingDeleteId = null; $('#deleteWorkBtn').classList.remove('hidden'); }
 

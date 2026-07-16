@@ -112,9 +112,15 @@ Let's Encrypt (`certbot`) bilan HTTPS o'rnating.
 - **Shikoyat qilish**: asar yoki foydalanuvchiga shikoyat yuborish, admin panelda ko'rib chiqish/yopish.
 - **Admin statistika**: foydalanuvchilar, asarlar, layk/komment, ban/mut sonlari — bir qarashda.
 - **Spam himoyasi**: ro'yxatdan o'tish, kirish, komment, xabar va shikoyatlarga oddiy so'rov cheklovi (rate limit) qo'yildi.
+- **Rasm siqish va thumbnail**: yuklangan har bir rasm avtomatik siqiladi (max 1600px, JPEG sifat 82%) va lenta/kartalar uchun alohida kichik nusxa (thumbnail, 480px) yaratiladi — sahifalar sezilarli tezroq yuklanadi, disk joyi tejaladi. Buning uchun `sharp` kutubxonasi ishlatiladi (`npm install` paytida avtomatik o'rnatiladi).
+- **Narx oralig'i bo'yicha filtr**: lentada "narx, dan" / "narx, gacha" maydonlari orqali faqat shu oraliqdagi sotuvdagi asarlarni ko'rsatish.
+- **Kengaytirilgan lenta filtri**: bosh sahifada kategoriya, saralash, faqat kuzatuvchilarim va narx oralig'i — barchasi bitta filtr panelida (avval faqat backend'da tayyor bo'lib, interfeysga chiqarilmagan edi).
+- **Ko'rishlar statistikasi**: har bir asar to'liq hajmda ochilganda "ko'rishlar" soni oshadi; bu son profil sahifasida (o'zingiznikida va boshqa foydalanuvchilarnikida) umumiy statistika sifatida ko'rinadi.
+- **Kengaytirilgan profil/"do'kon" statistikasi**: har qanday foydalanuvchi profilida jami asarlar, sotuvdagi/ko'rgazmadagi asarlar soni, obunachilar, jami layklar va jami ko'rishlar bir joyda.
+- **7 tilning barchasida to'liq tarjima**: yuqoridagi barcha yangi elementlar (filtr, statistika) o'zbek, ingliz, rus, xitoy, hind, ispan va arab tillariga tarjima qilingan.
 
 **Bu safar qo'shilmagan narsalar** (sabab bilan):
 - **Parolni email orqali tiklash / email tasdiqlash / push-bildirishnoma** — bular uchun tashqi email/SMS xizmati (masalan SMTP yoki SMS-shlyuz) ulanishi kerak; hozircha loyihada bunday xizmat sozlanmagan.
-- **Ko'p tillilik (i18n) yangi elementlar uchun** — yangi qo'shilgan matnlar hozircha faqat o'zbek tilida; saytdagi 7 tilning barchasiga tarjima qilish alohida katta ish.
-- **Video yuklash, rasm siqish/thumbnail** — server resurslarini ko'proq talab qiladi, alohida so'rovda qo'shsa bo'ladi.
+- **Video yuklash** — server resurslarini ko'proq talab qiladi, alohida so'rovda qo'shsa bo'ladi.
+- **Haqiqiy savdo/to'lov tizimi (cart, checkout, Payme/Click)** — asarlarda narx ko'rsatiladi, lekin to'lov integratsiyasi yo'q; bu alohida katta ish.
 

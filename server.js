@@ -21,6 +21,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
+const sharp = require('sharp');
 
 const STORAGE_DIR = path.join(__dirname, 'storage');
 const DATA_DIR = path.join(STORAGE_DIR, 'data');
@@ -282,6 +283,40 @@ function workImages(w) {
   return w.image ? [w.image] : [];
 }
 
+/* Eski (thumb'siz) asarlar uchun: agar thumbs bo'lmasa, to'liq rasmni ishlatamiz */
+function workThumbs(w) {
+  if (Array.isArray(w.thumbs) && w.thumbs.length === workImages(w).length) return w.thumbs;
+  return workImages(w);
+}
+
+/**
+ * Yuklangan rasmni siqadi (katta rasmlarni kichraytiradi, JPEG sifatini
+ * pasaytiradi) va lentada tez ko'rsatish uchun kichik "thumbnail" nusxasini
+ * yaratadi. Asl fayl o'rniga siqilgan versiya yoziladi — disk va trafik
+ * tejaladi, lekin sifat ko'zga sezilarli darajada pasaymaydi.
+ */
+async function compressAndThumbnail(absPath) {
+  const ext = path.extname(absPath);
+  const base = absPath.slice(0, -ext.length);
+  const thumbPath = base + '-thumb.jpg';
+
+  // Asl rasmni max 1600px eniga siqib, joyida qayta yozamiz
+  const buf = await sharp(absPath)
+    .rotate() // EXIF orientatsiyasini to'g'irlaydi
+    .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
+    .jpeg({ quality: 82, mozjpeg: true })
+    .toBuffer();
+  fs.writeFileSync(absPath, buf);
+
+  // Lenta/kolleja uchun kichik nusxa
+  await sharp(buf)
+    .resize({ width: 480, height: 480, fit: 'inside', withoutEnlargement: true })
+    .jpeg({ quality: 75, mozjpeg: true })
+    .toFile(thumbPath);
+
+  return path.basename(thumbPath);
+}
+
 function requireAuth(req, res, next) {
   const uname = req.session.username;
   if (!uname || !db.users[uname]) {
@@ -369,6 +404,7 @@ function publicUser(uname) {
     followingCount: (u.following || []).length,
     followersCount: countFollowers(uname),
     savedCount: (u.savedWorks || []).length,
+    stats: userWorkStats(uname),
     moderation: {
       bannedUntil: u.moderation.bannedUntil,
       banReason: u.moderation.banReason,
@@ -385,6 +421,27 @@ function countFollowers(uname) {
     if (Array.isArray(other.following) && other.following.includes(uname)) n++;
   }
   return n;
+}
+
+/* Foydalanuvchining barcha asarlari bo'yicha umumiy statistika ("do'kon" sahifasi
+   va shaxsiy "Statistika" bo'limi uchun) */
+function userWorkStats(uname) {
+  const works = db.works[uname] || [];
+  let saleCount = 0, totalLikes = 0, totalViews = 0, totalComments = 0;
+  for (const w of works) {
+    if (w.status === 'sale') saleCount++;
+    totalLikes += Array.isArray(w.likes) ? w.likes.length : 0;
+    totalViews += Number(w.views) || 0;
+    totalComments += Array.isArray(w.comments) ? w.comments.length : 0;
+  }
+  return {
+    worksCount: works.length,
+    saleCount,
+    expoCount: works.length - saleCount,
+    totalLikes,
+    totalViews,
+    totalComments
+  };
 }
 
 /* Boshqa foydalanuvchilarga ko'rinadigan (maxfiylik sozlamalariga rioya qiluvchi) profil ma'lumoti */
@@ -407,7 +464,8 @@ function publicProfile(uname, viewerUsername) {
     followersCount: countFollowers(uname),
     followingCount: (u.following || []).length,
     isFollowing: !!(viewerUser && Array.isArray(viewerUser.following) && viewerUser.following.includes(uname)),
-    isSelf
+    isSelf,
+    stats: userWorkStats(uname)
   };
 }
 
@@ -523,6 +581,16 @@ app.post('/api/profile/avatar', requireAuth, (req, res) => {
     if (err) return res.status(400).json({ error: err.message });
     if (!req.file) return res.status(400).json({ error: 'Rasm talab qilinadi' });
 
+    // Avatarni 400x400 kvadratga siqamiz — profil doim tez yuklanadi
+    try {
+      const buf = await sharp(req.file.path)
+        .rotate()
+        .resize({ width: 400, height: 400, fit: 'cover' })
+        .jpeg({ quality: 85, mozjpeg: true })
+        .toBuffer();
+      fs.writeFileSync(req.file.path, buf);
+    } catch (e) { /* siqib bo'lmasa, asl faylni qoldiramiz */ }
+
     const u = db.users[req.session.username];
     const oldAvatar = u.avatar;
     u.avatar = '/uploads/' + req.file.filename;
@@ -556,6 +624,7 @@ app.get('/api/users/:username', (req, res) => {
       desc: w.desc,
       image: w.image,
       images: workImages(w),
+      thumbs: workThumbs(w),
       createdAt: w.createdAt,
       likesCount: Array.isArray(w.likes) ? w.likes.length : 0,
       commentsCount: Array.isArray(w.comments) ? w.comments.length : 0
@@ -641,6 +710,7 @@ app.get('/api/saved', requireAuth, (req, res) => {
       currency: work.currency || 'UZS',
       desc: work.desc,
       images: workImages(work),
+      thumbs: workThumbs(work),
       createdAt: work.createdAt,
       username: owner,
       fullname: ownerUser.fullname || owner,
@@ -718,7 +788,19 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
     const { title, type, status, price, currency, desc } = req.body || {};
     const isSale = status === 'sale';
     const CURRENCIES = ['UZS', 'USD', 'EUR', 'RUB'];
+
+    // Har bir rasmni siqib, thumbnail yaratamiz (rasm sifati deyarli
+    // o'zgarmaydi, lekin fayl hajmi va sahifa yuklanish tezligi yaxshilanadi)
+    let thumbs;
+    try {
+      thumbs = await Promise.all(req.files.map(f => compressAndThumbnail(f.path)));
+    } catch (e) {
+      // Siqishda xatolik bo'lsa ham, asl rasmlar bilan davom etamiz
+      thumbs = req.files.map(() => null);
+    }
     const images = req.files.map(f => '/uploads/' + f.filename);
+    const thumbImages = thumbs.map((t, i) => t ? '/uploads/' + t : images[i]);
+
     const work = {
       id: 'w' + Date.now() + crypto.randomBytes(4).toString('hex'),
       title: String(title || '').slice(0, 200),
@@ -728,10 +810,12 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
       currency: isSale && CURRENCIES.includes(currency) ? currency : 'UZS',
       desc: String(desc || '').slice(0, 2000),
       images,
+      thumbs: thumbImages,
       image: images[0], // eski frontend/kod bilan moslik uchun
       createdAt: new Date().toISOString(),
       likes: [],
-      comments: []
+      comments: [],
+      views: 0
     };
 
     const uname = req.session.username;
@@ -750,6 +834,11 @@ app.delete('/api/works/:id', requireAuth, async (req, res) => {
   await saveDB();
   if (work) {
     workImages(work).forEach(img => fs.unlink(path.join(__dirname, img), () => {}));
+    if (Array.isArray(work.thumbs)) {
+      work.thumbs.forEach(img => {
+        if (img && !workImages(work).includes(img)) fs.unlink(path.join(__dirname, img), () => {});
+      });
+    }
   }
   res.json({ ok: true });
 });
@@ -774,6 +863,8 @@ app.get('/api/feed', (req, res) => {
   const type = String(req.query.type || '').trim().toLowerCase();
   const onlyFollowing = req.query.following === '1' || req.query.following === 'true';
   const sort = String(req.query.sort || 'new').trim().toLowerCase(); // 'new' | 'top'
+  const minPrice = req.query.minPrice !== undefined && req.query.minPrice !== '' ? Number(req.query.minPrice) : null;
+  const maxPrice = req.query.maxPrice !== undefined && req.query.maxPrice !== '' ? Number(req.query.maxPrice) : null;
 
   if (onlyFollowing && !meUser) return res.json({ items: [], hasMore: false, total: 0 });
   const followingSet = onlyFollowing ? new Set(meUser.following || []) : null;
@@ -785,6 +876,11 @@ app.get('/api/feed', (req, res) => {
     if (onlyFollowing && !followingSet.has(uname)) continue;
     for (const w of db.works[uname] || []) {
       if (type && type !== 'all' && w.type !== type) continue;
+      if ((minPrice !== null || maxPrice !== null)) {
+        if (w.status !== 'sale') continue; // narx filtri faqat sotuvdagi asarlarga tegishli
+        if (minPrice !== null && !Number.isNaN(minPrice) && (w.price || 0) < minPrice) continue;
+        if (maxPrice !== null && !Number.isNaN(maxPrice) && (w.price || 0) > maxPrice) continue;
+      }
       if (q) {
         const hay = (w.title + ' ' + (w.desc || '') + ' ' + (u.fullname || '') + ' ' + uname).toLowerCase();
         if (!hay.includes(q)) continue;
@@ -801,6 +897,7 @@ app.get('/api/feed', (req, res) => {
         desc: w.desc,
         image: w.image,
         images: workImages(w),
+        thumbs: workThumbs(w),
         createdAt: w.createdAt,
         username: uname,
         fullname: u.fullname || uname,
@@ -809,6 +906,7 @@ app.get('/api/feed', (req, res) => {
         likedByMe: likes.includes(me),
         savedByMe: !!(meUser && Array.isArray(meUser.savedWorks) && meUser.savedWorks.includes(w.id)),
         commentsCount: comments.length,
+        viewsCount: Number(w.views) || 0,
         isFollowing: !!(meUser && Array.isArray(meUser.following) && meUser.following.includes(uname))
       });
     }
@@ -836,6 +934,16 @@ app.post('/api/works/:id/like', requireAuth, async (req, res) => {
 
   await saveDB();
   res.json({ liked, likesCount: work.likes.length });
+});
+
+/* Asarni to'liq hajmda ochganda chaqiriladi — statistikada ko'rishlar sonini oshiradi */
+app.post('/api/works/:id/view', rateLimit('view', 120, 60 * 1000), async (req, res) => {
+  const found = findWork(req.params.id);
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
+  const { work } = found;
+  work.views = (Number(work.views) || 0) + 1;
+  await saveDB();
+  res.json({ viewsCount: work.views });
 });
 
 /* ===================== KOMENTLAR ===================== */
