@@ -3843,7 +3843,7 @@
           <button type="button" class="game-back-btn" data-i18n="games.backToList">← O'yinlar ro'yxatiga</button>
           <div class="game-panel-head">
             <h2 class="game-panel-title" data-i18n="games.ttt.title">X va O</h2>
-            <button type="button" class="btn btn-secondary btn-sm" id="tttResetBtn" data-i18n="ttt.reset">Qayta boshlash</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="tttResetBtn" data-i18n="ttt.reset">Qayta boshlash</button>
           </div>
 
           <div class="ttt-mode-select" id="tttModeSelect">
@@ -7060,9 +7060,9 @@
         tttSetStatus(t('ttt.turnPrefix') + ' X');
       }
 
-      function tttHandleLocalMove(i) {
+      function tttHandleLocalMove(i, isBotMove) {
         if (tttGameOver || tttCells[i] || tttBotThinking) return;
-        if (tttMode === 'bot' && tttTurn === 'O') return;
+        if (tttMode === 'bot' && tttTurn === 'O' && !isBotMove) return;
         tttCells[i] = tttTurn;
         tttRenderMark(i, tttTurn);
         const result = tttCheckResult(tttCells);
@@ -7159,7 +7159,7 @@
       function tttBotMove() {
         const i = tttGetBestMove();
         tttBotThinking = false;
-        if (i !== -1 && !tttCells[i] && !tttGameOver) tttHandleLocalMove(i);
+        if (i !== -1 && !tttCells[i] && !tttGameOver) tttHandleLocalMove(i, true);
       }
 
       /* ---- rejim almashtirish ---- */
