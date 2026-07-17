@@ -1627,6 +1627,242 @@ app.post('/api/notifications/read', requireAuth, async (req, res) => {
   res.json({ ok: true });
 });
 
+/* ===================== X VA O — ONLAYN O'YIN =====================
+   WebSocket kutubxonasisiz, oddiy so'rov (polling) orqali ishlaydi —
+   xuddi yuqoridagi xabarlar (messages) tizimi kabi. Faol o'yinlar va
+   navbat xotirada saqlanadi (fayl-bazaga yozilmaydi), chunki ular
+   davomiy ma'lumot emas — server qayta ishga tushsa, faol o'yinlar
+   shunchaki tozalanadi va foydalanuvchilar qayta raqib qidira oladi. */
+
+const tttQueue = []; // [{ username, joinedAt }]
+const tttGames = new Map(); // gameId -> game
+const tttUserGame = new Map(); // username -> gameId
+const TTT_LINES = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+const TTT_TURN_TIMEOUT_MS = 45 * 1000;      // shu vaqt ichida yurmasa, raqib g'olib deb topiladi
+const TTT_QUEUE_STALE_MS = 30 * 1000;       // navbatda shuncha vaqtdan beri "ko'rinmagan" so'rov o'chiriladi
+const TTT_GAME_IDLE_MS = 10 * 60 * 1000;    // shuncha vaqt hech kim so'rov yubormasa, o'yin xotiradan tozalanadi
+
+function tttCheckResult(board) {
+  for (const line of TTT_LINES) {
+    const [a, b, c] = line;
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) return { winner: board[a], line };
+  }
+  if (board.every(c => c)) return { winner: 'draw', line: null };
+  return null;
+}
+
+function tttPublicUser(uname) {
+  const u = db.users[uname];
+  return { username: uname, fullname: (u && u.fullname) || uname, avatar: (u && u.avatar) || null };
+}
+
+function tttCleanupQueue() {
+  const now = Date.now();
+  for (let i = tttQueue.length - 1; i >= 0; i--) {
+    if (now - tttQueue[i].joinedAt > TTT_QUEUE_STALE_MS) tttQueue.splice(i, 1);
+  }
+}
+
+function tttTouch(game, uname) {
+  game.lastSeen[uname] = Date.now();
+}
+
+function tttForfeitTo(game, winnerUname, reason) {
+  game.status = 'finished';
+  game.winner = game.marks[winnerUname];
+  game.winLine = null;
+  game.endReason = reason;
+  game.updatedAt = new Date().toISOString();
+}
+
+/* Uzoq vaqt yurmagan/so'rov yubormagan o'yinchi bo'lsa, raqibga g'alaba beriladi */
+function tttCheckTimeout(game) {
+  if (game.status !== 'playing') return;
+  const now = Date.now();
+  const players = [game.players.X, game.players.O];
+  for (const uname of players) {
+    const seen = game.lastSeen[uname] || game.createdAt;
+    if (now - seen > TTT_TURN_TIMEOUT_MS) {
+      const other = players.find(p => p !== uname);
+      tttForfeitTo(game, other, 'timeout');
+      return;
+    }
+  }
+}
+
+function tttFreeUsers(game) {
+  if (tttUserGame.get(game.players.X) === game.id) tttUserGame.delete(game.players.X);
+  if (tttUserGame.get(game.players.O) === game.id) tttUserGame.delete(game.players.O);
+}
+
+function tttGameView(game, me) {
+  return {
+    id: game.id,
+    board: game.board,
+    turn: game.turn,
+    status: game.status,
+    winner: game.winner,
+    winLine: game.winLine,
+    endReason: game.endReason || null,
+    you: game.marks[me],
+    players: { X: tttPublicUser(game.players.X), O: tttPublicUser(game.players.O) },
+    rematch: {
+      you: !!game.rematchWanted[me],
+      opponent: !!game.rematchWanted[game.players.X === me ? game.players.O : game.players.X]
+    }
+  };
+}
+
+/* Navbatga qo'shiladi; navbatda kutayotgan boshqa foydalanuvchi bo'lsa,
+   ikkalasi darhol bir o'yinga bog'lanadi */
+app.post('/api/games/tictactoe/queue/join', requireAuth, (req, res) => {
+  const me = req.session.username;
+  if (tttUserGame.has(me)) return res.json({ status: 'matched', gameId: tttUserGame.get(me) });
+
+  tttCleanupQueue();
+  if (tttQueue.some(q => q.username === me)) return res.json({ status: 'waiting' });
+
+  const opponent = tttQueue.find(q => q.username !== me);
+  if (opponent) {
+    tttQueue.splice(tttQueue.indexOf(opponent), 1);
+    const id = 'ttt' + Date.now() + crypto.randomBytes(4).toString('hex');
+    const meFirst = Math.random() < 0.5;
+    const game = {
+      id,
+      players: { X: meFirst ? me : opponent.username, O: meFirst ? opponent.username : me },
+      marks: {},
+      board: Array(9).fill(null),
+      turn: 'X',
+      status: 'playing',
+      winner: null,
+      winLine: null,
+      endReason: null,
+      rematchWanted: {},
+      lastSeen: {},
+      createdAt: Date.now(),
+      updatedAt: new Date().toISOString()
+    };
+    game.marks[game.players.X] = 'X';
+    game.marks[game.players.O] = 'O';
+    tttTouch(game, me);
+    tttTouch(game, opponent.username);
+    tttGames.set(id, game);
+    tttUserGame.set(me, id);
+    tttUserGame.set(opponent.username, id);
+    return res.json({ status: 'matched', gameId: id });
+  }
+
+  tttQueue.push({ username: me, joinedAt: Date.now() });
+  res.json({ status: 'waiting' });
+});
+
+app.post('/api/games/tictactoe/queue/leave', requireAuth, (req, res) => {
+  const me = req.session.username;
+  const idx = tttQueue.findIndex(q => q.username === me);
+  if (idx !== -1) tttQueue.splice(idx, 1);
+  res.json({ ok: true });
+});
+
+app.get('/api/games/tictactoe/queue/status', requireAuth, (req, res) => {
+  const me = req.session.username;
+  if (tttUserGame.has(me)) return res.json({ status: 'matched', gameId: tttUserGame.get(me) });
+  tttCleanupQueue();
+  res.json({ status: tttQueue.some(q => q.username === me) ? 'waiting' : 'idle' });
+});
+
+app.get('/api/games/tictactoe/:id', requireAuth, (req, res) => {
+  const me = req.session.username;
+  const game = tttGames.get(req.params.id);
+  if (!game || !game.marks[me]) return res.status(404).json({ error: "O'yin topilmadi" });
+  tttTouch(game, me);
+  tttCheckTimeout(game);
+  res.json(tttGameView(game, me));
+});
+
+app.post('/api/games/tictactoe/:id/move', requireAuth, (req, res) => {
+  const me = req.session.username;
+  const game = tttGames.get(req.params.id);
+  if (!game || !game.marks[me]) return res.status(404).json({ error: "O'yin topilmadi" });
+  tttTouch(game, me);
+  tttCheckTimeout(game);
+  if (game.status !== 'playing') return res.status(400).json({ error: "O'yin allaqachon tugagan" });
+
+  const myMark = game.marks[me];
+  if (game.turn !== myMark) return res.status(400).json({ error: 'Hozir sizning navbatingiz emas' });
+
+  const index = Number(req.body && req.body.index);
+  if (!Number.isInteger(index) || index < 0 || index > 8) return res.status(400).json({ error: "Noto'g'ri katak raqami" });
+  if (game.board[index]) return res.status(400).json({ error: 'Bu katak allaqachon band' });
+
+  game.board[index] = myMark;
+  const result = tttCheckResult(game.board);
+  if (result) {
+    game.status = 'finished';
+    game.winner = result.winner;
+    game.winLine = result.winner === 'draw' ? null : result.line;
+  } else {
+    game.turn = myMark === 'X' ? 'O' : 'X';
+  }
+  game.updatedAt = new Date().toISOString();
+  res.json(tttGameView(game, me));
+});
+
+app.post('/api/games/tictactoe/:id/rematch', requireAuth, (req, res) => {
+  const me = req.session.username;
+  const game = tttGames.get(req.params.id);
+  if (!game || !game.marks[me]) return res.status(404).json({ error: "O'yin topilmadi" });
+  if (game.status !== 'finished') return res.status(400).json({ error: "O'yin hali tugamagan" });
+
+  game.rematchWanted[me] = true;
+  tttTouch(game, me);
+  const other = game.players.X === me ? game.players.O : game.players.X;
+
+  if (game.rematchWanted[me] && game.rematchWanted[other]) {
+    const prevX = game.players.X, prevO = game.players.O;
+    game.players.X = prevO; // navbatdagi o'yinda X/O almashadi
+    game.players.O = prevX;
+    game.marks = {};
+    game.marks[game.players.X] = 'X';
+    game.marks[game.players.O] = 'O';
+    game.board = Array(9).fill(null);
+    game.turn = 'X';
+    game.status = 'playing';
+    game.winner = null;
+    game.winLine = null;
+    game.endReason = null;
+    game.rematchWanted = {};
+  }
+  game.updatedAt = new Date().toISOString();
+  res.json(tttGameView(game, me));
+});
+
+app.post('/api/games/tictactoe/:id/leave', requireAuth, (req, res) => {
+  const me = req.session.username;
+  const game = tttGames.get(req.params.id);
+  if (!game || !game.marks[me]) return res.json({ ok: true });
+
+  if (game.status === 'playing') {
+    const other = game.players.X === me ? game.players.O : game.players.X;
+    tttForfeitTo(game, other, 'left');
+  }
+  tttFreeUsers(game);
+  res.json({ ok: true });
+});
+
+/* Faol bo'lmagan (uzoq vaqt so'rov kelmagan) o'yinlarni xotiradan tozalab turadi */
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, game] of tttGames) {
+    tttCheckTimeout(game);
+    const seenTimes = Object.values(game.lastSeen);
+    const lastActivity = seenTimes.length ? Math.max(...seenTimes) : game.createdAt;
+    if (now - lastActivity > TTT_GAME_IDLE_MS) {
+      tttFreeUsers(game);
+      tttGames.delete(id);
+    }
+  }
+}, 60 * 1000).unref();
+
 /* SPA fallback — noma'lum yo'llarni ham bosh sahifaga yo'naltiradi */
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) return next();

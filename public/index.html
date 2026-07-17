@@ -3326,6 +3326,117 @@
       .game-dpad { display: none; }
     }
 
+    /* ---- X va O (Tic-Tac-Toe) ---- */
+    .ttt-mode-select {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .ttt-mode-btn {
+      flex: 1;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-dim);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+      padding: 9px 6px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: color .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .ttt-mode-btn:hover { color: var(--text); }
+    .ttt-mode-btn.active {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .ttt-status {
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: .4px;
+      margin-bottom: 12px;
+      min-height: 24px;
+    }
+    .ttt-board {
+      position: absolute;
+      inset: 0;
+      padding: 7%;
+      box-sizing: border-box;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 4%;
+    }
+    .ttt-cell {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      transition: background .15s ease, transform .12s ease, border-color .15s ease;
+    }
+    .ttt-cell:hover:not(.ttt-filled) {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .ttt-cell:active:not(.ttt-filled) { transform: scale(.96); }
+    .ttt-cell.ttt-win-x, .ttt-cell.ttt-win-o {
+      background: var(--surface-2);
+      border-color: var(--accent);
+    }
+    .ttt-mark-svg { width: 58%; height: 58%; }
+    .ttt-cell-x { color: var(--accent-2); }
+    .ttt-cell-o { color: var(--accent); }
+    .ttt-winline { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+    #tttWinLinePath { stroke-width: 5; stroke-linecap: round; fill: none; transition: stroke-dashoffset .4s ease-out; }
+    .ttt-line-x { stroke: var(--accent-2); }
+    .ttt-line-o { stroke: var(--accent); }
+    .ttt-scores {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      margin-top: 16px;
+    }
+    .ttt-score-block { text-align: center; }
+    .ttt-score-label {
+      font-size: 11px;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+    }
+    .ttt-score-value {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .ttt-score-value.x { color: var(--accent-2); }
+    .ttt-score-value.o { color: var(--accent); }
+    .ttt-score-value.d { color: var(--text-dim); }
+    .ttt-online-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .ttt-overlay-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .ttt-spinner {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 3px solid rgba(255,255,255,.25);
+      border-top-color: #fff;
+      animation: tttSpin .8s linear infinite;
+    }
+    @keyframes tttSpin { to { transform: rotate(360deg); } }
+
     .g2048-board {
       position: absolute;
       inset: 0;
@@ -3644,6 +3755,11 @@
             <span class="game-card-title" data-i18n="games.2048.title">2048</span>
             <span class="game-card-desc" data-i18n="games.2048.desc">Bir xil raqamlarni birlashtirib 2048 raqamiga yeting.</span>
           </button>
+          <button type="button" class="game-card" id="gameCardTTT">
+            <span class="game-card-emoji">❌⭕</span>
+            <span class="game-card-title" data-i18n="games.ttt.title">X va O</span>
+            <span class="game-card-desc" data-i18n="games.ttt.desc">Botga qarshi, do'stingiz bilan yoki onlayn tasodifiy raqibga qarshi o'ynang.</span>
+          </button>
         </div>
 
         <!-- SNAKE GAME -->
@@ -3696,6 +3812,53 @@
             </div>
           </div>
           <p class="game-controls-hint" data-i18n="games.controls.2048">Boshqarish: strelka tugmalari yoki svayp</p>
+        </div>
+
+        <!-- X VA O (TIC-TAC-TOE) -->
+        <div id="tttGameWrap" class="game-panel hidden">
+          <button type="button" class="game-back-btn" data-i18n="games.backToList">← O'yinlar ro'yxatiga</button>
+          <div class="game-panel-head">
+            <h2 class="game-panel-title" data-i18n="games.ttt.title">X va O</h2>
+            <button type="button" class="btn btn-secondary btn-sm" id="tttResetBtn" data-i18n="ttt.reset">Qayta boshlash</button>
+          </div>
+
+          <div class="ttt-mode-select" id="tttModeSelect">
+            <button type="button" class="ttt-mode-btn active" data-mode="pvp" data-i18n="ttt.mode.pvp">2 O'YINCHI</button>
+            <button type="button" class="ttt-mode-btn" data-mode="bot" data-i18n="ttt.mode.bot">BOT BILAN</button>
+            <button type="button" class="ttt-mode-btn" data-mode="online" data-i18n="ttt.mode.online">ONLAYN</button>
+          </div>
+
+          <div id="tttStatus" class="ttt-status">Turn: X</div>
+
+          <div class="game-canvas-wrap" id="tttBoardHolder">
+            <div id="tttBoard" class="ttt-board"></div>
+            <svg id="tttWinLine" class="ttt-winline"><line id="tttWinLinePath" x1="0" y1="0" x2="0" y2="0" /></svg>
+            <div id="tttOverlay" class="game-overlay hidden">
+              <div class="ttt-spinner hidden" id="tttSpinner"></div>
+              <p class="game-overlay-text" id="tttOverlayText"></p>
+              <div class="ttt-overlay-actions" id="tttOverlayActions"></div>
+            </div>
+          </div>
+
+          <div class="ttt-scores" id="tttScores">
+            <div class="ttt-score-block">
+              <div class="ttt-score-label" data-i18n="ttt.scoreXLabel">X g'alabasi</div>
+              <div id="tttScoreX" class="ttt-score-value x">0</div>
+            </div>
+            <div class="ttt-score-block">
+              <div class="ttt-score-label" data-i18n="ttt.scoreDrawLabel">Durang</div>
+              <div id="tttScoreD" class="ttt-score-value d">0</div>
+            </div>
+            <div class="ttt-score-block">
+              <div class="ttt-score-label" data-i18n="ttt.scoreOLabel">O g'alabasi</div>
+              <div id="tttScoreO" class="ttt-score-value o">0</div>
+            </div>
+          </div>
+
+          <div class="ttt-online-actions hidden" id="tttOnlineActions">
+            <button type="button" class="btn btn-secondary btn-sm" id="tttLeaveBtn" data-i18n="ttt.leaveGame">Chiqish</button>
+            <button type="button" class="btn btn-primary btn-sm hidden" id="tttRematchBtn" data-i18n="ttt.rematch">Qayta o'ynash</button>
+          </div>
         </div>
       </section>
 
@@ -4226,6 +4389,16 @@
           "games.controls.snake": "Boshqarish: strelka tugmalari yoki svayp",
           "games.controls.2048": "Boshqarish: strelka tugmalari yoki svayp",
           "games.backToList": "← O'yinlar ro'yxatiga",
+          "games.ttt.title": "X va O", "games.ttt.desc": "Botga qarshi, do'stingiz bilan yoki onlayn tasodifiy raqibga qarshi o'ynang.",
+          "ttt.mode.pvp": "2 O'YINCHI", "ttt.mode.bot": "BOT BILAN", "ttt.mode.online": "ONLAYN",
+          "ttt.turnPrefix": "Yurish:", "ttt.winsSuffix": "YUTDI", "ttt.draw": "DURANG", "ttt.botThinking": "Bot o'ylamoqda…",
+          "ttt.scoreXLabel": "X g'alabasi", "ttt.scoreOLabel": "O g'alabasi", "ttt.scoreDrawLabel": "Durang", "ttt.reset": "Qayta boshlash",
+          "ttt.onlineIntro": "Tasodifiy raqib bilan real vaqtda o'ynang.", "ttt.findOpponent": "Raqib qidirish",
+          "ttt.searching": "Raqib qidirilmoqda…", "ttt.cancelSearch": "Bekor qilish", "ttt.connectionError": "Ulanishda xatolik yuz berdi",
+          "ttt.needLogin": "Onlayn o'ynash uchun avval tizimga kiring", "ttt.yourMove": "Sizning yurishingiz",
+          "ttt.waitingMove": "{name} yurishini kutmoqda…", "ttt.youWin": "Siz yutdingiz! 🎉", "ttt.youLose": "Siz yutqazdingiz",
+          "ttt.gameDraw": "Durang bo'ldi", "ttt.opponentLeft": "Raqib o'yindan chiqib ketdi — siz yutdingiz!",
+          "ttt.rematch": "Qayta o'ynash", "ttt.waitingRematchOpp": "Raqib javobini kutish…", "ttt.leaveGame": "Chiqish",
           "search.placeholder": "Qidirish...", "filter.type.all": "Barcha turlar", "filter.sort.new": "Eng yangi", "filter.sort.top": "Eng ko'p yoqtirilgan", "filter.price.min": "Narx, dan", "filter.price.max": "Narx, gacha", "filter.onlyFollowing": "Faqat kuzatuvchilarim",
           "search.clearAria": "Tozalash",
           "search.closeAria": "Yopish",
@@ -4434,6 +4607,16 @@
           "games.controls.snake": "Controls: arrow keys or swipe",
           "games.controls.2048": "Controls: arrow keys or swipe",
           "games.backToList": "← Back to games",
+          "games.ttt.title": "Tic-Tac-Toe", "games.ttt.desc": "Play vs a bot, a friend, or a random opponent online.",
+          "ttt.mode.pvp": "2 PLAYERS", "ttt.mode.bot": "VS BOT", "ttt.mode.online": "ONLINE",
+          "ttt.turnPrefix": "Turn:", "ttt.winsSuffix": "WINS", "ttt.draw": "DRAW", "ttt.botThinking": "Bot is thinking…",
+          "ttt.scoreXLabel": "X wins", "ttt.scoreOLabel": "O wins", "ttt.scoreDrawLabel": "Draws", "ttt.reset": "Reset",
+          "ttt.onlineIntro": "Play a random opponent in real time.", "ttt.findOpponent": "Find opponent",
+          "ttt.searching": "Searching for an opponent…", "ttt.cancelSearch": "Cancel", "ttt.connectionError": "A connection error occurred",
+          "ttt.needLogin": "Log in to play online", "ttt.yourMove": "Your move",
+          "ttt.waitingMove": "Waiting for {name}'s move…", "ttt.youWin": "You win! 🎉", "ttt.youLose": "You lose",
+          "ttt.gameDraw": "It's a draw", "ttt.opponentLeft": "Opponent left the game — you win!",
+          "ttt.rematch": "Rematch", "ttt.waitingRematchOpp": "Waiting for opponent…", "ttt.leaveGame": "Leave",
           "search.placeholder": "Search...", "filter.type.all": "All types", "filter.sort.new": "Newest", "filter.sort.top": "Most liked", "filter.price.min": "Price from", "filter.price.max": "Price to", "filter.onlyFollowing": "Only who I follow",
           "search.clearAria": "Clear",
           "search.closeAria": "Close",
@@ -4642,6 +4825,16 @@
           "games.controls.snake": "操作：方向键或滑动",
           "games.controls.2048": "操作：方向键或滑动",
           "games.backToList": "← 返回游戏列表",
+          "games.ttt.title": "井字棋", "games.ttt.desc": "对战电脑、好友或在线随机对手。",
+          "ttt.mode.pvp": "双人对战", "ttt.mode.bot": "人机对战", "ttt.mode.online": "在线对战",
+          "ttt.turnPrefix": "轮到：", "ttt.winsSuffix": "获胜", "ttt.draw": "平局", "ttt.botThinking": "电脑思考中…",
+          "ttt.scoreXLabel": "X 胜场", "ttt.scoreOLabel": "O 胜场", "ttt.scoreDrawLabel": "平局", "ttt.reset": "重新开始",
+          "ttt.onlineIntro": "与随机对手实时对战。", "ttt.findOpponent": "寻找对手",
+          "ttt.searching": "正在寻找对手…", "ttt.cancelSearch": "取消", "ttt.connectionError": "连接出错",
+          "ttt.needLogin": "请先登录后再在线对战", "ttt.yourMove": "轮到你了",
+          "ttt.waitingMove": "等待 {name} 落子…", "ttt.youWin": "你赢了！🎉", "ttt.youLose": "你输了",
+          "ttt.gameDraw": "平局", "ttt.opponentLeft": "对手离开了游戏——你赢了！",
+          "ttt.rematch": "再来一局", "ttt.waitingRematchOpp": "等待对手…", "ttt.leaveGame": "离开",
           "search.placeholder": "搜索...", "filter.type.all": "所有类型", "filter.sort.new": "最新", "filter.sort.top": "最多点赞", "filter.price.min": "价格从", "filter.price.max": "价格到", "filter.onlyFollowing": "仅我关注的人",
           "search.clearAria": "清除",
           "search.closeAria": "关闭",
@@ -4850,6 +5043,16 @@
           "games.controls.snake": "नियंत्रण: तीर कुंजी या स्वाइप",
           "games.controls.2048": "नियंत्रण: तीर कुंजी या स्वाइप",
           "games.backToList": "← गेम सूची पर वापस",
+          "games.ttt.title": "एक्स-ओ", "games.ttt.desc": "बॉट, दोस्त या ऑनलाइन रैंडम प्रतिद्वंद्वी के साथ खेलें।",
+          "ttt.mode.pvp": "2 खिलाड़ी", "ttt.mode.bot": "बॉट के साथ", "ttt.mode.online": "ऑनलाइन",
+          "ttt.turnPrefix": "बारी:", "ttt.winsSuffix": "जीता", "ttt.draw": "ड्रॉ", "ttt.botThinking": "बॉट सोच रहा है…",
+          "ttt.scoreXLabel": "X जीत", "ttt.scoreOLabel": "O जीत", "ttt.scoreDrawLabel": "ड्रॉ", "ttt.reset": "फिर से शुरू करें",
+          "ttt.onlineIntro": "रीयल टाइम में किसी रैंडम प्रतिद्वंद्वी के साथ खेलें।", "ttt.findOpponent": "प्रतिद्वंद्वी खोजें",
+          "ttt.searching": "प्रतिद्वंद्वी खोजा जा रहा है…", "ttt.cancelSearch": "रद्द करें", "ttt.connectionError": "कनेक्शन में त्रुटि हुई",
+          "ttt.needLogin": "ऑनलाइन खेलने के लिए पहले लॉगिन करें", "ttt.yourMove": "आपकी बारी",
+          "ttt.waitingMove": "{name} की बारी का इंतज़ार…", "ttt.youWin": "आप जीत गए! 🎉", "ttt.youLose": "आप हार गए",
+          "ttt.gameDraw": "ड्रॉ हो गया", "ttt.opponentLeft": "प्रतिद्वंद्वी खेल छोड़कर चला गया — आप जीत गए!",
+          "ttt.rematch": "फिर से खेलें", "ttt.waitingRematchOpp": "प्रतिद्वंद्वी का इंतज़ार…", "ttt.leaveGame": "बाहर जाएं",
           "search.placeholder": "खोजें...", "filter.type.all": "सभी प्रकार", "filter.sort.new": "सबसे नया", "filter.sort.top": "सबसे ज़्यादा पसंद किया गया", "filter.price.min": "कीमत से", "filter.price.max": "कीमत तक", "filter.onlyFollowing": "केवल जिन्हें मैं फॉलो करता हूँ",
           "search.clearAria": "साफ़ करें",
           "search.closeAria": "बंद करें",
@@ -5058,6 +5261,16 @@
           "games.controls.snake": "Controles: flechas o deslizar",
           "games.controls.2048": "Controles: flechas o deslizar",
           "games.backToList": "← Volver a los juegos",
+          "games.ttt.title": "Tres en raya", "games.ttt.desc": "Contra el bot, un amigo o un rival aleatorio en línea.",
+          "ttt.mode.pvp": "2 JUGADORES", "ttt.mode.bot": "CONTRA BOT", "ttt.mode.online": "EN LÍNEA",
+          "ttt.turnPrefix": "Turno:", "ttt.winsSuffix": "GANA", "ttt.draw": "EMPATE", "ttt.botThinking": "El bot está pensando…",
+          "ttt.scoreXLabel": "Victorias X", "ttt.scoreOLabel": "Victorias O", "ttt.scoreDrawLabel": "Empates", "ttt.reset": "Reiniciar",
+          "ttt.onlineIntro": "Juega contra un rival aleatorio en tiempo real.", "ttt.findOpponent": "Buscar rival",
+          "ttt.searching": "Buscando rival…", "ttt.cancelSearch": "Cancelar", "ttt.connectionError": "Se produjo un error de conexión",
+          "ttt.needLogin": "Inicia sesión para jugar en línea", "ttt.yourMove": "Tu turno",
+          "ttt.waitingMove": "Esperando el turno de {name}…", "ttt.youWin": "¡Has ganado! 🎉", "ttt.youLose": "Has perdido",
+          "ttt.gameDraw": "Empate", "ttt.opponentLeft": "El rival abandonó la partida — ¡has ganado!",
+          "ttt.rematch": "Revancha", "ttt.waitingRematchOpp": "Esperando al rival…", "ttt.leaveGame": "Salir",
           "search.placeholder": "Buscar...", "filter.type.all": "Todos los tipos", "filter.sort.new": "Más reciente", "filter.sort.top": "Más gustados", "filter.price.min": "Precio desde", "filter.price.max": "Precio hasta", "filter.onlyFollowing": "Solo a quienes sigo",
           "search.clearAria": "Borrar",
           "search.closeAria": "Cerrar",
@@ -5266,6 +5479,16 @@
           "games.controls.snake": "التحكم: مفاتيح الأسهم أو التمرير",
           "games.controls.2048": "التحكم: مفاتيح الأسهم أو التمرير",
           "games.backToList": "← العودة إلى الألعاب",
+          "games.ttt.title": "إكس أو", "games.ttt.desc": "العب ضد الروبوت أو صديق أو خصم عشوائي عبر الإنترنت.",
+          "ttt.mode.pvp": "لاعبان", "ttt.mode.bot": "ضد الروبوت", "ttt.mode.online": "عبر الإنترنت",
+          "ttt.turnPrefix": "الدور:", "ttt.winsSuffix": "فاز", "ttt.draw": "تعادل", "ttt.botThinking": "الروبوت يفكر…",
+          "ttt.scoreXLabel": "انتصارات X", "ttt.scoreOLabel": "انتصارات O", "ttt.scoreDrawLabel": "التعادلات", "ttt.reset": "إعادة البدء",
+          "ttt.onlineIntro": "العب ضد خصم عشوائي في الوقت الفعلي.", "ttt.findOpponent": "البحث عن خصم",
+          "ttt.searching": "جارٍ البحث عن خصم…", "ttt.cancelSearch": "إلغاء", "ttt.connectionError": "حدث خطأ في الاتصال",
+          "ttt.needLogin": "سجّل الدخول للعب عبر الإنترنت", "ttt.yourMove": "دورك",
+          "ttt.waitingMove": "في انتظار دور {name}…", "ttt.youWin": "لقد فزت! 🎉", "ttt.youLose": "لقد خسرت",
+          "ttt.gameDraw": "انتهت بالتعادل", "ttt.opponentLeft": "غادر الخصم اللعبة — لقد فزت!",
+          "ttt.rematch": "إعادة المباراة", "ttt.waitingRematchOpp": "في انتظار الخصم…", "ttt.leaveGame": "خروج",
           "search.placeholder": "بحث...", "filter.type.all": "جميع الأنواع", "filter.sort.new": "الأحدث", "filter.sort.top": "الأكثر إعجابًا", "filter.price.min": "السعر من", "filter.price.max": "السعر إلى", "filter.onlyFollowing": "من أتابعهم فقط",
           "search.clearAria": "مسح",
           "search.closeAria": "إغلاق",
@@ -5474,6 +5697,16 @@
           "games.controls.snake": "Управление: стрелки или свайп",
           "games.controls.2048": "Управление: стрелки или свайп",
           "games.backToList": "← К списку игр",
+          "games.ttt.title": "Крестики-нолики", "games.ttt.desc": "Против бота, друга или случайного соперника онлайн.",
+          "ttt.mode.pvp": "2 ИГРОКА", "ttt.mode.bot": "С БОТОМ", "ttt.mode.online": "ОНЛАЙН",
+          "ttt.turnPrefix": "Ход:", "ttt.winsSuffix": "ПОБЕДИЛ", "ttt.draw": "НИЧЬЯ", "ttt.botThinking": "Бот думает…",
+          "ttt.scoreXLabel": "Победы X", "ttt.scoreOLabel": "Победы O", "ttt.scoreDrawLabel": "Ничьи", "ttt.reset": "Сбросить",
+          "ttt.onlineIntro": "Играйте со случайным соперником в реальном времени.", "ttt.findOpponent": "Найти соперника",
+          "ttt.searching": "Поиск соперника…", "ttt.cancelSearch": "Отмена", "ttt.connectionError": "Произошла ошибка соединения",
+          "ttt.needLogin": "Войдите, чтобы играть онлайн", "ttt.yourMove": "Ваш ход",
+          "ttt.waitingMove": "Ожидание хода {name}…", "ttt.youWin": "Вы выиграли! 🎉", "ttt.youLose": "Вы проиграли",
+          "ttt.gameDraw": "Ничья", "ttt.opponentLeft": "Соперник покинул игру — вы победили!",
+          "ttt.rematch": "Реванш", "ttt.waitingRematchOpp": "Ожидание соперника…", "ttt.leaveGame": "Выйти",
           "search.placeholder": "Поиск...", "filter.type.all": "Все типы", "filter.sort.new": "Новые", "filter.sort.top": "Популярные", "filter.price.min": "Цена от", "filter.price.max": "Цена до", "filter.onlyFollowing": "Только те, на кого я подписан",
           "search.clearAria": "Очистить",
           "search.closeAria": "Закрыть",
@@ -6129,7 +6362,9 @@
         $('#gamesPicker').classList.remove('hidden');
         $('#snakeGameWrap').classList.add('hidden');
         $('#game2048Wrap').classList.add('hidden');
+        $('#tttGameWrap').classList.add('hidden');
         snakeStop();
+        tttStopOnline();
       }
 
       function bindGamesEvents() {
@@ -6146,7 +6381,25 @@
           $('#game2048Wrap').classList.remove('hidden');
           g2048Init();
         });
+        $('#gameCardTTT').addEventListener('click', () => {
+          $('#gamesPicker').classList.add('hidden');
+          $('#tttGameWrap').classList.remove('hidden');
+          tttBuildBoard();
+          tttMode = 'pvp';
+          $$('#tttModeSelect .ttt-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === 'pvp'));
+          $('#tttScores').classList.remove('hidden');
+          $('#tttResetBtn').classList.remove('hidden');
+          $('#tttOnlineActions').classList.add('hidden');
+          $('#tttOverlay').classList.add('hidden');
+          tttResetLocal();
+        });
         $$('.game-back-btn').forEach(b => b.addEventListener('click', showGamesPicker));
+
+        /* --- X va O bindings --- */
+        $$('#tttModeSelect .ttt-mode-btn').forEach(b => b.addEventListener('click', () => tttSetMode(b.dataset.mode)));
+        $('#tttResetBtn').addEventListener('click', () => { if (tttMode !== 'online') tttResetLocal(); });
+        $('#tttLeaveBtn').addEventListener('click', tttLeaveOnlineGame);
+        $('#tttRematchBtn').addEventListener('click', tttRequestRematch);
 
         /* --- Snake bindings --- */
         $('#snakeStartBtn').addEventListener('click', snakeStart);
@@ -6589,6 +6842,448 @@
           }
         }
         return false;
+      }
+
+      /* ---------- X VA O (TIC-TAC-TOE) ---------- */
+      const TTT_LINES = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+      let tttMode = 'pvp'; // pvp | bot | online
+      let tttCells = Array(9).fill(null);
+      let tttTurn = 'X';
+      let tttGameOver = false;
+      let tttBotThinking = false;
+      let tttScores = { X: 0, O: 0, D: 0 };
+      let tttBoardEls = [];
+      let tttBoardBuilt = false;
+
+      // onlayn holat
+      let tttOnlineState = 'idle'; // idle | searching | playing | finished
+      let tttOnlineGameId = null;
+      let tttOnlinePollTimer = null;
+      let tttQueuePollTimer = null;
+      let tttLastRenderedBoard = null;
+
+      function tttBuildBoard() {
+        if (tttBoardBuilt) return;
+        tttBoardBuilt = true;
+        const board = $('#tttBoard');
+        board.innerHTML = '';
+        tttBoardEls = [];
+        for (let i = 0; i < 9; i++) {
+          const cell = document.createElement('button');
+          cell.type = 'button';
+          cell.className = 'ttt-cell';
+          cell.dataset.idx = String(i);
+          board.appendChild(cell);
+          tttBoardEls.push(cell);
+        }
+        board.addEventListener('click', (e) => {
+          const cell = e.target.closest('.ttt-cell');
+          if (!cell) return;
+          const i = Number(cell.dataset.idx);
+          if (tttMode === 'online') tttOnlineMove(i);
+          else tttHandleLocalMove(i);
+        });
+      }
+
+      function tttRenderMark(i, mark) {
+        const ns = 'http://www.w3.org/2000/svg';
+        const cell = tttBoardEls[i];
+        cell.innerHTML = '';
+        const svg = document.createElementNS(ns, 'svg');
+        svg.setAttribute('viewBox', '0 0 40 40');
+        svg.classList.add('ttt-mark-svg');
+        cell.appendChild(svg);
+        if (mark === 'X') {
+          const l1 = document.createElementNS(ns, 'line');
+          l1.setAttribute('x1', '8'); l1.setAttribute('y1', '8'); l1.setAttribute('x2', '32'); l1.setAttribute('y2', '32');
+          const l2 = document.createElementNS(ns, 'line');
+          l2.setAttribute('x1', '32'); l2.setAttribute('y1', '8'); l2.setAttribute('x2', '8'); l2.setAttribute('y2', '32');
+          [l1, l2].forEach(l => {
+            l.setAttribute('stroke', 'currentColor');
+            l.setAttribute('stroke-width', '6');
+            l.setAttribute('stroke-linecap', 'round');
+            svg.appendChild(l);
+          });
+          cell.classList.add('ttt-cell-x');
+        } else {
+          const c = document.createElementNS(ns, 'circle');
+          c.setAttribute('cx', '20'); c.setAttribute('cy', '20'); c.setAttribute('r', '14');
+          c.setAttribute('stroke', 'currentColor'); c.setAttribute('stroke-width', '6'); c.setAttribute('fill', 'none');
+          svg.appendChild(c);
+          cell.classList.add('ttt-cell-o');
+        }
+        cell.classList.add('ttt-filled');
+      }
+
+      function tttCheckResult(cells) {
+        for (const line of TTT_LINES) {
+          const [a, b, c] = line;
+          if (cells[a] && cells[a] === cells[b] && cells[a] === cells[c]) return { winner: cells[a], line };
+        }
+        if (cells.every(c => c)) return { winner: 'draw', line: null };
+        return null;
+      }
+
+      function tttClearBoardUI() {
+        tttBoardEls.forEach(c => { c.className = 'ttt-cell'; c.innerHTML = ''; });
+        tttClearWinLine();
+      }
+
+      function tttClearWinLine() {
+        const path = $('#tttWinLinePath');
+        path.style.transition = 'none';
+        path.setAttribute('class', '');
+        path.style.strokeDasharray = '';
+        path.style.strokeDashoffset = '';
+      }
+
+      function tttDrawWinLine(line, mark) {
+        if (!line) return;
+        const holder = $('#tttBoardHolder').getBoundingClientRect();
+        const start = tttBoardEls[line[0]].getBoundingClientRect();
+        const end = tttBoardEls[line[2]].getBoundingClientRect();
+        const svg = $('#tttWinLine');
+        const path = $('#tttWinLinePath');
+        svg.setAttribute('viewBox', `0 0 ${holder.width} ${holder.height}`);
+        const x1 = start.left + start.width / 2 - holder.left;
+        const y1 = start.top + start.height / 2 - holder.top;
+        const x2 = end.left + end.width / 2 - holder.left;
+        const y2 = end.top + end.height / 2 - holder.top;
+        path.setAttribute('x1', x1); path.setAttribute('y1', y1);
+        path.setAttribute('x2', x2); path.setAttribute('y2', y2);
+        path.setAttribute('class', mark === 'X' ? 'ttt-line-x' : 'ttt-line-o');
+        const len = Math.hypot(x2 - x1, y2 - y1) + 20;
+        path.style.transition = 'none';
+        path.style.strokeDasharray = String(len);
+        path.style.strokeDashoffset = String(len);
+        requestAnimationFrame(() => {
+          path.style.transition = 'stroke-dashoffset .4s ease-out';
+          path.style.strokeDashoffset = '0';
+        });
+      }
+
+      function tttUpdateScoresUI() {
+        $('#tttScoreX').textContent = tttScores.X;
+        $('#tttScoreO').textContent = tttScores.O;
+        $('#tttScoreD').textContent = tttScores.D;
+      }
+
+      function tttSetStatus(text) {
+        $('#tttStatus').textContent = text;
+      }
+
+      /* ---- lokal (2 o'yinchi / bot) ---- */
+      function tttResetLocal() {
+        tttCells = Array(9).fill(null);
+        tttTurn = 'X';
+        tttGameOver = false;
+        tttBotThinking = false;
+        tttClearBoardUI();
+        tttSetStatus(t('ttt.turnPrefix') + ' X');
+      }
+
+      function tttHandleLocalMove(i) {
+        if (tttGameOver || tttCells[i] || tttBotThinking) return;
+        if (tttMode === 'bot' && tttTurn === 'O') return;
+        tttCells[i] = tttTurn;
+        tttRenderMark(i, tttTurn);
+        const result = tttCheckResult(tttCells);
+        if (result) {
+          tttGameOver = true;
+          if (result.winner === 'draw') {
+            tttSetStatus(t('ttt.draw'));
+            tttScores.D++;
+          } else {
+            result.line.forEach(idx => tttBoardEls[idx].classList.add(result.winner === 'X' ? 'ttt-win-x' : 'ttt-win-o'));
+            tttDrawWinLine(result.line, result.winner);
+            tttSetStatus(result.winner + ' ' + t('ttt.winsSuffix'));
+            tttScores[result.winner]++;
+          }
+          tttUpdateScoresUI();
+          return;
+        }
+        tttTurn = tttTurn === 'X' ? 'O' : 'X';
+        tttSetStatus(t('ttt.turnPrefix') + ' ' + tttTurn);
+        if (tttMode === 'bot' && tttTurn === 'O' && !tttGameOver) {
+          tttBotThinking = true;
+          tttSetStatus(t('ttt.botThinking'));
+          setTimeout(tttBotMove, 220);
+        }
+      }
+
+      /* Minimax + alfa-beta kesish — bot hech qachon yutqazmaydi */
+      const TTT_MOVE_ORDER = [4, 0, 2, 6, 8, 1, 3, 5, 7];
+      let tttMemo = new Map();
+      function tttGetBestMove() {
+        tttMemo.clear();
+        let bestScore = -Infinity, bestMove = -1;
+        for (const i of TTT_MOVE_ORDER) {
+          if (!tttCells[i]) {
+            tttCells[i] = 'O';
+            const score = tttMinimax(tttCells, 0, false, -Infinity, Infinity);
+            tttCells[i] = null;
+            if (score > bestScore) { bestScore = score; bestMove = i; }
+          }
+        }
+        return bestMove;
+      }
+      function tttEvaluate(board) {
+        for (const line of TTT_LINES) {
+          const [a, b, c] = line;
+          if (board[a] && board[a] === board[b] && board[a] === board[c]) return board[a] === 'O' ? 10 : -10;
+        }
+        return 0;
+      }
+      function tttMinimax(board, depth, isMax, alpha, beta) {
+        const key = board.map(c => c || '_').join('') + (isMax ? 'O' : 'X');
+        if (tttMemo.has(key)) return tttMemo.get(key);
+        const score = tttEvaluate(board);
+        if (score === 10) return score - depth;
+        if (score === -10) return score + depth;
+        if (board.every(c => c)) return 0;
+        let result;
+        if (isMax) {
+          let best = -Infinity;
+          for (const i of TTT_MOVE_ORDER) {
+            if (!board[i]) {
+              board[i] = 'O';
+              best = Math.max(best, tttMinimax(board, depth + 1, false, alpha, beta));
+              board[i] = null;
+              alpha = Math.max(alpha, best);
+              if (beta <= alpha) break;
+            }
+          }
+          result = best;
+        } else {
+          let best = Infinity;
+          for (const i of TTT_MOVE_ORDER) {
+            if (!board[i]) {
+              board[i] = 'X';
+              best = Math.min(best, tttMinimax(board, depth + 1, true, alpha, beta));
+              board[i] = null;
+              beta = Math.min(beta, best);
+              if (beta <= alpha) break;
+            }
+          }
+          result = best;
+        }
+        tttMemo.set(key, result);
+        return result;
+      }
+      function tttBotMove() {
+        const i = tttGetBestMove();
+        tttBotThinking = false;
+        if (i !== -1 && !tttCells[i] && !tttGameOver) tttHandleLocalMove(i);
+      }
+
+      /* ---- rejim almashtirish ---- */
+      function tttSetMode(mode) {
+        if (tttMode === mode) return;
+        tttStopOnline();
+        tttMode = mode;
+        $$('#tttModeSelect .ttt-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+        if (mode === 'online') {
+          $('#tttScores').classList.add('hidden');
+          $('#tttResetBtn').classList.add('hidden');
+          tttEnterOnline();
+        } else {
+          $('#tttScores').classList.remove('hidden');
+          $('#tttResetBtn').classList.remove('hidden');
+          $('#tttOverlay').classList.add('hidden');
+          $('#tttOnlineActions').classList.add('hidden');
+          tttResetLocal();
+        }
+      }
+
+      /* ---- onlayn ---- */
+      function tttShowOverlay(text, buttons, spinner) {
+        $('#tttOverlay').classList.remove('hidden');
+        $('#tttOverlayText').textContent = text;
+        $('#tttSpinner').classList.toggle('hidden', !spinner);
+        const wrap = $('#tttOverlayActions');
+        wrap.innerHTML = '';
+        (buttons || []).forEach(b => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'btn btn-' + (b.primary ? 'primary' : 'secondary') + ' btn-sm';
+          btn.textContent = b.label;
+          btn.addEventListener('click', b.onClick);
+          wrap.appendChild(btn);
+        });
+      }
+
+      function tttEnterOnline() {
+        tttClearBoardUI();
+        tttLastRenderedBoard = null;
+        if (!CURRENT_USER) {
+          tttShowOverlay(t('ttt.needLogin'), []);
+          return;
+        }
+        tttShowFindPrompt();
+      }
+
+      function tttShowFindPrompt() {
+        tttOnlineState = 'idle';
+        $('#tttOnlineActions').classList.add('hidden');
+        tttShowOverlay(t('ttt.onlineIntro'), [
+          { label: t('ttt.findOpponent'), primary: true, onClick: tttStartSearch }
+        ]);
+      }
+
+      async function tttStartSearch() {
+        tttOnlineState = 'searching';
+        tttShowOverlay(t('ttt.searching'), [
+          { label: t('ttt.cancelSearch'), onClick: tttCancelSearch }
+        ], true);
+        try {
+          const data = await api('/api/games/tictactoe/queue/join', { method: 'POST' });
+          if (tttMode !== 'online') return;
+          if (data.status === 'matched') {
+            tttOnlineGameId = data.gameId;
+            tttEnterOnlineGame();
+          } else {
+            clearInterval(tttQueuePollTimer);
+            tttQueuePollTimer = setInterval(tttPollQueue, 1500);
+          }
+        } catch (e) {
+          if (tttMode !== 'online') return;
+          tttShowOverlay(t('ttt.connectionError'), [
+            { label: t('ttt.findOpponent'), primary: true, onClick: tttStartSearch }
+          ]);
+        }
+      }
+
+      async function tttPollQueue() {
+        if (tttOnlineState !== 'searching' || tttMode !== 'online') { clearInterval(tttQueuePollTimer); return; }
+        try {
+          const data = await api('/api/games/tictactoe/queue/status');
+          if (data.status === 'matched') {
+            clearInterval(tttQueuePollTimer);
+            tttOnlineGameId = data.gameId;
+            tttEnterOnlineGame();
+          }
+        } catch (e) { /* keyingi urinishda qayta so'raladi */ }
+      }
+
+      async function tttCancelSearch() {
+        clearInterval(tttQueuePollTimer);
+        tttOnlineState = 'idle';
+        try { await api('/api/games/tictactoe/queue/leave', { method: 'POST' }); } catch (e) {}
+        if (tttMode === 'online') tttShowFindPrompt();
+      }
+
+      function tttEnterOnlineGame() {
+        tttOnlineState = 'playing';
+        $('#tttOverlay').classList.add('hidden');
+        tttClearBoardUI();
+        tttLastRenderedBoard = null;
+        tttOnlinePollGame();
+        clearInterval(tttOnlinePollTimer);
+        tttOnlinePollTimer = setInterval(tttOnlinePollGame, 1200);
+      }
+
+      async function tttOnlinePollGame() {
+        if (!tttOnlineGameId || tttMode !== 'online') return;
+        try {
+          const g = await api('/api/games/tictactoe/' + tttOnlineGameId);
+          tttRenderOnlineGame(g);
+        } catch (e) {
+          tttOnlineHandleGone();
+        }
+      }
+
+      function tttRenderOnlineGame(g) {
+        if (tttMode !== 'online') return;
+        const boardChanged = JSON.stringify(g.board) !== JSON.stringify(tttLastRenderedBoard);
+        if (boardChanged) {
+          g.board.forEach((mark, i) => {
+            if (mark && !tttBoardEls[i].classList.contains('ttt-filled')) tttRenderMark(i, mark);
+          });
+          tttLastRenderedBoard = g.board.slice();
+        }
+        const oppMark = g.you === 'X' ? 'O' : 'X';
+        const opp = g.players[oppMark];
+
+        $('#tttOnlineActions').classList.remove('hidden');
+
+        if (g.status === 'playing') {
+          clearInterval(tttQueuePollTimer);
+          tttSetStatus(g.turn === g.you ? t('ttt.yourMove') : t('ttt.waitingMove', { name: opp.fullname }));
+          $('#tttRematchBtn').classList.add('hidden');
+        } else if (g.status === 'finished') {
+          if (g.winLine) {
+            g.winLine.forEach(idx => tttBoardEls[idx].classList.add(g.winner === 'X' ? 'ttt-win-x' : 'ttt-win-o'));
+            tttDrawWinLine(g.winLine, g.winner);
+          }
+          let msg;
+          if (g.winner === 'draw') msg = t('ttt.gameDraw');
+          else if (g.winner === g.you) msg = (g.endReason === 'left' || g.endReason === 'timeout') ? t('ttt.opponentLeft') : t('ttt.youWin');
+          else msg = t('ttt.youLose');
+          tttSetStatus(msg);
+
+          $('#tttRematchBtn').classList.remove('hidden');
+          $('#tttRematchBtn').disabled = !!g.rematch.you;
+          $('#tttRematchBtn').textContent = g.rematch.you ? t('ttt.waitingRematchOpp') : t('ttt.rematch');
+
+          if (tttOnlineState !== 'finished') {
+            tttOnlineState = 'finished';
+            clearInterval(tttOnlinePollTimer);
+            tttOnlinePollTimer = setInterval(tttOnlinePollGame, 1800);
+          }
+        }
+      }
+
+      async function tttOnlineMove(i) {
+        if (tttMode !== 'online' || tttOnlineState !== 'playing' || !tttOnlineGameId) return;
+        try {
+          const g = await apiJSON('/api/games/tictactoe/' + tttOnlineGameId + '/move', 'POST', { index: i });
+          tttRenderOnlineGame(g);
+        } catch (e) { /* server javobi keyingi so'rovda kelaveradi */ }
+      }
+
+      async function tttRequestRematch() {
+        if (!tttOnlineGameId) return;
+        try {
+          const g = await api('/api/games/tictactoe/' + tttOnlineGameId + '/rematch', { method: 'POST' });
+          if (g.status === 'playing') {
+            tttOnlineState = 'playing';
+            tttClearBoardUI();
+            tttLastRenderedBoard = null;
+            clearInterval(tttOnlinePollTimer);
+            tttOnlinePollTimer = setInterval(tttOnlinePollGame, 1200);
+          }
+          tttRenderOnlineGame(g);
+        } catch (e) {}
+      }
+
+      async function tttLeaveOnlineGame() {
+        clearInterval(tttOnlinePollTimer);
+        const id = tttOnlineGameId;
+        tttOnlineGameId = null;
+        tttOnlineState = 'idle';
+        if (id) { try { await api('/api/games/tictactoe/' + id + '/leave', { method: 'POST' }); } catch (e) {} }
+        if (tttMode === 'online') tttShowFindPrompt();
+      }
+
+      function tttOnlineHandleGone() {
+        clearInterval(tttOnlinePollTimer);
+        tttOnlineGameId = null;
+        tttOnlineState = 'idle';
+        if (tttMode === 'online') tttShowFindPrompt();
+      }
+
+      /* O'yinlar ro'yxatiga qaytilganda yoki boshqa view'ga o'tilganda
+         onlayn navbat/o'yin fon rejimida qolib ketmasligi uchun to'xtatiladi */
+      function tttStopOnline() {
+        clearInterval(tttOnlinePollTimer);
+        clearInterval(tttQueuePollTimer);
+        if (tttOnlineGameId || tttOnlineState === 'searching') {
+          const id = tttOnlineGameId;
+          if (id) api('/api/games/tictactoe/' + id + '/leave', { method: 'POST' }).catch(() => {});
+          else api('/api/games/tictactoe/queue/leave', { method: 'POST' }).catch(() => {});
+        }
+        tttOnlineGameId = null;
+        tttOnlineState = 'idle';
       }
 
       /* ===================== ADMINISTRATOR BURCHAGI ===================== */
