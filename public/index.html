@@ -3360,6 +3360,7 @@
       letter-spacing: .4px;
       margin-bottom: 12px;
       min-height: 24px;
+      transition: transform .2s ease;
     }
     .ttt-board {
       position: absolute;
@@ -3370,7 +3371,17 @@
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
       gap: 4%;
+      transition: transform .4s ease;
     }
+    @keyframes tttShake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+      100% { transform: translateX(0); }
+    }
+    .ttt-board.ttt-shake { animation: tttShake .4s ease; }
     .ttt-cell {
       background: var(--bg);
       border: 1px solid var(--border);
@@ -3380,24 +3391,34 @@
       justify-content: center;
       cursor: pointer;
       padding: 0;
-      transition: background .15s ease, transform .12s ease, border-color .15s ease;
+      transition: background .15s ease, transform .12s ease, border-color .15s ease, box-shadow .18s ease;
     }
     .ttt-cell:hover:not(.ttt-filled) {
       border-color: var(--accent);
-      transform: translateY(-1px);
+      box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 25%, transparent);
+      transform: translateY(-2px);
     }
     .ttt-cell:active:not(.ttt-filled) { transform: scale(.96); }
     .ttt-cell.ttt-win-x, .ttt-cell.ttt-win-o {
       background: var(--surface-2);
       border-color: var(--accent);
+      box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 35%, transparent);
     }
-    .ttt-mark-svg { width: 58%; height: 58%; }
+    @keyframes tttPulseWin {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+    .ttt-cell.ttt-pulse { animation: tttPulseWin .4s ease; }
+    .ttt-mark-svg { width: 58%; height: 58%; overflow: visible; }
     .ttt-cell-x { color: var(--accent-2); }
     .ttt-cell-o { color: var(--accent); }
+    .ttt-mark-svg .ttt-glow-x { filter: drop-shadow(0 0 4px var(--accent-2)) drop-shadow(0 0 10px color-mix(in srgb, var(--accent-2) 60%, transparent)); }
+    .ttt-mark-svg .ttt-glow-o { filter: drop-shadow(0 0 4px var(--accent)) drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 60%, transparent)); }
     .ttt-winline { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
-    #tttWinLinePath { stroke-width: 5; stroke-linecap: round; fill: none; transition: stroke-dashoffset .4s ease-out; }
-    .ttt-line-x { stroke: var(--accent-2); }
-    .ttt-line-o { stroke: var(--accent); }
+    #tttWinLinePath { stroke-width: 5; stroke-linecap: round; fill: none; filter: drop-shadow(0 0 6px currentColor); }
+    .ttt-line-x { stroke: var(--accent-2); color: var(--accent-2); }
+    .ttt-line-o { stroke: var(--accent); color: var(--accent); }
     .ttt-scores {
       display: flex;
       justify-content: center;
@@ -3416,10 +3437,13 @@
       font-family: var(--font-mono);
       font-size: 20px;
       font-weight: 700;
+      display: inline-block;
+      transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
     }
     .ttt-score-value.x { color: var(--accent-2); }
     .ttt-score-value.o { color: var(--accent); }
     .ttt-score-value.d { color: var(--text-dim); }
+    .ttt-score-value.ttt-bump { transform: scale(1.4); }
     .ttt-online-actions {
       display: flex;
       justify-content: center;
@@ -6894,25 +6918,71 @@
         svg.classList.add('ttt-mark-svg');
         cell.appendChild(svg);
         if (mark === 'X') {
+          const strokeLen = Math.hypot(24, 24);
           const l1 = document.createElementNS(ns, 'line');
           l1.setAttribute('x1', '8'); l1.setAttribute('y1', '8'); l1.setAttribute('x2', '32'); l1.setAttribute('y2', '32');
+          l1.classList.add('ttt-glow-x');
           const l2 = document.createElementNS(ns, 'line');
           l2.setAttribute('x1', '32'); l2.setAttribute('y1', '8'); l2.setAttribute('x2', '8'); l2.setAttribute('y2', '32');
+          l2.classList.add('ttt-glow-x');
           [l1, l2].forEach(l => {
             l.setAttribute('stroke', 'currentColor');
             l.setAttribute('stroke-width', '6');
             l.setAttribute('stroke-linecap', 'round');
+            l.setAttribute('fill', 'none');
+            l.setAttribute('stroke-dasharray', strokeLen.toFixed(2));
+            l.setAttribute('stroke-dashoffset', strokeLen.toFixed(2));
             svg.appendChild(l);
           });
           cell.classList.add('ttt-cell-x');
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              l1.style.transition = 'stroke-dashoffset .18s ease-out';
+              l1.setAttribute('stroke-dashoffset', '0');
+              setTimeout(() => {
+                l2.style.transition = 'stroke-dashoffset .18s ease-out';
+                l2.setAttribute('stroke-dashoffset', '0');
+              }, 160);
+            });
+          });
         } else {
+          const r = 14;
+          const circumference = 2 * Math.PI * r;
           const c = document.createElementNS(ns, 'circle');
-          c.setAttribute('cx', '20'); c.setAttribute('cy', '20'); c.setAttribute('r', '14');
+          c.setAttribute('cx', '20'); c.setAttribute('cy', '20'); c.setAttribute('r', String(r));
           c.setAttribute('stroke', 'currentColor'); c.setAttribute('stroke-width', '6'); c.setAttribute('fill', 'none');
+          c.setAttribute('stroke-linecap', 'round');
+          c.setAttribute('stroke-dasharray', circumference.toFixed(2));
+          c.setAttribute('stroke-dashoffset', circumference.toFixed(2));
+          c.setAttribute('transform', 'rotate(-90 20 20)');
+          c.classList.add('ttt-glow-o');
           svg.appendChild(c);
           cell.classList.add('ttt-cell-o');
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              c.style.transition = 'stroke-dashoffset .45s ease-out';
+              c.setAttribute('stroke-dashoffset', '0');
+            });
+          });
         }
         cell.classList.add('ttt-filled');
+      }
+
+      function tttBumpStatus() {
+        const el = $('#tttStatus');
+        el.style.transform = 'translateY(-3px)';
+        setTimeout(() => { el.style.transform = 'translateY(0)'; }, 150);
+      }
+
+      function tttBumpScore(el) {
+        el.classList.add('ttt-bump');
+        setTimeout(() => el.classList.remove('ttt-bump'), 300);
+      }
+
+      function tttShakeBoard() {
+        const board = $('#tttBoard');
+        board.classList.add('ttt-shake');
+        setTimeout(() => board.classList.remove('ttt-shake'), 400);
       }
 
       function tttCheckResult(cells) {
@@ -6962,14 +7032,22 @@
         });
       }
 
-      function tttUpdateScoresUI() {
-        $('#tttScoreX').textContent = tttScores.X;
-        $('#tttScoreO').textContent = tttScores.O;
-        $('#tttScoreD').textContent = tttScores.D;
+      function tttUpdateScoresUI(bump) {
+        const xEl = $('#tttScoreX'), oEl = $('#tttScoreO'), dEl = $('#tttScoreD');
+        const prevX = xEl.textContent, prevO = oEl.textContent, prevD = dEl.textContent;
+        xEl.textContent = tttScores.X;
+        oEl.textContent = tttScores.O;
+        dEl.textContent = tttScores.D;
+        if (bump) {
+          if (String(tttScores.X) !== prevX) tttBumpScore(xEl);
+          if (String(tttScores.O) !== prevO) tttBumpScore(oEl);
+          if (String(tttScores.D) !== prevD) tttBumpScore(dEl);
+        }
       }
 
       function tttSetStatus(text) {
         $('#tttStatus').textContent = text;
+        tttBumpStatus();
       }
 
       /* ---- lokal (2 o'yinchi / bot) ---- */
@@ -6992,14 +7070,22 @@
           tttGameOver = true;
           if (result.winner === 'draw') {
             tttSetStatus(t('ttt.draw'));
+            tttShakeBoard();
             tttScores.D++;
+            tttUpdateScoresUI(true);
           } else {
-            result.line.forEach(idx => tttBoardEls[idx].classList.add(result.winner === 'X' ? 'ttt-win-x' : 'ttt-win-o'));
-            tttDrawWinLine(result.line, result.winner);
+            setTimeout(() => tttDrawWinLine(result.line, result.winner), 220);
+            result.line.forEach((idx, order) => {
+              setTimeout(() => {
+                tttBoardEls[idx].classList.add(result.winner === 'X' ? 'ttt-win-x' : 'ttt-win-o');
+                tttBoardEls[idx].classList.add('ttt-pulse');
+                setTimeout(() => tttBoardEls[idx].classList.remove('ttt-pulse'), 400);
+              }, order * 90);
+            });
             tttSetStatus(result.winner + ' ' + t('ttt.winsSuffix'));
             tttScores[result.winner]++;
+            tttUpdateScoresUI(true);
           }
-          tttUpdateScoresUI();
           return;
         }
         tttTurn = tttTurn === 'X' ? 'O' : 'X';
