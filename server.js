@@ -262,6 +262,21 @@ app.use(session({
 app.use('/uploads', express.static(UPLOADS_DIR, { maxAge: '30d' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+/* ===================== ONLAYN HOLATNI KUZATISH ===================== */
+/* Xotirada saqlanadi (diskka yozilmaydi) — har bir so'rovda yangilanadi.
+   Foydalanuvchi oxirgi ONLINE_THRESHOLD_MS ichida so'rov yuborgan bo'lsa, onlayn hisoblanadi. */
+const lastActiveMap = Object.create(null);
+const ONLINE_THRESHOLD_MS = 90 * 1000; // 90 soniya
+app.use((req, res, next) => {
+  const uname = req.session && req.session.username;
+  if (uname) lastActiveMap[uname] = Date.now();
+  next();
+});
+function isUserOnline(uname) {
+  const t = lastActiveMap[uname];
+  return !!t && (Date.now() - t) < ONLINE_THRESHOLD_MS;
+}
+
 /* rasm/video yuklash (multer) */
 const storage = multer.diskStorage({
   destination: UPLOADS_DIR,
@@ -522,6 +537,7 @@ function publicUser(uname) {
     isAdmin: !!u.isAdmin,
     isBoss: !!u.isBoss,
     adminAccessRevoked: !!u.adminAccessRevoked,
+    isOnline: isUserOnline(uname),
     followingCount: (u.following || []).length,
     followersCount: countFollowers(uname),
     savedCount: (u.savedWorks || []).length,
@@ -586,6 +602,7 @@ function publicProfile(uname, viewerUsername) {
     followingCount: (u.following || []).length,
     isFollowing: !!(viewerUser && Array.isArray(viewerUser.following) && viewerUser.following.includes(uname)),
     isSelf,
+    isOnline: isUserOnline(uname),
     stats: userWorkStats(uname)
   };
 }
@@ -1369,6 +1386,7 @@ app.get('/api/admin/users', requireAuth, requireAdmin, async (req, res) => {
       isAdmin: !!u.isAdmin,
       isBoss: !!u.isBoss,
       adminAccessRevoked: !!u.adminAccessRevoked,
+      isOnline: isUserOnline(uname),
       joined: u.joined,
       worksCount: (db.works[uname] || []).length,
       bannedUntil: u.moderation.bannedUntil,

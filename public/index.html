@@ -2499,6 +2499,31 @@
       margin-bottom: 10px;
     }
 
+    .profile-info .p-online-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .p-online-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #8a8a8a;
+      flex-shrink: 0;
+    }
+    .p-online-dot.online {
+      background: #3fbf5f;
+      box-shadow: 0 0 0 3px rgba(63, 191, 95, 0.18);
+    }
+    .admin-online-dot {
+      display: inline-block;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
     .profile-info .p-meta {
       color: var(--text-dim);
       font-size: 13.5px;
@@ -3904,6 +3929,13 @@
       min-height: 24px;
       font-size: 17px;
     }
+    .chess-actions-row {
+      display: flex;
+      gap: 8px;
+    }
+    .chess-actions-row .btn {
+      flex: 1;
+    }
 
     /* ---- Checkers ---- */
     #checkersGameWrap.game-panel {
@@ -4464,6 +4496,10 @@
                 <div class="chess-captured" id="chessCapturedW"></div>
                 <div class="chess-captured" id="chessCapturedB"></div>
               </div>
+              <div class="chess-actions-row">
+                <button type="button" class="btn btn-secondary btn-sm" id="chessDrawBtn" data-i18n="games.chess.offerDraw">Durrang taklif qilish</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="chessResignBtn" data-i18n="games.chess.resign">Taslim bo'lish</button>
+              </div>
               <button type="button" class="btn btn-primary btn-sm" id="chessResetBtn" data-i18n="games.chess.restart">Qaytadan boshlash</button>
             </div>
           </div>
@@ -4501,6 +4537,10 @@
                 <div class="chess-captured" id="checkersCapturedW"></div>
                 <div class="chess-captured" id="checkersCapturedB"></div>
               </div>
+              <div class="chess-actions-row">
+                <button type="button" class="btn btn-secondary btn-sm" id="checkersDrawBtn" data-i18n="games.chess.offerDraw">Durrang taklif qilish</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="checkersResignBtn" data-i18n="games.chess.resign">Taslim bo'lish</button>
+              </div>
               <button type="button" class="btn btn-primary btn-sm" id="checkersResetBtn" data-i18n="games.chess.restart">Qaytadan boshlash</button>
             </div>
           </div>
@@ -4514,6 +4554,7 @@
           <div class="profile-info">
             <h2 id="profileFullname">—</h2>
             <div class="p-username" id="profileUsernameTag">@—</div>
+            <div class="p-online-status" id="profileOnlineStatus"><span class="p-online-dot online"></span><span data-i18n="profile.online">Onlayn</span></div>
             <div class="p-meta" id="profileMeta">—</div>
           </div>
           <div class="profile-stats">
@@ -4654,6 +4695,7 @@
           <div class="profile-info">
             <h2 id="upFullname">—</h2>
             <div class="p-username" id="upUsernameTag">@—</div>
+            <div class="p-online-status" id="upOnlineStatus"></div>
             <div class="p-meta" id="upMeta">—</div>
           </div>
           <div class="profile-stats">
@@ -4937,6 +4979,7 @@
           "profile.edit.save": "Saqlash", "profile.edit.cancel": "Bekor qilish",
           "profile.myWorks": "Mening asarlarim", "profile.language": "Sayt tili",
           "profile.joined": "A'zo bo'lgan",
+          "profile.online": "Onlayn", "profile.offline": "Oflayn",
           "profile.avatarUploadFail": "Rasmni yuklab bo'lmadi. Qayta urinib ko'ring.",
           "messages.eyebrow": "Muloqot", "messages.title": "Sotuvchilar bilan <span>xabarlar</span>",
           "messages.sub": "Sotuvdagi asar haqida savol berish yoki sotuvchi bilan bog'lanish uchun suhbatlaringiz shu yerda.",
@@ -5045,6 +5088,13 @@
           "games.chess.white": "Oq yuradi", "games.chess.black": "Qora yuradi",
           "games.chess.status": "Donani bosing, so'ng yurish uchun katakni tanlang.",
           "games.chess.win": "{color} g'alaba qozondi! Shoh yiqildi.",
+          "games.chess.draw": "Durrang! O'yin durrang bilan tugadi.",
+          "games.chess.resetConfirm": "O'yinni qaytadan boshlashni xohlaysizmi? Joriy o'yin yo'qoladi.",
+          "games.chess.offerDraw": "Durrang taklif qilish", "games.chess.resign": "Taslim bo'lish",
+          "games.chess.resignConfirm": "Taslim bo'lishni tasdiqlaysizmi? Siz mag'lub bo'lasiz.",
+          "games.chess.drawOfferConfirm": "Raqibingiz durrang taklif qildi. Qabul qilasizmi?",
+          "games.chess.drawOfferBotAsk": "Botga durrang taklif qilinsinmi?",
+          "games.chess.drawDeclined": "Raqib durrang taklifini rad etdi.",
           "games.chess.captured": "Yutilgan donalar", "games.chess.restart": "Qaytadan boshlash",
           "games.checkers.title": "Shashka", "games.checkers.desc": "Klassik shashka o'yini — botga qarshi yoki do'stingiz bilan o'ynang.",
           "games.checkers.status": "Donani bosing, so'ng yurish uchun katakni tanlang.",
@@ -5170,6 +5220,7 @@
           "profile.edit.save": "Save", "profile.edit.cancel": "Cancel",
           "profile.myWorks": "My works", "profile.language": "Site language",
           "profile.joined": "Joined",
+          "profile.online": "Online", "profile.offline": "Offline",
           "profile.avatarUploadFail": "Couldn't upload the photo. Please try again.",
           "messages.eyebrow": "Conversations", "messages.title": "Messages with <span>sellers</span>",
           "messages.sub": "Ask about a piece for sale or reach out to a seller — your chats live here.",
@@ -5278,6 +5329,13 @@
           "games.chess.white": "White to move", "games.chess.black": "Black to move",
           "games.chess.status": "Tap a piece, then tap a square to move.",
           "games.chess.win": "{color} wins! The king has fallen.",
+          "games.chess.draw": "Draw! The game ended in a draw.",
+          "games.chess.resetConfirm": "Restart the game? The current game will be lost.",
+          "games.chess.offerDraw": "Offer draw", "games.chess.resign": "Resign",
+          "games.chess.resignConfirm": "Are you sure you want to resign? You will lose the game.",
+          "games.chess.drawOfferConfirm": "Your opponent offered a draw. Do you accept?",
+          "games.chess.drawOfferBotAsk": "Offer a draw to the bot?",
+          "games.chess.drawDeclined": "The opponent declined the draw offer.",
           "games.chess.captured": "Captured pieces", "games.chess.restart": "Restart",
           "games.checkers.title": "Checkers", "games.checkers.desc": "Classic checkers — play against the bot or a friend.",
           "games.checkers.status": "Tap a piece, then tap a square to move.",
@@ -5403,6 +5461,7 @@
           "profile.edit.save": "保存", "profile.edit.cancel": "取消",
           "profile.myWorks": "我的作品", "profile.language": "网站语言",
           "profile.joined": "加入时间",
+          "profile.online": "在线", "profile.offline": "离线",
           "profile.avatarUploadFail": "照片上传失败，请重试。",
           "messages.eyebrow": "交流", "messages.title": "与<span>卖家</span>的消息",
           "messages.sub": "在这里可以询问出售中的作品，或联系卖家 — 所有对话都在这里。",
@@ -5511,6 +5570,13 @@
           "games.chess.white": "轮到白方", "games.chess.black": "轮到黑方",
           "games.chess.status": "点击棋子，然后点击目标格子移动。",
           "games.chess.win": "{color}获胜！国王已被吃掉。",
+          "games.chess.draw": "平局！本局以平局结束。",
+          "games.chess.resetConfirm": "确定要重新开始吗？当前对局将丢失。",
+          "games.chess.offerDraw": "提议和棋", "games.chess.resign": "认输",
+          "games.chess.resignConfirm": "确定要认输吗？你将输掉本局。",
+          "games.chess.drawOfferConfirm": "对方提出和棋，你接受吗？",
+          "games.chess.drawOfferBotAsk": "向电脑提出和棋？",
+          "games.chess.drawDeclined": "对方拒绝了和棋请求。",
           "games.chess.captured": "被吃掉的棋子", "games.chess.restart": "重新开始",
           "games.checkers.title": "跳棋", "games.checkers.desc": "经典跳棋——与电脑或朋友对战。",
           "games.checkers.status": "点击棋子，然后点击目标格子移动。",
@@ -5636,6 +5702,7 @@
           "profile.edit.save": "सहेजें", "profile.edit.cancel": "रद्द करें",
           "profile.myWorks": "मेरी कृतियाँ", "profile.language": "साइट की भाषा",
           "profile.joined": "शामिल हुए",
+          "profile.online": "ऑनलाइन", "profile.offline": "ऑफ़लाइन",
           "profile.avatarUploadFail": "फ़ोटो अपलोड नहीं हो सकी। फिर कोशिश करें।",
           "messages.eyebrow": "बातचीत", "messages.title": "<span>विक्रेताओं</span> के साथ संदेश",
           "messages.sub": "बिक्री की किसी कृति के बारे में पूछें या विक्रेता से संपर्क करें — आपकी बातचीत यहाँ है।",
@@ -5744,6 +5811,13 @@
           "games.chess.white": "सफेद की बारी", "games.chess.black": "काले की बारी",
           "games.chess.status": "एक मोहरा चुनें, फिर चलने के लिए खाना चुनें।",
           "games.chess.win": "{color} जीत गया! राजा गिर गया।",
+          "games.chess.draw": "बराबरी! खेल बराबरी पर समाप्त हुआ।",
+          "games.chess.resetConfirm": "क्या आप खेल फिर से शुरू करना चाहते हैं? मौजूदा खेल समाप्त हो जाएगा।",
+          "games.chess.offerDraw": "बराबरी का प्रस्ताव", "games.chess.resign": "हार मानना",
+          "games.chess.resignConfirm": "क्या आप वाकई हार मानना चाहते हैं? आप खेल हार जाएंगे।",
+          "games.chess.drawOfferConfirm": "प्रतिद्वंद्वी ने बराबरी का प्रस्ताव दिया है। क्या आप स्वीकार करते हैं?",
+          "games.chess.drawOfferBotAsk": "क्या बॉट को बराबरी का प्रस्ताव भेजें?",
+          "games.chess.drawDeclined": "प्रतिद्वंद्वी ने बराबरी का प्रस्ताव अस्वीकार कर दिया।",
           "games.chess.captured": "पकड़े गए मोहरे", "games.chess.restart": "फिर से शुरू करें",
           "games.checkers.title": "चेकर्स", "games.checkers.desc": "क्लासिक चेकर्स खेल — बॉट या दोस्त के खिलाफ खेलें।",
           "games.checkers.status": "एक मोहरा चुनें, फिर चलने के लिए खाना चुनें।",
@@ -5869,6 +5943,7 @@
           "profile.edit.save": "Guardar", "profile.edit.cancel": "Cancelar",
           "profile.myWorks": "Mis obras", "profile.language": "Idioma del sitio",
           "profile.joined": "Se unió el",
+          "profile.online": "En línea", "profile.offline": "Desconectado",
           "profile.avatarUploadFail": "No se pudo subir la foto. Inténtalo de nuevo.",
           "messages.eyebrow": "Conversaciones", "messages.title": "Mensajes con <span>vendedores</span>",
           "messages.sub": "Pregunta sobre alguna obra en venta o contacta a un vendedor — tus chats están aquí.",
@@ -5977,6 +6052,13 @@
           "games.chess.white": "Juegan blancas", "games.chess.black": "Juegan negras",
           "games.chess.status": "Toca una pieza y luego la casilla a la que quieres moverla.",
           "games.chess.win": "¡{color} gana! El rey ha caído.",
+          "games.chess.draw": "¡Empate! La partida terminó en empate.",
+          "games.chess.resetConfirm": "¿Reiniciar la partida? Se perderá la partida actual.",
+          "games.chess.offerDraw": "Ofrecer tablas", "games.chess.resign": "Rendirse",
+          "games.chess.resignConfirm": "¿Seguro que quieres rendirte? Perderás la partida.",
+          "games.chess.drawOfferConfirm": "Tu oponente ofrece tablas. ¿Aceptas?",
+          "games.chess.drawOfferBotAsk": "¿Ofrecer tablas al bot?",
+          "games.chess.drawDeclined": "El oponente rechazó la oferta de tablas.",
           "games.chess.captured": "Piezas capturadas", "games.chess.restart": "Reiniciar",
           "games.checkers.title": "Damas", "games.checkers.desc": "Damas clásicas — juega contra el bot o un amigo.",
           "games.checkers.status": "Toca una pieza y luego la casilla a la que quieres moverla.",
@@ -6102,6 +6184,7 @@
           "profile.edit.save": "حفظ", "profile.edit.cancel": "إلغاء",
           "profile.myWorks": "أعمالي", "profile.language": "لغة الموقع",
           "profile.joined": "تاريخ الانضمام",
+          "profile.online": "متصل", "profile.offline": "غير متصل",
           "profile.avatarUploadFail": "تعذّر رفع الصورة. حاول مرة أخرى.",
           "messages.eyebrow": "المحادثات", "messages.title": "رسائل مع <span>البائعين</span>",
           "messages.sub": "اسأل عن عمل معروض للبيع أو تواصل مع بائع — محادثاتك هنا.",
@@ -6210,6 +6293,13 @@
           "games.chess.white": "دور الأبيض", "games.chess.black": "دور الأسود",
           "games.chess.status": "اضغط على قطعة ثم اضغط على المربع الذي تريد التحرك إليه.",
           "games.chess.win": "فاز {color}! سقط الملك.",
+          "games.chess.draw": "تعادل! انتهت المباراة بالتعادل.",
+          "games.chess.resetConfirm": "هل تريد إعادة بدء اللعبة؟ ستفقد المباراة الحالية.",
+          "games.chess.offerDraw": "اقتراح التعادل", "games.chess.resign": "الاستسلام",
+          "games.chess.resignConfirm": "هل أنت متأكد أنك تريد الاستسلام؟ ستخسر المباراة.",
+          "games.chess.drawOfferConfirm": "عرض خصمك التعادل. هل توافق؟",
+          "games.chess.drawOfferBotAsk": "هل تريد عرض التعادل على البوت؟",
+          "games.chess.drawDeclined": "رفض الخصم عرض التعادل.",
           "games.chess.captured": "القطع المأسورة", "games.chess.restart": "إعادة البدء",
           "games.checkers.title": "الداما", "games.checkers.desc": "لعبة الداما الكلاسيكية — العب ضد الروبوت أو صديق.",
           "games.checkers.status": "اضغط على قطعة ثم اضغط على المربع الذي تريد التحرك إليه.",
@@ -6335,6 +6425,7 @@
           "profile.edit.save": "Сохранить", "profile.edit.cancel": "Отмена",
           "profile.myWorks": "Мои работы", "profile.language": "Язык сайта",
           "profile.joined": "Дата регистрации",
+          "profile.online": "Онлайн", "profile.offline": "Оффлайн",
           "profile.avatarUploadFail": "Не удалось загрузить фото. Попробуйте ещё раз.",
           "messages.eyebrow": "Переписка", "messages.title": "Сообщения с <span>продавцами</span>",
           "messages.sub": "Задайте вопрос о работе или свяжитесь с продавцом — все чаты здесь.",
@@ -6443,6 +6534,13 @@
           "games.chess.white": "Ход белых", "games.chess.black": "Ход чёрных",
           "games.chess.status": "Нажмите на фигуру, затем на клетку для хода.",
           "games.chess.win": "{color} побеждают! Король пал.",
+          "games.chess.draw": "Ничья! Партия завершилась вничью.",
+          "games.chess.resetConfirm": "Начать игру заново? Текущая партия будет потеряна.",
+          "games.chess.offerDraw": "Предложить ничью", "games.chess.resign": "Сдаться",
+          "games.chess.resignConfirm": "Вы уверены, что хотите сдаться? Вы проиграете партию.",
+          "games.chess.drawOfferConfirm": "Соперник предложил ничью. Принимаете?",
+          "games.chess.drawOfferBotAsk": "Предложить боту ничью?",
+          "games.chess.drawDeclined": "Соперник отклонил предложение ничьей.",
           "games.chess.captured": "Съеденные фигуры", "games.chess.restart": "Начать заново",
           "games.checkers.title": "Шашки", "games.checkers.desc": "Классические шашки — играйте против бота или друга.",
           "games.checkers.status": "Нажмите на шашку, затем на клетку для хода.",
@@ -7180,7 +7278,9 @@
           b.classList.add('active');
           chessDifficulty = b.dataset.diff;
         }));
-        $('#chessResetBtn').addEventListener('click', chessReset);
+        $('#chessResetBtn').addEventListener('click', chessResetWithConfirm);
+        $('#chessDrawBtn').addEventListener('click', chessOfferDraw);
+        $('#chessResignBtn').addEventListener('click', chessResign);
 
         /* --- Checkers bindings --- */
         $$('#checkersModeToggle .chess-toggle-btn').forEach(b => b.addEventListener('click', () => checkersSetMode(b.dataset.mode)));
@@ -7189,7 +7289,9 @@
           b.classList.add('active');
           checkersDifficulty = b.dataset.diff;
         }));
-        $('#checkersResetBtn').addEventListener('click', checkersReset);
+        $('#checkersResetBtn').addEventListener('click', checkersResetWithConfirm);
+        $('#checkersDrawBtn').addEventListener('click', checkersOfferDraw);
+        $('#checkersResignBtn').addEventListener('click', checkersResign);
 
         /* --- X va O bindings --- */
         $$('#tttModeSelect .ttt-mode-btn').forEach(b => b.addEventListener('click', () => tttSetMode(b.dataset.mode)));
@@ -7603,6 +7705,12 @@
         }
         chessTurn = chessTurn === 'w' ? 'b' : 'w';
         const statusEl = $('#chessStatus');
+        if (chessGenerateAllMoves(chessTurn, chessBoard).length === 0) {
+          chessGameOver = true;
+          statusEl.textContent = t('games.chess.draw');
+          statusEl.classList.add('win');
+          return;
+        }
         statusEl.textContent = t('games.chess.status');
         statusEl.classList.remove('win');
         chessMaybeTriggerBot();
@@ -7638,6 +7746,49 @@
         statusEl.classList.remove('win');
         statusEl.textContent = t('games.chess.status');
         chessRender();
+      }
+
+      function chessResetWithConfirm() {
+        if (!confirm(t('games.chess.resetConfirm'))) return;
+        chessReset();
+      }
+
+      function chessDeclareWin(winnerColor) {
+        chessGameOver = true;
+        const statusEl = $('#chessStatus');
+        statusEl.textContent = t('games.chess.win', { color: winnerColor === 'w' ? t('games.chess.white').replace(/ .*/, '') : t('games.chess.black').replace(/ .*/, '') });
+        statusEl.classList.add('win');
+      }
+
+      function chessDeclareDraw() {
+        chessGameOver = true;
+        const statusEl = $('#chessStatus');
+        statusEl.textContent = t('games.chess.draw');
+        statusEl.classList.add('win');
+      }
+
+      function chessResign() {
+        if (chessGameOver || chessBotThinking || chessAnimating) return;
+        if (!confirm(t('games.chess.resignConfirm'))) return;
+        const winner = chessTurn === 'w' ? 'b' : 'w';
+        chessDeclareWin(winner);
+      }
+
+      function chessOfferDraw() {
+        if (chessGameOver || chessBotThinking || chessAnimating) return;
+        if (chessMode === 'bot') {
+          if (!confirm(t('games.chess.drawOfferBotAsk'))) return;
+          const evalScore = chessEval(chessBoard);
+          const botScore = CHESS_BOT_COLOR === 'w' ? evalScore : -evalScore;
+          if (botScore > 250) {
+            alert(t('games.chess.drawDeclined'));
+            return;
+          }
+          chessDeclareDraw();
+        } else {
+          if (!confirm(t('games.chess.drawOfferConfirm'))) return;
+          chessDeclareDraw();
+        }
       }
 
       function chessInit() {
@@ -8059,6 +8210,50 @@
         statusEl.classList.remove('win');
         statusEl.textContent = t('games.checkers.status');
         checkersRender();
+      }
+
+      function checkersResetWithConfirm() {
+        if (!confirm(t('games.chess.resetConfirm'))) return;
+        checkersReset();
+      }
+
+      function checkersDeclareWin(winnerColor) {
+        checkersGameOver = true;
+        const statusEl = $('#checkersStatus');
+        const winnerLabel = winnerColor === 'w' ? t('games.chess.white').replace(/ .*/, '') : t('games.chess.black').replace(/ .*/, '');
+        statusEl.textContent = t('games.chess.win', { color: winnerLabel });
+        statusEl.classList.add('win');
+      }
+
+      function checkersDeclareDraw() {
+        checkersGameOver = true;
+        const statusEl = $('#checkersStatus');
+        statusEl.textContent = t('games.chess.draw');
+        statusEl.classList.add('win');
+      }
+
+      function checkersResign() {
+        if (checkersGameOver || checkersBotThinking || checkersAnimating) return;
+        if (!confirm(t('games.chess.resignConfirm'))) return;
+        const winner = checkersTurn === 'w' ? 'b' : 'w';
+        checkersDeclareWin(winner);
+      }
+
+      function checkersOfferDraw() {
+        if (checkersGameOver || checkersBotThinking || checkersAnimating) return;
+        if (checkersMode === 'bot') {
+          if (!confirm(t('games.chess.drawOfferBotAsk'))) return;
+          const evalScore = checkersEval(checkersBoard);
+          const botScore = CHECKERS_BOT_COLOR === 'w' ? evalScore : -evalScore;
+          if (botScore > 150) {
+            alert(t('games.chess.drawDeclined'));
+            return;
+          }
+          checkersDeclareDraw();
+        } else {
+          if (!confirm(t('games.chess.drawOfferConfirm'))) return;
+          checkersDeclareDraw();
+        }
       }
 
       function checkersInit() {
@@ -10072,7 +10267,7 @@
               <div class="admin-user-avatar admin-user-clickable" data-username="${u.username}">${avatarInner(u.avatar, u.fullname || u.username)}</div>
               <div class="admin-user-info">
                 <div class="admin-user-name admin-user-clickable" data-username="${u.username}">${escapeHtml(u.fullname || u.username)}</div>
-                <div class="admin-user-uname">@${escapeHtml(u.username)} · ${fmtDate(u.joined)}</div>
+                <div class="admin-user-uname"><span class="p-online-dot admin-online-dot ${u.isOnline ? 'online' : ''}" title="${u.isOnline ? t('profile.online') : t('profile.offline')}"></span>@${escapeHtml(u.username)} · ${fmtDate(u.joined)}</div>
                 ${badges.join('')}
                 ${statusLines}
               </div>
@@ -10486,6 +10681,7 @@
         $('#upFullname').textContent = profile.fullname || profile.username;
         $('#upUsernameTag').textContent = '@' + profile.username;
         $('#upMeta').textContent = t('profile.joined') + ': ' + fmtDate(profile.joined);
+        $('#upOnlineStatus').innerHTML = `<span class="p-online-dot ${profile.isOnline ? 'online' : ''}"></span><span>${profile.isOnline ? t('profile.online') : t('profile.offline')}</span>`;
         $('#upBio').textContent = profile.bio || '';
         $('#upStatTotal').textContent = works.length;
         $('#upStatSale').textContent = works.filter(w => w.status === 'sale').length;
