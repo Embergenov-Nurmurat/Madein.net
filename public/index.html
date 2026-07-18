@@ -3557,6 +3557,15 @@
       to { opacity: 1; }
     }
 
+    /* ---- Pakman ---- */
+    @keyframes pacmanWinFlash {
+      0%, 100% { box-shadow: 0 0 0 rgba(255, 212, 0, 0); }
+      50% { box-shadow: 0 0 26px 6px rgba(255, 212, 0, 0.55); }
+    }
+    .game-canvas-wrap.pacman-win-flash {
+      animation: pacmanWinFlash 1.1s ease-in-out infinite;
+    }
+
     /* ---- Tetris ---- */
     .tetris-layout {
       display: flex;
@@ -4657,7 +4666,7 @@
           "games.2048.title": "2048", "games.2048.desc": "Bir xil raqamlarni birlashtirib 2048 raqamiga yeting.",
           "games.score": "Ochko", "games.best": "Rekord", "games.newGame": "Yangi o'yin",
           "games.pause": "Pauza", "games.resume": "Davom etish", "games.gameOver": "O'yin tugadi",
-          "games.youWin": "G'alaba qozondingiz!", "games.tapToStart": "Boshlash uchun bosing",
+          "games.youWin": "G'alaba qozondingiz!", "games.tapToStart": "Boshlash uchun bosing", "games.ready": "TAYYORMISIZ?",
           "games.controls.snake": "Boshqarish: strelka tugmalari yoki svayp",
           "games.controls.2048": "Boshqarish: strelka tugmalari yoki svayp",
           "games.backToList": "← O'yinlar ro'yxatiga",
@@ -4881,7 +4890,7 @@
           "games.2048.title": "2048", "games.2048.desc": "Merge matching tiles to reach the number 2048.",
           "games.score": "Score", "games.best": "Best", "games.newGame": "New Game",
           "games.pause": "Pause", "games.resume": "Resume", "games.gameOver": "Game Over",
-          "games.youWin": "You win!", "games.tapToStart": "Tap to start",
+          "games.youWin": "You win!", "games.tapToStart": "Tap to start", "games.ready": "READY?",
           "games.controls.snake": "Controls: arrow keys or swipe",
           "games.controls.2048": "Controls: arrow keys or swipe",
           "games.backToList": "← Back to games",
@@ -5105,7 +5114,7 @@
           "games.2048.title": "2048", "games.2048.desc": "合并相同数字方块，达到 2048。",
           "games.score": "得分", "games.best": "最高分", "games.newGame": "新游戏",
           "games.pause": "暂停", "games.resume": "继续", "games.gameOver": "游戏结束",
-          "games.youWin": "你赢了！", "games.tapToStart": "点击开始",
+          "games.youWin": "你赢了！", "games.tapToStart": "点击开始", "games.ready": "准备好了吗？",
           "games.controls.snake": "操作：方向键或滑动",
           "games.controls.2048": "操作：方向键或滑动",
           "games.backToList": "← 返回游戏列表",
@@ -5329,7 +5338,7 @@
           "games.2048.title": "2048", "games.2048.desc": "मिलते-जुलते टाइल्स जोड़कर 2048 तक पहुंचें।",
           "games.score": "स्कोर", "games.best": "सर्वश्रेष्ठ", "games.newGame": "नया गेम",
           "games.pause": "रोकें", "games.resume": "जारी रखें", "games.gameOver": "गेम ओवर",
-          "games.youWin": "आप जीत गए!", "games.tapToStart": "शुरू करने के लिए टैप करें",
+          "games.youWin": "आप जीत गए!", "games.tapToStart": "शुरू करने के लिए टैप करें", "games.ready": "तैयार?",
           "games.controls.snake": "नियंत्रण: तीर कुंजी या स्वाइप",
           "games.controls.2048": "नियंत्रण: तीर कुंजी या स्वाइप",
           "games.backToList": "← गेम सूची पर वापस",
@@ -5553,7 +5562,7 @@
           "games.2048.title": "2048", "games.2048.desc": "Combina fichas iguales para llegar al número 2048.",
           "games.score": "Puntos", "games.best": "Récord", "games.newGame": "Nuevo juego",
           "games.pause": "Pausa", "games.resume": "Continuar", "games.gameOver": "Fin del juego",
-          "games.youWin": "¡Has ganado!", "games.tapToStart": "Toca para empezar",
+          "games.youWin": "¡Has ganado!", "games.tapToStart": "Toca para empezar", "games.ready": "¿LISTO?",
           "games.controls.snake": "Controles: flechas o deslizar",
           "games.controls.2048": "Controles: flechas o deslizar",
           "games.backToList": "← Volver a los juegos",
@@ -5777,7 +5786,7 @@
           "games.2048.title": "2048", "games.2048.desc": "ادمج المربعات المتشابهة للوصول إلى الرقم 2048.",
           "games.score": "النقاط", "games.best": "الأفضل", "games.newGame": "لعبة جديدة",
           "games.pause": "إيقاف مؤقت", "games.resume": "استئناف", "games.gameOver": "انتهت اللعبة",
-          "games.youWin": "لقد فزت!", "games.tapToStart": "اضغط للبدء",
+          "games.youWin": "لقد فزت!", "games.tapToStart": "اضغط للبدء", "games.ready": "هل أنت مستعد؟",
           "games.controls.snake": "التحكم: مفاتيح الأسهم أو التمرير",
           "games.controls.2048": "التحكم: مفاتيح الأسهم أو التمرير",
           "games.backToList": "← العودة إلى الألعاب",
@@ -6001,7 +6010,7 @@
           "games.2048.title": "2048", "games.2048.desc": "Объединяйте одинаковые плитки, чтобы получить число 2048.",
           "games.score": "Очки", "games.best": "Рекорд", "games.newGame": "Новая игра",
           "games.pause": "Пауза", "games.resume": "Продолжить", "games.gameOver": "Игра окончена",
-          "games.youWin": "Вы выиграли!", "games.tapToStart": "Нажмите, чтобы начать",
+          "games.youWin": "Вы выиграли!", "games.tapToStart": "Нажмите, чтобы начать", "games.ready": "ГОТОВЫ?",
           "games.controls.snake": "Управление: стрелки или свайп",
           "games.controls.2048": "Управление: стрелки или свайп",
           "games.backToList": "← К списку игр",
@@ -7726,6 +7735,8 @@
       const PACMAN_GHOST_COLORS = ['#ff4d6d', '#38d9ff'];
       const PACMAN_FRIGHT_TICKS = 42;
       const PACMAN_TICK_MS = 170;
+      const PACMAN_READY_MS = 950;
+      const PACMAN_DEATH_MS = 700;
 
       let pacmanState = null;
       let pacmanTimer = null;
@@ -7764,7 +7775,7 @@
         $('#pacmanOverlayText').textContent = t('games.tapToStart');
         $('#pacmanOverlayText').dataset.i18n = 'games.tapToStart';
         $('#pacmanStartBtn').textContent = t('games.newGame');
-        $('#pacmanCanvasWrap').classList.remove('game-shake');
+        $('#pacmanCanvasWrap').classList.remove('game-shake', 'pacman-win-flash');
         pacmanState = null;
         pacmanDrawEmpty();
       }
@@ -7781,15 +7792,44 @@
           },
           ghosts: PACMAN_GHOST_STARTS.map((p, i) => ({
             x: p.x, y: p.y, visual: { x: p.x, y: p.y }, dir: 'up',
-            color: PACMAN_GHOST_COLORS[i], frightened: false, skip: false,
+            color: PACMAN_GHOST_COLORS[i], frightened: false, skip: false, bobPhase: i * 1.7,
           })),
+          particles: [],
+          popups: [],
+          comboMult: 0,
           score: 0,
           lives: 3,
           frightTicks: 0,
           alive: true,
           paused: false,
           won: false,
+          readyUntil: performance.now() + PACMAN_READY_MS,
+          deathAnim: null,
         };
+      }
+
+      function pacmanSpawnParticles(s, gx, gy, color, count) {
+        const cvs = $('#pacmanCanvas');
+        const size = cvs.width / PACMAN_COLS;
+        const cx = gx * size + size / 2, cy = gy * size + size / 2;
+        for (let i = 0; i < count; i++) {
+          const angle = (Math.PI * 2 * i) / count + Math.random() * 0.6;
+          const speed = 0.6 + Math.random() * 1.4;
+          s.particles.push({
+            x: cx, y: cy,
+            vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+            life: 1, color, size: 1.5 + Math.random() * 1.8,
+          });
+        }
+      }
+
+      function pacmanSpawnPopup(s, gx, gy, text, color) {
+        const cvs = $('#pacmanCanvas');
+        const size = cvs.width / PACMAN_COLS;
+        s.popups.push({
+          x: gx * size + size / 2, y: gy * size + size / 2,
+          text, color, life: 1,
+        });
       }
 
       function pacmanStart() {
@@ -7797,7 +7837,7 @@
         $('#pacmanOverlay').classList.add('hidden');
         $('#pacmanScore').textContent = '0';
         $('#pacmanLives').textContent = '3';
-        $('#pacmanCanvasWrap').classList.remove('game-shake');
+        $('#pacmanCanvasWrap').classList.remove('game-shake', 'pacman-win-flash');
         clearInterval(pacmanTimer);
         pacmanTimer = setInterval(pacmanTick, PACMAN_TICK_MS);
         cancelAnimationFrame(pacmanAnimHandle);
@@ -7856,11 +7896,14 @@
           g.frightened = false;
         });
         s.frightTicks = 0;
+        s.comboMult = 0;
+        s.readyUntil = performance.now() + 500;
       }
 
       function pacmanTick() {
         if (!pacmanState || !pacmanState.alive || pacmanState.paused) return;
         const s = pacmanState;
+        if (performance.now() < s.readyUntil) return;
         const p = s.player;
 
         if (!pacmanIsWall(s.grid, p.x + PACMAN_DELTA[p.nextDir].x, p.y + PACMAN_DELTA[p.nextDir].y)) {
@@ -7875,12 +7918,18 @@
         if (cell === '.' || cell === 'o') {
           s.grid[p.y][p.x] = ' ';
           s.dotsLeft--;
+          const styles = getComputedStyle(document.documentElement);
+          const accent = styles.getPropertyValue('--accent').trim() || '#e2543f';
           if (cell === 'o') {
             s.score += 50;
             s.frightTicks = PACMAN_FRIGHT_TICKS;
+            s.comboMult = 0;
             s.ghosts.forEach(g => { g.frightened = true; g.dir = PACMAN_OPPOSITE[g.dir]; });
+            pacmanSpawnParticles(s, p.x, p.y, accent, 12);
+            pacmanSpawnPopup(s, p.x, p.y, '+50', accent);
           } else {
             s.score += 10;
+            pacmanSpawnParticles(s, p.x, p.y, accent, 3);
           }
           $('#pacmanScore').textContent = s.score;
           $('#pacmanScore').classList.remove('game-score-pulse');
@@ -7890,7 +7939,7 @@
 
         if (s.frightTicks > 0) {
           s.frightTicks--;
-          if (s.frightTicks === 0) s.ghosts.forEach(g => { g.frightened = false; });
+          if (s.frightTicks === 0) { s.ghosts.forEach(g => { g.frightened = false; }); s.comboMult = 0; }
         }
 
         s.ghosts.forEach(g => {
@@ -7909,8 +7958,12 @@
         for (const g of s.ghosts) {
           if (g.x === p.x && g.y === p.y) {
             if (g.frightened) {
-              s.score += 200;
+              const pts = 200 * Math.pow(2, s.comboMult);
+              s.comboMult++;
+              s.score += pts;
               $('#pacmanScore').textContent = s.score;
+              pacmanSpawnParticles(s, g.x, g.y, g.color, 16);
+              pacmanSpawnPopup(s, g.x, g.y, '+' + pts, '#4d6dff');
               const gi = PACMAN_GHOST_STARTS[s.ghosts.indexOf(g)];
               g.x = gi.x; g.y = gi.y; g.visual = { x: gi.x, y: gi.y };
               g.frightened = false;
@@ -7934,12 +7987,16 @@
         wrap.classList.remove('game-shake');
         void wrap.offsetWidth;
         wrap.classList.add('game-shake');
+        pacmanSpawnParticles(s, s.player.x, s.player.y, '#ffd400', 18);
         if (s.lives <= 0) {
+          s.deathAnim = { start: performance.now() };
           pacmanGameOver();
         } else {
           s.paused = true;
-          pacmanResetPositions();
-          setTimeout(() => { if (pacmanState === s) s.paused = false; }, 900);
+          s.deathAnim = { start: performance.now() };
+          setTimeout(() => {
+            if (pacmanState === s) { pacmanResetPositions(); s.paused = false; s.deathAnim = null; }
+          }, PACMAN_DEATH_MS);
         }
       }
 
@@ -7956,7 +8013,7 @@
           $('#pacmanOverlayText').textContent = t('games.gameOver');
           $('#pacmanOverlayText').removeAttribute('data-i18n');
           $('#pacmanStartBtn').textContent = t('games.newGame');
-        }, 250);
+        }, PACMAN_DEATH_MS + 150);
       }
 
       function pacmanWin() {
@@ -7968,6 +8025,7 @@
         const best = Math.max(pacmanGetBest(), s.score);
         pacmanSetBest(best);
         $('#pacmanBest').textContent = best;
+        $('#pacmanCanvasWrap').classList.add('pacman-win-flash');
         $('#pacmanOverlay').classList.remove('hidden');
         $('#pacmanOverlayText').textContent = t('games.youWin');
         $('#pacmanOverlayText').removeAttribute('data-i18n');
@@ -7985,8 +8043,12 @@
           g.visual.x = lerp(g.visual.x, g.x);
           g.visual.y = lerp(g.visual.y, g.y);
         });
+        s.particles.forEach(pt => { pt.x += pt.vx; pt.y += pt.vy; pt.vx *= 0.94; pt.vy *= 0.94; pt.life -= 0.045; });
+        s.particles = s.particles.filter(pt => pt.life > 0);
+        s.popups.forEach(pu => { pu.y -= 0.5; pu.life -= 0.02; });
+        s.popups = s.popups.filter(pu => pu.life > 0);
         pacmanDraw(performance.now());
-        if (s.alive || pacmanTimer) {
+        if (s.alive || pacmanTimer || s.particles.length || s.popups.length || s.deathAnim) {
           pacmanAnimHandle = requestAnimationFrame(pacmanAnimLoop);
         } else {
           pacmanAnimHandle = requestAnimationFrame(() => pacmanDraw(performance.now()));
@@ -8001,7 +8063,10 @@
         ctx.fillRect(0, 0, cvs.width, cvs.height);
       }
 
-      function pacmanDrawGhost(ctx, cx, cy, r, color) {
+      function pacmanDrawGhost(ctx, cx, cy, r, color, dir, scared) {
+        ctx.save();
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 10;
         ctx.beginPath();
         ctx.arc(cx, cy - r * 0.1, r, Math.PI, 0, false);
         ctx.lineTo(cx + r, cy + r * 0.65);
@@ -8013,12 +8078,35 @@
         ctx.closePath();
         ctx.fillStyle = color;
         ctx.fill();
-        ctx.fillStyle = '#fff';
-        ctx.beginPath(); ctx.arc(cx - r * 0.35, cy - r * 0.15, r * 0.22, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(cx + r * 0.35, cy - r * 0.15, r * 0.22, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#1a1a2e';
-        ctx.beginPath(); ctx.arc(cx - r * 0.3, cy - r * 0.15, r * 0.1, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(cx + r * 0.4, cy - r * 0.15, r * 0.1, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+
+        const eyeDx = { up: 0, down: 0, left: -1, right: 1 }[dir] || 0;
+        const eyeDy = { up: -1, down: 1, left: 0, right: 0 }[dir] || 0;
+        const pupilShift = 0.09;
+        if (scared) {
+          ctx.strokeStyle = '#fff';
+          ctx.lineWidth = Math.max(1, r * 0.1);
+          ctx.beginPath();
+          ctx.moveTo(cx - r * 0.42, cy - r * 0.1);
+          ctx.lineTo(cx - r * 0.18, cy - r * 0.2);
+          ctx.moveTo(cx + r * 0.18, cy - r * 0.2);
+          ctx.lineTo(cx + r * 0.42, cy - r * 0.1);
+          ctx.stroke();
+          ctx.strokeStyle = '#fff';
+          ctx.beginPath();
+          ctx.moveTo(cx - r * 0.32, cy + r * 0.15);
+          for (let i = 0; i <= 4; i++) {
+            ctx.lineTo(cx - r * 0.32 + (r * 0.64 * i) / 4, cy + r * 0.15 + (i % 2 === 0 ? 0 : r * 0.12));
+          }
+          ctx.stroke();
+        } else {
+          ctx.fillStyle = '#fff';
+          ctx.beginPath(); ctx.arc(cx - r * 0.35, cy - r * 0.15, r * 0.22, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(cx + r * 0.35, cy - r * 0.15, r * 0.22, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#1a1a2e';
+          ctx.beginPath(); ctx.arc(cx - r * 0.35 + eyeDx * r * pupilShift, cy - r * 0.15 + eyeDy * r * pupilShift, r * 0.1, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(cx + r * 0.35 + eyeDx * r * pupilShift, cy - r * 0.15 + eyeDy * r * pupilShift, r * 0.1, 0, Math.PI * 2); ctx.fill();
+        }
       }
 
       function pacmanDrawPlayer(ctx, cx, cy, r, dir, mouthOpen) {
@@ -8028,11 +8116,30 @@
         ctx.save();
         ctx.translate(cx, cy);
         ctx.rotate(rot);
+        ctx.shadowColor = 'rgba(255, 212, 0, 0.7)';
+        ctx.shadowBlur = 8;
         ctx.beginPath();
         ctx.moveTo(0, 0);
         ctx.arc(0, 0, r, mouthAngle, Math.PI * 2 - mouthAngle);
         ctx.closePath();
         ctx.fillStyle = '#ffd400';
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function pacmanDrawPlayerDeath(ctx, cx, cy, r, progress) {
+        const spanAngle = Math.PI * 2 * (1 - progress);
+        if (spanAngle <= 0.02) return;
+        ctx.save();
+        ctx.rotate(progress * Math.PI * 1.4);
+        ctx.translate(cx, cy);
+        const start = -spanAngle / 2 - Math.PI / 2;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, r, start, start + spanAngle);
+        ctx.closePath();
+        ctx.fillStyle = '#ffd400';
+        ctx.globalAlpha = 1 - progress * 0.3;
         ctx.fill();
         ctx.restore();
       }
@@ -8051,17 +8158,31 @@
         ctx.fillStyle = bg;
         ctx.fillRect(0, 0, cvs.width, cvs.height);
 
+        ctx.save();
+        ctx.shadowColor = accent;
+        ctx.shadowBlur = 5;
+        for (let y = 0; y < PACMAN_ROWS; y++) {
+          for (let x = 0; x < PACMAN_COLS; x++) {
+            const c = s.grid[y][x];
+            if (c === '#') {
+              ctx.fillStyle = accent;
+              ctx.globalAlpha = 0.4;
+              const pad = 1.5, rr = Math.min(6, size * 0.2);
+              const rx = x * size + pad, ry = y * size + pad, rw = size - pad * 2, rh = size - pad * 2;
+              ctx.beginPath();
+              if (ctx.roundRect) ctx.roundRect(rx, ry, rw, rh, rr); else ctx.rect(rx, ry, rw, rh);
+              ctx.fill();
+              ctx.globalAlpha = 1;
+            }
+          }
+        }
+        ctx.restore();
+
         for (let y = 0; y < PACMAN_ROWS; y++) {
           for (let x = 0; x < PACMAN_COLS; x++) {
             const c = s.grid[y][x];
             const cx = x * size + size / 2, cy = y * size + size / 2;
-            if (c === '#') {
-              ctx.fillStyle = accent;
-              ctx.globalAlpha = 0.35;
-              const pad = 1.5;
-              ctx.fillRect(x * size + pad, y * size + pad, size - pad * 2, size - pad * 2);
-              ctx.globalAlpha = 1;
-            } else if (c === '.') {
+            if (c === '.') {
               ctx.fillStyle = text;
               ctx.globalAlpha = 0.8;
               ctx.beginPath();
@@ -8070,21 +8191,66 @@
               ctx.globalAlpha = 1;
             } else if (c === 'o') {
               const pulse = 0.8 + Math.sin((now || 0) / 150) * 0.2;
+              ctx.save();
+              ctx.shadowColor = accent;
+              ctx.shadowBlur = 10 * pulse;
               ctx.fillStyle = accent;
               ctx.beginPath();
               ctx.arc(cx, cy, size * 0.22 * pulse, 0, Math.PI * 2);
               ctx.fill();
+              ctx.restore();
             }
           }
         }
 
-        const mouthOpen = Math.abs(Math.sin((now || 0) / 120));
-        pacmanDrawPlayer(ctx, s.player.visual.x * size + size / 2, s.player.visual.y * size + size / 2, size * 0.42, s.player.dir, mouthOpen);
-
-        s.ghosts.forEach(g => {
-          const color = g.frightened ? (s.frightTicks < 12 && s.frightTicks % 4 < 2 ? '#fff' : '#4d6dff') : g.color;
-          pacmanDrawGhost(ctx, g.visual.x * size + size / 2, g.visual.y * size + size / 2, size * 0.42, color);
+        s.particles.forEach(pt => {
+          ctx.globalAlpha = Math.max(0, pt.life);
+          ctx.fillStyle = pt.color;
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+          ctx.fill();
         });
+        ctx.globalAlpha = 1;
+
+        if (s.deathAnim) {
+          const progress = Math.min(1, (now - s.deathAnim.start) / PACMAN_DEATH_MS);
+          pacmanDrawPlayerDeath(ctx, s.player.visual.x * size + size / 2, s.player.visual.y * size + size / 2, size * 0.42, progress);
+        } else {
+          const mouthOpen = Math.abs(Math.sin((now || 0) / 120));
+          pacmanDrawPlayer(ctx, s.player.visual.x * size + size / 2, s.player.visual.y * size + size / 2, size * 0.42, s.player.dir, mouthOpen);
+        }
+
+        if (!s.deathAnim) {
+          s.ghosts.forEach((g, i) => {
+            const scared = g.frightened;
+            const flashWhite = scared && s.frightTicks < 12 && s.frightTicks % 4 < 2;
+            const color = scared ? (flashWhite ? '#e8ecff' : '#4d6dff') : g.color;
+            const bob = Math.sin((now || 0) / 220 + g.bobPhase) * 1.6;
+            pacmanDrawGhost(ctx, g.visual.x * size + size / 2, g.visual.y * size + size / 2 + bob, size * 0.42, color, g.dir, scared);
+          });
+        }
+
+        s.popups.forEach(pu => {
+          ctx.globalAlpha = Math.max(0, pu.life);
+          ctx.fillStyle = pu.color;
+          ctx.font = `bold ${Math.round(size * 0.42)}px var(--font-display, sans-serif)`;
+          ctx.textAlign = 'center';
+          ctx.fillText(pu.text, pu.x, pu.y);
+        });
+        ctx.globalAlpha = 1;
+
+        if (now < s.readyUntil && s.alive) {
+          ctx.save();
+          ctx.globalAlpha = 0.75 + Math.sin(now / 90) * 0.2;
+          ctx.fillStyle = '#ffd400';
+          ctx.font = `bold ${Math.round(size * 0.62)}px var(--font-display, sans-serif)`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.shadowColor = '#ffd400';
+          ctx.shadowBlur = 16;
+          ctx.fillText(t('games.ready'), cvs.width / 2, cvs.height / 2);
+          ctx.restore();
+        }
       }
 
       /* ---------- X VA O (TIC-TAC-TOE) ---------- */
