@@ -775,8 +775,27 @@
     }
 
     .admin-badge.admin {
-      background: color-mix(in srgb, gold 25%, transparent);
-      color: #b8860b;
+      background: color-mix(in srgb, #9b5de5 28%, transparent);
+      color: #c9a6ff;
+      animation: adminBadgeGlow 1.8s ease-in-out infinite;
+    }
+
+    @keyframes adminBadgeGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(155, 93, 229, 0.55); }
+      50% { box-shadow: 0 0 9px 3px rgba(155, 93, 229, 0.55); }
+    }
+
+    .admin-badge.boss {
+      color: #fff;
+      background: linear-gradient(90deg, #ff5252, #ffb347, #f9f871, #4ade80, #38bdf8, #a78bfa, #ff5252);
+      background-size: 300% 100%;
+      animation: bossBadgeRainbow 3s linear infinite;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    }
+
+    @keyframes bossBadgeRainbow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
     }
 
     .admin-user-actions {
@@ -9424,7 +9443,7 @@
         }
         list.innerHTML = items.map(u => {
           const badges = [];
-          if (u.isBoss) badges.push(`<span class="admin-badge admin">Boss</span>`);
+          if (u.isBoss) badges.push(`<span class="admin-badge boss">Boss</span>`);
           else if (u.isAdmin) badges.push(`<span class="admin-badge admin">${t('admin.badge.admin')}</span>`);
           if (u.adminAccessRevoked) badges.push(`<span class="admin-badge banned">${t('admin.badge.fired')}</span>`);
           if (u.bannedUntil) badges.push(`<span class="admin-badge banned">${t('admin.badge.banned')}</span>`);
