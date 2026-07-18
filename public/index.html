@@ -3747,6 +3747,24 @@
       border-radius: 8px;
       overflow: hidden;
       border: 3px solid var(--accent-2);
+      position: relative;
+    }
+    .chess-flyer {
+      position: absolute;
+      width: 12.5%;
+      height: 12.5%;
+      box-sizing: border-box;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 6%;
+      pointer-events: none;
+      z-index: 30;
+      transition: left .22s cubic-bezier(.4,0,.2,1), top .22s cubic-bezier(.4,0,.2,1);
+      will-change: left, top;
+    }
+    .chess-flyer .chess-piece {
+      filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.5));
     }
     .chess-sq {
       position: relative;
@@ -7256,6 +7274,55 @@
         chessCaptured = { w: [], b: [] };
       }
 
+      let chessAnimating = false;
+      const CHESS_MOVE_MS = 220;
+
+      function chessAnimateMove(from, to, onDone) {
+        const boardEl = $('#chessBoard');
+        const [fr, fc] = from, [tr, tc] = to;
+        const pieceCode = chessBoard[fr][fc];
+        if (!pieceCode) { onDone(); return; }
+        chessAnimating = true;
+
+        const fromSq = chessSqEls[fr * 8 + fc];
+        const fromPiece = fromSq.querySelector('.chess-piece');
+        if (fromPiece) fromPiece.style.visibility = 'hidden';
+        const toSq = chessSqEls[tr * 8 + tc];
+        const toPiece = toSq.querySelector('.chess-piece');
+        if (toPiece) toPiece.style.visibility = 'hidden';
+
+        const flyer = document.createElement('div');
+        flyer.className = 'chess-flyer';
+        flyer.style.left = (fc * 12.5) + '%';
+        flyer.style.top = (fr * 12.5) + '%';
+        const pieceSpan = document.createElement('span');
+        pieceSpan.className = 'chess-piece';
+        const img = document.createElement('img');
+        img.src = PIECE_IMAGES[pieceCode];
+        img.alt = '';
+        img.draggable = false;
+        pieceSpan.appendChild(img);
+        flyer.appendChild(pieceSpan);
+        boardEl.appendChild(flyer);
+
+        void flyer.offsetWidth;
+        requestAnimationFrame(() => {
+          flyer.style.left = (tc * 12.5) + '%';
+          flyer.style.top = (tr * 12.5) + '%';
+        });
+
+        let finished = false;
+        function finish() {
+          if (finished) return;
+          finished = true;
+          flyer.remove();
+          chessAnimating = false;
+          onDone();
+        }
+        flyer.addEventListener('transitionend', finish, { once: true });
+        setTimeout(finish, CHESS_MOVE_MS + 100);
+      }
+
       function chessBuildBoard() {
         if (chessBoardBuilt) return;
         chessBoardBuilt = true;
@@ -7306,15 +7373,19 @@
       }
 
       function chessOnClick(r, c) {
-        if (chessGameOver || chessBotThinking) return;
+        if (chessGameOver || chessBotThinking || chessAnimating) return;
         if (chessMode === 'bot' && chessTurn === CHESS_BOT_COLOR) return;
         const p = chessBoard[r][c];
         if (chessSelected) {
           const isLegal = chessLegalMoves.some(m => m[0] === r && m[1] === c);
           if (isLegal) {
-            chessMakeMove(chessSelected, [r, c]);
+            const from = chessSelected, to = [r, c];
             chessSelected = null; chessLegalMoves = [];
             chessRender();
+            chessAnimateMove(from, to, () => {
+              chessMakeMove(from, to);
+              chessRender();
+            });
             return;
           }
           if (p && p[0] === chessTurn) {
@@ -7360,9 +7431,12 @@
         chessBotThinking = true;
         setTimeout(() => {
           const mv = chessBotMove();
-          chessBotThinking = false;
-          if (mv) chessMakeMove(mv.from, mv.to);
-          chessRender();
+          if (!mv) { chessBotThinking = false; return; }
+          chessAnimateMove(mv.from, mv.to, () => {
+            chessBotThinking = false;
+            chessMakeMove(mv.from, mv.to);
+            chessRender();
+          });
         }, 350);
       }
 
@@ -7376,6 +7450,8 @@
       function chessReset() {
         chessInitBoard();
         chessBotThinking = false;
+        chessAnimating = false;
+        $$('#chessBoard .chess-flyer').forEach(f => f.remove());
         const statusEl = $('#chessStatus');
         statusEl.classList.remove('win');
         statusEl.textContent = t('games.chess.status');
@@ -7389,6 +7465,7 @@
 
       function chessStop() {
         chessBotThinking = false;
+        chessAnimating = false;
       }
 
       /* ---------- SNAKE ---------- */
