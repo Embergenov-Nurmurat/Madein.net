@@ -3952,6 +3952,11 @@
             <span class="game-card-title" data-i18n="games.tetris.title">Tetris</span>
             <span class="game-card-desc" data-i18n="games.tetris.desc">Klassik bloklar o'yini — qatorlarni to'ldirib ochko to'plang.</span>
           </button>
+          <button type="button" class="game-card" id="gameCardPacman">
+            <span class="game-card-emoji">👻</span>
+            <span class="game-card-title" data-i18n="games.pacman.title">Pakman</span>
+            <span class="game-card-desc" data-i18n="games.pacman.desc">Labirintda barcha nuqtalarni yig'ing, arvohlardan qoching.</span>
+          </button>
         </div>
 
         <!-- SNAKE GAME -->
@@ -4096,6 +4101,35 @@
             <button type="button" data-act="right" aria-label="right">▶</button>
             <button type="button" data-act="down" aria-label="down">▼</button>
             <button type="button" data-act="drop" aria-label="drop">⤓</button>
+          </div>
+        </div>
+
+        <!-- PACMAN -->
+        <div id="pacmanGameWrap" class="game-panel hidden">
+          <button type="button" class="game-back-btn" data-i18n="games.backToList">← O'yinlar ro'yxatiga</button>
+          <div class="game-panel-head">
+            <h2 class="game-panel-title" data-i18n="games.pacman.title">Pakman</h2>
+            <div class="game-scoreboard">
+              <div class="game-score-box"><span data-i18n="games.score">Ochko</span>: <b id="pacmanScore">0</b></div>
+              <div class="game-score-box"><span data-i18n="games.best">Rekord</span>: <b id="pacmanBest">0</b></div>
+              <div class="game-score-box"><span data-i18n="games.lives">Jonlar</span>: <b id="pacmanLives">3</b></div>
+            </div>
+          </div>
+          <div class="game-canvas-wrap" id="pacmanCanvasWrap">
+            <canvas id="pacmanCanvas" width="400" height="400"></canvas>
+            <div class="game-overlay hidden" id="pacmanOverlay">
+              <p class="game-overlay-text" id="pacmanOverlayText" data-i18n="games.tapToStart">Boshlash uchun bosing</p>
+              <button type="button" class="btn btn-primary btn-sm" id="pacmanStartBtn" data-i18n="games.newGame">Yangi o'yin</button>
+            </div>
+          </div>
+          <p class="game-controls-hint" data-i18n="games.controls.pacman">Boshqarish: strelka tugmalari yoki svayp</p>
+          <div class="game-dpad" id="pacmanDpad">
+            <button type="button" data-dir="up" aria-label="up">▲</button>
+            <div class="game-dpad-row">
+              <button type="button" data-dir="left" aria-label="left">◀</button>
+              <button type="button" data-dir="down" aria-label="down">▼</button>
+              <button type="button" data-dir="right" aria-label="right">▶</button>
+            </div>
           </div>
         </div>
       </section>
@@ -4631,6 +4665,8 @@
           "games.tetris.title": "Tetris", "games.tetris.desc": "Klassik bloklar o'yini — qatorlarni to'ldirib ochko to'plang.",
           "games.tetris.next": "Keyingi", "games.tetris.level": "Daraja", "games.tetris.lines": "Qatorlar",
           "games.controls.tetris": "Boshqarish: strelka tugmalari (yuqori — aylantirish, bo'shliq — tez tushirish)",
+          "games.pacman.title": "Pakman", "games.pacman.desc": "Labirintda barcha nuqtalarni yig'ing, arvohlardan qoching.",
+          "games.controls.pacman": "Boshqarish: strelka tugmalari yoki svayp", "games.lives": "Jonlar",
           "games.tetris.double": "DUBL!", "games.tetris.triple": "TRIPL!", "games.tetris.tetrisClear": "TETRIS!",
           "ttt.mode.pvp": "2 O'YINCHI", "ttt.mode.bot": "BOT BILAN", "ttt.mode.online": "ONLAYN",
           "ttt.turnPrefix": "Yurish:", "ttt.winsSuffix": "YUTDI", "ttt.draw": "DURANG", "ttt.botThinking": "Bot o'ylamoqda…",
@@ -4853,6 +4889,8 @@
           "games.tetris.title": "Tetris", "games.tetris.desc": "The classic block game — clear lines to score points.",
           "games.tetris.next": "Next", "games.tetris.level": "Level", "games.tetris.lines": "Lines",
           "games.controls.tetris": "Controls: arrow keys (up — rotate, space — hard drop)",
+          "games.pacman.title": "Pac-Man", "games.pacman.desc": "Collect all the dots in the maze while avoiding the ghosts.",
+          "games.controls.pacman": "Controls: arrow keys or swipe", "games.lives": "Lives",
           "games.tetris.double": "DOUBLE!", "games.tetris.triple": "TRIPLE!", "games.tetris.tetrisClear": "TETRIS!",
           "ttt.mode.pvp": "2 PLAYERS", "ttt.mode.bot": "VS BOT", "ttt.mode.online": "ONLINE",
           "ttt.turnPrefix": "Turn:", "ttt.winsSuffix": "WINS", "ttt.draw": "DRAW", "ttt.botThinking": "Bot is thinking…",
@@ -5075,6 +5113,8 @@
           "games.tetris.title": "俄罗斯方块", "games.tetris.desc": "经典方块游戏——消除行来获得分数。",
           "games.tetris.next": "下一个", "games.tetris.level": "等级", "games.tetris.lines": "行数",
           "games.controls.tetris": "操作：方向键（上—旋转，空格—快速下落）",
+          "games.pacman.title": "吃豆人", "games.pacman.desc": "在迷宫中吃光所有豆子，同时躲避幽灵。",
+          "games.controls.pacman": "操作：方向键或滑动", "games.lives": "生命",
           "games.tetris.double": "双消！", "games.tetris.triple": "三消！", "games.tetris.tetrisClear": "俄罗斯方块！",
           "ttt.mode.pvp": "双人对战", "ttt.mode.bot": "人机对战", "ttt.mode.online": "在线对战",
           "ttt.turnPrefix": "轮到：", "ttt.winsSuffix": "获胜", "ttt.draw": "平局", "ttt.botThinking": "电脑思考中…",
@@ -5297,6 +5337,8 @@
           "games.tetris.title": "टेट्रिस", "games.tetris.desc": "क्लासिक ब्लॉक गेम — पंक्तियाँ भरकर अंक बटोरें।",
           "games.tetris.next": "अगला", "games.tetris.level": "स्तर", "games.tetris.lines": "पंक्तियाँ",
           "games.controls.tetris": "नियंत्रण: तीर कुंजी (ऊपर — घुमाएं, स्पेस — तेज़ गिराएं)",
+          "games.pacman.title": "पैकमैन", "games.pacman.desc": "भूलभुलैया में सभी बिंदु इकट्ठा करें और भूतों से बचें।",
+          "games.controls.pacman": "नियंत्रण: तीर कुंजी या स्वाइप", "games.lives": "जानें",
           "games.tetris.double": "डबल!", "games.tetris.triple": "ट्रिपल!", "games.tetris.tetrisClear": "टेट्रिस!",
           "ttt.mode.pvp": "2 खिलाड़ी", "ttt.mode.bot": "बॉट के साथ", "ttt.mode.online": "ऑनलाइन",
           "ttt.turnPrefix": "बारी:", "ttt.winsSuffix": "जीता", "ttt.draw": "ड्रॉ", "ttt.botThinking": "बॉट सोच रहा है…",
@@ -5519,6 +5561,8 @@
           "games.tetris.title": "Tetris", "games.tetris.desc": "El clásico juego de bloques — completa líneas para sumar puntos.",
           "games.tetris.next": "Siguiente", "games.tetris.level": "Nivel", "games.tetris.lines": "Líneas",
           "games.controls.tetris": "Controles: flechas (arriba — girar, espacio — caída rápida)",
+          "games.pacman.title": "Comecocos", "games.pacman.desc": "Recoge todos los puntos del laberinto evitando a los fantasmas.",
+          "games.controls.pacman": "Controles: flechas o deslizar", "games.lives": "Vidas",
           "games.tetris.double": "¡DOBLE!", "games.tetris.triple": "¡TRIPLE!", "games.tetris.tetrisClear": "¡TETRIS!",
           "ttt.mode.pvp": "2 JUGADORES", "ttt.mode.bot": "CONTRA BOT", "ttt.mode.online": "EN LÍNEA",
           "ttt.turnPrefix": "Turno:", "ttt.winsSuffix": "GANA", "ttt.draw": "EMPATE", "ttt.botThinking": "El bot está pensando…",
@@ -5741,6 +5785,8 @@
           "games.tetris.title": "تتريس", "games.tetris.desc": "لعبة المكعبات الكلاسيكية — أكمل الصفوف لتسجيل النقاط.",
           "games.tetris.next": "التالي", "games.tetris.level": "المستوى", "games.tetris.lines": "الصفوف",
           "games.controls.tetris": "التحكم: مفاتيح الأسهم (أعلى — تدوير، مسافة — إسقاط سريع)",
+          "games.pacman.title": "باكمان", "games.pacman.desc": "اجمع كل النقاط في المتاهة وتجنب الأشباح.",
+          "games.controls.pacman": "التحكم: مفاتيح الأسهم أو السحب", "games.lives": "الأرواح",
           "games.tetris.double": "مزدوج!", "games.tetris.triple": "ثلاثي!", "games.tetris.tetrisClear": "تتريس!",
           "ttt.mode.pvp": "لاعبان", "ttt.mode.bot": "ضد الروبوت", "ttt.mode.online": "عبر الإنترنت",
           "ttt.turnPrefix": "الدور:", "ttt.winsSuffix": "فاز", "ttt.draw": "تعادل", "ttt.botThinking": "الروبوت يفكر…",
@@ -5963,6 +6009,8 @@
           "games.tetris.title": "Тетрис", "games.tetris.desc": "Классическая игра с блоками — собирайте линии и зарабатывайте очки.",
           "games.tetris.next": "Далее", "games.tetris.level": "Уровень", "games.tetris.lines": "Линии",
           "games.controls.tetris": "Управление: стрелки (вверх — поворот, пробел — быстрое падение)",
+          "games.pacman.title": "Пакман", "games.pacman.desc": "Соберите все точки в лабиринте, избегая призраков.",
+          "games.controls.pacman": "Управление: стрелки или свайп", "games.lives": "Жизни",
           "games.tetris.double": "ДАБЛ!", "games.tetris.triple": "ТРИПЛ!", "games.tetris.tetrisClear": "ТЕТРИС!",
           "ttt.mode.pvp": "2 ИГРОКА", "ttt.mode.bot": "С БОТОМ", "ttt.mode.online": "ОНЛАЙН",
           "ttt.turnPrefix": "Ход:", "ttt.winsSuffix": "ПОБЕДИЛ", "ttt.draw": "НИЧЬЯ", "ttt.botThinking": "Бот думает…",
@@ -6630,9 +6678,11 @@
         $('#game2048Wrap').classList.add('hidden');
         $('#tttGameWrap').classList.add('hidden');
         $('#tetrisGameWrap').classList.add('hidden');
+        $('#pacmanGameWrap').classList.add('hidden');
         snakeStop();
         tttStopOnline();
         tetrisStop();
+        pacmanStop();
       }
 
       function bindGamesEvents() {
@@ -6665,6 +6715,11 @@
           $('#gamesPicker').classList.add('hidden');
           $('#tetrisGameWrap').classList.remove('hidden');
           tetrisInit();
+        });
+        $('#gameCardPacman').addEventListener('click', () => {
+          $('#gamesPicker').classList.add('hidden');
+          $('#pacmanGameWrap').classList.remove('hidden');
+          pacmanInit();
         });
         $$('.game-back-btn').forEach(b => b.addEventListener('click', showGamesPicker));
 
@@ -6726,6 +6781,19 @@
             else tetrisAction(dy > 0 ? 'down' : 'rotate');
           }, { passive: true });
         }
+
+        /* --- Pacman bindings --- */
+        $('#pacmanStartBtn').addEventListener('click', pacmanStart);
+        $('#pacmanDpad').addEventListener('click', (e) => {
+          const btn = e.target.closest('button[data-dir]');
+          if (btn) pacmanSetDir(btn.dataset.dir);
+        });
+        document.addEventListener('keydown', (e) => {
+          if (!$('#pacmanGameWrap') || $('#pacmanGameWrap').classList.contains('hidden')) return;
+          const map = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
+          if (map[e.key]) { e.preventDefault(); pacmanSetDir(map[e.key]); }
+        });
+        bindSwipe($('#pacmanCanvas'), pacmanSetDir);
       }
 
       function bindSwipe(el, cb) {
@@ -7631,6 +7699,391 @@
         const offY = (cvs.height - h * size) / 2 - minY * size;
         cells.forEach(([cx, cy]) => {
           tetrisDrawCell(ctx, cx + offX / size, cy + offY / size, size, TETRIS_COLORS[key]);
+        });
+      }
+
+      /* ---------- PAKMAN (PAC-MAN) ---------- */
+      const PACMAN_COLS = 15, PACMAN_ROWS = 15;
+      const PACMAN_MAZE_TEMPLATE = [
+        "###############",
+        "#o...........o#",
+        "#.#.#.#.#.#.#.#",
+        "#.............#",
+        "#.#.#.#.#.#.#.#",
+        "#.............#",
+        "#.#.#.#.#.#.#.#",
+        "#.............#",
+        "#.#.#.#.#.#.#.#",
+        "#.............#",
+        "#.#.#.#.#.#.#.#",
+        "#.............#",
+        "#.#.#.#.#.#.#.#",
+        "#o...........o#",
+        "###############",
+      ];
+      const PACMAN_PLAYER_START = { x: 1, y: 13 };
+      const PACMAN_GHOST_STARTS = [{ x: 6, y: 7 }, { x: 8, y: 7 }];
+      const PACMAN_GHOST_COLORS = ['#ff4d6d', '#38d9ff'];
+      const PACMAN_FRIGHT_TICKS = 42;
+      const PACMAN_TICK_MS = 170;
+
+      let pacmanState = null;
+      let pacmanTimer = null;
+      let pacmanAnimHandle = null;
+
+      function pacmanBestKey() { return 'madein_pacman_best'; }
+      function pacmanGetBest() { return Number(localStorage.getItem(pacmanBestKey()) || 0); }
+      function pacmanSetBest(v) { localStorage.setItem(pacmanBestKey(), String(v)); }
+
+      function pacmanBuildGrid() {
+        return PACMAN_MAZE_TEMPLATE.map(row => row.split(''));
+      }
+
+      function pacmanIsWall(grid, x, y) {
+        if (x < 0 || x >= PACMAN_COLS || y < 0 || y >= PACMAN_ROWS) return true;
+        return grid[y][x] === '#';
+      }
+
+      function pacmanCountDots(grid) {
+        let n = 0;
+        for (let y = 0; y < PACMAN_ROWS; y++) for (let x = 0; x < PACMAN_COLS; x++) {
+          if (grid[y][x] === '.' || grid[y][x] === 'o') n++;
+        }
+        return n;
+      }
+
+      function pacmanInit() {
+        pacmanStop();
+        const cvs = $('#pacmanCanvas');
+        cvs.width = cvs.clientWidth || 400;
+        cvs.height = cvs.clientHeight || 400;
+        $('#pacmanBest').textContent = pacmanGetBest();
+        $('#pacmanScore').textContent = '0';
+        $('#pacmanLives').textContent = '3';
+        $('#pacmanOverlay').classList.remove('hidden');
+        $('#pacmanOverlayText').textContent = t('games.tapToStart');
+        $('#pacmanOverlayText').dataset.i18n = 'games.tapToStart';
+        $('#pacmanStartBtn').textContent = t('games.newGame');
+        $('#pacmanCanvasWrap').classList.remove('game-shake');
+        pacmanState = null;
+        pacmanDrawEmpty();
+      }
+
+      function pacmanNewState() {
+        const grid = pacmanBuildGrid();
+        return {
+          grid,
+          dotsLeft: pacmanCountDots(grid),
+          player: {
+            x: PACMAN_PLAYER_START.x, y: PACMAN_PLAYER_START.y,
+            visual: { x: PACMAN_PLAYER_START.x, y: PACMAN_PLAYER_START.y },
+            dir: 'left', nextDir: 'left',
+          },
+          ghosts: PACMAN_GHOST_STARTS.map((p, i) => ({
+            x: p.x, y: p.y, visual: { x: p.x, y: p.y }, dir: 'up',
+            color: PACMAN_GHOST_COLORS[i], frightened: false, skip: false,
+          })),
+          score: 0,
+          lives: 3,
+          frightTicks: 0,
+          alive: true,
+          paused: false,
+          won: false,
+        };
+      }
+
+      function pacmanStart() {
+        pacmanState = pacmanNewState();
+        $('#pacmanOverlay').classList.add('hidden');
+        $('#pacmanScore').textContent = '0';
+        $('#pacmanLives').textContent = '3';
+        $('#pacmanCanvasWrap').classList.remove('game-shake');
+        clearInterval(pacmanTimer);
+        pacmanTimer = setInterval(pacmanTick, PACMAN_TICK_MS);
+        cancelAnimationFrame(pacmanAnimHandle);
+        pacmanAnimLoop();
+      }
+
+      function pacmanStop() {
+        clearInterval(pacmanTimer);
+        pacmanTimer = null;
+        cancelAnimationFrame(pacmanAnimHandle);
+        pacmanAnimHandle = null;
+      }
+
+      function pacmanSetDir(dir) {
+        if (!pacmanState || !pacmanState.alive || pacmanState.paused) return;
+        pacmanState.player.nextDir = dir;
+      }
+
+      const PACMAN_DELTA = { up: { x: 0, y: -1 }, down: { x: 0, y: 1 }, left: { x: -1, y: 0 }, right: { x: 1, y: 0 } };
+      const PACMAN_OPPOSITE = { up: 'down', down: 'up', left: 'right', right: 'left' };
+
+      function pacmanValidDirs(grid, x, y, excludeDir) {
+        const dirs = [];
+        for (const dir of ['up', 'down', 'left', 'right']) {
+          if (excludeDir && dir === excludeDir) continue;
+          const d = PACMAN_DELTA[dir];
+          if (!pacmanIsWall(grid, x + d.x, y + d.y)) dirs.push(dir);
+        }
+        return dirs;
+      }
+
+      function pacmanChooseGhostDir(ghost, grid, target, flee) {
+        const reverse = PACMAN_OPPOSITE[ghost.dir];
+        let candidates = pacmanValidDirs(grid, ghost.x, ghost.y, reverse);
+        if (!candidates.length) candidates = pacmanValidDirs(grid, ghost.x, ghost.y, null);
+        if (!candidates.length) return ghost.dir;
+        if (Math.random() < 0.15) return candidates[Math.floor(Math.random() * candidates.length)];
+        let best = candidates[0], bestScore = flee ? -Infinity : Infinity;
+        for (const dir of candidates) {
+          const d = PACMAN_DELTA[dir];
+          const nx = ghost.x + d.x, ny = ghost.y + d.y;
+          const dist = (nx - target.x) ** 2 + (ny - target.y) ** 2;
+          if (flee ? dist > bestScore : dist < bestScore) { bestScore = dist; best = dir; }
+        }
+        return best;
+      }
+
+      function pacmanResetPositions() {
+        const s = pacmanState;
+        s.player.x = PACMAN_PLAYER_START.x; s.player.y = PACMAN_PLAYER_START.y;
+        s.player.visual = { x: s.player.x, y: s.player.y };
+        s.player.dir = 'left'; s.player.nextDir = 'left';
+        s.ghosts.forEach((g, i) => {
+          g.x = PACMAN_GHOST_STARTS[i].x; g.y = PACMAN_GHOST_STARTS[i].y;
+          g.visual = { x: g.x, y: g.y };
+          g.frightened = false;
+        });
+        s.frightTicks = 0;
+      }
+
+      function pacmanTick() {
+        if (!pacmanState || !pacmanState.alive || pacmanState.paused) return;
+        const s = pacmanState;
+        const p = s.player;
+
+        if (!pacmanIsWall(s.grid, p.x + PACMAN_DELTA[p.nextDir].x, p.y + PACMAN_DELTA[p.nextDir].y)) {
+          p.dir = p.nextDir;
+        }
+        const d = PACMAN_DELTA[p.dir];
+        if (!pacmanIsWall(s.grid, p.x + d.x, p.y + d.y)) {
+          p.x += d.x; p.y += d.y;
+        }
+
+        const cell = s.grid[p.y][p.x];
+        if (cell === '.' || cell === 'o') {
+          s.grid[p.y][p.x] = ' ';
+          s.dotsLeft--;
+          if (cell === 'o') {
+            s.score += 50;
+            s.frightTicks = PACMAN_FRIGHT_TICKS;
+            s.ghosts.forEach(g => { g.frightened = true; g.dir = PACMAN_OPPOSITE[g.dir]; });
+          } else {
+            s.score += 10;
+          }
+          $('#pacmanScore').textContent = s.score;
+          $('#pacmanScore').classList.remove('game-score-pulse');
+          void $('#pacmanScore').offsetWidth;
+          $('#pacmanScore').classList.add('game-score-pulse');
+        }
+
+        if (s.frightTicks > 0) {
+          s.frightTicks--;
+          if (s.frightTicks === 0) s.ghosts.forEach(g => { g.frightened = false; });
+        }
+
+        s.ghosts.forEach(g => {
+          if (g.frightened) {
+            g.skip = !g.skip;
+            if (g.skip) return;
+          }
+          const dir = pacmanChooseGhostDir(g, s.grid, p, g.frightened);
+          g.dir = dir;
+          const gd = PACMAN_DELTA[dir];
+          if (!pacmanIsWall(s.grid, g.x + gd.x, g.y + gd.y)) {
+            g.x += gd.x; g.y += gd.y;
+          }
+        });
+
+        for (const g of s.ghosts) {
+          if (g.x === p.x && g.y === p.y) {
+            if (g.frightened) {
+              s.score += 200;
+              $('#pacmanScore').textContent = s.score;
+              const gi = PACMAN_GHOST_STARTS[s.ghosts.indexOf(g)];
+              g.x = gi.x; g.y = gi.y; g.visual = { x: gi.x, y: gi.y };
+              g.frightened = false;
+            } else {
+              pacmanLoseLife();
+              return;
+            }
+          }
+        }
+
+        if (s.dotsLeft <= 0) {
+          pacmanWin();
+        }
+      }
+
+      function pacmanLoseLife() {
+        const s = pacmanState;
+        s.lives--;
+        $('#pacmanLives').textContent = Math.max(0, s.lives);
+        const wrap = $('#pacmanCanvasWrap');
+        wrap.classList.remove('game-shake');
+        void wrap.offsetWidth;
+        wrap.classList.add('game-shake');
+        if (s.lives <= 0) {
+          pacmanGameOver();
+        } else {
+          s.paused = true;
+          pacmanResetPositions();
+          setTimeout(() => { if (pacmanState === s) s.paused = false; }, 900);
+        }
+      }
+
+      function pacmanGameOver() {
+        const s = pacmanState;
+        s.alive = false;
+        clearInterval(pacmanTimer);
+        pacmanTimer = null;
+        const best = Math.max(pacmanGetBest(), s.score);
+        pacmanSetBest(best);
+        $('#pacmanBest').textContent = best;
+        setTimeout(() => {
+          $('#pacmanOverlay').classList.remove('hidden');
+          $('#pacmanOverlayText').textContent = t('games.gameOver');
+          $('#pacmanOverlayText').removeAttribute('data-i18n');
+          $('#pacmanStartBtn').textContent = t('games.newGame');
+        }, 250);
+      }
+
+      function pacmanWin() {
+        const s = pacmanState;
+        s.alive = false;
+        s.won = true;
+        clearInterval(pacmanTimer);
+        pacmanTimer = null;
+        const best = Math.max(pacmanGetBest(), s.score);
+        pacmanSetBest(best);
+        $('#pacmanBest').textContent = best;
+        $('#pacmanOverlay').classList.remove('hidden');
+        $('#pacmanOverlayText').textContent = t('games.youWin');
+        $('#pacmanOverlayText').removeAttribute('data-i18n');
+        $('#pacmanStartBtn').textContent = t('games.newGame');
+      }
+
+      function pacmanAnimLoop() {
+        if (!pacmanState) return;
+        const s = pacmanState;
+        const factor = 0.4;
+        const lerp = (v, target) => v + (target - v) * factor;
+        s.player.visual.x = lerp(s.player.visual.x, s.player.x);
+        s.player.visual.y = lerp(s.player.visual.y, s.player.y);
+        s.ghosts.forEach(g => {
+          g.visual.x = lerp(g.visual.x, g.x);
+          g.visual.y = lerp(g.visual.y, g.y);
+        });
+        pacmanDraw(performance.now());
+        if (s.alive || pacmanTimer) {
+          pacmanAnimHandle = requestAnimationFrame(pacmanAnimLoop);
+        } else {
+          pacmanAnimHandle = requestAnimationFrame(() => pacmanDraw(performance.now()));
+        }
+      }
+
+      function pacmanDrawEmpty() {
+        const cvs = $('#pacmanCanvas');
+        const ctx = cvs.getContext('2d');
+        const styles = getComputedStyle(document.documentElement);
+        ctx.fillStyle = styles.getPropertyValue('--bg-alt').trim() || '#191922';
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
+      }
+
+      function pacmanDrawGhost(ctx, cx, cy, r, color) {
+        ctx.beginPath();
+        ctx.arc(cx, cy - r * 0.1, r, Math.PI, 0, false);
+        ctx.lineTo(cx + r, cy + r * 0.65);
+        const waves = 3, ww = (2 * r) / waves;
+        for (let i = 0; i < waves; i++) {
+          const xs = cx + r - ww * i, xm = xs - ww / 2, xe = xs - ww;
+          ctx.quadraticCurveTo(xm, cy + r * 0.25, xe, cy + r * 0.65);
+        }
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.arc(cx - r * 0.35, cy - r * 0.15, r * 0.22, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(cx + r * 0.35, cy - r * 0.15, r * 0.22, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#1a1a2e';
+        ctx.beginPath(); ctx.arc(cx - r * 0.3, cy - r * 0.15, r * 0.1, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(cx + r * 0.4, cy - r * 0.15, r * 0.1, 0, Math.PI * 2); ctx.fill();
+      }
+
+      function pacmanDrawPlayer(ctx, cx, cy, r, dir, mouthOpen) {
+        const angles = { right: 0, down: Math.PI / 2, left: Math.PI, up: -Math.PI / 2 };
+        const rot = angles[dir] || 0;
+        const mouthAngle = mouthOpen * 0.22 * Math.PI;
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(rot);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, r, mouthAngle, Math.PI * 2 - mouthAngle);
+        ctx.closePath();
+        ctx.fillStyle = '#ffd400';
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function pacmanDraw(now) {
+        if (!pacmanState) return;
+        const s = pacmanState;
+        const cvs = $('#pacmanCanvas');
+        const ctx = cvs.getContext('2d');
+        const size = cvs.width / PACMAN_COLS;
+        const styles = getComputedStyle(document.documentElement);
+        const bg = styles.getPropertyValue('--bg-alt').trim() || '#191922';
+        const accent = styles.getPropertyValue('--accent').trim() || '#e2543f';
+        const text = styles.getPropertyValue('--text').trim() || '#efe9db';
+
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+        for (let y = 0; y < PACMAN_ROWS; y++) {
+          for (let x = 0; x < PACMAN_COLS; x++) {
+            const c = s.grid[y][x];
+            const cx = x * size + size / 2, cy = y * size + size / 2;
+            if (c === '#') {
+              ctx.fillStyle = accent;
+              ctx.globalAlpha = 0.35;
+              const pad = 1.5;
+              ctx.fillRect(x * size + pad, y * size + pad, size - pad * 2, size - pad * 2);
+              ctx.globalAlpha = 1;
+            } else if (c === '.') {
+              ctx.fillStyle = text;
+              ctx.globalAlpha = 0.8;
+              ctx.beginPath();
+              ctx.arc(cx, cy, size * 0.08, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.globalAlpha = 1;
+            } else if (c === 'o') {
+              const pulse = 0.8 + Math.sin((now || 0) / 150) * 0.2;
+              ctx.fillStyle = accent;
+              ctx.beginPath();
+              ctx.arc(cx, cy, size * 0.22 * pulse, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+        }
+
+        const mouthOpen = Math.abs(Math.sin((now || 0) / 120));
+        pacmanDrawPlayer(ctx, s.player.visual.x * size + size / 2, s.player.visual.y * size + size / 2, size * 0.42, s.player.dir, mouthOpen);
+
+        s.ghosts.forEach(g => {
+          const color = g.frightened ? (s.frightTicks < 12 && s.frightTicks % 4 < 2 ? '#fff' : '#4d6dff') : g.color;
+          pacmanDrawGhost(ctx, g.visual.x * size + size / 2, g.visual.y * size + size / 2, size * 0.42, color);
         });
       }
 
