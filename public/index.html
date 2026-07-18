@@ -3556,6 +3556,85 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+
+    /* ---- Tetris ---- */
+    .tetris-layout {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .tetris-board-col {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .tetris-side-col {
+      flex: 0 0 96px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .tetris-side-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      text-align: center;
+    }
+    .tetris-side-label {
+      font-size: 10px;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+    .tetris-side-value {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    #tetrisNextCanvas {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      display: block;
+    }
+    .game-canvas-wrap.tetris-canvas-wrap {
+      aspect-ratio: 10 / 20;
+      width: 100%;
+    }
+    #tetrisCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      touch-action: none;
+    }
+    .tetris-controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .tetris-controls button {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .tetris-controls button:active {
+      background: var(--accent);
+      color: #fff;
+    }
+    @media (min-width: 720px) {
+      .tetris-controls { display: none; }
+    }
+    @media (max-width: 380px) {
+      .tetris-side-col { flex-basis: 76px; }
+    }
   </style>
 </head>
 
@@ -3796,6 +3875,11 @@
             <span class="game-card-title" data-i18n="games.ttt.title">X va O</span>
             <span class="game-card-desc" data-i18n="games.ttt.desc">Botga qarshi, do'stingiz bilan yoki onlayn tasodifiy raqibga qarshi o'ynang.</span>
           </button>
+          <button type="button" class="game-card" id="gameCardTetris">
+            <span class="game-card-emoji">🧱</span>
+            <span class="game-card-title" data-i18n="games.tetris.title">Tetris</span>
+            <span class="game-card-desc" data-i18n="games.tetris.desc">Klassik bloklar o'yini — qatorlarni to'ldirib ochko to'plang.</span>
+          </button>
         </div>
 
         <!-- SNAKE GAME -->
@@ -3894,6 +3978,51 @@
           <div class="ttt-online-actions hidden" id="tttOnlineActions">
             <button type="button" class="btn btn-secondary btn-sm" id="tttLeaveBtn" data-i18n="ttt.leaveGame">Chiqish</button>
             <button type="button" class="btn btn-primary btn-sm hidden" id="tttRematchBtn" data-i18n="ttt.rematch">Qayta o'ynash</button>
+          </div>
+        </div>
+
+        <!-- TETRIS -->
+        <div id="tetrisGameWrap" class="game-panel hidden">
+          <button type="button" class="game-back-btn" data-i18n="games.backToList">← O'yinlar ro'yxatiga</button>
+          <div class="game-panel-head">
+            <h2 class="game-panel-title" data-i18n="games.tetris.title">Tetris</h2>
+            <div class="game-scoreboard">
+              <div class="game-score-box"><span data-i18n="games.score">Ochko</span>: <b id="tetrisScore">0</b></div>
+              <div class="game-score-box"><span data-i18n="games.best">Rekord</span>: <b id="tetrisBest">0</b></div>
+            </div>
+          </div>
+          <div class="tetris-layout">
+            <div class="tetris-board-col">
+              <div class="game-canvas-wrap tetris-canvas-wrap" id="tetrisCanvasWrap">
+                <canvas id="tetrisCanvas" width="300" height="600"></canvas>
+                <div class="game-overlay hidden" id="tetrisOverlay">
+                  <p class="game-overlay-text" id="tetrisOverlayText" data-i18n="games.tapToStart">Boshlash uchun bosing</p>
+                  <button type="button" class="btn btn-primary btn-sm" id="tetrisStartBtn" data-i18n="games.newGame">Yangi o'yin</button>
+                </div>
+              </div>
+            </div>
+            <div class="tetris-side-col">
+              <div class="tetris-side-box">
+                <div class="tetris-side-label" data-i18n="games.tetris.next">Keyingi</div>
+                <canvas id="tetrisNextCanvas" width="80" height="80"></canvas>
+              </div>
+              <div class="tetris-side-box">
+                <div class="tetris-side-label" data-i18n="games.tetris.level">Daraja</div>
+                <div class="tetris-side-value" id="tetrisLevel">1</div>
+              </div>
+              <div class="tetris-side-box">
+                <div class="tetris-side-label" data-i18n="games.tetris.lines">Qatorlar</div>
+                <div class="tetris-side-value" id="tetrisLines">0</div>
+              </div>
+            </div>
+          </div>
+          <p class="game-controls-hint" data-i18n="games.controls.tetris">Boshqarish: strelka tugmalari (yuqori — aylantirish, bo'shliq — tez tushirish)</p>
+          <div class="tetris-controls" id="tetrisTouchControls">
+            <button type="button" data-act="left" aria-label="left">◀</button>
+            <button type="button" data-act="rotate" aria-label="rotate">⟳</button>
+            <button type="button" data-act="right" aria-label="right">▶</button>
+            <button type="button" data-act="down" aria-label="down">▼</button>
+            <button type="button" data-act="drop" aria-label="drop">⤓</button>
           </div>
         </div>
       </section>
@@ -4426,6 +4555,9 @@
           "games.controls.2048": "Boshqarish: strelka tugmalari yoki svayp",
           "games.backToList": "← O'yinlar ro'yxatiga",
           "games.ttt.title": "X va O", "games.ttt.desc": "Botga qarshi, do'stingiz bilan yoki onlayn tasodifiy raqibga qarshi o'ynang.",
+          "games.tetris.title": "Tetris", "games.tetris.desc": "Klassik bloklar o'yini — qatorlarni to'ldirib ochko to'plang.",
+          "games.tetris.next": "Keyingi", "games.tetris.level": "Daraja", "games.tetris.lines": "Qatorlar",
+          "games.controls.tetris": "Boshqarish: strelka tugmalari (yuqori — aylantirish, bo'shliq — tez tushirish)",
           "ttt.mode.pvp": "2 O'YINCHI", "ttt.mode.bot": "BOT BILAN", "ttt.mode.online": "ONLAYN",
           "ttt.turnPrefix": "Yurish:", "ttt.winsSuffix": "YUTDI", "ttt.draw": "DURANG", "ttt.botThinking": "Bot o'ylamoqda…",
           "ttt.scoreXLabel": "X g'alabasi", "ttt.scoreOLabel": "O g'alabasi", "ttt.scoreDrawLabel": "Durang", "ttt.reset": "Qayta boshlash",
@@ -4644,6 +4776,9 @@
           "games.controls.2048": "Controls: arrow keys or swipe",
           "games.backToList": "← Back to games",
           "games.ttt.title": "Tic-Tac-Toe", "games.ttt.desc": "Play vs a bot, a friend, or a random opponent online.",
+          "games.tetris.title": "Tetris", "games.tetris.desc": "The classic block game — clear lines to score points.",
+          "games.tetris.next": "Next", "games.tetris.level": "Level", "games.tetris.lines": "Lines",
+          "games.controls.tetris": "Controls: arrow keys (up — rotate, space — hard drop)",
           "ttt.mode.pvp": "2 PLAYERS", "ttt.mode.bot": "VS BOT", "ttt.mode.online": "ONLINE",
           "ttt.turnPrefix": "Turn:", "ttt.winsSuffix": "WINS", "ttt.draw": "DRAW", "ttt.botThinking": "Bot is thinking…",
           "ttt.scoreXLabel": "X wins", "ttt.scoreOLabel": "O wins", "ttt.scoreDrawLabel": "Draws", "ttt.reset": "Reset",
@@ -4862,6 +4997,9 @@
           "games.controls.2048": "操作：方向键或滑动",
           "games.backToList": "← 返回游戏列表",
           "games.ttt.title": "井字棋", "games.ttt.desc": "对战电脑、好友或在线随机对手。",
+          "games.tetris.title": "俄罗斯方块", "games.tetris.desc": "经典方块游戏——消除行来获得分数。",
+          "games.tetris.next": "下一个", "games.tetris.level": "等级", "games.tetris.lines": "行数",
+          "games.controls.tetris": "操作：方向键（上—旋转，空格—快速下落）",
           "ttt.mode.pvp": "双人对战", "ttt.mode.bot": "人机对战", "ttt.mode.online": "在线对战",
           "ttt.turnPrefix": "轮到：", "ttt.winsSuffix": "获胜", "ttt.draw": "平局", "ttt.botThinking": "电脑思考中…",
           "ttt.scoreXLabel": "X 胜场", "ttt.scoreOLabel": "O 胜场", "ttt.scoreDrawLabel": "平局", "ttt.reset": "重新开始",
@@ -5080,6 +5218,9 @@
           "games.controls.2048": "नियंत्रण: तीर कुंजी या स्वाइप",
           "games.backToList": "← गेम सूची पर वापस",
           "games.ttt.title": "एक्स-ओ", "games.ttt.desc": "बॉट, दोस्त या ऑनलाइन रैंडम प्रतिद्वंद्वी के साथ खेलें।",
+          "games.tetris.title": "टेट्रिस", "games.tetris.desc": "क्लासिक ब्लॉक गेम — पंक्तियाँ भरकर अंक बटोरें।",
+          "games.tetris.next": "अगला", "games.tetris.level": "स्तर", "games.tetris.lines": "पंक्तियाँ",
+          "games.controls.tetris": "नियंत्रण: तीर कुंजी (ऊपर — घुमाएं, स्पेस — तेज़ गिराएं)",
           "ttt.mode.pvp": "2 खिलाड़ी", "ttt.mode.bot": "बॉट के साथ", "ttt.mode.online": "ऑनलाइन",
           "ttt.turnPrefix": "बारी:", "ttt.winsSuffix": "जीता", "ttt.draw": "ड्रॉ", "ttt.botThinking": "बॉट सोच रहा है…",
           "ttt.scoreXLabel": "X जीत", "ttt.scoreOLabel": "O जीत", "ttt.scoreDrawLabel": "ड्रॉ", "ttt.reset": "फिर से शुरू करें",
@@ -5298,6 +5439,9 @@
           "games.controls.2048": "Controles: flechas o deslizar",
           "games.backToList": "← Volver a los juegos",
           "games.ttt.title": "Tres en raya", "games.ttt.desc": "Contra el bot, un amigo o un rival aleatorio en línea.",
+          "games.tetris.title": "Tetris", "games.tetris.desc": "El clásico juego de bloques — completa líneas para sumar puntos.",
+          "games.tetris.next": "Siguiente", "games.tetris.level": "Nivel", "games.tetris.lines": "Líneas",
+          "games.controls.tetris": "Controles: flechas (arriba — girar, espacio — caída rápida)",
           "ttt.mode.pvp": "2 JUGADORES", "ttt.mode.bot": "CONTRA BOT", "ttt.mode.online": "EN LÍNEA",
           "ttt.turnPrefix": "Turno:", "ttt.winsSuffix": "GANA", "ttt.draw": "EMPATE", "ttt.botThinking": "El bot está pensando…",
           "ttt.scoreXLabel": "Victorias X", "ttt.scoreOLabel": "Victorias O", "ttt.scoreDrawLabel": "Empates", "ttt.reset": "Reiniciar",
@@ -5516,6 +5660,9 @@
           "games.controls.2048": "التحكم: مفاتيح الأسهم أو التمرير",
           "games.backToList": "← العودة إلى الألعاب",
           "games.ttt.title": "إكس أو", "games.ttt.desc": "العب ضد الروبوت أو صديق أو خصم عشوائي عبر الإنترنت.",
+          "games.tetris.title": "تتريس", "games.tetris.desc": "لعبة المكعبات الكلاسيكية — أكمل الصفوف لتسجيل النقاط.",
+          "games.tetris.next": "التالي", "games.tetris.level": "المستوى", "games.tetris.lines": "الصفوف",
+          "games.controls.tetris": "التحكم: مفاتيح الأسهم (أعلى — تدوير، مسافة — إسقاط سريع)",
           "ttt.mode.pvp": "لاعبان", "ttt.mode.bot": "ضد الروبوت", "ttt.mode.online": "عبر الإنترنت",
           "ttt.turnPrefix": "الدور:", "ttt.winsSuffix": "فاز", "ttt.draw": "تعادل", "ttt.botThinking": "الروبوت يفكر…",
           "ttt.scoreXLabel": "انتصارات X", "ttt.scoreOLabel": "انتصارات O", "ttt.scoreDrawLabel": "التعادلات", "ttt.reset": "إعادة البدء",
@@ -5734,6 +5881,9 @@
           "games.controls.2048": "Управление: стрелки или свайп",
           "games.backToList": "← К списку игр",
           "games.ttt.title": "Крестики-нолики", "games.ttt.desc": "Против бота, друга или случайного соперника онлайн.",
+          "games.tetris.title": "Тетрис", "games.tetris.desc": "Классическая игра с блоками — собирайте линии и зарабатывайте очки.",
+          "games.tetris.next": "Далее", "games.tetris.level": "Уровень", "games.tetris.lines": "Линии",
+          "games.controls.tetris": "Управление: стрелки (вверх — поворот, пробел — быстрое падение)",
           "ttt.mode.pvp": "2 ИГРОКА", "ttt.mode.bot": "С БОТОМ", "ttt.mode.online": "ОНЛАЙН",
           "ttt.turnPrefix": "Ход:", "ttt.winsSuffix": "ПОБЕДИЛ", "ttt.draw": "НИЧЬЯ", "ttt.botThinking": "Бот думает…",
           "ttt.scoreXLabel": "Победы X", "ttt.scoreOLabel": "Победы O", "ttt.scoreDrawLabel": "Ничьи", "ttt.reset": "Сбросить",
@@ -6399,8 +6549,10 @@
         $('#snakeGameWrap').classList.add('hidden');
         $('#game2048Wrap').classList.add('hidden');
         $('#tttGameWrap').classList.add('hidden');
+        $('#tetrisGameWrap').classList.add('hidden');
         snakeStop();
         tttStopOnline();
+        tetrisStop();
       }
 
       function bindGamesEvents() {
@@ -6428,6 +6580,11 @@
           $('#tttOnlineActions').classList.add('hidden');
           $('#tttOverlay').classList.add('hidden');
           tttResetLocal();
+        });
+        $('#gameCardTetris').addEventListener('click', () => {
+          $('#gamesPicker').classList.add('hidden');
+          $('#tetrisGameWrap').classList.remove('hidden');
+          tetrisInit();
         });
         $$('.game-back-btn').forEach(b => b.addEventListener('click', showGamesPicker));
 
@@ -6459,6 +6616,36 @@
           if (map[e.key]) { e.preventDefault(); g2048Move(map[e.key]); }
         });
         bindSwipe($('#g2048Board'), g2048Move);
+
+        /* --- Tetris bindings --- */
+        $('#tetrisStartBtn').addEventListener('click', tetrisStart);
+        $('#tetrisTouchControls').addEventListener('click', (e) => {
+          const btn = e.target.closest('button[data-act]');
+          if (btn) tetrisAction(btn.dataset.act);
+        });
+        document.addEventListener('keydown', (e) => {
+          if (!$('#tetrisGameWrap') || $('#tetrisGameWrap').classList.contains('hidden')) return;
+          const map = { ArrowLeft: 'left', ArrowRight: 'right', ArrowDown: 'down', ArrowUp: 'rotate', ' ': 'drop' };
+          if (map[e.key] !== undefined) { e.preventDefault(); tetrisAction(map[e.key]); }
+        });
+        let tetrisSwipeSX = 0, tetrisSwipeSY = 0, tetrisSwipeTracking = false;
+        const tetrisCvs = $('#tetrisCanvas');
+        if (tetrisCvs) {
+          tetrisCvs.addEventListener('touchstart', (e) => {
+            const t = e.changedTouches[0];
+            tetrisSwipeSX = t.clientX; tetrisSwipeSY = t.clientY; tetrisSwipeTracking = true;
+          }, { passive: true });
+          tetrisCvs.addEventListener('touchend', (e) => {
+            if (!tetrisSwipeTracking) return;
+            tetrisSwipeTracking = false;
+            const t = e.changedTouches[0];
+            const dx = t.clientX - tetrisSwipeSX, dy = t.clientY - tetrisSwipeSY;
+            const dist = Math.max(Math.abs(dx), Math.abs(dy));
+            if (dist < 20) { tetrisAction('rotate'); return; }
+            if (Math.abs(dx) > Math.abs(dy)) tetrisAction(dx > 0 ? 'right' : 'left');
+            else tetrisAction(dy > 0 ? 'down' : 'rotate');
+          }, { passive: true });
+        }
       }
 
       function bindSwipe(el, cb) {
@@ -6878,6 +7065,359 @@
           }
         }
         return false;
+      }
+
+      /* ---------- TETRIS ---------- */
+      const TETRIS_COLS = 10;
+      const TETRIS_ROWS = 20;
+      const TETRIS_COLORS = {
+        I: '#4dd8e6', O: '#f5d547', T: '#b06fe0', S: '#5fd66b',
+        Z: '#e2543f', J: '#4d7de6', L: '#e88a3c',
+      };
+      const TETRIS_SHAPES = {
+        I: [[[0,1],[1,1],[2,1],[3,1]], [[2,0],[2,1],[2,2],[2,3]], [[0,2],[1,2],[2,2],[3,2]], [[1,0],[1,1],[1,2],[1,3]]],
+        O: [[[1,0],[2,0],[1,1],[2,1]], [[1,0],[2,0],[1,1],[2,1]], [[1,0],[2,0],[1,1],[2,1]], [[1,0],[2,0],[1,1],[2,1]]],
+        T: [[[1,0],[0,1],[1,1],[2,1]], [[1,0],[1,1],[2,1],[1,2]], [[0,1],[1,1],[2,1],[1,2]], [[1,0],[0,1],[1,1],[1,2]]],
+        S: [[[1,0],[2,0],[0,1],[1,1]], [[1,0],[1,1],[2,1],[2,2]], [[1,1],[2,1],[0,2],[1,2]], [[0,0],[0,1],[1,1],[1,2]]],
+        Z: [[[0,0],[1,0],[1,1],[2,1]], [[2,0],[1,1],[2,1],[1,2]], [[0,1],[1,1],[1,2],[2,2]], [[1,0],[0,1],[1,1],[0,2]]],
+        J: [[[0,0],[0,1],[1,1],[2,1]], [[1,0],[2,0],[1,1],[1,2]], [[0,1],[1,1],[2,1],[2,2]], [[1,0],[1,1],[0,2],[1,2]]],
+        L: [[[2,0],[0,1],[1,1],[2,1]], [[1,0],[1,1],[1,2],[2,2]], [[0,1],[1,1],[2,1],[0,2]], [[0,0],[1,0],[1,1],[1,2]]],
+      };
+      const TETRIS_KEYS = Object.keys(TETRIS_SHAPES);
+
+      let tetrisState = null;
+      let tetrisTimer = null;
+      let tetrisDropInterval = 800;
+
+      function tetrisBestKey() { return 'madein_tetris_best'; }
+      function tetrisGetBest() { return Number(localStorage.getItem(tetrisBestKey()) || 0); }
+      function tetrisSetBest(v) { localStorage.setItem(tetrisBestKey(), String(v)); }
+
+      function tetrisInit() {
+        tetrisStop();
+        const cvs = $('#tetrisCanvas');
+        cvs.width = cvs.clientWidth || 300;
+        cvs.height = cvs.clientHeight || 600;
+        $('#tetrisBest').textContent = tetrisGetBest();
+        $('#tetrisScore').textContent = '0';
+        $('#tetrisLevel').textContent = '1';
+        $('#tetrisLines').textContent = '0';
+        $('#tetrisOverlay').classList.remove('hidden');
+        $('#tetrisOverlayText').textContent = t('games.tapToStart');
+        $('#tetrisOverlayText').dataset.i18n = 'games.tapToStart';
+        $('#tetrisStartBtn').textContent = t('games.newGame');
+        $('#tetrisCanvasWrap').classList.remove('game-shake');
+        tetrisState = null;
+        tetrisDrawEmpty();
+        tetrisDrawNextEmpty();
+      }
+
+      function tetrisRandomBag() {
+        const bag = TETRIS_KEYS.slice();
+        for (let i = bag.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [bag[i], bag[j]] = [bag[j], bag[i]];
+        }
+        return bag;
+      }
+
+      function tetrisNewPiece(key) {
+        return { key, rot: 0, x: 3, y: -2 };
+      }
+
+      function tetrisNewState() {
+        const grid = [];
+        for (let r = 0; r < TETRIS_ROWS; r++) grid.push(new Array(TETRIS_COLS).fill(null));
+        const bag1 = tetrisRandomBag();
+        const bag2 = tetrisRandomBag();
+        return {
+          grid,
+          queue: bag1.concat(bag2),
+          current: null,
+          score: 0,
+          lines: 0,
+          level: 1,
+          alive: true,
+        };
+      }
+
+      function tetrisRefillQueue(s) {
+        if (s.queue.length < 7) s.queue = s.queue.concat(tetrisRandomBag());
+      }
+
+      function tetrisCells(piece) {
+        return TETRIS_SHAPES[piece.key][piece.rot].map(([cx, cy]) => ({ x: piece.x + cx, y: piece.y + cy }));
+      }
+
+      function tetrisCollides(s, piece) {
+        for (const c of tetrisCells(piece)) {
+          if (c.x < 0 || c.x >= TETRIS_COLS || c.y >= TETRIS_ROWS) return true;
+          if (c.y >= 0 && s.grid[c.y][c.x]) return true;
+        }
+        return false;
+      }
+
+      function tetrisSpawn(s) {
+        tetrisRefillQueue(s);
+        const key = s.queue.shift();
+        const piece = tetrisNewPiece(key);
+        if (tetrisCollides(s, piece)) {
+          s.current = piece;
+          tetrisGameOver();
+          return;
+        }
+        s.current = piece;
+      }
+
+      function tetrisStart() {
+        tetrisState = tetrisNewState();
+        tetrisSpawn(tetrisState);
+        $('#tetrisOverlay').classList.add('hidden');
+        $('#tetrisScore').textContent = '0';
+        $('#tetrisLevel').textContent = '1';
+        $('#tetrisLines').textContent = '0';
+        $('#tetrisCanvasWrap').classList.remove('game-shake');
+        tetrisDropInterval = 800;
+        clearInterval(tetrisTimer);
+        tetrisTimer = setInterval(tetrisTick, tetrisDropInterval);
+        tetrisDraw();
+        tetrisDrawNext();
+      }
+
+      function tetrisStop() {
+        clearInterval(tetrisTimer);
+        tetrisTimer = null;
+      }
+
+      function tetrisRestartTimer() {
+        clearInterval(tetrisTimer);
+        tetrisTimer = setInterval(tetrisTick, tetrisDropInterval);
+      }
+
+      function tetrisAction(act) {
+        if (!tetrisState || !tetrisState.alive) return;
+        const s = tetrisState;
+        if (act === 'left' || act === 'right') {
+          const dx = act === 'left' ? -1 : 1;
+          const moved = { ...s.current, x: s.current.x + dx };
+          if (!tetrisCollides(s, moved)) { s.current = moved; tetrisDraw(); }
+        } else if (act === 'down') {
+          tetrisSoftDrop();
+        } else if (act === 'rotate') {
+          const nextRot = (s.current.rot + 1) % 4;
+          const rotated = { ...s.current, rot: nextRot };
+          if (!tetrisCollides(s, rotated)) {
+            s.current = rotated;
+          } else {
+            const kicks = [-1, 1, -2, 2];
+            for (const k of kicks) {
+              const kicked = { ...rotated, x: rotated.x + k };
+              if (!tetrisCollides(s, kicked)) { s.current = kicked; break; }
+            }
+          }
+          tetrisDraw();
+        } else if (act === 'drop') {
+          tetrisHardDrop();
+        }
+      }
+
+      function tetrisSoftDrop() {
+        const s = tetrisState;
+        const moved = { ...s.current, y: s.current.y + 1 };
+        if (!tetrisCollides(s, moved)) {
+          s.current = moved;
+          s.score += 1;
+          $('#tetrisScore').textContent = s.score;
+          tetrisDraw();
+        } else {
+          tetrisLockPiece();
+        }
+      }
+
+      function tetrisHardDrop() {
+        const s = tetrisState;
+        let dist = 0;
+        while (!tetrisCollides(s, { ...s.current, y: s.current.y + 1 })) {
+          s.current = { ...s.current, y: s.current.y + 1 };
+          dist++;
+        }
+        s.score += dist * 2;
+        $('#tetrisScore').textContent = s.score;
+        tetrisLockPiece();
+      }
+
+      function tetrisTick() {
+        if (!tetrisState || !tetrisState.alive) return;
+        const s = tetrisState;
+        const moved = { ...s.current, y: s.current.y + 1 };
+        if (!tetrisCollides(s, moved)) {
+          s.current = moved;
+          tetrisDraw();
+        } else {
+          tetrisLockPiece();
+        }
+      }
+
+      function tetrisLockPiece() {
+        const s = tetrisState;
+        for (const c of tetrisCells(s.current)) {
+          if (c.y < 0) { tetrisGameOver(); return; }
+          s.grid[c.y][c.x] = s.current.key;
+        }
+        const cleared = tetrisClearLines(s);
+        if (cleared > 0) {
+          const points = [0, 100, 300, 500, 800][cleared] * s.level;
+          s.score += points;
+          s.lines += cleared;
+          const newLevel = Math.floor(s.lines / 10) + 1;
+          if (newLevel !== s.level) {
+            s.level = newLevel;
+            tetrisDropInterval = Math.max(120, 800 - (s.level - 1) * 70);
+            tetrisRestartTimer();
+          }
+          $('#tetrisScore').textContent = s.score;
+          $('#tetrisScore').classList.remove('game-score-pulse');
+          void $('#tetrisScore').offsetWidth;
+          $('#tetrisScore').classList.add('game-score-pulse');
+          $('#tetrisLevel').textContent = s.level;
+          $('#tetrisLines').textContent = s.lines;
+        }
+        tetrisSpawn(s);
+        tetrisDraw();
+        tetrisDrawNext();
+      }
+
+      function tetrisClearLines(s) {
+        let cleared = 0;
+        for (let r = TETRIS_ROWS - 1; r >= 0; r--) {
+          if (s.grid[r].every(cell => cell)) {
+            s.grid.splice(r, 1);
+            s.grid.unshift(new Array(TETRIS_COLS).fill(null));
+            cleared++;
+            r++;
+          }
+        }
+        return cleared;
+      }
+
+      function tetrisGameOver() {
+        tetrisState.alive = false;
+        clearInterval(tetrisTimer);
+        tetrisTimer = null;
+        const best = Math.max(tetrisGetBest(), tetrisState.score);
+        tetrisSetBest(best);
+        $('#tetrisBest').textContent = best;
+        const wrap = $('#tetrisCanvasWrap');
+        wrap.classList.remove('game-shake');
+        void wrap.offsetWidth;
+        wrap.classList.add('game-shake');
+        setTimeout(() => {
+          $('#tetrisOverlay').classList.remove('hidden');
+          $('#tetrisOverlayText').textContent = t('games.gameOver');
+          $('#tetrisOverlayText').removeAttribute('data-i18n');
+          $('#tetrisStartBtn').textContent = t('games.newGame');
+        }, 250);
+      }
+
+      function tetrisDrawEmpty() {
+        const cvs = $('#tetrisCanvas');
+        const ctx = cvs.getContext('2d');
+        const styles = getComputedStyle(document.documentElement);
+        ctx.fillStyle = styles.getPropertyValue('--bg-alt').trim() || '#191922';
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
+      }
+
+      function tetrisDrawNextEmpty() {
+        const cvs = $('#tetrisNextCanvas');
+        if (!cvs) return;
+        const ctx = cvs.getContext('2d');
+        const styles = getComputedStyle(document.documentElement);
+        ctx.fillStyle = styles.getPropertyValue('--bg').trim() || '#12121a';
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
+      }
+
+      function tetrisDraw() {
+        if (!tetrisState) return;
+        const cvs = $('#tetrisCanvas');
+        const ctx = cvs.getContext('2d');
+        const size = cvs.width / TETRIS_COLS;
+        const styles = getComputedStyle(document.documentElement);
+        const bg = styles.getPropertyValue('--bg-alt').trim() || '#191922';
+        const border = styles.getPropertyValue('--border').trim() || '#33333f';
+
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+        const s = tetrisState;
+        for (let r = 0; r < TETRIS_ROWS; r++) {
+          for (let c = 0; c < TETRIS_COLS; c++) {
+            if (s.grid[r][c]) tetrisDrawCell(ctx, c, r, size, TETRIS_COLORS[s.grid[r][c]]);
+          }
+        }
+
+        if (s.current) {
+          for (const cell of tetrisCells(s.current)) {
+            if (cell.y >= 0) tetrisDrawCell(ctx, cell.x, cell.y, size, TETRIS_COLORS[s.current.key]);
+          }
+        }
+
+        ctx.strokeStyle = border;
+        ctx.globalAlpha = 0.25;
+        ctx.lineWidth = 1;
+        for (let c = 1; c < TETRIS_COLS; c++) {
+          ctx.beginPath();
+          ctx.moveTo(c * size, 0);
+          ctx.lineTo(c * size, cvs.height);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      function tetrisDrawCell(ctx, x, y, size, color) {
+        const pad = 1.5;
+        ctx.fillStyle = color;
+        const px = x * size + pad, py = y * size + pad, w = size - pad * 2, h = size - pad * 2;
+        if (ctx.roundRect) {
+          ctx.beginPath();
+          ctx.roundRect(px, py, w, h, 3);
+          ctx.fill();
+        } else {
+          ctx.fillRect(px, py, w, h);
+        }
+      }
+
+      function tetrisDrawNext() {
+        const cvs = $('#tetrisNextCanvas');
+        if (!cvs || !tetrisState || !tetrisState.queue.length) return;
+        const ctx = cvs.getContext('2d');
+        const styles = getComputedStyle(document.documentElement);
+        ctx.fillStyle = styles.getPropertyValue('--bg').trim() || '#12121a';
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+        const key = tetrisState.queue[0];
+        const cells = TETRIS_SHAPES[key][0];
+        const minX = Math.min(...cells.map(c => c[0])), maxX = Math.max(...cells.map(c => c[0]));
+        const minY = Math.min(...cells.map(c => c[1])), maxY = Math.max(...cells.map(c => c[1]));
+        const w = maxX - minX + 1, h = maxY - minY + 1;
+        const size = Math.min(cvs.width / 4, cvs.height / 4);
+        const offX = (cvs.width - w * size) / 2 - minX * size;
+        const offY = (cvs.height - h * size) / 2 - minY * size;
+        cells.forEach(([cx, cy]) => {
+          tetrisDrawCellAt(ctx, cx * size + offX, cy * size + offY, size, TETRIS_COLORS[key]);
+        });
+      }
+
+      function tetrisDrawCellAt(ctx, px, py, size, color) {
+        const pad = 1.5;
+        ctx.fillStyle = color;
+        const x = px + pad, y = py + pad, w = size - pad * 2, h = size - pad * 2;
+        if (ctx.roundRect) {
+          ctx.beginPath();
+          ctx.roundRect(x, y, w, h, 3);
+          ctx.fill();
+        } else {
+          ctx.fillRect(x, y, w, h);
+        }
       }
 
       /* ---------- X VA O (TIC-TAC-TOE) ---------- */
