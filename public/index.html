@@ -3904,6 +3904,97 @@
       min-height: 24px;
       font-size: 17px;
     }
+
+    /* ---- Checkers ---- */
+    #checkersGameWrap.game-panel {
+      max-width: 760px;
+    }
+    .checkers-board {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 3px solid var(--accent-2);
+      position: relative;
+    }
+    .checkers-sq {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .checkers-sq.light { background: #e9dcbf; cursor: default; }
+    .checkers-sq.dark { background: #6b4326; }
+    .checkers-sq.selected { box-shadow: inset 0 0 0 4px var(--accent-2); }
+    .checkers-sq.move-hint::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 26%;
+      height: 26%;
+      border-radius: 50%;
+      background: rgba(226, 84, 63, 0.55);
+    }
+    .checkers-sq.capture-hint::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 34%;
+      height: 34%;
+      border-radius: 50%;
+      background: transparent;
+      box-shadow: 0 0 0 3px rgba(226, 84, 63, 0.8);
+    }
+    .checkers-piece {
+      width: 76%;
+      height: 76%;
+      border-radius: 50%;
+      pointer-events: none;
+      box-shadow: 0 3px 4px rgba(0, 0, 0, 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.25), inset 0 -3px 5px rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .12s ease;
+    }
+    .checkers-sq:hover .checkers-piece { transform: translateY(-2px); }
+    .checkers-piece.w {
+      background: radial-gradient(circle at 35% 30%, #fff8ea, #e8d9b0 65%, #c9b483);
+      border: 2px solid #a68a56;
+    }
+    .checkers-piece.b {
+      background: radial-gradient(circle at 35% 30%, #4a3226, #2a1810 65%, #180d08);
+      border: 2px solid #1a0f08;
+    }
+    .checkers-piece .checkers-crown {
+      font-size: 55%;
+      color: var(--accent-2);
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,.4));
+    }
+    .checkers-flyer {
+      position: absolute;
+      width: 12.5%;
+      height: 12.5%;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 30;
+      transition: left .2s cubic-bezier(.4,0,.2,1), top .2s cubic-bezier(.4,0,.2,1);
+      will-change: left, top;
+    }
   </style>
 </head>
 
@@ -4160,6 +4251,11 @@
             <span class="game-card-title" data-i18n="games.chess.title">Shaxmat</span>
             <span class="game-card-desc" data-i18n="games.chess.desc">Klassik shaxmat o'yini — botga qarshi yoki do'stingiz bilan o'ynang.</span>
           </button>
+          <button type="button" class="game-card" id="gameCardCheckers">
+            <span class="game-card-emoji">⚫</span>
+            <span class="game-card-title" data-i18n="games.checkers.title">Shashka</span>
+            <span class="game-card-desc" data-i18n="games.checkers.desc">Klassik shashka o'yini — botga qarshi yoki do'stingiz bilan o'ynang.</span>
+          </button>
         </div>
 
         <!-- SNAKE GAME -->
@@ -4369,6 +4465,43 @@
                 <div class="chess-captured" id="chessCapturedB"></div>
               </div>
               <button type="button" class="btn btn-primary btn-sm" id="chessResetBtn" data-i18n="games.chess.restart">Qaytadan boshlash</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHECKERS -->
+        <div id="checkersGameWrap" class="game-panel hidden">
+          <button type="button" class="game-back-btn" data-i18n="games.backToList">← O'yinlar ro'yxatiga</button>
+          <div class="game-panel-head">
+            <h2 class="game-panel-title" data-i18n="games.checkers.title">Shashka</h2>
+          </div>
+          <div class="chess-stage">
+            <div class="chess-board-frame">
+              <div class="checkers-board" id="checkersBoard"></div>
+            </div>
+            <div class="chess-side">
+              <div class="chess-card">
+                <h3 data-i18n="games.chess.mode">O'yin rejimi</h3>
+                <div class="chess-toggle" id="checkersModeToggle">
+                  <button type="button" class="chess-toggle-btn active" data-mode="2p" data-i18n="games.chess.vsFriend">Do'st bilan</button>
+                  <button type="button" class="chess-toggle-btn" data-mode="bot" data-i18n="games.chess.vsBot">Botga qarshi</button>
+                </div>
+                <div class="chess-diff-toggle" id="checkersDiffToggle" style="display:none;">
+                  <button type="button" class="chess-toggle-btn" data-diff="easy" data-i18n="games.chess.easy">Oson</button>
+                  <button type="button" class="chess-toggle-btn active" data-diff="hard" data-i18n="games.chess.hard">Qattiq</button>
+                </div>
+              </div>
+              <div class="chess-card">
+                <h3 data-i18n="games.chess.turn">Navbat</h3>
+                <div class="chess-turn-indicator"><span class="chess-dot w" id="checkersTurnDot"></span><span id="checkersTurnText" data-i18n="games.chess.white">Oq</span></div>
+                <div class="chess-status-msg" id="checkersStatus" data-i18n="games.checkers.status">Donani bosing, so'ng yurish uchun katakni tanlang.</div>
+              </div>
+              <div class="chess-card">
+                <h3 data-i18n="games.chess.captured">Yutilgan donalar</h3>
+                <div class="chess-captured" id="checkersCapturedW"></div>
+                <div class="chess-captured" id="checkersCapturedB"></div>
+              </div>
+              <button type="button" class="btn btn-primary btn-sm" id="checkersResetBtn" data-i18n="games.chess.restart">Qaytadan boshlash</button>
             </div>
           </div>
         </div>
@@ -4913,6 +5046,8 @@
           "games.chess.status": "Donani bosing, so'ng yurish uchun katakni tanlang.",
           "games.chess.win": "{color} g'alaba qozondi! Shoh yiqildi.",
           "games.chess.captured": "Yutilgan donalar", "games.chess.restart": "Qaytadan boshlash",
+          "games.checkers.title": "Shashka", "games.checkers.desc": "Klassik shashka o'yini — botga qarshi yoki do'stingiz bilan o'ynang.",
+          "games.checkers.status": "Donani bosing, so'ng yurish uchun katakni tanlang.",
           "games.controls.pacman": "Boshqarish: strelka tugmalari yoki svayp", "games.lives": "Jonlar",
           "games.tetris.double": "DUBL!", "games.tetris.triple": "TRIPL!", "games.tetris.tetrisClear": "TETRIS!",
           "ttt.mode.pvp": "2 O'YINCHI", "ttt.mode.bot": "BOT BILAN", "ttt.mode.online": "ONLAYN",
@@ -5144,6 +5279,8 @@
           "games.chess.status": "Tap a piece, then tap a square to move.",
           "games.chess.win": "{color} wins! The king has fallen.",
           "games.chess.captured": "Captured pieces", "games.chess.restart": "Restart",
+          "games.checkers.title": "Checkers", "games.checkers.desc": "Classic checkers — play against the bot or a friend.",
+          "games.checkers.status": "Tap a piece, then tap a square to move.",
           "games.controls.pacman": "Controls: arrow keys or swipe", "games.lives": "Lives",
           "games.tetris.double": "DOUBLE!", "games.tetris.triple": "TRIPLE!", "games.tetris.tetrisClear": "TETRIS!",
           "ttt.mode.pvp": "2 PLAYERS", "ttt.mode.bot": "VS BOT", "ttt.mode.online": "ONLINE",
@@ -5375,6 +5512,8 @@
           "games.chess.status": "点击棋子，然后点击目标格子移动。",
           "games.chess.win": "{color}获胜！国王已被吃掉。",
           "games.chess.captured": "被吃掉的棋子", "games.chess.restart": "重新开始",
+          "games.checkers.title": "跳棋", "games.checkers.desc": "经典跳棋——与电脑或朋友对战。",
+          "games.checkers.status": "点击棋子，然后点击目标格子移动。",
           "games.controls.pacman": "操作：方向键或滑动", "games.lives": "生命",
           "games.tetris.double": "双消！", "games.tetris.triple": "三消！", "games.tetris.tetrisClear": "俄罗斯方块！",
           "ttt.mode.pvp": "双人对战", "ttt.mode.bot": "人机对战", "ttt.mode.online": "在线对战",
@@ -5606,6 +5745,8 @@
           "games.chess.status": "एक मोहरा चुनें, फिर चलने के लिए खाना चुनें।",
           "games.chess.win": "{color} जीत गया! राजा गिर गया।",
           "games.chess.captured": "पकड़े गए मोहरे", "games.chess.restart": "फिर से शुरू करें",
+          "games.checkers.title": "चेकर्स", "games.checkers.desc": "क्लासिक चेकर्स खेल — बॉट या दोस्त के खिलाफ खेलें।",
+          "games.checkers.status": "एक मोहरा चुनें, फिर चलने के लिए खाना चुनें।",
           "games.controls.pacman": "नियंत्रण: तीर कुंजी या स्वाइप", "games.lives": "जानें",
           "games.tetris.double": "डबल!", "games.tetris.triple": "ट्रिपल!", "games.tetris.tetrisClear": "टेट्रिस!",
           "ttt.mode.pvp": "2 खिलाड़ी", "ttt.mode.bot": "बॉट के साथ", "ttt.mode.online": "ऑनलाइन",
@@ -5837,6 +5978,8 @@
           "games.chess.status": "Toca una pieza y luego la casilla a la que quieres moverla.",
           "games.chess.win": "¡{color} gana! El rey ha caído.",
           "games.chess.captured": "Piezas capturadas", "games.chess.restart": "Reiniciar",
+          "games.checkers.title": "Damas", "games.checkers.desc": "Damas clásicas — juega contra el bot o un amigo.",
+          "games.checkers.status": "Toca una pieza y luego la casilla a la que quieres moverla.",
           "games.controls.pacman": "Controles: flechas o deslizar", "games.lives": "Vidas",
           "games.tetris.double": "¡DOBLE!", "games.tetris.triple": "¡TRIPLE!", "games.tetris.tetrisClear": "¡TETRIS!",
           "ttt.mode.pvp": "2 JUGADORES", "ttt.mode.bot": "CONTRA BOT", "ttt.mode.online": "EN LÍNEA",
@@ -6068,6 +6211,8 @@
           "games.chess.status": "اضغط على قطعة ثم اضغط على المربع الذي تريد التحرك إليه.",
           "games.chess.win": "فاز {color}! سقط الملك.",
           "games.chess.captured": "القطع المأسورة", "games.chess.restart": "إعادة البدء",
+          "games.checkers.title": "الداما", "games.checkers.desc": "لعبة الداما الكلاسيكية — العب ضد الروبوت أو صديق.",
+          "games.checkers.status": "اضغط على قطعة ثم اضغط على المربع الذي تريد التحرك إليه.",
           "games.controls.pacman": "التحكم: مفاتيح الأسهم أو السحب", "games.lives": "الأرواح",
           "games.tetris.double": "مزدوج!", "games.tetris.triple": "ثلاثي!", "games.tetris.tetrisClear": "تتريس!",
           "ttt.mode.pvp": "لاعبان", "ttt.mode.bot": "ضد الروبوت", "ttt.mode.online": "عبر الإنترنت",
@@ -6299,6 +6444,8 @@
           "games.chess.status": "Нажмите на фигуру, затем на клетку для хода.",
           "games.chess.win": "{color} побеждают! Король пал.",
           "games.chess.captured": "Съеденные фигуры", "games.chess.restart": "Начать заново",
+          "games.checkers.title": "Шашки", "games.checkers.desc": "Классические шашки — играйте против бота или друга.",
+          "games.checkers.status": "Нажмите на шашку, затем на клетку для хода.",
           "games.controls.pacman": "Управление: стрелки или свайп", "games.lives": "Жизни",
           "games.tetris.double": "ДАБЛ!", "games.tetris.triple": "ТРИПЛ!", "games.tetris.tetrisClear": "ТЕТРИС!",
           "ttt.mode.pvp": "2 ИГРОКА", "ttt.mode.bot": "С БОТОМ", "ttt.mode.online": "ОНЛАЙН",
@@ -6969,11 +7116,13 @@
         $('#tetrisGameWrap').classList.add('hidden');
         $('#pacmanGameWrap').classList.add('hidden');
         $('#chessGameWrap').classList.add('hidden');
+        $('#checkersGameWrap').classList.add('hidden');
         snakeStop();
         tttStopOnline();
         tetrisStop();
         pacmanStop();
         chessStop();
+        checkersStop();
       }
 
       function bindGamesEvents() {
@@ -7017,6 +7166,11 @@
           $('#chessGameWrap').classList.remove('hidden');
           chessInit();
         });
+        $('#gameCardCheckers').addEventListener('click', () => {
+          $('#gamesPicker').classList.add('hidden');
+          $('#checkersGameWrap').classList.remove('hidden');
+          checkersInit();
+        });
         $$('.game-back-btn').forEach(b => b.addEventListener('click', showGamesPicker));
 
         /* --- Chess bindings --- */
@@ -7027,6 +7181,15 @@
           chessDifficulty = b.dataset.diff;
         }));
         $('#chessResetBtn').addEventListener('click', chessReset);
+
+        /* --- Checkers bindings --- */
+        $$('#checkersModeToggle .chess-toggle-btn').forEach(b => b.addEventListener('click', () => checkersSetMode(b.dataset.mode)));
+        $$('#checkersDiffToggle .chess-toggle-btn').forEach(b => b.addEventListener('click', () => {
+          $$('#checkersDiffToggle .chess-toggle-btn').forEach(x => x.classList.remove('active'));
+          b.classList.add('active');
+          checkersDifficulty = b.dataset.diff;
+        }));
+        $('#checkersResetBtn').addEventListener('click', checkersReset);
 
         /* --- X va O bindings --- */
         $$('#tttModeSelect .ttt-mode-btn').forEach(b => b.addEventListener('click', () => tttSetMode(b.dataset.mode)));
@@ -7485,6 +7648,427 @@
       function chessStop() {
         chessBotThinking = false;
         chessAnimating = false;
+      }
+
+/* ---------- CHECKERS ---------- */
+      let checkersBoard, checkersTurn, checkersSelected, checkersLegalMoves, checkersGameOver;
+      let checkersCaptured = { w: [], b: [] };
+      let checkersMode = '2p', checkersDifficulty = 'hard', checkersBotThinking = false, checkersAnimating = false;
+      let checkersForcedPiece = null; // [r,c] when mid-chain-capture, forces continuing with same piece
+      const CHECKERS_BOT_COLOR = 'b';
+      const CHECKERS_MOVE_MS = 200;
+      let checkersBoardBuilt = false;
+      let checkersSqEls = [];
+
+      function checkersCloneBoard(b) { return b.map(row => row.slice()); }
+      function checkersInBounds(r, c) { return r >= 0 && r < 8 && c >= 0 && c < 8; }
+      function checkersIsKing(p) { return p && p.length === 2; }
+      function checkersColorOf(p) { return p ? p[0] : null; }
+
+      function checkersDirsFor(p) {
+        if (checkersIsKing(p)) return [[-1, -1], [-1, 1], [1, -1], [1, 1]];
+        return p[0] === 'w' ? [[-1, -1], [-1, 1]] : [[1, -1], [1, 1]];
+      }
+
+      function checkersPieceCaptures(r, c, boardState) {
+        const p = boardState[r][c];
+        if (!p) return [];
+        const color = p[0];
+        const dirs = checkersIsKing(p) ? [[-1, -1], [-1, 1], [1, -1], [1, 1]] : [[-1, -1], [-1, 1], [1, -1], [1, 1]];
+        const out = [];
+        dirs.forEach(([dr, dc]) => {
+          const mr = r + dr, mc = c + dc;
+          const jr = r + 2 * dr, jc = c + 2 * dc;
+          if (!checkersInBounds(jr, jc)) return;
+          const mid = boardState[mr] ? boardState[mr][mc] : null;
+          if (mid && mid[0] !== color && !boardState[jr][jc]) {
+            out.push({ to: [jr, jc], captured: [mr, mc] });
+          }
+        });
+        return out;
+      }
+
+      function checkersPieceSimpleMoves(r, c, boardState) {
+        const p = boardState[r][c];
+        if (!p) return [];
+        const dirs = checkersDirsFor(p);
+        const out = [];
+        dirs.forEach(([dr, dc]) => {
+          const rr = r + dr, cc = c + dc;
+          if (checkersInBounds(rr, cc) && !boardState[rr][cc]) out.push({ to: [rr, cc] });
+        });
+        return out;
+      }
+
+      function checkersAllCapturesFor(color, boardState) {
+        const out = [];
+        for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+          const p = boardState[r][c];
+          if (!p || p[0] !== color) continue;
+          checkersPieceCaptures(r, c, boardState).forEach(mv => out.push({ from: [r, c], to: mv.to, captured: mv.captured }));
+        }
+        return out;
+      }
+
+      function checkersAllSimpleMovesFor(color, boardState) {
+        const out = [];
+        for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+          const p = boardState[r][c];
+          if (!p || p[0] !== color) continue;
+          checkersPieceSimpleMoves(r, c, boardState).forEach(mv => out.push({ from: [r, c], to: mv.to }));
+        }
+        return out;
+      }
+
+      function checkersLegalMovesForPiece(r, c, boardState) {
+        const color = checkersColorOf(boardState[r][c]);
+        if (!color) return [];
+        const captures = checkersAllCapturesFor(color, boardState);
+        if (captures.length > 0) {
+          return checkersPieceCaptures(r, c, boardState).map(mv => ({ to: mv.to, captured: mv.captured, isCapture: true }));
+        }
+        return checkersPieceSimpleMoves(r, c, boardState).map(mv => ({ to: mv.to, isCapture: false }));
+      }
+
+      function checkersPlayerHasAnyMove(color, boardState) {
+        if (checkersAllCapturesFor(color, boardState).length > 0) return true;
+        return checkersAllSimpleMovesFor(color, boardState).length > 0;
+      }
+
+      function checkersInitBoard() {
+        checkersBoard = Array.from({ length: 8 }, () => Array(8).fill(null));
+        for (let r = 0; r < 3; r++) for (let c = 0; c < 8; c++) {
+          if ((r + c) % 2 === 1) checkersBoard[r][c] = 'b';
+        }
+        for (let r = 5; r < 8; r++) for (let c = 0; c < 8; c++) {
+          if ((r + c) % 2 === 1) checkersBoard[r][c] = 'w';
+        }
+        checkersTurn = 'w'; checkersSelected = null; checkersLegalMoves = [];
+        checkersGameOver = false; checkersForcedPiece = null;
+        checkersCaptured = { w: [], b: [] };
+      }
+
+      function checkersBuildBoard() {
+        if (checkersBoardBuilt) return;
+        checkersBoardBuilt = true;
+        const el = $('#checkersBoard');
+        checkersSqEls = [];
+        for (let r = 0; r < 8; r++) {
+          for (let c = 0; c < 8; c++) {
+            const sq = document.createElement('div');
+            sq.dataset.r = r; sq.dataset.c = c;
+            sq.addEventListener('click', () => checkersOnClick(r, c));
+            el.appendChild(sq);
+            checkersSqEls.push(sq);
+          }
+        }
+      }
+
+      function checkersMakePieceEl(p) {
+        const wrap = document.createElement('span');
+        wrap.className = 'checkers-piece ' + p[0];
+        if (checkersIsKing(p)) {
+          const crown = document.createElement('span');
+          crown.className = 'checkers-crown';
+          crown.textContent = '\u2655';
+          wrap.appendChild(crown);
+        }
+        return wrap;
+      }
+
+      function checkersRender() {
+        for (let r = 0; r < 8; r++) {
+          for (let c = 0; c < 8; c++) {
+            const sq = checkersSqEls[r * 8 + c];
+            sq.className = 'checkers-sq ' + (((r + c) % 2 === 0) ? 'light' : 'dark');
+            sq.innerHTML = '';
+            const p = checkersBoard[r][c];
+            if (p) sq.appendChild(checkersMakePieceEl(p));
+            if (checkersSelected && checkersSelected[0] === r && checkersSelected[1] === c) sq.classList.add('selected');
+            const hint = checkersLegalMoves.find(m => m.to[0] === r && m.to[1] === c);
+            if (hint) sq.classList.add(hint.isCapture ? 'capture-hint' : 'move-hint');
+          }
+        }
+        $('#checkersTurnDot').className = 'chess-dot ' + checkersTurn;
+        $('#checkersTurnText').textContent = checkersTurn === 'w' ? t('games.chess.white') : t('games.chess.black');
+        checkersRenderCaptured();
+      }
+
+      function checkersRenderCaptured() {
+        $('#checkersCapturedW').innerHTML = checkersCaptured.w.map(p => `<span class="checkers-piece ${p[0]}" style="width:18px;height:18px;display:inline-flex;"></span>`).join('');
+        $('#checkersCapturedB').innerHTML = checkersCaptured.b.map(p => `<span class="checkers-piece ${p[0]}" style="width:18px;height:18px;display:inline-flex;"></span>`).join('');
+      }
+
+      function checkersCellPercent(r, c) { return { left: c * 12.5, top: r * 12.5 }; }
+
+      function checkersAnimateMove(from, to, onDone) {
+        const boardEl = $('#checkersBoard');
+        const [fr, fc] = from, [tr, tc] = to;
+        const pieceCode = checkersBoard[fr][fc];
+        if (!pieceCode) { onDone(); return; }
+        checkersAnimating = true;
+
+        const fromSq = checkersSqEls[fr * 8 + fc];
+        const fromPiece = fromSq.querySelector('.checkers-piece');
+        if (fromPiece) fromPiece.style.visibility = 'hidden';
+
+        const flyer = document.createElement('div');
+        flyer.className = 'checkers-flyer';
+        flyer.style.left = (fc * 12.5) + '%';
+        flyer.style.top = (fr * 12.5) + '%';
+        flyer.appendChild(checkersMakePieceEl(pieceCode));
+        boardEl.appendChild(flyer);
+
+        void flyer.offsetWidth;
+        requestAnimationFrame(() => {
+          flyer.style.left = (tc * 12.5) + '%';
+          flyer.style.top = (tr * 12.5) + '%';
+        });
+
+        let finished = false;
+        function finish() {
+          if (finished) return;
+          finished = true;
+          flyer.remove();
+          checkersAnimating = false;
+          onDone();
+        }
+        flyer.addEventListener('transitionend', finish, { once: true });
+        setTimeout(finish, CHECKERS_MOVE_MS + 100);
+      }
+
+      function checkersFinishTurnCheck(color) {
+        const otherColor = color === 'w' ? 'b' : 'w';
+        const otherHasPieces = checkersBoard.some(row => row.some(p => p && p[0] === otherColor));
+        if (!otherHasPieces || !checkersPlayerHasAnyMove(otherColor, checkersBoard)) {
+          checkersGameOver = true;
+          const statusEl = $('#checkersStatus');
+          const winnerLabel = color === 'w' ? t('games.chess.white').replace(/ .*/, '') : t('games.chess.black').replace(/ .*/, '');
+          statusEl.textContent = t('games.chess.win', { color: winnerLabel });
+          statusEl.classList.add('win');
+          return true;
+        }
+        return false;
+      }
+
+      function checkersApplyMove(from, to) {
+        const [fr, fc] = from, [tr, tc] = to;
+        const moving = checkersBoard[fr][fc];
+        const moveInfo = checkersLegalMovesForPiece(fr, fc, checkersBoard).find(m => m.to[0] === tr && m.to[1] === tc);
+        checkersBoard[tr][tc] = moving;
+        checkersBoard[fr][fc] = null;
+        let becameKing = false;
+        if (!checkersIsKing(moving)) {
+          if ((moving[0] === 'w' && tr === 0) || (moving[0] === 'b' && tr === 7)) {
+            checkersBoard[tr][tc] = moving[0] + 'k';
+            becameKing = true;
+          }
+        }
+        let didCapture = false;
+        if (moveInfo && moveInfo.captured) {
+          const [mr, mc] = moveInfo.captured;
+          const capturedPiece = checkersBoard[mr][mc];
+          if (capturedPiece) checkersCaptured[capturedPiece[0]].push(capturedPiece);
+          checkersBoard[mr][mc] = null;
+          didCapture = true;
+        }
+
+        if (didCapture && !becameKing) {
+          const furtherCaptures = checkersPieceCaptures(tr, tc, checkersBoard);
+          if (furtherCaptures.length > 0) {
+            checkersForcedPiece = [tr, tc];
+            checkersSelected = [tr, tc];
+            checkersLegalMoves = checkersLegalMovesForPiece(tr, tc, checkersBoard);
+            checkersRender();
+            checkersMaybeTriggerBotContinue();
+            return;
+          }
+        }
+
+        checkersForcedPiece = null;
+        checkersSelected = null; checkersLegalMoves = [];
+        const mover = checkersTurn;
+        if (checkersFinishTurnCheck(mover)) { checkersRender(); return; }
+        checkersTurn = checkersTurn === 'w' ? 'b' : 'w';
+        const statusEl = $('#checkersStatus');
+        statusEl.textContent = t('games.checkers.status');
+        statusEl.classList.remove('win');
+        checkersRender();
+        checkersMaybeTriggerBot();
+      }
+
+      function checkersOnClick(r, c) {
+        if (checkersGameOver || checkersBotThinking || checkersAnimating) return;
+        if (checkersMode === 'bot' && checkersTurn === CHECKERS_BOT_COLOR) return;
+        const p = checkersBoard[r][c];
+
+        if (checkersForcedPiece) {
+          const [fr, fc] = checkersForcedPiece;
+          const isLegal = checkersLegalMoves.some(m => m.to[0] === r && m.to[1] === c);
+          if (isLegal) {
+            const from = [fr, fc], to = [r, c];
+            checkersAnimateMove(from, to, () => checkersApplyMove(from, to));
+          }
+          return;
+        }
+
+        if (checkersSelected) {
+          const isLegal = checkersLegalMoves.some(m => m.to[0] === r && m.to[1] === c);
+          if (isLegal) {
+            const from = checkersSelected, to = [r, c];
+            checkersSelected = null; checkersLegalMoves = [];
+            checkersRender();
+            checkersAnimateMove(from, to, () => checkersApplyMove(from, to));
+            return;
+          }
+          if (p && p[0] === checkersTurn) {
+            checkersSelected = [r, c];
+            checkersLegalMoves = checkersLegalMovesForPiece(r, c, checkersBoard);
+            checkersRender();
+            return;
+          }
+          checkersSelected = null; checkersLegalMoves = [];
+          checkersRender();
+          return;
+        } else if (p && p[0] === checkersTurn) {
+          const moves = checkersLegalMovesForPiece(r, c, checkersBoard);
+          const captures = checkersAllCapturesFor(checkersTurn, checkersBoard);
+          if (captures.length > 0 && moves.length === 0) return;
+          checkersSelected = [r, c];
+          checkersLegalMoves = moves;
+          checkersRender();
+        }
+      }
+
+      /* ---- Checkers bot (simple negamax) ---- */
+      const CHECKERS_MAN_VALUE = 100, CHECKERS_KING_VALUE = 260;
+
+      function checkersEval(boardState) {
+        let score = 0;
+        for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+          const p = boardState[r][c];
+          if (!p) continue;
+          let v = checkersIsKing(p) ? CHECKERS_KING_VALUE : CHECKERS_MAN_VALUE;
+          if (!checkersIsKing(p)) v += (p[0] === 'w' ? (6 - r) : r) * 4;
+          score += (p[0] === 'w') ? v : -v;
+        }
+        return score;
+      }
+
+      function checkersApplyMoveSim(boardState, from, to, capturedSq) {
+        const nb = checkersCloneBoard(boardState);
+        const [fr, fc] = from, [tr, tc] = to;
+        const moving = nb[fr][fc];
+        nb[tr][tc] = moving;
+        nb[fr][fc] = null;
+        let becameKing = false;
+        if (!checkersIsKing(moving)) {
+          if ((moving[0] === 'w' && tr === 0) || (moving[0] === 'b' && tr === 7)) { nb[tr][tc] = moving[0] + 'k'; becameKing = true; }
+        }
+        if (capturedSq) {
+          const [mr, mc] = capturedSq;
+          nb[mr][mc] = null;
+        }
+        return { board: nb, capturedSq: capturedSq || null, becameKing };
+      }
+
+      function checkersGenMovesForColor(color, boardState) {
+        const captures = checkersAllCapturesFor(color, boardState);
+        const source = captures.length > 0 ? captures : checkersAllSimpleMovesFor(color, boardState);
+        return source;
+      }
+
+      function checkersNegamax(boardState, depth, alpha, beta, color) {
+        const moves = checkersGenMovesForColor(color, boardState);
+        if (moves.length === 0) return color === 'w' ? -100000 : 100000;
+        if (depth === 0) {
+          const val = checkersEval(boardState);
+          return color === 'w' ? val : -val;
+        }
+        let best = -Infinity;
+        for (const mv of moves) {
+          const sim = checkersApplyMoveSim(boardState, mv.from, mv.to, mv.captured);
+          const val = -checkersNegamax(sim.board, depth - 1, -beta, -alpha, color === 'w' ? 'b' : 'w');
+          if (val > best) best = val;
+          if (best > alpha) alpha = best;
+          if (alpha >= beta) break;
+        }
+        return best;
+      }
+
+      function checkersBotPickMove(fromR, fromC) {
+        const depth = checkersDifficulty === 'hard' ? 4 : 1;
+        let moves;
+        if (fromR !== undefined) {
+          moves = checkersPieceCaptures(fromR, fromC, checkersBoard).map(mv => ({ from: [fromR, fromC], to: mv.to, captured: mv.captured }));
+        } else {
+          moves = checkersGenMovesForColor(CHECKERS_BOT_COLOR, checkersBoard);
+        }
+        if (moves.length === 0) return null;
+        let bestMove = null, bestVal = -Infinity, alpha = -Infinity, beta = Infinity;
+        for (const mv of moves) {
+          const sim = checkersApplyMoveSim(checkersBoard, mv.from, mv.to, mv.captured);
+          const val = -checkersNegamax(sim.board, depth - 1, -beta, -alpha, CHECKERS_BOT_COLOR === 'w' ? 'b' : 'w');
+          if (val > bestVal) { bestVal = val; bestMove = mv; }
+          if (val > alpha) alpha = val;
+        }
+        return bestMove;
+      }
+
+      function checkersMaybeTriggerBot() {
+        if (checkersMode !== 'bot' || checkersGameOver || checkersTurn !== CHECKERS_BOT_COLOR) return;
+        checkersBotThinking = true;
+        setTimeout(() => {
+          const mv = checkersBotPickMove();
+          if (!mv) { checkersBotThinking = false; return; }
+          checkersAnimateMove(mv.from, mv.to, () => {
+            checkersBotThinking = false;
+            checkersApplyMove(mv.from, mv.to);
+          });
+        }, 350);
+      }
+
+      function checkersMaybeTriggerBotContinue() {
+        if (checkersMode !== 'bot' || checkersGameOver || checkersTurn !== CHECKERS_BOT_COLOR) return;
+        if (!checkersForcedPiece) return;
+        checkersBotThinking = true;
+        setTimeout(() => {
+          const [fr, fc] = checkersForcedPiece;
+          const mv = checkersBotPickMove(fr, fc);
+          if (!mv) { checkersBotThinking = false; return; }
+          checkersAnimateMove(mv.from, mv.to, () => {
+            checkersBotThinking = false;
+            checkersApplyMove(mv.from, mv.to);
+          });
+        }, 350);
+      }
+
+      function checkersSetMode(mode) {
+        checkersMode = mode;
+        $$('#checkersModeToggle .chess-toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+        $('#checkersDiffToggle').style.display = mode === 'bot' ? 'flex' : 'none';
+        checkersReset();
+      }
+
+      function checkersReset() {
+        checkersInitBoard();
+        checkersBotThinking = false;
+        checkersAnimating = false;
+        $$('#checkersBoard .checkers-flyer').forEach(f => f.remove());
+        const statusEl = $('#checkersStatus');
+        statusEl.classList.remove('win');
+        statusEl.textContent = t('games.checkers.status');
+        checkersRender();
+      }
+
+      function checkersInit() {
+        checkersBuildBoard();
+        checkersReset();
+      }
+
+      function checkersStop() {
+        checkersBotThinking = false;
+        checkersAnimating = false;
       }
 
       /* ---------- SNAKE ---------- */
