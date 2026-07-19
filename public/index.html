@@ -749,6 +749,9 @@
       font-size: 12px;
       margin-top: 3px;
     }
+    .admin-status-line.admin-lastseen {
+      color: var(--text-dim);
+    }
 
     .admin-badge {
       display: inline-block;
@@ -5072,6 +5075,12 @@
           "admin.loading": "Yuklanmoqda...",
           "admin.loadFail": "Foydalanuvchilarni yuklab bo'lmadi.",
           "admin.empty": "Hozircha foydalanuvchilar yo'q.",
+          "admin.lastSeen.never": "Saytga hali kirmagan",
+          "admin.lastSeen.justNow": "Hozir saytda",
+          "admin.lastSeen.minutesAgo": "{n} daqiqa oldin saytda edi",
+          "admin.lastSeen.hoursAgo": "{n} soat oldin saytda edi",
+          "admin.lastSeen.daysAgo": "{n} kun oldin saytda edi",
+          "admin.lastSeen.onDate": "{date} sanasida saytda edi",
           "admin.badge.admin": "Administrator", "admin.badge.banned": "Ban", "admin.badge.muted": "Mut",
           "admin.badge.ok": "Faol",
           "admin.status.bannedUntil": "Ban muddati: {date} gacha",
@@ -5322,6 +5331,12 @@
           "admin.loading": "Loading...",
           "admin.loadFail": "Couldn't load users.",
           "admin.empty": "No users yet.",
+          "admin.lastSeen.never": "Never visited the site",
+          "admin.lastSeen.justNow": "Online right now",
+          "admin.lastSeen.minutesAgo": "Last seen {n} min ago",
+          "admin.lastSeen.hoursAgo": "Last seen {n} h ago",
+          "admin.lastSeen.daysAgo": "Last seen {n} d ago",
+          "admin.lastSeen.onDate": "Last seen on {date}",
           "admin.badge.admin": "Admin", "admin.badge.banned": "Banned", "admin.badge.muted": "Muted",
           "admin.badge.ok": "Active",
           "admin.status.bannedUntil": "Banned until {date}",
@@ -5572,6 +5587,12 @@
           "admin.loading": "加载中...",
           "admin.loadFail": "无法加载用户。",
           "admin.empty": "暂无用户。",
+          "admin.lastSeen.never": "从未访问过网站",
+          "admin.lastSeen.justNow": "当前在线",
+          "admin.lastSeen.minutesAgo": "{n} 分钟前在线",
+          "admin.lastSeen.hoursAgo": "{n} 小时前在线",
+          "admin.lastSeen.daysAgo": "{n} 天前在线",
+          "admin.lastSeen.onDate": "最后在线于 {date}",
           "admin.badge.admin": "管理员", "admin.badge.banned": "已封禁", "admin.badge.muted": "已禁言",
           "admin.badge.ok": "正常",
           "admin.status.bannedUntil": "封禁至 {date}",
@@ -5822,6 +5843,12 @@
           "admin.loading": "लोड हो रहा है...",
           "admin.loadFail": "उपयोगकर्ताओं को लोड नहीं किया जा सका।",
           "admin.empty": "अभी तक कोई उपयोगकर्ता नहीं है।",
+          "admin.lastSeen.never": "कभी साइट पर नहीं आया",
+          "admin.lastSeen.justNow": "अभी ऑनलाइन है",
+          "admin.lastSeen.minutesAgo": "{n} मिनट पहले साइट पर था",
+          "admin.lastSeen.hoursAgo": "{n} घंटे पहले साइट पर था",
+          "admin.lastSeen.daysAgo": "{n} दिन पहले साइट पर था",
+          "admin.lastSeen.onDate": "{date} को साइट पर था",
           "admin.badge.admin": "प्रशासक", "admin.badge.banned": "बैन", "admin.badge.muted": "म्यूट",
           "admin.badge.ok": "सक्रिय",
           "admin.status.bannedUntil": "बैन {date} तक",
@@ -6072,6 +6099,12 @@
           "admin.loading": "Cargando...",
           "admin.loadFail": "No se pudieron cargar los usuarios.",
           "admin.empty": "Todavía no hay usuarios.",
+          "admin.lastSeen.never": "Nunca visitó el sitio",
+          "admin.lastSeen.justNow": "En línea ahora",
+          "admin.lastSeen.minutesAgo": "Visto hace {n} min",
+          "admin.lastSeen.hoursAgo": "Visto hace {n} h",
+          "admin.lastSeen.daysAgo": "Visto hace {n} d",
+          "admin.lastSeen.onDate": "Visto por última vez el {date}",
           "admin.badge.admin": "Administrador", "admin.badge.banned": "Baneado", "admin.badge.muted": "Silenciado",
           "admin.badge.ok": "Activo",
           "admin.status.bannedUntil": "Baneado hasta {date}",
@@ -6322,6 +6355,12 @@
           "admin.loading": "جارٍ التحميل...",
           "admin.loadFail": "تعذر تحميل المستخدمين.",
           "admin.empty": "لا يوجد مستخدمون بعد.",
+          "admin.lastSeen.never": "لم يزر الموقع مطلقًا",
+          "admin.lastSeen.justNow": "متصل الآن",
+          "admin.lastSeen.minutesAgo": "آخر ظهور قبل {n} دقيقة",
+          "admin.lastSeen.hoursAgo": "آخر ظهور قبل {n} ساعة",
+          "admin.lastSeen.daysAgo": "آخر ظهور قبل {n} يوم",
+          "admin.lastSeen.onDate": "آخر ظهور في {date}",
           "admin.badge.admin": "مشرف", "admin.badge.banned": "محظور", "admin.badge.muted": "مكتوم",
           "admin.badge.ok": "نشط",
           "admin.status.bannedUntil": "محظور حتى {date}",
@@ -6572,6 +6611,12 @@
           "admin.loading": "Загрузка...",
           "admin.loadFail": "Не удалось загрузить пользователей.",
           "admin.empty": "Пользователей пока нет.",
+          "admin.lastSeen.never": "Никогда не заходил на сайт",
+          "admin.lastSeen.justNow": "Сейчас на сайте",
+          "admin.lastSeen.minutesAgo": "Был(а) на сайте {n} мин. назад",
+          "admin.lastSeen.hoursAgo": "Был(а) на сайте {n} ч. назад",
+          "admin.lastSeen.daysAgo": "Был(а) на сайте {n} дн. назад",
+          "admin.lastSeen.onDate": "Был(а) на сайте {date}",
           "admin.badge.admin": "Администратор", "admin.badge.banned": "Бан", "admin.badge.muted": "Мут",
           "admin.badge.ok": "Активен",
           "admin.status.bannedUntil": "Бан до: {date}",
@@ -10877,7 +10922,10 @@
           <div class="game-invite-row">
             <div class="game-invite-user">
               <span class="p-online-dot ${u.isOnline ? 'online' : ''}" title="${u.isOnline ? t('profile.online') : t('profile.offline')}"></span>
-              ${escapeHtml(u.fullname)} <span class="view-sub">@${escapeHtml(u.username)}</span>
+              <span>
+                ${escapeHtml(u.fullname)} <span class="view-sub">@${escapeHtml(u.username)}</span><br>
+                <span class="view-sub admin-lastseen">${u.isOnline ? t('profile.online') : fmtLastSeen(u.lastSeenAt)}</span>
+              </span>
             </div>
             <div class="game-invite-actions">
               <button type="button" class="btn btn-ghost btn-sm" data-invite-user="${u.username}" data-invite-type="chess">♞ ${t('games.chess.title')}</button>
@@ -11028,6 +11076,7 @@
               <div class="admin-user-info">
                 <div class="admin-user-name admin-user-clickable" data-username="${u.username}">${escapeHtml(u.fullname || u.username)}</div>
                 <div class="admin-user-uname"><span class="p-online-dot admin-online-dot ${u.isOnline ? 'online' : ''}" title="${u.isOnline ? t('profile.online') : t('profile.offline')}"></span>@${escapeHtml(u.username)} · ${fmtDate(u.joined)}</div>
+                <div class="admin-status-line admin-lastseen">${u.isOnline ? t('profile.online') : fmtLastSeen(u.lastSeenAt)}</div>
                 ${badges.join('')}
                 ${statusLines}
               </div>
@@ -11277,6 +11326,23 @@
         try {
           const locale = (I18N[currentLang] && I18N[currentLang]._locale) || 'uz-UZ';
           return new Date(iso).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
+        } catch (e) { return ''; }
+      }
+
+      /* Admin/boss uchun: foydalanuvchi oxirgi marta qachon saytda bo'lganini o'qilishi oson shaklda ko'rsatadi */
+      function fmtLastSeen(ts) {
+        if (!ts) return t('admin.lastSeen.never');
+        const diffSec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+        if (diffSec < 90) return t('admin.lastSeen.justNow');
+        const diffMin = Math.floor(diffSec / 60);
+        if (diffMin < 60) return t('admin.lastSeen.minutesAgo', { n: diffMin });
+        const diffHr = Math.floor(diffMin / 60);
+        if (diffHr < 24) return t('admin.lastSeen.hoursAgo', { n: diffHr });
+        const diffDay = Math.floor(diffHr / 24);
+        if (diffDay < 30) return t('admin.lastSeen.daysAgo', { n: diffDay });
+        try {
+          const locale = (I18N[currentLang] && I18N[currentLang]._locale) || 'uz-UZ';
+          return t('admin.lastSeen.onDate', { date: new Date(ts).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' }) });
         } catch (e) { return ''; }
       }
 

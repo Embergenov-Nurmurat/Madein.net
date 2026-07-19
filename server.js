@@ -269,13 +269,21 @@ const lastActiveMap = Object.create(null);
 const ONLINE_THRESHOLD_MS = 90 * 1000; // 90 soniya
 app.use((req, res, next) => {
   const uname = req.session && req.session.username;
-  if (uname) lastActiveMap[uname] = Date.now();
+  if (uname) {
+    lastActiveMap[uname] = Date.now();
+    if (db.users[uname]) db.users[uname].lastSeenAt = lastActiveMap[uname];
+  }
   next();
 });
 function isUserOnline(uname) {
   const t = lastActiveMap[uname];
   return !!t && (Date.now() - t) < ONLINE_THRESHOLD_MS;
 }
+function getLastSeen(uname) {
+  return lastActiveMap[uname] || (db.users[uname] && db.users[uname].lastSeenAt) || null;
+}
+/* lastSeenAt vaqti-vaqti bilan diskka yoziladi — har so'rovda emas */
+setInterval(() => { saveDB().catch(() => {}); }, 5 * 60 * 1000).unref();
 
 /* rasm/video yuklash (multer) */
 const storage = multer.diskStorage({
@@ -1387,6 +1395,7 @@ app.get('/api/admin/users', requireAuth, requireAdmin, async (req, res) => {
       isBoss: !!u.isBoss,
       adminAccessRevoked: !!u.adminAccessRevoked,
       isOnline: isUserOnline(uname),
+      lastSeenAt: getLastSeen(uname),
       joined: u.joined,
       worksCount: (db.works[uname] || []).length,
       bannedUntil: u.moderation.bannedUntil,
@@ -2355,7 +2364,7 @@ app.get('/api/games/admins', requireAuth, requireAdmin, (req, res) => {
   const me = req.session.username;
   const list = Object.keys(db.users)
     .filter(uname => uname !== me && (db.users[uname].isAdmin || db.users[uname].isBoss) && !db.users[uname].adminAccessRevoked)
-    .map(uname => Object.assign(boardPublicUser(uname), { isOnline: isUserOnline(uname) }));
+    .map(uname => Object.assign(boardPublicUser(uname), { isOnline: isUserOnline(uname), lastSeenAt: getLastSeen(uname) }));
   res.json({ users: list });
 });
 
