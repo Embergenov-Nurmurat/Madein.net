@@ -1881,6 +1881,551 @@ setInterval(() => {
   }
 }, 60 * 1000).unref();
 
+/* ===================== SHAXMAT VA SHASHKA — ONLAYN O'YIN =====================
+   Frontendning "do'st bilan / bot" rejimlaridagi soddalashtirilgan qoidalar bilan
+   bir xil mantiq (rokirovka/en-passant yo'q, piyoda avtomatik ferzga aylanadi,
+   shohni "yeb qo'yish" g'alaba hisoblanadi) — faqat bu safar server tomonda,
+   XvaO kabi xotirada saqlanadi va so'rov (polling) orqali ishlaydi. */
+
+function chessInBoundsSrv(r, c) { return r >= 0 && r < 8 && c >= 0 && c < 8; }
+
+function chessPieceMovesSrv(r, c, board) {
+  const p = board[r][c];
+  if (!p) return [];
+  const color = p[0], type = p[1];
+  const moves = [];
+  const dir = color === 'w' ? -1 : 1;
+  function trySlide(rr, cc) {
+    if (!chessInBoundsSrv(rr, cc)) return false;
+    const target = board[rr][cc];
+    if (!target) { moves.push([rr, cc]); return true; }
+    if (target[0] !== color) moves.push([rr, cc]);
+    return false;
+  }
+  if (type === 'p') {
+    if (chessInBoundsSrv(r + dir, c) && !board[r + dir][c]) {
+      moves.push([r + dir, c]);
+      const startRow = color === 'w' ? 6 : 1;
+      if (r === startRow && !board[r + 2 * dir][c]) moves.push([r + 2 * dir, c]);
+    }
+    [c - 1, c + 1].forEach(cc => {
+      if (chessInBoundsSrv(r + dir, cc) && board[r + dir][cc] && board[r + dir][cc][0] !== color) moves.push([r + dir, cc]);
+    });
+  } else if (type === 'n') {
+    [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]].forEach(([dr, dc]) => {
+      const rr = r + dr, cc = c + dc;
+      if (chessInBoundsSrv(rr, cc) && (!board[rr][cc] || board[rr][cc][0] !== color)) moves.push([rr, cc]);
+    });
+  } else if (type === 'k') {
+    for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+      if (dr === 0 && dc === 0) continue;
+      const rr = r + dr, cc = c + dc;
+      if (chessInBoundsSrv(rr, cc) && (!board[rr][cc] || board[rr][cc][0] !== color)) moves.push([rr, cc]);
+    }
+  } else {
+    let dirs = [];
+    if (type === 'r') dirs = [[-1,0],[1,0],[0,-1],[0,1]];
+    if (type === 'b') dirs = [[-1,-1],[-1,1],[1,-1],[1,1]];
+    if (type === 'q') dirs = [[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];
+    dirs.forEach(([dr, dc]) => {
+      let rr = r + dr, cc = c + dc;
+      while (chessInBoundsSrv(rr, cc)) {
+        if (!trySlide(rr, cc)) break;
+        rr += dr; cc += dc;
+      }
+    });
+  }
+  return moves;
+}
+
+function chessGenerateAllMovesSrv(col, board) {
+  const out = [];
+  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+    const p = board[r][c];
+    if (!p || p[0] !== col) continue;
+    chessPieceMovesSrv(r, c, board).forEach(([tr, tc]) => out.push({ from: [r, c], to: [tr, tc] }));
+  }
+  return out;
+}
+
+function chessInitBoardSrv() {
+  const back = ['r','n','b','q','k','b','n','r'];
+  const board = Array.from({ length: 8 }, () => Array(8).fill(null));
+  for (let c = 0; c < 8; c++) {
+    board[0][c] = 'b' + back[c];
+    board[1][c] = 'bp';
+    board[6][c] = 'wp';
+    board[7][c] = 'w' + back[c];
+  }
+  return board;
+}
+
+function checkersInBoundsSrv(r, c) { return r >= 0 && r < 8 && c >= 0 && c < 8; }
+function checkersIsKingSrv(p) { return p && p.length === 2; }
+
+function checkersPieceCapturesSrv(r, c, board) {
+  const p = board[r][c];
+  if (!p) return [];
+  const color = p[0];
+  const dirs = [[-1,-1],[-1,1],[1,-1],[1,1]];
+  const out = [];
+  dirs.forEach(([dr, dc]) => {
+    const mr = r + dr, mc = c + dc, jr = r + 2 * dr, jc = c + 2 * dc;
+    if (!checkersInBoundsSrv(jr, jc)) return;
+    const mid = board[mr] ? board[mr][mc] : null;
+    if (mid && mid[0] !== color && !board[jr][jc]) out.push({ to: [jr, jc], captured: [mr, mc] });
+  });
+  return out;
+}
+
+function checkersPieceSimpleMovesSrv(r, c, board) {
+  const p = board[r][c];
+  if (!p) return [];
+  const dirs = checkersIsKingSrv(p) ? [[-1,-1],[-1,1],[1,-1],[1,1]] : (p[0] === 'w' ? [[-1,-1],[-1,1]] : [[1,-1],[1,1]]);
+  const out = [];
+  dirs.forEach(([dr, dc]) => {
+    const rr = r + dr, cc = c + dc;
+    if (checkersInBoundsSrv(rr, cc) && !board[rr][cc]) out.push({ to: [rr, cc] });
+  });
+  return out;
+}
+
+function checkersAllCapturesForSrv(color, board) {
+  const out = [];
+  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+    const p = board[r][c];
+    if (!p || p[0] !== color) continue;
+    checkersPieceCapturesSrv(r, c, board).forEach(mv => out.push({ from: [r, c], to: mv.to, captured: mv.captured }));
+  }
+  return out;
+}
+
+function checkersAllSimpleMovesForSrv(color, board) {
+  const out = [];
+  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+    const p = board[r][c];
+    if (!p || p[0] !== color) continue;
+    checkersPieceSimpleMovesSrv(r, c, board).forEach(mv => out.push({ from: [r, c], to: mv.to }));
+  }
+  return out;
+}
+
+function checkersLegalMovesForPieceSrv(r, c, board) {
+  const p = board[r][c];
+  if (!p) return [];
+  const color = p[0];
+  const captures = checkersAllCapturesForSrv(color, board);
+  if (captures.length > 0) return checkersPieceCapturesSrv(r, c, board).map(mv => ({ to: mv.to, captured: mv.captured, isCapture: true }));
+  return checkersPieceSimpleMovesSrv(r, c, board).map(mv => ({ to: mv.to, isCapture: false }));
+}
+
+function checkersPlayerHasAnyMoveSrv(color, board) {
+  if (checkersAllCapturesForSrv(color, board).length > 0) return true;
+  return checkersAllSimpleMovesForSrv(color, board).length > 0;
+}
+
+function checkersInitBoardSrv() {
+  const board = Array.from({ length: 8 }, () => Array(8).fill(null));
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 8; c++) if ((r + c) % 2 === 1) board[r][c] = 'b';
+  for (let r = 5; r < 8; r++) for (let c = 0; c < 8; c++) if ((r + c) % 2 === 1) board[r][c] = 'w';
+  return board;
+}
+
+/* ---- Ikkala o'yin (shaxmat/shashka) uchun umumiy: navbat, taklif, tayoq (queue), taslim, durang ---- */
+const BOARD_GAME_TYPES = ['chess', 'checkers'];
+const boardGames = {};       // type -> Map(gameId -> game)
+const boardUserGame = {};    // type -> Map(username -> gameId)
+const boardQueue = {};       // type -> [{ username, joinedAt }]
+BOARD_GAME_TYPES.forEach(t => { boardGames[t] = new Map(); boardUserGame[t] = new Map(); boardQueue[t] = []; });
+
+const BOARD_TURN_TIMEOUT_MS = 5 * 60 * 1000;   // shu vaqt ichida yurmasa, raqib g'olib deb topiladi
+const BOARD_QUEUE_STALE_MS = 30 * 1000;
+const BOARD_GAME_IDLE_MS = 20 * 60 * 1000;
+
+function boardPublicUser(uname) {
+  const u = db.users[uname];
+  return { username: uname, fullname: (u && u.fullname) || uname, avatar: (u && u.avatar) || null };
+}
+
+function boardTouch(game, uname) { game.lastSeen[uname] = Date.now(); }
+
+function boardForfeitTo(game, winnerUname, reason) {
+  game.status = 'finished';
+  game.winner = game.players.w === winnerUname ? 'w' : 'b';
+  game.endReason = reason;
+  game.updatedAt = new Date().toISOString();
+}
+
+function boardCheckTimeout(game) {
+  if (game.status !== 'playing') return;
+  const now = Date.now();
+  const players = [game.players.w, game.players.b];
+  for (const uname of players) {
+    const seen = game.lastSeen[uname] || game.createdAt;
+    if (now - seen > BOARD_TURN_TIMEOUT_MS) {
+      const other = players.find(p => p !== uname);
+      boardForfeitTo(game, other, 'timeout');
+      return;
+    }
+  }
+}
+
+function boardFreeUsers(type, game) {
+  if (boardUserGame[type].get(game.players.w) === game.id) boardUserGame[type].delete(game.players.w);
+  if (boardUserGame[type].get(game.players.b) === game.id) boardUserGame[type].delete(game.players.b);
+}
+
+function boardGameView(game, me) {
+  const myColor = game.players.w === me ? 'w' : 'b';
+  const oppColor = myColor === 'w' ? 'b' : 'w';
+  return {
+    id: game.id,
+    board: game.board,
+    turn: game.turn,
+    status: game.status,
+    winner: game.winner || null,
+    endReason: game.endReason || null,
+    you: myColor,
+    forcedPiece: game.forcedPiece || null,
+    players: { w: boardPublicUser(game.players.w), b: boardPublicUser(game.players.b) },
+    drawOffer: { you: !!game.drawOffered[myColor], opponent: !!game.drawOffered[oppColor] },
+    rematch: { you: !!game.rematchWanted[me], opponent: !!game.rematchWanted[game.players.w === me ? game.players.b : game.players.w] }
+  };
+}
+
+function boardNewGame(type, id, unameW, unameB) {
+  return {
+    id, type,
+    players: { w: unameW, b: unameB },
+    board: type === 'chess' ? chessInitBoardSrv() : checkersInitBoardSrv(),
+    turn: 'w',
+    status: 'playing',
+    winner: null,
+    endReason: null,
+    drawOffered: {},
+    forcedPiece: null,
+    rematchWanted: {},
+    lastSeen: {},
+    createdAt: Date.now(),
+    updatedAt: new Date().toISOString()
+  };
+}
+
+function boardStartGame(type, unameA, unameB) {
+  const id = type.slice(0, 2) + Date.now() + crypto.randomBytes(4).toString('hex');
+  const aFirst = Math.random() < 0.5;
+  const game = boardNewGame(type, id, aFirst ? unameA : unameB, aFirst ? unameB : unameA);
+  boardTouch(game, unameA);
+  boardTouch(game, unameB);
+  boardGames[type].set(id, game);
+  boardUserGame[type].set(unameA, id);
+  boardUserGame[type].set(unameB, id);
+  return id;
+}
+
+BOARD_GAME_TYPES.forEach(type => {
+  app.post(`/api/games/${type}/queue/join`, requireAuth, (req, res) => {
+    const me = req.session.username;
+    if (boardUserGame[type].has(me)) return res.json({ status: 'matched', gameId: boardUserGame[type].get(me) });
+    const queue = boardQueue[type];
+    const now = Date.now();
+    for (let i = queue.length - 1; i >= 0; i--) if (now - queue[i].joinedAt > BOARD_QUEUE_STALE_MS) queue.splice(i, 1);
+    if (queue.some(q => q.username === me)) return res.json({ status: 'waiting' });
+    const opponent = queue.find(q => q.username !== me);
+    if (opponent) {
+      queue.splice(queue.indexOf(opponent), 1);
+      const gameId = boardStartGame(type, me, opponent.username);
+      return res.json({ status: 'matched', gameId });
+    }
+    queue.push({ username: me, joinedAt: now });
+    res.json({ status: 'waiting' });
+  });
+
+  app.post(`/api/games/${type}/queue/leave`, requireAuth, (req, res) => {
+    const me = req.session.username;
+    const idx = boardQueue[type].findIndex(q => q.username === me);
+    if (idx !== -1) boardQueue[type].splice(idx, 1);
+    res.json({ ok: true });
+  });
+
+  app.get(`/api/games/${type}/queue/status`, requireAuth, (req, res) => {
+    const me = req.session.username;
+    if (boardUserGame[type].has(me)) return res.json({ status: 'matched', gameId: boardUserGame[type].get(me) });
+    res.json({ status: boardQueue[type].some(q => q.username === me) ? 'waiting' : 'idle' });
+  });
+
+  app.get(`/api/games/${type}/:id`, requireAuth, (req, res) => {
+    const me = req.session.username;
+    const game = boardGames[type].get(req.params.id);
+    if (!game || (game.players.w !== me && game.players.b !== me)) return res.status(404).json({ error: "O'yin topilmadi" });
+    boardTouch(game, me);
+    boardCheckTimeout(game);
+    res.json(boardGameView(game, me));
+  });
+
+  app.post(`/api/games/${type}/:id/move`, requireAuth, (req, res) => {
+    const me = req.session.username;
+    const game = boardGames[type].get(req.params.id);
+    if (!game || (game.players.w !== me && game.players.b !== me)) return res.status(404).json({ error: "O'yin topilmadi" });
+    boardTouch(game, me);
+    boardCheckTimeout(game);
+    if (game.status !== 'playing') return res.status(400).json({ error: "O'yin allaqachon tugagan" });
+
+    const myColor = game.players.w === me ? 'w' : 'b';
+    if (game.turn !== myColor) return res.status(400).json({ error: 'Hozir sizning navbatingiz emas' });
+
+    const from = req.body && req.body.from, to = req.body && req.body.to;
+    if (!Array.isArray(from) || !Array.isArray(to) || from.length !== 2 || to.length !== 2) {
+      return res.status(400).json({ error: "Noto'g'ri yurish formati" });
+    }
+    const [fr, fc] = from.map(Number), [tr, tc] = to.map(Number);
+    if (![fr, fc, tr, tc].every(n => Number.isInteger(n) && n >= 0 && n < 8)) {
+      return res.status(400).json({ error: "Noto'g'ri katak raqami" });
+    }
+    const moving = game.board[fr][fc];
+    if (!moving || moving[0] !== myColor) return res.status(400).json({ error: "Bu sizning donangiz emas" });
+    if (type === 'checkers' && game.forcedPiece && (game.forcedPiece[0] !== fr || game.forcedPiece[1] !== fc)) {
+      return res.status(400).json({ error: "Zanjirli yeyishni shu dona bilan davom ettirishingiz kerak" });
+    }
+
+    if (type === 'chess') {
+      const legal = chessPieceMovesSrv(fr, fc, game.board).some(([r, c]) => r === tr && c === tc);
+      if (!legal) return res.status(400).json({ error: "Bu yurish qoida bo'yicha mumkin emas" });
+      const capturedPiece = game.board[tr][tc];
+      game.board[tr][tc] = moving;
+      game.board[fr][fc] = null;
+      if (moving[1] === 'p' && (tr === 0 || tr === 7)) game.board[tr][tc] = moving[0] + 'q';
+      if (capturedPiece && capturedPiece[1] === 'k') {
+        game.status = 'finished';
+        game.winner = myColor;
+        game.endReason = 'king-captured';
+      } else {
+        const nextColor = myColor === 'w' ? 'b' : 'w';
+        if (chessGenerateAllMovesSrv(nextColor, game.board).length === 0) {
+          game.status = 'finished';
+          game.winner = myColor;
+          game.endReason = 'no-moves';
+        } else {
+          game.turn = nextColor;
+        }
+      }
+      game.drawOffered = {};
+    } else {
+      const moveInfo = checkersLegalMovesForPieceSrv(fr, fc, game.board).find(m => m.to[0] === tr && m.to[1] === tc);
+      if (!moveInfo) return res.status(400).json({ error: "Bu yurish qoida bo'yicha mumkin emas" });
+      game.board[tr][tc] = moving;
+      game.board[fr][fc] = null;
+      let becameKing = false;
+      if (!checkersIsKingSrv(moving)) {
+        if ((moving[0] === 'w' && tr === 0) || (moving[0] === 'b' && tr === 7)) { game.board[tr][tc] = moving[0] + 'k'; becameKing = true; }
+      }
+      let didCapture = false;
+      if (moveInfo.captured) {
+        const [mr, mc] = moveInfo.captured;
+        game.board[mr][mc] = null;
+        didCapture = true;
+      }
+      let mustContinue = false;
+      if (didCapture && !becameKing && checkersPieceCapturesSrv(tr, tc, game.board).length > 0) mustContinue = true;
+
+      if (mustContinue) {
+        game.forcedPiece = [tr, tc];
+      } else {
+        game.forcedPiece = null;
+        const nextColor = myColor === 'w' ? 'b' : 'w';
+        const oppHasPieces = game.board.some(row => row.some(p => p && p[0] === nextColor));
+        if (!oppHasPieces || !checkersPlayerHasAnyMoveSrv(nextColor, game.board)) {
+          game.status = 'finished';
+          game.winner = myColor;
+          game.endReason = 'no-moves';
+        } else {
+          game.turn = nextColor;
+        }
+        game.drawOffered = {};
+      }
+      // mustContinue bo'lsa, navbat o'zgarmaydi — o'sha o'yinchi davom ettiradi
+    }
+    game.updatedAt = new Date().toISOString();
+    res.json(boardGameView(game, me));
+  });
+
+  app.post(`/api/games/${type}/:id/resign`, requireAuth, (req, res) => {
+    const me = req.session.username;
+    const game = boardGames[type].get(req.params.id);
+    if (!game || (game.players.w !== me && game.players.b !== me)) return res.status(404).json({ error: "O'yin topilmadi" });
+    if (game.status === 'playing') {
+      const other = game.players.w === me ? game.players.b : game.players.w;
+      boardForfeitTo(game, other, 'resign');
+    }
+    res.json(boardGameView(game, me));
+  });
+
+  app.post(`/api/games/${type}/:id/draw-offer`, requireAuth, (req, res) => {
+    const me = req.session.username;
+    const game = boardGames[type].get(req.params.id);
+    if (!game || (game.players.w !== me && game.players.b !== me)) return res.status(404).json({ error: "O'yin topilmadi" });
+    if (game.status !== 'playing') return res.status(400).json({ error: "O'yin allaqachon tugagan" });
+    const myColor = game.players.w === me ? 'w' : 'b';
+    game.drawOffered[myColor] = true;
+    boardTouch(game, me);
+    res.json(boardGameView(game, me));
+  });
+
+  app.post(`/api/games/${type}/:id/draw-response`, requireAuth, (req, res) => {
+    const me = req.session.username;
+    const game = boardGames[type].get(req.params.id);
+    if (!game || (game.players.w !== me && game.players.b !== me)) return res.status(404).json({ error: "O'yin topilmadi" });
+    const myColor = game.players.w === me ? 'w' : 'b';
+    const oppColor = myColor === 'w' ? 'b' : 'w';
+    if (req.body && req.body.accept && game.drawOffered[oppColor]) {
+      game.status = 'finished';
+      game.winner = 'draw';
+      game.endReason = 'draw-agreed';
+    } else {
+      game.drawOffered = {};
+    }
+    res.json(boardGameView(game, me));
+  });
+
+  app.post(`/api/games/${type}/:id/rematch`, requireAuth, (req, res) => {
+    const me = req.session.username;
+    const game = boardGames[type].get(req.params.id);
+    if (!game || (game.players.w !== me && game.players.b !== me)) return res.status(404).json({ error: "O'yin topilmadi" });
+    if (game.status !== 'finished') return res.status(400).json({ error: "O'yin hali tugamagan" });
+    game.rematchWanted[me] = true;
+    boardTouch(game, me);
+    const other = game.players.w === me ? game.players.b : game.players.w;
+    if (game.rematchWanted[me] && game.rematchWanted[other]) {
+      const prevW = game.players.w, prevB = game.players.b;
+      Object.assign(game, boardNewGame(type, game.id, prevB, prevW));
+    }
+    game.updatedAt = new Date().toISOString();
+    res.json(boardGameView(game, me));
+  });
+
+  app.post(`/api/games/${type}/:id/leave`, requireAuth, (req, res) => {
+    const me = req.session.username;
+    const game = boardGames[type].get(req.params.id);
+    if (!game || (game.players.w !== me && game.players.b !== me)) return res.json({ ok: true });
+    if (game.status === 'playing') {
+      const other = game.players.w === me ? game.players.b : game.players.w;
+      boardForfeitTo(game, other, 'left');
+    }
+    boardFreeUsers(type, game);
+    res.json({ ok: true });
+  });
+});
+
+/* Faol bo'lmagan shaxmat/shashka o'yinlarini xotiradan tozalab turadi */
+setInterval(() => {
+  const now = Date.now();
+  BOARD_GAME_TYPES.forEach(type => {
+    for (const [id, game] of boardGames[type]) {
+      boardCheckTimeout(game);
+      const seenTimes = Object.values(game.lastSeen);
+      const lastActivity = seenTimes.length ? Math.max(...seenTimes) : game.createdAt;
+      if (now - lastActivity > BOARD_GAME_IDLE_MS) {
+        boardFreeUsers(type, game);
+        boardGames[type].delete(id);
+      }
+    }
+  });
+}, 60 * 1000).unref();
+
+/* ===================== ADMIN/BOSS — BIR-BIRIGA O'YIN TAKLIFI =====================
+   Faqat administrator yoki boss huquqiga ega foydalanuvchilar bir-biriga
+   shaxmat yoki shashka o'ynash uchun taklif yubora oladi. Taklif xotirada
+   saqlanadi va qabul qilinsa, yuqoridagi onlayn o'yin tizimida yangi
+   o'yin ochiladi (xuddi navbatda topilgandek). */
+const gameInvites = new Map(); // id -> { id, from, to, type, status, createdAt }
+const GAME_INVITE_TTL_MS = 5 * 60 * 1000;
+
+function invitePublicView(inv) {
+  return {
+    id: inv.id,
+    from: boardPublicUser(inv.from),
+    to: boardPublicUser(inv.to),
+    type: inv.type,
+    status: inv.status,
+    createdAt: inv.createdAt
+  };
+}
+
+app.get('/api/games/admins', requireAuth, requireAdmin, (req, res) => {
+  const me = req.session.username;
+  const list = Object.keys(db.users)
+    .filter(uname => uname !== me && (db.users[uname].isAdmin || db.users[uname].isBoss) && !db.users[uname].adminAccessRevoked)
+    .map(uname => Object.assign(boardPublicUser(uname), { isOnline: isUserOnline(uname) }));
+  res.json({ users: list });
+});
+
+app.post('/api/games/invite', requireAuth, requireAdmin, (req, res) => {
+  const me = req.session.username;
+  const to = req.body && req.body.to;
+  const type = req.body && req.body.type;
+  if (!BOARD_GAME_TYPES.includes(type)) return res.status(400).json({ error: "Noto'g'ri o'yin turi" });
+  const targetUser = db.users[to];
+  if (!targetUser || !(targetUser.isAdmin || targetUser.isBoss) || targetUser.adminAccessRevoked) {
+    return res.status(400).json({ error: "Bu foydalanuvchiga taklif yuborib bo'lmaydi" });
+  }
+  if (to === me) return res.status(400).json({ error: "O'zingizga taklif yubora olmaysiz" });
+  const already = [...gameInvites.values()].some(inv => inv.status === 'pending' && inv.from === me && inv.to === to && inv.type === type);
+  if (already) return res.status(400).json({ error: 'Bu foydalanuvchiga allaqachon taklif yuborilgan' });
+
+  const id = 'inv' + Date.now() + crypto.randomBytes(4).toString('hex');
+  const inv = { id, from: me, to, type, status: 'pending', createdAt: Date.now() };
+  gameInvites.set(id, inv);
+  addNotification(to, { type: 'game-invite', from: me, gameType: type, inviteId: id });
+  res.json({ ok: true, invite: invitePublicView(inv) });
+});
+
+app.get('/api/games/invites', requireAuth, requireAdmin, (req, res) => {
+  const me = req.session.username;
+  const now = Date.now();
+  for (const [id, inv] of gameInvites) {
+    if (inv.status === 'pending' && now - inv.createdAt > GAME_INVITE_TTL_MS) inv.status = 'expired';
+  }
+  const incoming = [...gameInvites.values()].filter(inv => inv.to === me && inv.status === 'pending').map(invitePublicView);
+  const outgoing = [...gameInvites.values()].filter(inv => inv.from === me && inv.status === 'pending').map(invitePublicView);
+  res.json({ incoming, outgoing });
+});
+
+app.post('/api/games/invites/:id/accept', requireAuth, requireAdmin, (req, res) => {
+  const me = req.session.username;
+  const inv = gameInvites.get(req.params.id);
+  if (!inv || inv.to !== me) return res.status(404).json({ error: 'Taklif topilmadi' });
+  if (inv.status !== 'pending') return res.status(400).json({ error: 'Bu taklif allaqachon yopilgan' });
+  inv.status = 'accepted';
+  const gameId = boardStartGame(inv.type, inv.from, inv.to);
+  addNotification(inv.from, { type: 'game-invite-accepted', from: me, gameType: inv.type, gameId });
+  res.json({ ok: true, gameId, type: inv.type });
+});
+
+app.post('/api/games/invites/:id/decline', requireAuth, requireAdmin, (req, res) => {
+  const me = req.session.username;
+  const inv = gameInvites.get(req.params.id);
+  if (!inv || inv.to !== me) return res.status(404).json({ error: 'Taklif topilmadi' });
+  if (inv.status !== 'pending') return res.status(400).json({ error: 'Bu taklif allaqachon yopilgan' });
+  inv.status = 'declined';
+  addNotification(inv.from, { type: 'game-invite-declined', from: me, gameType: inv.type });
+  res.json({ ok: true });
+});
+
+app.post('/api/games/invites/:id/cancel', requireAuth, requireAdmin, (req, res) => {
+  const me = req.session.username;
+  const inv = gameInvites.get(req.params.id);
+  if (!inv || inv.from !== me) return res.status(404).json({ error: 'Taklif topilmadi' });
+  if (inv.status === 'pending') inv.status = 'cancelled';
+  res.json({ ok: true });
+});
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, inv] of gameInvites) {
+    if (inv.status !== 'pending' && now - inv.createdAt > 60 * 60 * 1000) gameInvites.delete(id);
+  }
+}, 10 * 60 * 1000).unref();
+
 /* SPA fallback — noma'lum yo'llarni ham bosh sahifaga yo'naltiradi */
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) return next();

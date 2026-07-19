@@ -3776,12 +3776,26 @@
       }
     }
     .chess-board-frame {
+      position: relative;
       background: var(--bg-alt);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 12px;
       box-shadow: var(--shadow);
     }
+    .chess-board-frame .game-overlay { border-radius: var(--radius-lg); }
+    .chess-online-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    .chess-online-badge {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-dim);
+      padding: 4px 10px; border: 1px solid var(--border); border-radius: 999px; margin-bottom: 8px;
+    }
+    .game-invite-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-md);
+      margin-bottom: 8px; background: var(--bg-alt);
+    }
+    .game-invite-row .game-invite-user { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+    .game-invite-row .game-invite-actions { display: flex; gap: 6px; flex-wrap: wrap; }
     .chess-board {
       display: grid;
       grid-template-columns: repeat(8, 1fr);
@@ -4473,6 +4487,11 @@
           <div class="chess-stage">
             <div class="chess-board-frame">
               <div class="chess-board" id="chessBoard"></div>
+              <div id="chessOnlineOverlay" class="game-overlay hidden">
+                <div class="ttt-spinner hidden" id="chessOnlineSpinner"></div>
+                <p class="game-overlay-text" id="chessOnlineOverlayText"></p>
+                <div class="ttt-overlay-actions" id="chessOnlineOverlayActions"></div>
+              </div>
             </div>
             <div class="chess-side">
               <div class="chess-card">
@@ -4480,6 +4499,7 @@
                 <div class="chess-toggle" id="chessModeToggle">
                   <button type="button" class="chess-toggle-btn active" data-mode="2p" data-i18n="games.chess.vsFriend">Do'st bilan</button>
                   <button type="button" class="chess-toggle-btn" data-mode="bot" data-i18n="games.chess.vsBot">Botga qarshi</button>
+                  <button type="button" class="chess-toggle-btn" data-mode="online" data-i18n="ttt.mode.online">ONLAYN</button>
                 </div>
                 <div class="chess-diff-toggle" id="chessDiffToggle" style="display:none;">
                   <button type="button" class="chess-toggle-btn" data-diff="easy" data-i18n="games.chess.easy">Oson</button>
@@ -4501,6 +4521,10 @@
                 <button type="button" class="btn btn-secondary btn-sm" id="chessResignBtn" data-i18n="games.chess.resign">Taslim bo'lish</button>
               </div>
               <button type="button" class="btn btn-primary btn-sm" id="chessResetBtn" data-i18n="games.chess.restart">Qaytadan boshlash</button>
+              <div class="chess-online-actions hidden" id="chessOnlineActions">
+                <button type="button" class="btn btn-secondary btn-sm" id="chessOnlineLeaveBtn" data-i18n="ttt.leaveGame">Chiqish</button>
+                <button type="button" class="btn btn-primary btn-sm hidden" id="chessOnlineRematchBtn" data-i18n="ttt.rematch">Qayta o'ynash</button>
+              </div>
             </div>
           </div>
         </div>
@@ -4514,6 +4538,11 @@
           <div class="chess-stage">
             <div class="chess-board-frame">
               <div class="checkers-board" id="checkersBoard"></div>
+              <div id="checkersOnlineOverlay" class="game-overlay hidden">
+                <div class="ttt-spinner hidden" id="checkersOnlineSpinner"></div>
+                <p class="game-overlay-text" id="checkersOnlineOverlayText"></p>
+                <div class="ttt-overlay-actions" id="checkersOnlineOverlayActions"></div>
+              </div>
             </div>
             <div class="chess-side">
               <div class="chess-card">
@@ -4521,6 +4550,7 @@
                 <div class="chess-toggle" id="checkersModeToggle">
                   <button type="button" class="chess-toggle-btn active" data-mode="2p" data-i18n="games.chess.vsFriend">Do'st bilan</button>
                   <button type="button" class="chess-toggle-btn" data-mode="bot" data-i18n="games.chess.vsBot">Botga qarshi</button>
+                  <button type="button" class="chess-toggle-btn" data-mode="online" data-i18n="ttt.mode.online">ONLAYN</button>
                 </div>
                 <div class="chess-diff-toggle" id="checkersDiffToggle" style="display:none;">
                   <button type="button" class="chess-toggle-btn" data-diff="easy" data-i18n="games.chess.easy">Oson</button>
@@ -4542,6 +4572,10 @@
                 <button type="button" class="btn btn-secondary btn-sm" id="checkersResignBtn" data-i18n="games.chess.resign">Taslim bo'lish</button>
               </div>
               <button type="button" class="btn btn-primary btn-sm" id="checkersResetBtn" data-i18n="games.chess.restart">Qaytadan boshlash</button>
+              <div class="chess-online-actions hidden" id="checkersOnlineActions">
+                <button type="button" class="btn btn-secondary btn-sm" id="checkersOnlineLeaveBtn" data-i18n="ttt.leaveGame">Chiqish</button>
+                <button type="button" class="btn btn-primary btn-sm hidden" id="checkersOnlineRematchBtn" data-i18n="ttt.rematch">Qayta o'ynash</button>
+              </div>
             </div>
           </div>
         </div>
@@ -4730,6 +4764,10 @@
         </div>
         <div class="section-label" data-i18n="admin.usersLabel">Foydalanuvchilar</div>
         <div id="adminUsersList"></div>
+        <div class="section-label" data-i18n="gameInvite.sectionLabel">O'yin takliflari (admin/boss)</div>
+        <div id="gameInviteIncoming"></div>
+        <div id="gameInviteOutgoing"></div>
+        <div id="gameInviteAdminsList"></div>
       </section>
     </main>
   </div>
@@ -5121,6 +5159,15 @@
           "profile.stat.comments": "Komment", "profile.stat.views": "Ko'rishlar",
           "admin.reportsLabel": "Shikoyatlar",
           "admin.usersLabel": "Foydalanuvchilar",
+          "gameInvite.sectionLabel": "O'yin takliflari (admin/boss)",
+          "gameInvite.noAdmins": "Boshqa administrator yoki boss topilmadi.",
+          "gameInvite.accept": "Qabul qilish", "gameInvite.decline": "Rad etish", "gameInvite.cancel": "Bekor qilish",
+          "gameInvite.incomingFrom": "{name} sizni {game} o'yiniga taklif qildi",
+          "gameInvite.outgoingTo": "{name} ga {game} o'yiniga taklif yuborildi",
+          "gameInvite.sendFail": "Taklif yuborib bo'lmadi", "gameInvite.acceptFail": "Taklifni qabul qilib bo'lmadi",
+          "notif.gameInvite": "{name} sizni {game} o'ynashga taklif qildi. Admin panelidan ko'ring.",
+          "notif.gameInviteAccepted": "{name} sizning {game} taklifingizni qabul qildi!",
+          "notif.gameInviteDeclined": "{name} sizning {game} taklifingizni rad etdi.",
           "report.action": "Shikoyat qilish",
           "report.reasonLabel": "Sababi",
           "report.reasonPh": "Nima uchun shikoyat qilyapsiz? (ixtiyoriy)",
@@ -5362,6 +5409,15 @@
           "profile.stat.comments": "Comments", "profile.stat.views": "Views",
           "admin.reportsLabel": "Reports",
           "admin.usersLabel": "Users",
+          "gameInvite.sectionLabel": "Game invites (admin/boss)",
+          "gameInvite.noAdmins": "No other admins or bosses found.",
+          "gameInvite.accept": "Accept", "gameInvite.decline": "Decline", "gameInvite.cancel": "Cancel",
+          "gameInvite.incomingFrom": "{name} invited you to a game of {game}",
+          "gameInvite.outgoingTo": "Invite sent to {name} for {game}",
+          "gameInvite.sendFail": "Couldn't send invite", "gameInvite.acceptFail": "Couldn't accept invite",
+          "notif.gameInvite": "{name} invited you to play {game}. Check the admin panel.",
+          "notif.gameInviteAccepted": "{name} accepted your {game} invite!",
+          "notif.gameInviteDeclined": "{name} declined your {game} invite.",
           "report.action": "Report",
           "report.reasonLabel": "Reason",
           "report.reasonPh": "Why are you reporting this? (optional)",
@@ -5603,6 +5659,15 @@
           "profile.stat.comments": "评论", "profile.stat.views": "浏览量",
           "admin.reportsLabel": "举报",
           "admin.usersLabel": "用户",
+          "gameInvite.sectionLabel": "游戏邀请（管理员/老板）",
+          "gameInvite.noAdmins": "未找到其他管理员或老板。",
+          "gameInvite.accept": "接受", "gameInvite.decline": "拒绝", "gameInvite.cancel": "取消",
+          "gameInvite.incomingFrom": "{name} 邀请您玩{game}",
+          "gameInvite.outgoingTo": "已向 {name} 发送{game}邀请",
+          "gameInvite.sendFail": "无法发送邀请", "gameInvite.acceptFail": "无法接受邀请",
+          "notif.gameInvite": "{name} 邀请您玩{game}。请查看管理面板。",
+          "notif.gameInviteAccepted": "{name} 接受了您的{game}邀请！",
+          "notif.gameInviteDeclined": "{name} 拒绝了您的{game}邀请。",
           "report.action": "举报",
           "report.reasonLabel": "原因",
           "report.reasonPh": "您举报的原因是什么？（可选）",
@@ -5844,6 +5909,15 @@
           "profile.stat.comments": "टिप्पणियाँ", "profile.stat.views": "व्यूज़",
           "admin.reportsLabel": "शिकायतें",
           "admin.usersLabel": "उपयोगकर्ता",
+          "gameInvite.sectionLabel": "गेम आमंत्रण (एडमिन/बॉस)",
+          "gameInvite.noAdmins": "कोई अन्य एडमिन या बॉस नहीं मिला।",
+          "gameInvite.accept": "स्वीकार करें", "gameInvite.decline": "अस्वीकार करें", "gameInvite.cancel": "रद्द करें",
+          "gameInvite.incomingFrom": "{name} ने आपको {game} खेलने का आमंत्रण भेजा",
+          "gameInvite.outgoingTo": "{name} को {game} के लिए आमंत्रण भेजा गया",
+          "gameInvite.sendFail": "आमंत्रण भेजा नहीं जा सका", "gameInvite.acceptFail": "आमंत्रण स्वीकार नहीं किया जा सका",
+          "notif.gameInvite": "{name} ने आपको {game} खेलने का आमंत्रण भेजा। एडमिन पैनल देखें।",
+          "notif.gameInviteAccepted": "{name} ने आपका {game} आमंत्रण स्वीकार कर लिया!",
+          "notif.gameInviteDeclined": "{name} ने आपका {game} आमंत्रण अस्वीकार कर दिया।",
           "report.action": "शिकायत करें",
           "report.reasonLabel": "कारण",
           "report.reasonPh": "आप शिकायत क्यों कर रहे हैं? (वैकल्पिक)",
@@ -6085,6 +6159,15 @@
           "profile.stat.comments": "Comentarios", "profile.stat.views": "Vistas",
           "admin.reportsLabel": "Denuncias",
           "admin.usersLabel": "Usuarios",
+          "gameInvite.sectionLabel": "Invitaciones de juego (admin/jefe)",
+          "gameInvite.noAdmins": "No se encontraron otros administradores o jefes.",
+          "gameInvite.accept": "Aceptar", "gameInvite.decline": "Rechazar", "gameInvite.cancel": "Cancelar",
+          "gameInvite.incomingFrom": "{name} te invitó a jugar {game}",
+          "gameInvite.outgoingTo": "Invitación enviada a {name} para {game}",
+          "gameInvite.sendFail": "No se pudo enviar la invitación", "gameInvite.acceptFail": "No se pudo aceptar la invitación",
+          "notif.gameInvite": "{name} te invitó a jugar {game}. Revisa el panel de administración.",
+          "notif.gameInviteAccepted": "¡{name} aceptó tu invitación de {game}!",
+          "notif.gameInviteDeclined": "{name} rechazó tu invitación de {game}.",
           "report.action": "Denunciar",
           "report.reasonLabel": "Motivo",
           "report.reasonPh": "¿Por qué estás denunciando esto? (opcional)",
@@ -6326,6 +6409,15 @@
           "profile.stat.comments": "التعليقات", "profile.stat.views": "المشاهدات",
           "admin.reportsLabel": "البلاغات",
           "admin.usersLabel": "المستخدمون",
+          "gameInvite.sectionLabel": "دعوات الألعاب (المسؤول/الرئيس)",
+          "gameInvite.noAdmins": "لم يتم العثور على مسؤولين أو رؤساء آخرين.",
+          "gameInvite.accept": "قبول", "gameInvite.decline": "رفض", "gameInvite.cancel": "إلغاء",
+          "gameInvite.incomingFrom": "دعاك {name} للعب {game}",
+          "gameInvite.outgoingTo": "تم إرسال دعوة إلى {name} للعب {game}",
+          "gameInvite.sendFail": "تعذر إرسال الدعوة", "gameInvite.acceptFail": "تعذر قبول الدعوة",
+          "notif.gameInvite": "دعاك {name} للعب {game}. تحقق من لوحة الإدارة.",
+          "notif.gameInviteAccepted": "قبل {name} دعوتك لـ {game}!",
+          "notif.gameInviteDeclined": "رفض {name} دعوتك لـ {game}.",
           "report.action": "إبلاغ",
           "report.reasonLabel": "السبب",
           "report.reasonPh": "لماذا تبلغ عن هذا؟ (اختياري)",
@@ -6567,6 +6659,15 @@
           "profile.stat.comments": "Комментарии", "profile.stat.views": "Просмотры",
           "admin.reportsLabel": "Жалобы",
           "admin.usersLabel": "Пользователи",
+          "gameInvite.sectionLabel": "Игровые приглашения (админ/босс)",
+          "gameInvite.noAdmins": "Другие администраторы или боссы не найдены.",
+          "gameInvite.accept": "Принять", "gameInvite.decline": "Отклонить", "gameInvite.cancel": "Отменить",
+          "gameInvite.incomingFrom": "{name} пригласил вас сыграть в {game}",
+          "gameInvite.outgoingTo": "Приглашение отправлено {name} на игру {game}",
+          "gameInvite.sendFail": "Не удалось отправить приглашение", "gameInvite.acceptFail": "Не удалось принять приглашение",
+          "notif.gameInvite": "{name} пригласил вас сыграть в {game}. Проверьте панель администратора.",
+          "notif.gameInviteAccepted": "{name} принял ваше приглашение на {game}!",
+          "notif.gameInviteDeclined": "{name} отклонил ваше приглашение на {game}.",
           "report.action": "Пожаловаться",
           "report.reasonLabel": "Причина",
           "report.reasonPh": "Почему вы жалуетесь? (необязательно)",
@@ -6933,6 +7034,9 @@
           case 'admin-fired': return t('notif.adminFired');
           case 'admin-rehired': return t('notif.adminRehired');
           case 'admin-promoted': return t('notif.adminPromoted');
+          case 'game-invite': return t('notif.gameInvite', { name: n.from || t('notif.someone'), game: t(n.gameType === 'chess' ? 'games.chess.title' : 'games.checkers.title') });
+          case 'game-invite-accepted': return t('notif.gameInviteAccepted', { name: n.from || t('notif.someone'), game: t(n.gameType === 'chess' ? 'games.chess.title' : 'games.checkers.title') });
+          case 'game-invite-declined': return t('notif.gameInviteDeclined', { name: n.from || t('notif.someone'), game: t(n.gameType === 'chess' ? 'games.chess.title' : 'games.checkers.title') });
           default: return n.text || '';
         }
       }
@@ -7197,6 +7301,8 @@
           loadAdminUsers();
           loadAdminStats();
           if (!(CURRENT_USER && CURRENT_USER.isBoss)) loadAdminReports();
+          loadGameAdmins();
+          loadGameInvites();
         }
         if (view === 'saved') {
           loadSaved();
@@ -7220,7 +7326,9 @@
         tetrisStop();
         pacmanStop();
         chessStop();
+        chessStopOnline();
         checkersStop();
+        checkersStopOnline();
       }
 
       function bindGamesEvents() {
@@ -7262,11 +7370,21 @@
         $('#gameCardChess').addEventListener('click', () => {
           $('#gamesPicker').classList.add('hidden');
           $('#chessGameWrap').classList.remove('hidden');
+          chessMode = '2p';
+          $$('#chessModeToggle .chess-toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === '2p'));
+          $('#chessDiffToggle').style.display = 'none';
+          $('#chessOnlineActions').classList.add('hidden');
+          $('#chessOnlineOverlay').classList.add('hidden');
           chessInit();
         });
         $('#gameCardCheckers').addEventListener('click', () => {
           $('#gamesPicker').classList.add('hidden');
           $('#checkersGameWrap').classList.remove('hidden');
+          checkersMode = '2p';
+          $$('#checkersModeToggle .chess-toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === '2p'));
+          $('#checkersDiffToggle').style.display = 'none';
+          $('#checkersOnlineActions').classList.add('hidden');
+          $('#checkersOnlineOverlay').classList.add('hidden');
           checkersInit();
         });
         $$('.game-back-btn').forEach(b => b.addEventListener('click', showGamesPicker));
@@ -7281,6 +7399,8 @@
         $('#chessResetBtn').addEventListener('click', chessResetWithConfirm);
         $('#chessDrawBtn').addEventListener('click', chessOfferDraw);
         $('#chessResignBtn').addEventListener('click', chessResign);
+        $('#chessOnlineLeaveBtn').addEventListener('click', chessLeaveOnlineGame);
+        $('#chessOnlineRematchBtn').addEventListener('click', chessRequestRematchOnline);
 
         /* --- Checkers bindings --- */
         $$('#checkersModeToggle .chess-toggle-btn').forEach(b => b.addEventListener('click', () => checkersSetMode(b.dataset.mode)));
@@ -7292,6 +7412,8 @@
         $('#checkersResetBtn').addEventListener('click', checkersResetWithConfirm);
         $('#checkersDrawBtn').addEventListener('click', checkersOfferDraw);
         $('#checkersResignBtn').addEventListener('click', checkersResign);
+        $('#checkersOnlineLeaveBtn').addEventListener('click', checkersLeaveOnlineGame);
+        $('#checkersOnlineRematchBtn').addEventListener('click', checkersRequestRematchOnline);
 
         /* --- X va O bindings --- */
         $$('#tttModeSelect .ttt-mode-btn').forEach(b => b.addEventListener('click', () => tttSetMode(b.dataset.mode)));
@@ -7657,6 +7779,7 @@
       }
 
       function chessOnClick(r, c) {
+        if (chessMode === 'online') { chessOnlineHandleClick(r, c); return; }
         if (chessGameOver || chessBotThinking || chessAnimating) return;
         if (chessMode === 'bot' && chessTurn === CHESS_BOT_COLOR) return;
         const p = chessBoard[r][c];
@@ -7731,10 +7854,18 @@
       }
 
       function chessSetMode(mode) {
+        const prevMode = chessMode;
         chessMode = mode;
         $$('#chessModeToggle .chess-toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
         $('#chessDiffToggle').style.display = mode === 'bot' ? 'flex' : 'none';
-        chessReset();
+        if (prevMode === 'online' && mode !== 'online') chessStopOnline();
+        $('#chessOnlineActions').classList.toggle('hidden', mode !== 'online');
+        if (mode === 'online') {
+          chessEnterOnline();
+        } else {
+          $('#chessOnlineOverlay').classList.add('hidden');
+          chessReset();
+        }
       }
 
       function chessReset() {
@@ -7749,6 +7880,7 @@
       }
 
       function chessResetWithConfirm() {
+        if (chessMode === 'online') return;
         if (!confirm(t('games.chess.resetConfirm'))) return;
         chessReset();
       }
@@ -7768,6 +7900,7 @@
       }
 
       function chessResign() {
+        if (chessMode === 'online') { chessResignOnline(); return; }
         if (chessGameOver || chessBotThinking || chessAnimating) return;
         if (!confirm(t('games.chess.resignConfirm'))) return;
         const winner = chessTurn === 'w' ? 'b' : 'w';
@@ -7775,6 +7908,7 @@
       }
 
       function chessOfferDraw() {
+        if (chessMode === 'online') { chessOfferDrawOnline(); return; }
         if (chessGameOver || chessBotThinking || chessAnimating) return;
         if (chessMode === 'bot') {
           if (!confirm(t('games.chess.drawOfferBotAsk'))) return;
@@ -7799,6 +7933,251 @@
       function chessStop() {
         chessBotThinking = false;
         chessAnimating = false;
+      }
+
+      /* ---- Shaxmat: onlayn rejim (X va O'dagi bilan bir xil polling andozasi) ---- */
+      let chessOnlineState = 'idle'; // idle | searching | playing | finished
+      let chessOnlineGameId = null;
+      let chessOnlinePollTimer = null;
+      let chessQueuePollTimer = null;
+      let chessOnlineSelected = null;
+      let chessOnlineLegalMoves = [];
+      let chessOnlineMyColor = 'w';
+
+      function chessShowOnlineOverlay(text, buttons, spinner) {
+        $('#chessOnlineOverlay').classList.remove('hidden');
+        $('#chessOnlineOverlayText').textContent = text;
+        $('#chessOnlineSpinner').classList.toggle('hidden', !spinner);
+        const wrap = $('#chessOnlineOverlayActions');
+        wrap.innerHTML = '';
+        (buttons || []).forEach(b => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'btn btn-' + (b.primary ? 'primary' : 'secondary') + ' btn-sm';
+          btn.textContent = b.label;
+          btn.addEventListener('click', b.onClick);
+          wrap.appendChild(btn);
+        });
+      }
+
+      function chessEnterOnline() {
+        chessOnlineSelected = null; chessOnlineLegalMoves = [];
+        if (!CURRENT_USER) { chessShowOnlineOverlay(t('ttt.needLogin'), []); return; }
+        chessShowFindPrompt();
+      }
+
+      function chessShowFindPrompt() {
+        chessOnlineState = 'idle';
+        chessShowOnlineOverlay(t('ttt.onlineIntro'), [
+          { label: t('ttt.findOpponent'), primary: true, onClick: chessStartSearch }
+        ]);
+      }
+
+      async function chessStartSearch() {
+        chessOnlineState = 'searching';
+        chessShowOnlineOverlay(t('ttt.searching'), [{ label: t('ttt.cancelSearch'), onClick: chessCancelSearch }], true);
+        try {
+          const data = await api('/api/games/chess/queue/join', { method: 'POST' });
+          if (chessMode !== 'online') return;
+          if (data.status === 'matched') {
+            chessOnlineGameId = data.gameId;
+            chessEnterOnlineGame();
+          } else {
+            clearInterval(chessQueuePollTimer);
+            chessQueuePollTimer = setInterval(chessPollQueue, 1500);
+          }
+        } catch (e) {
+          if (chessMode !== 'online') return;
+          chessShowOnlineOverlay(t('ttt.connectionError'), [{ label: t('ttt.findOpponent'), primary: true, onClick: chessStartSearch }]);
+        }
+      }
+
+      async function chessPollQueue() {
+        if (chessOnlineState !== 'searching' || chessMode !== 'online') { clearInterval(chessQueuePollTimer); return; }
+        try {
+          const data = await api('/api/games/chess/queue/status');
+          if (data.status === 'matched') {
+            clearInterval(chessQueuePollTimer);
+            chessOnlineGameId = data.gameId;
+            chessEnterOnlineGame();
+          }
+        } catch (e) {}
+      }
+
+      async function chessCancelSearch() {
+        clearInterval(chessQueuePollTimer);
+        chessOnlineState = 'idle';
+        try { await api('/api/games/chess/queue/leave', { method: 'POST' }); } catch (e) {}
+        if (chessMode === 'online') chessShowFindPrompt();
+      }
+
+      function chessEnterOnlineGame() {
+        chessOnlineState = 'playing';
+        $('#chessOnlineOverlay').classList.add('hidden');
+        chessInitBoard();
+        chessRender();
+        chessOnlinePollGame();
+        clearInterval(chessOnlinePollTimer);
+        chessOnlinePollTimer = setInterval(chessOnlinePollGame, 1200);
+      }
+
+      async function chessOnlinePollGame() {
+        if (!chessOnlineGameId || chessMode !== 'online') return;
+        try {
+          const g = await api('/api/games/chess/' + chessOnlineGameId);
+          chessRenderOnlineGame(g);
+        } catch (e) {
+          chessOnlineHandleGone();
+        }
+      }
+
+      function chessRenderOnlineGame(g) {
+        if (chessMode !== 'online') return;
+        chessBoard = g.board;
+        chessTurn = g.turn;
+        chessOnlineMyColor = g.you;
+        chessSelected = chessOnlineSelected;
+        chessLegalMoves = chessOnlineLegalMoves;
+        chessRender();
+        const oppColor = g.you === 'w' ? 'b' : 'w';
+        const opp = g.players[oppColor];
+        $('#chessOnlineActions').classList.remove('hidden');
+        const statusEl = $('#chessStatus');
+        statusEl.classList.remove('win');
+
+        if (g.status === 'playing') {
+          clearInterval(chessQueuePollTimer);
+          statusEl.textContent = g.turn === g.you ? t('ttt.yourMove') : t('ttt.waitingMove', { name: opp.fullname });
+          if (g.drawOffer.opponent && !g.drawOffer.you) {
+            if (confirm(t('games.chess.drawOfferConfirm'))) chessDrawRespond(true);
+            else chessDrawRespond(false);
+          }
+          $('#chessOnlineRematchBtn').classList.add('hidden');
+        } else if (g.status === 'finished') {
+          let msg;
+          if (g.winner === 'draw') msg = t('ttt.gameDraw');
+          else if (g.winner === g.you) msg = (g.endReason === 'left' || g.endReason === 'timeout') ? t('ttt.opponentLeft') : t('ttt.youWin');
+          else msg = t('ttt.youLose');
+          statusEl.textContent = msg;
+          statusEl.classList.add('win');
+          $('#chessOnlineRematchBtn').classList.remove('hidden');
+          $('#chessOnlineRematchBtn').disabled = !!g.rematch.you;
+          $('#chessOnlineRematchBtn').textContent = g.rematch.you ? t('ttt.waitingRematchOpp') : t('ttt.rematch');
+          if (chessOnlineState !== 'finished') {
+            chessOnlineState = 'finished';
+            clearInterval(chessOnlinePollTimer);
+            chessOnlinePollTimer = setInterval(chessOnlinePollGame, 1800);
+          }
+        }
+      }
+
+      function chessOnlineHandleClick(r, c) {
+        if (chessOnlineState !== 'playing' || !chessOnlineGameId) return;
+        const p = chessBoard[r][c];
+        if (chessOnlineSelected) {
+          const isLegal = chessOnlineLegalMoves.some(m => m[0] === r && m[1] === c);
+          if (isLegal) {
+            const from = chessOnlineSelected, to = [r, c];
+            chessOnlineSelected = null; chessOnlineLegalMoves = [];
+            chessOnlineMove(from, to);
+            return;
+          }
+          if (p && p[0] === chessOnlineMyColor && chessTurn === chessOnlineMyColor) {
+            chessOnlineSelected = [r, c];
+            chessOnlineLegalMoves = chessPieceMoves(r, c, chessBoard);
+          } else {
+            chessOnlineSelected = null; chessOnlineLegalMoves = [];
+          }
+        } else if (p && p[0] === chessOnlineMyColor && chessTurn === chessOnlineMyColor) {
+          chessOnlineSelected = [r, c];
+          chessOnlineLegalMoves = chessPieceMoves(r, c, chessBoard);
+        }
+        chessSelected = chessOnlineSelected;
+        chessLegalMoves = chessOnlineLegalMoves;
+        chessRender();
+      }
+
+      async function chessOnlineMove(from, to) {
+        try {
+          const g = await apiJSON('/api/games/chess/' + chessOnlineGameId + '/move', 'POST', { from, to });
+          chessRenderOnlineGame(g);
+        } catch (e) { chessOnlinePollGame(); }
+      }
+
+      async function chessResignOnline() {
+        if (!chessOnlineGameId || chessOnlineState !== 'playing') return;
+        if (!confirm(t('games.chess.resignConfirm'))) return;
+        try {
+          const g = await api('/api/games/chess/' + chessOnlineGameId + '/resign', { method: 'POST' });
+          chessRenderOnlineGame(g);
+        } catch (e) {}
+      }
+
+      async function chessOfferDrawOnline() {
+        if (!chessOnlineGameId || chessOnlineState !== 'playing') return;
+        try {
+          const g = await api('/api/games/chess/' + chessOnlineGameId + '/draw-offer', { method: 'POST' });
+          chessRenderOnlineGame(g);
+        } catch (e) {}
+      }
+
+      async function chessDrawRespond(accept) {
+        if (!chessOnlineGameId) return;
+        try {
+          const g = await apiJSON('/api/games/chess/' + chessOnlineGameId + '/draw-response', 'POST', { accept });
+          chessRenderOnlineGame(g);
+        } catch (e) {}
+      }
+
+      async function chessRequestRematchOnline() {
+        if (!chessOnlineGameId) return;
+        try {
+          const g = await api('/api/games/chess/' + chessOnlineGameId + '/rematch', { method: 'POST' });
+          if (g.status === 'playing') {
+            chessOnlineState = 'playing';
+            clearInterval(chessOnlinePollTimer);
+            chessOnlinePollTimer = setInterval(chessOnlinePollGame, 1200);
+          }
+          chessRenderOnlineGame(g);
+        } catch (e) {}
+      }
+
+      async function chessLeaveOnlineGame() {
+        clearInterval(chessOnlinePollTimer);
+        const id = chessOnlineGameId;
+        chessOnlineGameId = null;
+        chessOnlineState = 'idle';
+        if (id) { try { await api('/api/games/chess/' + id + '/leave', { method: 'POST' }); } catch (e) {} }
+        if (chessMode === 'online') chessShowFindPrompt();
+      }
+
+      function chessOnlineHandleGone() {
+        clearInterval(chessOnlinePollTimer);
+        chessOnlineGameId = null;
+        chessOnlineState = 'idle';
+        if (chessMode === 'online') chessShowFindPrompt();
+      }
+
+      function chessStopOnline() {
+        clearInterval(chessOnlinePollTimer);
+        clearInterval(chessQueuePollTimer);
+        if (chessOnlineGameId || chessOnlineState === 'searching') {
+          const id = chessOnlineGameId;
+          if (id) api('/api/games/chess/' + id + '/leave', { method: 'POST' }).catch(() => {});
+          else api('/api/games/chess/queue/leave', { method: 'POST' }).catch(() => {});
+        }
+        chessOnlineGameId = null;
+        chessOnlineState = 'idle';
+      }
+
+      /* Boshqa admin/boss'dan kelgan taklif qabul qilinganda to'g'ridan-to'g'ri shu o'yinga kiritadi */
+      function chessJoinOnlineGameDirect(gameId) {
+        chessMode = 'online';
+        $$('#chessModeToggle .chess-toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === 'online'));
+        $('#chessDiffToggle').style.display = 'none';
+        $('#chessOnlineActions').classList.remove('hidden');
+        chessOnlineGameId = gameId;
+        chessEnterOnlineGame();
       }
 
 /* ---------- CHECKERS ---------- */
@@ -8049,6 +8428,7 @@
       }
 
       function checkersOnClick(r, c) {
+        if (checkersMode === 'online') { checkersOnlineHandleClick(r, c); return; }
         if (checkersGameOver || checkersBotThinking || checkersAnimating) return;
         if (checkersMode === 'bot' && checkersTurn === CHECKERS_BOT_COLOR) return;
         const p = checkersBoard[r][c];
@@ -8195,10 +8575,18 @@
       }
 
       function checkersSetMode(mode) {
+        const prevMode = checkersMode;
         checkersMode = mode;
         $$('#checkersModeToggle .chess-toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
         $('#checkersDiffToggle').style.display = mode === 'bot' ? 'flex' : 'none';
-        checkersReset();
+        if (prevMode === 'online' && mode !== 'online') checkersStopOnline();
+        $('#checkersOnlineActions').classList.toggle('hidden', mode !== 'online');
+        if (mode === 'online') {
+          checkersEnterOnline();
+        } else {
+          $('#checkersOnlineOverlay').classList.add('hidden');
+          checkersReset();
+        }
       }
 
       function checkersReset() {
@@ -8213,6 +8601,7 @@
       }
 
       function checkersResetWithConfirm() {
+        if (checkersMode === 'online') return;
         if (!confirm(t('games.chess.resetConfirm'))) return;
         checkersReset();
       }
@@ -8233,6 +8622,7 @@
       }
 
       function checkersResign() {
+        if (checkersMode === 'online') { checkersResignOnline(); return; }
         if (checkersGameOver || checkersBotThinking || checkersAnimating) return;
         if (!confirm(t('games.chess.resignConfirm'))) return;
         const winner = checkersTurn === 'w' ? 'b' : 'w';
@@ -8240,6 +8630,7 @@
       }
 
       function checkersOfferDraw() {
+        if (checkersMode === 'online') { checkersOfferDrawOnline(); return; }
         if (checkersGameOver || checkersBotThinking || checkersAnimating) return;
         if (checkersMode === 'bot') {
           if (!confirm(t('games.chess.drawOfferBotAsk'))) return;
@@ -8264,6 +8655,268 @@
       function checkersStop() {
         checkersBotThinking = false;
         checkersAnimating = false;
+      }
+
+      /* ---- Shashka: onlayn rejim ---- */
+      let checkersOnlineState = 'idle';
+      let checkersOnlineGameId = null;
+      let checkersOnlinePollTimer = null;
+      let checkersQueuePollTimer = null;
+      let checkersOnlineSelected = null;
+      let checkersOnlineLegalMoves = [];
+      let checkersOnlineMyColor = 'w';
+      let checkersOnlineForced = null;
+
+      function checkersShowOnlineOverlay(text, buttons, spinner) {
+        $('#checkersOnlineOverlay').classList.remove('hidden');
+        $('#checkersOnlineOverlayText').textContent = text;
+        $('#checkersOnlineSpinner').classList.toggle('hidden', !spinner);
+        const wrap = $('#checkersOnlineOverlayActions');
+        wrap.innerHTML = '';
+        (buttons || []).forEach(b => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'btn btn-' + (b.primary ? 'primary' : 'secondary') + ' btn-sm';
+          btn.textContent = b.label;
+          btn.addEventListener('click', b.onClick);
+          wrap.appendChild(btn);
+        });
+      }
+
+      function checkersEnterOnline() {
+        checkersOnlineSelected = null; checkersOnlineLegalMoves = []; checkersOnlineForced = null;
+        if (!CURRENT_USER) { checkersShowOnlineOverlay(t('ttt.needLogin'), []); return; }
+        checkersShowFindPrompt();
+      }
+
+      function checkersShowFindPrompt() {
+        checkersOnlineState = 'idle';
+        checkersShowOnlineOverlay(t('ttt.onlineIntro'), [
+          { label: t('ttt.findOpponent'), primary: true, onClick: checkersStartSearch }
+        ]);
+      }
+
+      async function checkersStartSearch() {
+        checkersOnlineState = 'searching';
+        checkersShowOnlineOverlay(t('ttt.searching'), [{ label: t('ttt.cancelSearch'), onClick: checkersCancelSearch }], true);
+        try {
+          const data = await api('/api/games/checkers/queue/join', { method: 'POST' });
+          if (checkersMode !== 'online') return;
+          if (data.status === 'matched') {
+            checkersOnlineGameId = data.gameId;
+            checkersEnterOnlineGame();
+          } else {
+            clearInterval(checkersQueuePollTimer);
+            checkersQueuePollTimer = setInterval(checkersPollQueue, 1500);
+          }
+        } catch (e) {
+          if (checkersMode !== 'online') return;
+          checkersShowOnlineOverlay(t('ttt.connectionError'), [{ label: t('ttt.findOpponent'), primary: true, onClick: checkersStartSearch }]);
+        }
+      }
+
+      async function checkersPollQueue() {
+        if (checkersOnlineState !== 'searching' || checkersMode !== 'online') { clearInterval(checkersQueuePollTimer); return; }
+        try {
+          const data = await api('/api/games/checkers/queue/status');
+          if (data.status === 'matched') {
+            clearInterval(checkersQueuePollTimer);
+            checkersOnlineGameId = data.gameId;
+            checkersEnterOnlineGame();
+          }
+        } catch (e) {}
+      }
+
+      async function checkersCancelSearch() {
+        clearInterval(checkersQueuePollTimer);
+        checkersOnlineState = 'idle';
+        try { await api('/api/games/checkers/queue/leave', { method: 'POST' }); } catch (e) {}
+        if (checkersMode === 'online') checkersShowFindPrompt();
+      }
+
+      function checkersEnterOnlineGame() {
+        checkersOnlineState = 'playing';
+        $('#checkersOnlineOverlay').classList.add('hidden');
+        checkersInitBoard();
+        checkersRender();
+        checkersOnlinePollGame();
+        clearInterval(checkersOnlinePollTimer);
+        checkersOnlinePollTimer = setInterval(checkersOnlinePollGame, 1200);
+      }
+
+      async function checkersOnlinePollGame() {
+        if (!checkersOnlineGameId || checkersMode !== 'online') return;
+        try {
+          const g = await api('/api/games/checkers/' + checkersOnlineGameId);
+          checkersRenderOnlineGame(g);
+        } catch (e) {
+          checkersOnlineHandleGone();
+        }
+      }
+
+      function checkersRenderOnlineGame(g) {
+        if (checkersMode !== 'online') return;
+        checkersBoard = g.board;
+        checkersTurn = g.turn;
+        checkersOnlineMyColor = g.you;
+        checkersOnlineForced = g.forcedPiece && g.turn === g.you ? g.forcedPiece : null;
+        if (checkersOnlineForced) {
+          checkersOnlineSelected = checkersOnlineForced;
+          checkersOnlineLegalMoves = checkersLegalMovesForPiece(checkersOnlineForced[0], checkersOnlineForced[1], checkersBoard);
+        } else if (g.turn !== g.you) {
+          checkersOnlineSelected = null; checkersOnlineLegalMoves = [];
+        }
+        checkersSelected = checkersOnlineSelected;
+        checkersLegalMoves = checkersOnlineLegalMoves;
+        checkersRender();
+
+        const oppColor = g.you === 'w' ? 'b' : 'w';
+        const opp = g.players[oppColor];
+        $('#checkersOnlineActions').classList.remove('hidden');
+        const statusEl = $('#checkersStatus');
+        statusEl.classList.remove('win');
+
+        if (g.status === 'playing') {
+          clearInterval(checkersQueuePollTimer);
+          statusEl.textContent = g.turn === g.you ? t('ttt.yourMove') : t('ttt.waitingMove', { name: opp.fullname });
+          if (g.drawOffer.opponent && !g.drawOffer.you) {
+            if (confirm(t('games.chess.drawOfferConfirm'))) checkersDrawRespond(true);
+            else checkersDrawRespond(false);
+          }
+          $('#checkersOnlineRematchBtn').classList.add('hidden');
+        } else if (g.status === 'finished') {
+          let msg;
+          if (g.winner === 'draw') msg = t('ttt.gameDraw');
+          else if (g.winner === g.you) msg = (g.endReason === 'left' || g.endReason === 'timeout') ? t('ttt.opponentLeft') : t('ttt.youWin');
+          else msg = t('ttt.youLose');
+          statusEl.textContent = msg;
+          statusEl.classList.add('win');
+          $('#checkersOnlineRematchBtn').classList.remove('hidden');
+          $('#checkersOnlineRematchBtn').disabled = !!g.rematch.you;
+          $('#checkersOnlineRematchBtn').textContent = g.rematch.you ? t('ttt.waitingRematchOpp') : t('ttt.rematch');
+          if (checkersOnlineState !== 'finished') {
+            checkersOnlineState = 'finished';
+            clearInterval(checkersOnlinePollTimer);
+            checkersOnlinePollTimer = setInterval(checkersOnlinePollGame, 1800);
+          }
+        }
+      }
+
+      function checkersOnlineHandleClick(r, c) {
+        if (checkersOnlineState !== 'playing' || !checkersOnlineGameId) return;
+        const p = checkersBoard[r][c];
+        if (checkersOnlineForced) {
+          const [fr, fc] = checkersOnlineForced;
+          const isLegal = checkersOnlineLegalMoves.some(m => m.to[0] === r && m.to[1] === c);
+          if (isLegal) checkersOnlineMove([fr, fc], [r, c]);
+          return;
+        }
+        if (checkersOnlineSelected) {
+          const isLegal = checkersOnlineLegalMoves.some(m => m.to[0] === r && m.to[1] === c);
+          if (isLegal) {
+            const from = checkersOnlineSelected, to = [r, c];
+            checkersOnlineSelected = null; checkersOnlineLegalMoves = [];
+            checkersOnlineMove(from, to);
+            return;
+          }
+          if (p && p[0] === checkersOnlineMyColor && checkersTurn === checkersOnlineMyColor) {
+            checkersOnlineSelected = [r, c];
+            checkersOnlineLegalMoves = checkersLegalMovesForPiece(r, c, checkersBoard);
+          } else {
+            checkersOnlineSelected = null; checkersOnlineLegalMoves = [];
+          }
+        } else if (p && p[0] === checkersOnlineMyColor && checkersTurn === checkersOnlineMyColor) {
+          const moves = checkersLegalMovesForPiece(r, c, checkersBoard);
+          const captures = checkersAllCapturesFor(checkersOnlineMyColor, checkersBoard);
+          if (captures.length > 0 && moves.length === 0) return;
+          checkersOnlineSelected = [r, c];
+          checkersOnlineLegalMoves = moves;
+        }
+        checkersSelected = checkersOnlineSelected;
+        checkersLegalMoves = checkersOnlineLegalMoves;
+        checkersRender();
+      }
+
+      async function checkersOnlineMove(from, to) {
+        try {
+          const g = await apiJSON('/api/games/checkers/' + checkersOnlineGameId + '/move', 'POST', { from, to });
+          checkersRenderOnlineGame(g);
+        } catch (e) { checkersOnlinePollGame(); }
+      }
+
+      async function checkersResignOnline() {
+        if (!checkersOnlineGameId || checkersOnlineState !== 'playing') return;
+        if (!confirm(t('games.chess.resignConfirm'))) return;
+        try {
+          const g = await api('/api/games/checkers/' + checkersOnlineGameId + '/resign', { method: 'POST' });
+          checkersRenderOnlineGame(g);
+        } catch (e) {}
+      }
+
+      async function checkersOfferDrawOnline() {
+        if (!checkersOnlineGameId || checkersOnlineState !== 'playing') return;
+        try {
+          const g = await api('/api/games/checkers/' + checkersOnlineGameId + '/draw-offer', { method: 'POST' });
+          checkersRenderOnlineGame(g);
+        } catch (e) {}
+      }
+
+      async function checkersDrawRespond(accept) {
+        if (!checkersOnlineGameId) return;
+        try {
+          const g = await apiJSON('/api/games/checkers/' + checkersOnlineGameId + '/draw-response', 'POST', { accept });
+          checkersRenderOnlineGame(g);
+        } catch (e) {}
+      }
+
+      async function checkersRequestRematchOnline() {
+        if (!checkersOnlineGameId) return;
+        try {
+          const g = await api('/api/games/checkers/' + checkersOnlineGameId + '/rematch', { method: 'POST' });
+          if (g.status === 'playing') {
+            checkersOnlineState = 'playing';
+            clearInterval(checkersOnlinePollTimer);
+            checkersOnlinePollTimer = setInterval(checkersOnlinePollGame, 1200);
+          }
+          checkersRenderOnlineGame(g);
+        } catch (e) {}
+      }
+
+      async function checkersLeaveOnlineGame() {
+        clearInterval(checkersOnlinePollTimer);
+        const id = checkersOnlineGameId;
+        checkersOnlineGameId = null;
+        checkersOnlineState = 'idle';
+        if (id) { try { await api('/api/games/checkers/' + id + '/leave', { method: 'POST' }); } catch (e) {} }
+        if (checkersMode === 'online') checkersShowFindPrompt();
+      }
+
+      function checkersOnlineHandleGone() {
+        clearInterval(checkersOnlinePollTimer);
+        checkersOnlineGameId = null;
+        checkersOnlineState = 'idle';
+        if (checkersMode === 'online') checkersShowFindPrompt();
+      }
+
+      function checkersStopOnline() {
+        clearInterval(checkersOnlinePollTimer);
+        clearInterval(checkersQueuePollTimer);
+        if (checkersOnlineGameId || checkersOnlineState === 'searching') {
+          const id = checkersOnlineGameId;
+          if (id) api('/api/games/checkers/' + id + '/leave', { method: 'POST' }).catch(() => {});
+          else api('/api/games/checkers/queue/leave', { method: 'POST' }).catch(() => {});
+        }
+        checkersOnlineGameId = null;
+        checkersOnlineState = 'idle';
+      }
+
+      function checkersJoinOnlineGameDirect(gameId) {
+        checkersMode = 'online';
+        $$('#checkersModeToggle .chess-toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === 'online'));
+        $('#checkersDiffToggle').style.display = 'none';
+        $('#checkersOnlineActions').classList.remove('hidden');
+        checkersOnlineGameId = gameId;
+        checkersEnterOnlineGame();
       }
 
       /* ---------- SNAKE ---------- */
@@ -10202,6 +10855,113 @@
 
       /* ===================== ADMINISTRATOR BURCHAGI ===================== */
       let adminModTarget = null; // { username, type: 'ban' | 'mute' }
+
+      /* ---- Admin/boss — bir-biriga shaxmat/shashka o'yiniga taklif ---- */
+
+      async function loadGameAdmins() {
+        const wrap = $('#gameInviteAdminsList');
+        if (!wrap || !(CURRENT_USER && (CURRENT_USER.isAdmin || CURRENT_USER.isBoss))) { if (wrap) wrap.innerHTML = ''; return; }
+        wrap.innerHTML = `<p class="view-sub">${t('admin.loading')}</p>`;
+        try {
+          const data = await api('/api/games/admins');
+          renderGameAdmins(data.users || []);
+        } catch (e) {
+          wrap.innerHTML = `<p class="view-sub">${e.message || t('admin.loadFail')}</p>`;
+        }
+      }
+
+      function renderGameAdmins(users) {
+        const wrap = $('#gameInviteAdminsList');
+        if (!users.length) { wrap.innerHTML = `<p class="view-sub">${t('gameInvite.noAdmins')}</p>`; return; }
+        wrap.innerHTML = users.map(u => `
+          <div class="game-invite-row">
+            <div class="game-invite-user">
+              <span class="p-online-dot ${u.isOnline ? 'online' : ''}" title="${u.isOnline ? t('profile.online') : t('profile.offline')}"></span>
+              ${escapeHtml(u.fullname)} <span class="view-sub">@${escapeHtml(u.username)}</span>
+            </div>
+            <div class="game-invite-actions">
+              <button type="button" class="btn btn-ghost btn-sm" data-invite-user="${u.username}" data-invite-type="chess">♞ ${t('games.chess.title')}</button>
+              <button type="button" class="btn btn-ghost btn-sm" data-invite-user="${u.username}" data-invite-type="checkers">⚫ ${t('games.checkers.title')}</button>
+            </div>
+          </div>
+        `).join('');
+        $$('#gameInviteAdminsList [data-invite-user]').forEach(btn => {
+          btn.addEventListener('click', () => sendGameInvite(btn.dataset.inviteUser, btn.dataset.inviteType));
+        });
+      }
+
+      async function sendGameInvite(to, type) {
+        try {
+          await apiJSON('/api/games/invite', 'POST', { to, type });
+          loadGameInvites();
+        } catch (e) {
+          alert(e.message || t('gameInvite.sendFail'));
+        }
+      }
+
+      async function loadGameInvites() {
+        if (!(CURRENT_USER && (CURRENT_USER.isAdmin || CURRENT_USER.isBoss))) return;
+        try {
+          const data = await api('/api/games/invites');
+          renderGameInvites(data.incoming || [], data.outgoing || []);
+        } catch (e) { /* jimgina o'tkazib yuboriladi */ }
+      }
+
+      function renderGameInvites(incoming, outgoing) {
+        const inWrap = $('#gameInviteIncoming');
+        const outWrap = $('#gameInviteOutgoing');
+        if (!inWrap || !outWrap) return;
+        inWrap.innerHTML = incoming.map(inv => `
+          <div class="game-invite-row">
+            <div class="game-invite-user">${t('gameInvite.incomingFrom', { name: inv.from.fullname, game: t(inv.type === 'chess' ? 'games.chess.title' : 'games.checkers.title') })}</div>
+            <div class="game-invite-actions">
+              <button type="button" class="btn btn-primary btn-sm" data-accept-invite="${inv.id}">${t('gameInvite.accept')}</button>
+              <button type="button" class="btn btn-ghost btn-sm" data-decline-invite="${inv.id}">${t('gameInvite.decline')}</button>
+            </div>
+          </div>
+        `).join('');
+        outWrap.innerHTML = outgoing.map(inv => `
+          <div class="game-invite-row">
+            <div class="game-invite-user">${t('gameInvite.outgoingTo', { name: inv.to.fullname, game: t(inv.type === 'chess' ? 'games.chess.title' : 'games.checkers.title') })}</div>
+            <div class="game-invite-actions">
+              <button type="button" class="btn btn-ghost btn-sm" data-cancel-invite="${inv.id}">${t('gameInvite.cancel')}</button>
+            </div>
+          </div>
+        `).join('');
+        $$('[data-accept-invite]').forEach(btn => btn.addEventListener('click', () => acceptGameInvite(btn.dataset.acceptInvite)));
+        $$('[data-decline-invite]').forEach(btn => btn.addEventListener('click', () => declineGameInvite(btn.dataset.declineInvite)));
+        $$('[data-cancel-invite]').forEach(btn => btn.addEventListener('click', () => cancelGameInvite(btn.dataset.cancelInvite)));
+      }
+
+      async function acceptGameInvite(id) {
+        try {
+          const res = await apiJSON('/api/games/invites/' + id + '/accept', 'POST', {});
+          switchView('games');
+          $('#gamesPicker').classList.add('hidden');
+          if (res.type === 'chess') {
+            $('#chessGameWrap').classList.remove('hidden');
+            chessBuildBoard();
+            chessJoinOnlineGameDirect(res.gameId);
+          } else {
+            $('#checkersGameWrap').classList.remove('hidden');
+            checkersBuildBoard();
+            checkersJoinOnlineGameDirect(res.gameId);
+          }
+        } catch (e) {
+          alert(e.message || t('gameInvite.acceptFail'));
+          loadGameInvites();
+        }
+      }
+
+      async function declineGameInvite(id) {
+        try { await apiJSON('/api/games/invites/' + id + '/decline', 'POST', {}); } catch (e) {}
+        loadGameInvites();
+      }
+
+      async function cancelGameInvite(id) {
+        try { await apiJSON('/api/games/invites/' + id + '/cancel', 'POST', {}); } catch (e) {}
+        loadGameInvites();
+      }
 
       async function loadAdminUsers() {
         const list = $('#adminUsersList');
