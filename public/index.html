@@ -4193,10 +4193,6 @@
         <span class="tab-icon">🎮</span>
         <span data-i18n="nav.games">O'yinlar</span>
       </button>
-      <button id="openUploadBtnMobile">
-        <span class="tab-icon">➕</span>
-        <span data-i18n="nav.newWork">Yangi asar</span>
-      </button>
       <button data-view="admin" id="navAdminBtnMobile" class="hidden">
         <span class="tab-icon">🛡️</span>
         <span data-i18n="admin.nav">Administrator burchagi</span>
@@ -7114,7 +7110,6 @@
             switchView(btn.dataset.view);
           });
         });
-        $('#openUploadBtnMobile').addEventListener('click', guarded(openUploadModal));
         $('#gotoProfileBtn').addEventListener('click', () => { switchView('profile'); $('#avatarDropdown').classList.remove('open'); });
         bindGamesEvents();
         $('#avatarBtn').addEventListener('click', () => $('#avatarDropdown').classList.toggle('open'));
