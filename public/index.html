@@ -1552,19 +1552,20 @@
 
     /* ============ COMMENT MODAL ============ */
     .comments-modal-content {
-      max-width: 480px;
+      max-width: 600px;
       width: 100%;
       padding: 0;
       display: flex;
       flex-direction: column;
-      max-height: 82vh;
+      height: 82vh;
+      max-height: 780px;
     }
 
     .comments-modal-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 18px 20px;
+      padding: 20px 24px;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
@@ -1572,20 +1573,20 @@
     .comments-modal-head h3 {
       font-family: var(--font-display);
       font-weight: 900;
-      font-size: 19px;
+      font-size: 21px;
     }
 
     .comments-list {
       overflow-y: auto;
-      padding: 8px 20px;
+      padding: 14px 24px;
       flex: 1;
-      min-height: 120px;
+      min-height: 320px;
     }
 
     .comment-item {
       display: flex;
-      gap: 10px;
-      padding: 11px 0;
+      gap: 12px;
+      padding: 14px 0;
       border-bottom: 1px solid var(--border);
     }
 
@@ -1594,8 +1595,8 @@
     }
 
     .comment-avatar {
-      width: 30px;
-      height: 30px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: var(--accent);
       color: #fff;
@@ -1603,7 +1604,7 @@
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 11.5px;
+      font-size: 14px;
       flex-shrink: 0;
     }
 
@@ -1613,8 +1614,8 @@
     }
 
     .comment-line {
-      font-size: 13.5px;
-      line-height: 1.45;
+      font-size: 14.5px;
+      line-height: 1.5;
       word-wrap: break-word;
     }
 
@@ -1653,15 +1654,20 @@
     .comments-empty {
       text-align: center;
       color: var(--text-dim);
-      font-size: 13.5px;
-      padding: 30px 10px;
+      font-size: 15px;
+      padding: 60px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: 280px;
     }
 
     .comment-form {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
-      padding: 14px 16px;
+      padding: 16px 20px;
       border-top: 1px solid var(--border);
       flex-shrink: 0;
     }
@@ -1671,10 +1677,10 @@
       background: var(--bg-alt);
       border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 10px 16px;
+      padding: 14px 20px;
       color: var(--text);
       font-family: inherit;
-      font-size: 13.5px;
+      font-size: 14.5px;
     }
 
     .comment-form input:focus {
@@ -1687,10 +1693,10 @@
       border: none;
       color: var(--accent);
       font-weight: 800;
-      font-size: 13.5px;
+      font-size: 14.5px;
       cursor: pointer;
       font-family: inherit;
-      padding: 6px 4px;
+      padding: 8px 6px;
       opacity: .4;
     }
 
@@ -2188,11 +2194,11 @@
 
     /* ============ CHAT MODAL ============ */
     .chat-modal-content {
-      max-width: 480px;
+      max-width: 600px;
     }
 
     .chat-work-ref {
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--text-dim);
       margin-top: 3px;
     }
@@ -2200,8 +2206,8 @@
     .chat-messages-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      padding: 14px 20px;
+      gap: 10px;
+      padding: 18px 24px;
     }
 
     .chat-bubble-row {
@@ -2214,10 +2220,10 @@
 
     .chat-bubble {
       max-width: 75%;
-      padding: 9px 13px;
-      border-radius: 14px;
-      font-size: 13.5px;
-      line-height: 1.4;
+      padding: 11px 16px;
+      border-radius: 16px;
+      font-size: 14.5px;
+      line-height: 1.45;
       word-wrap: break-word;
       background: var(--bg-alt);
       border: 1px solid var(--border);
@@ -2231,9 +2237,9 @@
 
     .chat-bubble-time {
       display: block;
-      font-size: 10px;
+      font-size: 10.5px;
       opacity: .65;
-      margin-top: 4px;
+      margin-top: 5px;
       font-family: var(--font-mono);
     }
 
@@ -2915,6 +2921,53 @@
       .image-viewer-nav { width: 40px; height: 40px; font-size: 22px; }
       .image-viewer-nav.prev { left: 6px; }
       .image-viewer-nav.next { right: 6px; }
+    }
+
+    .video-viewer-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .video-viewer-stage .image-viewer-img {
+      max-height: calc(100% - 64px);
+    }
+
+    .video-viewer-contact-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 13px 26px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 14.5px;
+      font-family: inherit;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+      transition: transform .15s ease, opacity .15s ease;
+    }
+
+    .video-viewer-contact-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .video-viewer-contact-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    .video-viewer-contact-btn.hidden {
+      display: none;
     }
 
     .lightbox-body {
@@ -4911,7 +4964,10 @@
   <!-- ============ FULL-SIZE VIDEO VIEWER ============ -->
   <div class="image-viewer-overlay" id="videoViewerModal">
     <button class="image-viewer-close" id="closeVideoViewer">✕</button>
-    <video class="image-viewer-img" id="videoViewerVideo" src="" controls autoplay playsinline loop></video>
+    <div class="video-viewer-stage">
+      <video class="image-viewer-img" id="videoViewerVideo" src="" controls autoplay playsinline loop></video>
+      <button class="video-viewer-contact-btn hidden" id="videoViewerContactBtn"></button>
+    </div>
   </div>
 
   <!-- ============ COMMENTS MODAL ============ -->
@@ -11793,7 +11849,7 @@
           thumb.addEventListener('click', () => {
             const src = ALL_ITEMS_BY_ID[id];
             if (src && src.video) {
-              openVideoViewer(src.video, src.poster);
+              openVideoViewer(src.video, src.poster, src);
             } else {
               const images = src ? workImages(src) : Array.from(thumb.querySelectorAll('img')).map(i => i.src);
               openImageViewer(images, 0);
@@ -12520,11 +12576,22 @@
       }
 
       /* ===================== TO'LIQ HAJMDAGI VIDEO KO'RUVCHI ===================== */
-      function openVideoViewer(src, poster) {
+      function openVideoViewer(src, poster, work) {
         if (!src) return;
         const v = $('#videoViewerVideo');
         v.poster = poster || '';
         v.src = src;
+        const contactBtn = $('#videoViewerContactBtn');
+        const canContact = work && work.status === 'sale' && (!CURRENT_USER || work.username !== CURRENT_USER.username);
+        if (canContact) {
+          contactBtn.innerHTML = `${messageIconSVG()}<span>${t('feed.contactLabel')}</span>`;
+          contactBtn.setAttribute('aria-label', t('feed.contactAria'));
+          contactBtn.classList.remove('hidden');
+          contactBtn.onclick = guarded(() => openChat(work.username, { id: work.id, title: work.title }));
+        } else {
+          contactBtn.classList.add('hidden');
+          contactBtn.onclick = null;
+        }
         $('#videoViewerModal').classList.add('open');
       }
       function closeVideoViewer() {
