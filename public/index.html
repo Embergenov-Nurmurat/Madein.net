@@ -2192,9 +2192,56 @@
       background: var(--accent);
     }
 
-    /* ============ CHAT MODAL ============ */
-    .chat-modal-content {
-      max-width: 600px;
+    /* ============ CHAT VIEW (to'liq sahifa) ============ */
+    .chat-view-head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 5;
+    }
+
+    .chat-view-head .btn {
+      flex-shrink: 0;
+    }
+
+    .chat-view-who {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .chat-view-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .chat-view-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .chat-view-who h2 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 19px;
+      line-height: 1.2;
     }
 
     .chat-work-ref {
@@ -2203,11 +2250,123 @@
       margin-top: 3px;
     }
 
-    .chat-messages-list {
+    .chat-view-messages {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      padding: 18px 24px;
+      padding: 24px 28px;
+      min-height: calc(100vh - 260px);
+    }
+
+    .chat-view-form {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 16px 28px 26px;
+      border-top: 1px solid var(--border);
+      position: sticky;
+      bottom: 0;
+      background: var(--bg);
+    }
+
+    .chat-view-form input {
+      flex: 1;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 14px 20px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14.5px;
+    }
+
+    .chat-view-form input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .chat-view-form button[type="submit"] {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 14.5px;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 8px 6px;
+      opacity: .4;
+      flex-shrink: 0;
+    }
+
+    .chat-view-form button[type="submit"].active {
+      opacity: 1;
+    }
+
+    .emoji-picker-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .emoji-toggle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg-alt);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color .2s ease;
+    }
+
+    .emoji-toggle-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .emoji-picker {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 0;
+      width: 268px;
+      max-height: 220px;
+      overflow-y: auto;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      box-shadow: 0 12px 32px rgba(0,0,0,.35);
+      z-index: 20;
+    }
+
+    .emoji-picker.hidden {
+      display: none;
+    }
+
+    .emoji-item {
+      background: none;
+      border: none;
+      font-size: 19px;
+      line-height: 1;
+      padding: 7px 0;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background .15s ease;
+    }
+
+    .emoji-item:hover {
+      background: var(--bg);
+    }
+
+    @media (max-width: 720px) {
+      .chat-view-head { padding: 16px 16px; }
+      .chat-view-messages { padding: 18px 16px; }
+      .chat-view-form { padding: 12px 16px 18px; }
+      .emoji-picker { width: 232px; grid-template-columns: repeat(6, 1fr); }
     }
 
     .chat-bubble-row {
@@ -4802,6 +4961,29 @@
         <div id="upGrid" class="gallery-grid"></div>
       </section>
 
+      <!-- CHAT VIEW (sotuvchi bilan yozishma — to'liq sahifa) -->
+      <section id="chatView" class="view">
+        <div class="chat-view-head">
+          <button class="btn btn-ghost btn-sm" id="backFromChat" data-i18n="userProfile.back">← Orqaga</button>
+          <div class="chat-view-who">
+            <div class="chat-view-avatar" id="chatViewAvatar">?</div>
+            <div>
+              <h2 id="chatWithName">—</h2>
+              <div class="chat-work-ref hidden" id="chatWorkRef"></div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-view-messages" id="chatMessagesList"></div>
+        <form class="chat-view-form" id="chatForm">
+          <div class="emoji-picker-wrap">
+            <button type="button" class="emoji-toggle-btn" id="emojiToggleBtn" aria-label="Emoji">🙂</button>
+            <div class="emoji-picker hidden" id="emojiPicker"></div>
+          </div>
+          <input type="text" id="chatInput" placeholder="Xabar yozing..." maxlength="1000" autocomplete="off" data-i18n-ph="chat.ph">
+          <button type="submit" id="chatSubmitBtn" data-i18n="comments.send">Yuborish</button>
+        </form>
+      </section>
+
       <!-- ADMIN CORNER VIEW -->
       <section id="adminView" class="view">
         <div class="view-hero">
@@ -4981,24 +5163,6 @@
       <form class="comment-form" id="commentForm">
         <input type="text" id="commentInput" placeholder="Koment yozing..." maxlength="500" autocomplete="off" data-i18n-ph="comments.ph">
         <button type="submit" id="commentSubmitBtn" data-i18n="comments.send">Yuborish</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ============ CHAT MODAL (sotuvchi bilan aloqa) ============ -->
-  <div class="modal-backdrop" id="chatModal">
-    <div class="modal comments-modal-content chat-modal-content">
-      <div class="comments-modal-head">
-        <div>
-          <h3 id="chatWithName">—</h3>
-          <div class="chat-work-ref hidden" id="chatWorkRef"></div>
-        </div>
-        <button class="modal-close" id="closeChatModal">✕</button>
-      </div>
-      <div class="comments-list chat-messages-list" id="chatMessagesList"></div>
-      <form class="comment-form" id="chatForm">
-        <input type="text" id="chatInput" placeholder="Xabar yozing..." maxlength="1000" autocomplete="off" data-i18n-ph="chat.ph">
-        <button type="submit" id="chatSubmitBtn" data-i18n="comments.send">Yuborish</button>
       </form>
     </div>
   </div>
@@ -7309,13 +7473,31 @@
         $('#closeCommentsModal').addEventListener('click', closeCommentsModal);
         $('#commentsModal').addEventListener('click', (e) => { if (e.target === $('#commentsModal')) closeCommentsModal(); });
 
-        $('#closeChatModal').addEventListener('click', closeChatModal);
-        $('#chatModal').addEventListener('click', (e) => { if (e.target === $('#chatModal')) closeChatModal(); });
+        $('#backFromChat').addEventListener('click', closeChatModal);
 
         $('#closeAdminModModal').addEventListener('click', closeAdminModModal);
         $('#adminModModal').addEventListener('click', (e) => { if (e.target === $('#adminModModal')) closeAdminModModal(); });
         $('#adminModForm').addEventListener('submit', submitAdminModForm);
         $('#chatForm').addEventListener('submit', submitChatMessage);
+        $('#chatInput').addEventListener('input', (e) => {
+          $('#chatSubmitBtn').classList.toggle('active', e.target.value.trim().length > 0);
+        });
+        $('#emojiToggleBtn').addEventListener('click', (e) => {
+          e.stopPropagation();
+          buildEmojiPicker();
+          $('#emojiPicker').classList.toggle('hidden');
+        });
+        $('#emojiPicker').addEventListener('click', (e) => {
+          const btn = e.target.closest('.emoji-item');
+          if (!btn) return;
+          insertEmojiIntoChatInput(btn.textContent);
+        });
+        document.addEventListener('click', (e) => {
+          const picker = $('#emojiPicker');
+          if (!picker.classList.contains('hidden') && !e.target.closest('.emoji-picker-wrap')) {
+            picker.classList.add('hidden');
+          }
+        });
         $('#commentForm').addEventListener('submit', (e) => {
           e.preventDefault();
           if (IS_GUEST) { openGateModal(); return; }
@@ -7380,6 +7562,7 @@
         $('#profileView').classList.toggle('active', view === 'profile');
         $('#messagesView').classList.toggle('active', view === 'messages');
         $('#userProfileView').classList.toggle('active', view === 'userProfile');
+        $('#chatView').classList.toggle('active', view === 'chat');
         $('#adminView').classList.toggle('active', view === 'admin');
         $('#savedView').classList.toggle('active', view === 'saved');
         $('#gamesView').classList.toggle('active', view === 'games');
@@ -12148,7 +12331,37 @@
 
       /* ===================== XABARLAR (sotuvchi bilan aloqa) ===================== */
       let CHAT_WITH = null; // username of the person we're currently chatting with
+      let CHAT_RETURN_VIEW = 'messages'; // "← Orqaga" bosilganda qaysi sahifaga qaytish kerak
       let unreadPollTimer = null;
+
+      const EMOJI_LIST = [
+        '😀','😁','😂','🤣','😊','😍','😘','😉','😎','🤩',
+        '🙂','🙃','😇','🥳','😅','😜','🤪','😏','😌','😴',
+        '🤔','🤗','🙄','😐','😢','😭','😡','😱','🥺','😳',
+        '👍','👎','👏','🙌','🙏','💪','👌','✌️','🤝','👋',
+        '❤️','🧡','💛','💚','💙','💜','🖤','🤍','💔','💯',
+        '🔥','✨','⭐','🎉','🎊','🎁','🌸','🌹','☀️','🌙'
+      ];
+      let emojiPickerBuilt = false;
+      function buildEmojiPicker() {
+        if (emojiPickerBuilt) return;
+        emojiPickerBuilt = true;
+        $('#emojiPicker').innerHTML = EMOJI_LIST.map(e => `<button type="button" class="emoji-item">${e}</button>`).join('');
+      }
+      function toggleEmojiPicker(force) {
+        buildEmojiPicker();
+        $('#emojiPicker').classList.toggle('hidden', force === undefined ? undefined : !force);
+      }
+      function insertEmojiIntoChatInput(emoji) {
+        const input = $('#chatInput');
+        const start = input.selectionStart ?? input.value.length;
+        const end = input.selectionEnd ?? input.value.length;
+        input.value = input.value.slice(0, start) + emoji + input.value.slice(end);
+        const pos = start + emoji.length;
+        input.focus();
+        input.setSelectionRange(pos, pos);
+        $('#chatSubmitBtn').classList.toggle('active', input.value.trim().length > 0);
+      }
 
       function startUnreadPolling() {
         stopUnreadPolling();
@@ -12229,8 +12442,13 @@
       }
 
       async function openChat(username, workRef) {
+        const activeSection = document.querySelector('main > .view.active');
+        if (activeSection && activeSection.id !== 'chatView') {
+          CHAT_RETURN_VIEW = activeSection.id.replace(/View$/, '') || 'home';
+        }
         CHAT_WITH = username;
         $('#chatWithName').textContent = username;
+        $('#chatViewAvatar').innerHTML = initials(username);
         $('#chatMessagesList').innerHTML = '<div class="feed-spinner" style="margin:20px auto;"></div>';
         const workRefEl = $('#chatWorkRef');
         if (workRef && workRef.title) {
@@ -12243,12 +12461,16 @@
           workRefEl.dataset.workid = '';
           workRefEl.dataset.worktitle = '';
         }
-        $('#chatModal').classList.add('open');
+        $('#emojiPicker').classList.add('hidden');
+        switchView('chat');
         $('#chatInput').value = '';
+        $('#chatSubmitBtn').classList.remove('active');
 
         try {
           const data = await api('/api/conversations/' + encodeURIComponent(username) + '/messages');
-          $('#chatWithName').textContent = (data.otherUser && data.otherUser.fullname) || username;
+          const other = data.otherUser;
+          $('#chatWithName').textContent = (other && other.fullname) || username;
+          $('#chatViewAvatar').innerHTML = avatarInner(other && other.avatar, (other && other.fullname) || username);
           renderChatMessages(data.items || []);
           refreshUnreadBadge();
         } catch (e) {
@@ -12267,8 +12489,9 @@
       }
 
       function closeChatModal() {
-        $('#chatModal').classList.remove('open');
+        switchView(CHAT_RETURN_VIEW || 'messages');
         CHAT_WITH = null;
+        $('#emojiPicker').classList.add('hidden');
       }
 
       async function submitChatMessage(e) {

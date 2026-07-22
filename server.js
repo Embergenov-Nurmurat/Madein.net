@@ -1311,7 +1311,7 @@ app.get('/api/conversations/:username/messages', requireAuth, async (req, res) =
 
   const u = db.users[other];
   res.json({
-    otherUser: { username: other, fullname: (u && u.fullname) || other },
+    otherUser: { username: other, fullname: (u && u.fullname) || other, avatar: (u && u.avatar) || null },
     items: conv.messages
   });
 });
