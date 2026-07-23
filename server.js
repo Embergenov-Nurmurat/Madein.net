@@ -102,6 +102,12 @@ function ensureModerationFields(u) {
   if (!Array.isArray(u.notifications)) u.notifications = [];
   if (!Array.isArray(u.following)) u.following = [];
   if (!Array.isArray(u.savedWorks)) u.savedWorks = [];
+  if (!u.callPrivacy || typeof u.callPrivacy !== 'object') {
+    u.callPrivacy = { mode: 'everyone', allowed: [] };
+  } else {
+    if (!['everyone', 'nobody', 'selected'].includes(u.callPrivacy.mode)) u.callPrivacy.mode = 'everyone';
+    if (!Array.isArray(u.callPrivacy.allowed)) u.callPrivacy.allowed = [];
+  }
 }
 
 /* db.reports ro'yxati mavjudligini ta'minlaydi (eski db.json fayllar uchun) */
@@ -540,6 +546,7 @@ function publicUser(uname) {
     phone: u.phone || '',
     social: u.social || '',
     privacy: Object.assign({ phone: true, social: true, email: false }, u.privacy || {}),
+    callPrivacy: Object.assign({ mode: 'everyone', allowed: [] }, u.callPrivacy || {}),
     joined: u.joined,
     theme: u.theme || null,
     isAdmin: !!u.isAdmin,
@@ -704,7 +711,7 @@ app.get('/api/me', async (req, res) => {
 
 app.put('/api/profile', requireAuth, async (req, res) => {
   const u = db.users[req.session.username];
-  const { fullname, email, bio, phone, social, privacy } = req.body || {};
+  const { fullname, email, bio, phone, social, privacy, callPrivacy } = req.body || {};
   if (fullname !== undefined) u.fullname = String(fullname).slice(0, 100);
   if (email !== undefined) u.email = String(email).slice(0, 150);
   if (bio !== undefined) u.bio = String(bio).slice(0, 500);
@@ -716,6 +723,18 @@ app.put('/api/profile', requireAuth, async (req, res) => {
       social: !!privacy.social,
       email: !!privacy.email
     });
+  }
+  if (callPrivacy && typeof callPrivacy === 'object') {
+    const mode = ['everyone', 'nobody', 'selected'].includes(callPrivacy.mode) ? callPrivacy.mode : 'everyone';
+    let allowed = [];
+    if (Array.isArray(callPrivacy.allowed)) {
+      const me = req.session.username;
+      allowed = [...new Set(callPrivacy.allowed
+        .map(x => String(x || '').trim().toLowerCase())
+        .filter(x => x && x !== me && db.users[x]))]
+        .slice(0, 100);
+    }
+    u.callPrivacy = { mode, allowed };
   }
   await saveDB();
   res.json({ user: publicUser(req.session.username) });
@@ -1345,6 +1364,216 @@ app.post('/api/conversations/:username/messages', requireAuth, requireNotMuted, 
   await saveDB();
 
   res.json({ message });
+});
+
+/* ===================== VIDEO QO'NG'IROQLAR (WebRTC signalizatsiya) =====================
+   Chatdagi kabi video qo'ng'iroq — brauzer WebRTC orqali to'g'ridan-to'g'ri ulanadi,
+   server esa faqat "offer/answer/ICE" xabarlarini bir-biriga yetkazadi (signalizatsiya).
+   Chess/checkers online rejimidagi kabi qisqa intervalli so'rov (polling) andozasidan
+   foydalaniladi — alohida WebSocket serveri kerak emas. Hech narsa diskka yozilmaydi,
+   faqat xotirada, qo'ng'iroq tugagach tez orada tozalanadi. */
+const activeCalls = new Map();     // callId -> call obyekti
+const userActiveCall = new Map();  // username -> callId (bir vaqtda faqat bitta qo'ng'iroq)
+const CALL_RING_TIMEOUT_MS = 45 * 1000;   // shuncha vaqt javob bo'lmasa — "javob berilmadi"
+const CALL_STALE_MS = 2 * 60 * 1000;      // tugagan qo'ng'iroq shuncha vaqtdan keyin xotiradan o'chadi
+
+function genCallId() { return 'call' + Date.now() + crypto.randomBytes(5).toString('hex'); }
+
+/* `toUser` kimlardan qo'ng'iroqni qabul qilishini tekshiradi */
+function callPrivacyCheck(fromUser, toUser) {
+  const target = db.users[toUser];
+  if (!target) return { ok: false, reason: 'notfound' };
+  ensureModerationFields(target);
+  const cp = target.callPrivacy;
+  if (cp.mode === 'nobody') return { ok: false, reason: 'blocked' };
+  if (cp.mode === 'selected' && !cp.allowed.includes(fromUser)) return { ok: false, reason: 'blocked' };
+  return { ok: true };
+}
+
+function callView(call, me) {
+  const other = call.from === me ? call.to : call.from;
+  const ou = db.users[other];
+  return {
+    id: call.id,
+    role: call.from === me ? 'caller' : 'callee',
+    status: call.status,
+    otherUser: { username: other, fullname: (ou && ou.fullname) || other, avatar: (ou && ou.avatar) || null },
+    offer: call.from === me ? undefined : call.offer,   // faqat callee offerni oladi
+    answer: call.from === me ? call.answer : undefined, // faqat caller answerni oladi
+    cameraOff: !!call.cameraOff[other],   // narigi tomonning kamerasi o'chirilganmi
+    myCameraOff: !!call.cameraOff[me],
+    createdAt: call.createdAt,
+    updatedAt: call.updatedAt
+  };
+}
+
+function endCallInternal(call, status) {
+  call.status = status;
+  call.updatedAt = Date.now();
+  if (userActiveCall.get(call.from) === call.id) userActiveCall.delete(call.from);
+  if (userActiveCall.get(call.to) === call.id) userActiveCall.delete(call.to);
+}
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, call] of activeCalls) {
+    if (call.status === 'ringing' && now - call.createdAt > CALL_RING_TIMEOUT_MS) {
+      endCallInternal(call, 'missed');
+    }
+    if (['ended', 'declined', 'missed', 'cancelled', 'busy'].includes(call.status) && now - call.updatedAt > CALL_STALE_MS) {
+      activeCalls.delete(id);
+    }
+  }
+}, 5000).unref();
+
+/* Sotuvchiga (yoki istalgan foydalanuvchiga) video qo'ng'iroq boshlash */
+app.post('/api/calls/start', requireAuth, requireNotMuted, rateLimit('call-start', 20, 60 * 1000), (req, res) => {
+  const me = req.session.username;
+  const to = String((req.body && req.body.to) || '').trim().toLowerCase();
+  if (!to || !db.users[to]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (to === me) return res.status(400).json({ error: "O'zingizga qo'ng'iroq qila olmaysiz" });
+
+  if (userActiveCall.has(me)) return res.status(409).json({ error: "Sizda allaqachon faol qo'ng'iroq bor" });
+  if (userActiveCall.has(to)) return res.status(409).json({ error: "Foydalanuvchi hozir band", busy: true });
+
+  const check = callPrivacyCheck(me, to);
+  if (!check.ok) {
+    return res.status(403).json({
+      error: "Bu foydalanuvchi video qo'ng'iroqlarni cheklagan",
+      blocked: true
+    });
+  }
+
+  const id = genCallId();
+  const call = {
+    id,
+    from: me,
+    to,
+    status: 'ringing',
+    offer: null,
+    answer: null,
+    candidates: { [me]: [], [to]: [] },
+    cameraOff: { [me]: false, [to]: false },
+    createdAt: Date.now(),
+    updatedAt: Date.now()
+  };
+  activeCalls.set(id, call);
+  userActiveCall.set(me, id);
+  userActiveCall.set(to, id);
+  res.json({ call: callView(call, me) });
+});
+
+/* Joriy (faol) qo'ng'iroq holatini kuzatish uchun polling nuqtasi —
+   ham chaqiruvchi, ham qabul qiluvchi shu orqali holatni tekshirib turadi */
+app.get('/api/calls/current', requireAuth, (req, res) => {
+  const me = req.session.username;
+  const id = userActiveCall.get(me);
+  if (!id || !activeCalls.has(id)) return res.json({ call: null });
+  res.json({ call: callView(activeCalls.get(id), me) });
+});
+
+function getCallForParticipant(req, res) {
+  const me = req.session.username;
+  const call = activeCalls.get(req.params.id);
+  if (!call || (call.from !== me && call.to !== me)) {
+    res.status(404).json({ error: "Qo'ng'iroq topilmadi" });
+    return null;
+  }
+  return call;
+}
+
+app.get('/api/calls/:id', requireAuth, (req, res) => {
+  const call = getCallForParticipant(req, res);
+  if (!call) return;
+  res.json({ call: callView(call, req.session.username) });
+});
+
+/* Chaqiruvchi tomon WebRTC "offer"ni yuboradi */
+app.post('/api/calls/:id/offer', requireAuth, (req, res) => {
+  const call = getCallForParticipant(req, res);
+  if (!call) return;
+  const me = req.session.username;
+  if (call.from !== me) return res.status(403).json({ error: 'Faqat chaqiruvchi taklif yubora oladi' });
+  const sdp = req.body && req.body.sdp;
+  if (!sdp || typeof sdp !== 'object') return res.status(400).json({ error: "Noto'g'ri ma'lumot" });
+  call.offer = sdp;
+  call.updatedAt = Date.now();
+  res.json({ ok: true });
+});
+
+/* Qabul qiluvchi tomon qo'ng'iroqni qabul qilib, WebRTC "answer" yuboradi */
+app.post('/api/calls/:id/answer', requireAuth, (req, res) => {
+  const call = getCallForParticipant(req, res);
+  if (!call) return;
+  const me = req.session.username;
+  if (call.to !== me) return res.status(403).json({ error: 'Faqat qabul qiluvchi javob bera oladi' });
+  if (call.status !== 'ringing') return res.status(400).json({ error: "Qo'ng'iroq allaqachon tugagan" });
+  const sdp = req.body && req.body.sdp;
+  if (!sdp || typeof sdp !== 'object') return res.status(400).json({ error: "Noto'g'ri ma'lumot" });
+  call.answer = sdp;
+  call.status = 'accepted';
+  call.updatedAt = Date.now();
+  res.json({ ok: true });
+});
+
+/* ICE kandidatlarini almashish */
+app.post('/api/calls/:id/candidate', requireAuth, (req, res) => {
+  const call = getCallForParticipant(req, res);
+  if (!call) return;
+  const me = req.session.username;
+  const candidate = req.body && req.body.candidate;
+  if (!candidate || typeof candidate !== 'object') return res.status(400).json({ error: "Noto'g'ri ma'lumot" });
+  if (!Array.isArray(call.candidates[me])) call.candidates[me] = [];
+  call.candidates[me].push(candidate);
+  if (call.candidates[me].length > 200) call.candidates[me].shift();
+  res.json({ ok: true });
+});
+
+app.get('/api/calls/:id/candidates', requireAuth, (req, res) => {
+  const call = getCallForParticipant(req, res);
+  if (!call) return;
+  const me = req.session.username;
+  const other = call.from === me ? call.to : call.from;
+  res.json({ items: call.candidates[other] || [] });
+});
+
+/* Qo'ng'iroqni rad etish (qabul qiluvchi tomonidan) */
+app.post('/api/calls/:id/decline', requireAuth, (req, res) => {
+  const call = getCallForParticipant(req, res);
+  if (!call) return;
+  const me = req.session.username;
+  if (call.to !== me) return res.status(403).json({ error: 'Faqat qabul qiluvchi rad eta oladi' });
+  if (call.status === 'ringing') endCallInternal(call, 'declined');
+  res.json({ ok: true });
+});
+
+/* Chaqiruvchi hali javob kelmasdan qo'ng'iroqni bekor qiladi */
+app.post('/api/calls/:id/cancel', requireAuth, (req, res) => {
+  const call = getCallForParticipant(req, res);
+  if (!call) return;
+  const me = req.session.username;
+  if (call.from !== me) return res.status(403).json({ error: 'Faqat chaqiruvchi bekor qila oladi' });
+  if (call.status === 'ringing') endCallInternal(call, 'cancelled');
+  res.json({ ok: true });
+});
+
+/* Qo'ng'iroqni yakunlash (ikkala tomon ham qila oladi) */
+app.post('/api/calls/:id/end', requireAuth, (req, res) => {
+  const call = getCallForParticipant(req, res);
+  if (!call) return;
+  if (!['ended', 'declined', 'missed', 'cancelled', 'busy'].includes(call.status)) endCallInternal(call, 'ended');
+  res.json({ ok: true });
+});
+
+/* Kamerani yoqish/o'chirish holatini narigi tomonga bildirish
+   (video qo'ng'iroqda kamerani o'chirib qo'yish imkoniyati) */
+app.post('/api/calls/:id/camera', requireAuth, (req, res) => {
+  const call = getCallForParticipant(req, res);
+  if (!call) return;
+  const me = req.session.username;
+  call.cameraOff[me] = !!(req.body && req.body.off);
+  call.updatedAt = Date.now();
+  res.json({ ok: true });
 });
 
 /* ===================== ADMINISTRATOR REJIMI ROUTES ===================== */

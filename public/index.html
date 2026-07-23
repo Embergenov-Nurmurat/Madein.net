@@ -2214,7 +2214,193 @@
       align-items: center;
       gap: 12px;
       min-width: 0;
+      flex: 1;
     }
+
+    .chat-call-btn {
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform .18s ease, opacity .18s ease;
+    }
+    .chat-call-btn:hover { transform: scale(1.06); }
+    .chat-call-btn:active { transform: scale(.94); }
+    .chat-call-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+    /* ============ VIDEO QO'NG'IROQ (INCOMING BANNER) ============ */
+    .incall-banner {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-140%);
+      z-index: 900;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 300px;
+      max-width: 92vw;
+      transition: transform .35s cubic-bezier(.16, 1, .3, 1);
+    }
+    .incall-banner.open { transform: translateX(-50%) translateY(0); }
+    .incall-banner .incall-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 15px; overflow: hidden; flex-shrink: 0;
+    }
+    .incall-banner .incall-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .incall-banner .incall-info { min-width: 0; flex: 1; }
+    .incall-banner .incall-name { font-weight: 800; font-size: 14.5px; }
+    .incall-banner .incall-sub { font-size: 12px; color: var(--text-dim); }
+    .incall-banner .incall-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .incall-banner .incall-btn {
+      width: 40px; height: 40px; border-radius: 50%; border: none;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      transition: transform .15s ease;
+    }
+    .incall-banner .incall-btn:active { transform: scale(.92); }
+    .incall-btn.accept { background: #2fb35e; color: #fff; }
+    .incall-btn.decline { background: #e2543f; color: #fff; }
+
+    /* ============ VIDEO QO'NG'IROQ (TO'LIQ EKRAN) ============ */
+    .call-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 950;
+      background: #0b0c10;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .25s ease, visibility .25s ease;
+    }
+    .call-overlay.open { opacity: 1; visibility: visible; }
+
+    .call-remote-wrap {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #14161c;
+    }
+    .call-remote-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .call-remote-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: #f3f3f3;
+      text-align: center;
+    }
+    .call-remote-placeholder .call-avatar-big {
+      width: 108px; height: 108px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 34px; overflow: hidden;
+    }
+    .call-remote-placeholder .call-avatar-big img { width: 100%; height: 100%; object-fit: cover; }
+    .call-remote-placeholder .call-status-text { font-size: 15px; color: rgba(255,255,255,.7); }
+    .call-remote-placeholder .call-peer-name { font-family: var(--font-display); font-weight: 900; font-size: 24px; }
+
+    .call-cam-off-flag {
+      position: absolute;
+      bottom: 18px;
+      left: 18px;
+      background: rgba(0,0,0,.55);
+      color: #fff;
+      font-size: 12.5px;
+      padding: 7px 12px;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .call-local-video {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      width: 118px;
+      height: 158px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #1c1e26;
+      border: 1.5px solid rgba(255,255,255,.15);
+      box-shadow: 0 6px 18px rgba(0,0,0,.4);
+    }
+    .call-local-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+    .call-local-video .call-local-off {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,.55);
+      font-size: 26px;
+    }
+
+    .call-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+      background: #0b0c10;
+    }
+    .call-ctrl-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,.14);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform .15s ease, background .2s ease;
+    }
+    .call-ctrl-btn:hover { background: rgba(255,255,255,.22); }
+    .call-ctrl-btn:active { transform: scale(.92); }
+    .call-ctrl-btn.active-off { background: #fff; color: #0b0c10; }
+    .call-ctrl-btn.end-call { background: #e2543f; }
+    .call-ctrl-btn.end-call:hover { background: #c9432f; }
+
+    .call-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px;
+      color: #fff;
+    }
+    .call-top-bar .call-timer { font-size: 13px; color: rgba(255,255,255,.65); font-variant-numeric: tabular-nums; }
 
     .chat-view-avatar {
       width: 44px;
@@ -3166,6 +3352,31 @@
       border-color: var(--accent);
       color: var(--accent);
     }
+
+    .call-allowed-chip {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      padding: 5px 8px 5px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--bg-alt);
+    }
+    .call-allowed-chip button {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: none;
+      background: var(--border);
+      color: var(--text-dim);
+      font-size: 11px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .call-allowed-chip button:hover { background: var(--danger, #e2543f); color: #fff; }
 
     /* ============ THEME PANEL ============ */
     .theme-fab {
@@ -4912,6 +5123,20 @@
             <label class="privacy-toggle"><input type="checkbox" id="privacySocial"> <span data-i18n="profile.edit.privacySocial">Ijtimoiy tarmoq havolamni ko'rsatish</span></label>
             <label class="privacy-toggle"><input type="checkbox" id="privacyEmail"> <span data-i18n="profile.edit.privacyEmail">Emailimni ko'rsatish</span></label>
           </div>
+          <div class="privacy-block" id="callPrivacyBlock">
+            <div class="field-hint" style="margin-bottom:6px;" data-i18n="profile.edit.callPrivacyTitle">Video qo'ng'iroqlarni kimlar qila olishini tanlang:</div>
+            <label class="privacy-toggle"><input type="radio" name="callPrivacyMode" value="everyone" id="callPrivacyEveryone"> <span data-i18n="profile.edit.callPrivacyEveryone">Hammadan</span></label>
+            <label class="privacy-toggle"><input type="radio" name="callPrivacyMode" value="selected" id="callPrivacySelected"> <span data-i18n="profile.edit.callPrivacySelected">Faqat tanlangan odamlardan</span></label>
+            <label class="privacy-toggle"><input type="radio" name="callPrivacyMode" value="nobody" id="callPrivacyNobody"> <span data-i18n="profile.edit.callPrivacyNobody">Hech kimdan</span></label>
+            <div id="callPrivacySelectedWrap" class="hidden" style="margin-top:10px;">
+              <div class="field-row" style="align-items:flex-start;">
+                <input type="text" id="callPrivacyAddInput" style="flex:1;" data-i18n-ph="profile.edit.callPrivacyAddPh" placeholder="Foydalanuvchi nomini kiriting...">
+                <button type="button" class="btn btn-ghost btn-sm" id="callPrivacyAddBtn" style="white-space:nowrap;" data-i18n="profile.edit.callPrivacyAdd">Qo'shish</button>
+              </div>
+              <div class="field-hint" id="callPrivacyAddMsg"></div>
+              <div id="callPrivacyAllowedList" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
+            </div>
+          </div>
           <div class="edit-actions">
             <button class="btn btn-primary btn-sm" id="saveProfileBtn" data-i18n="profile.edit.save">Saqlash</button>
             <button class="btn btn-ghost btn-sm" id="cancelEditBtn" data-i18n="profile.edit.cancel">Bekor qilish</button>
@@ -4972,6 +5197,9 @@
               <div class="chat-work-ref hidden" id="chatWorkRef"></div>
             </div>
           </div>
+          <button type="button" class="chat-call-btn" id="chatCallBtn" title="Video qo'ng'iroq" data-i18n-title="call.startTitle" aria-label="Video qo'ng'iroq">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+          </button>
         </div>
         <div class="chat-view-messages" id="chatMessagesList"></div>
         <form class="chat-view-form" id="chatForm">
@@ -5179,6 +5407,58 @@
     </div>
   </div>
 
+  <!-- ============ KIRUVCHI VIDEO QO'NG'IROQ BANNERI ============ -->
+  <div class="incall-banner" id="incallBanner">
+    <div class="incall-avatar" id="incallAvatar">?</div>
+    <div class="incall-info">
+      <div class="incall-name" id="incallName">—</div>
+      <div class="incall-sub" data-i18n="call.incoming">Video qo'ng'iroq qilyapti...</div>
+    </div>
+    <div class="incall-actions">
+      <button type="button" class="incall-btn decline" id="incallDeclineBtn" data-i18n-title="call.decline" title="Rad etish" aria-label="Rad etish">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.996.996 0 0 1-.29-.7c0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 3.67c.18.18.29.43.29.71 0 .27-.11.52-.29.7l-2.48 2.48a.99.99 0 0 1-.71.29c-.27 0-.52-.11-.7-.28a11.7 11.7 0 0 0-2.66-1.85.99.99 0 0 1-.56-.9v-3.1A17.6 17.6 0 0 0 12 9z" transform="rotate(135 12 12)"></path></svg>
+      </button>
+      <button type="button" class="incall-btn accept" id="incallAcceptBtn" data-i18n-title="call.accept" title="Qabul qilish" aria-label="Qabul qilish">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ VIDEO QO'NG'IROQ (TO'LIQ EKRAN) ============ -->
+  <div class="call-overlay" id="callOverlay">
+    <div class="call-top-bar">
+      <div class="call-peer-name" id="callTopName" style="font-weight:800;font-size:15px;"></div>
+      <div class="call-timer" id="callTimer">00:00</div>
+    </div>
+    <div class="call-remote-wrap">
+      <video class="call-remote-video hidden" id="callRemoteVideo" autoplay playsinline></video>
+      <div class="call-remote-placeholder" id="callPlaceholder">
+        <div class="call-avatar-big" id="callPeerAvatar">?</div>
+        <div class="call-peer-name" id="callPeerName">—</div>
+        <div class="call-status-text" id="callStatusText" data-i18n="call.calling">Chaqirilmoqda...</div>
+      </div>
+      <div class="call-cam-off-flag hidden" id="callPeerCamOffFlag">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M21 6.5l-4 4V7a1 1 0 0 0-1-1H9.83l11.02 11.02c.09-.16.15-.34.15-.52v-9c0-.34-.19-.65-.5-.8l-3.5-1.7V6.5zM3.27 2 2 3.27 4.73 6H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12c.19 0 .36-.06.51-.15L19.73 21 21 19.73 3.27 2z"></path></svg>
+        <span data-i18n="call.peerCameraOff">Kamera o'chirilgan</span>
+      </div>
+      <div class="call-local-video" id="callLocalWrap">
+        <video id="callLocalVideo" autoplay playsinline muted></video>
+        <div class="call-local-off hidden" id="callLocalOffFlag">🎥</div>
+      </div>
+    </div>
+    <div class="call-controls">
+      <button type="button" class="call-ctrl-btn" id="callMicBtn" data-i18n-title="call.toggleMic" title="Mikrofon" aria-label="Mikrofon">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"></path></svg>
+      </button>
+      <button type="button" class="call-ctrl-btn" id="callCamBtn" data-i18n-title="call.toggleCam" title="Kamera" aria-label="Kamera">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+      </button>
+      <button type="button" class="call-ctrl-btn end-call" id="callEndBtn" data-i18n-title="call.end" title="Yakunlash" aria-label="Yakunlash">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.996.996 0 0 1-.29-.7c0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 3.67c.18.18.29.43.29.71 0 .27-.11.52-.29.7l-2.48 2.48a.99.99 0 0 1-.71.29c-.27 0-.52-.11-.7-.28a11.7 11.7 0 0 0-2.66-1.85.99.99 0 0 1-.56-.9v-3.1A17.6 17.6 0 0 0 12 9z" transform="rotate(135 12 12)"></path></svg>
+      </button>
+    </div>
+  </div>
+
   <script>
     (function () {
       "use strict";
@@ -5273,6 +5553,23 @@
           "chat.ph": "Xabar yozing...", "chat.workRefPrefix": "Asar haqida",
           "chat.loadFail": "Suhbatni yuklab bo'lmadi.", "chat.empty": "Hali xabar yo'q. Birinchi bo'lib yozing!",
           "chat.sendFail": "Xabar yuborilmadi. Qayta urinib ko'ring.",
+          "call.startTitle": "Video qo'ng'iroq", "call.incoming": "Video qo'ng'iroq qilyapti...",
+          "call.decline": "Rad etish", "call.accept": "Qabul qilish", "call.calling": "Chaqirilmoqda...",
+          "call.connecting": "Ulanmoqda...", "call.peerCameraOff": "Kamera o'chirilgan",
+          "call.toggleMic": "Mikrofon", "call.toggleCam": "Kamera", "call.end": "Yakunlash",
+          "call.startFail": "Qo'ng'iroq qilib bo'lmadi. Qayta urinib ko'ring.",
+          "call.noCamera": "Kamera topilmadi, faqat ovoz bilan ulanmoqda...",
+          "call.noMediaAccess": "Mikrofon/kameraga ruxsat berilmadi.",
+          "call.wasDeclined": "Qo'ng'iroq rad etildi", "call.wasMissed": "Javob berilmadi",
+          "call.wasBusy": "Foydalanuvchi band", "call.ended": "Qo'ng'iroq tugadi",
+          "profile.edit.callPrivacyTitle": "Video qo'ng'iroqlarni kimlar qila olishini tanlang:",
+          "profile.edit.callPrivacyEveryone": "Hammadan", "profile.edit.callPrivacySelected": "Faqat tanlangan odamlardan",
+          "profile.edit.callPrivacyNobody": "Hech kimdan",
+          "profile.edit.callPrivacyAddPh": "Foydalanuvchi nomini kiriting...", "profile.edit.callPrivacyAdd": "Qo'shish",
+          "profile.edit.callPrivacyEmpty": "Hozircha hech kim qo'shilmagan.",
+          "profile.edit.callPrivacyRemove": "O'chirish",
+          "profile.edit.callPrivacyAddSelfErr": "O'zingizni qo'sha olmaysiz.",
+          "profile.edit.callPrivacyAddNotFound": "Bunday foydalanuvchi topilmadi.",
           "gate.title": "Ro'yxatdan o'ting",
           "gate.desc": "Siz hozircha mehmon sifatida ko'ryapsiz. Bu amal uchun akkaunt kerak — istasangiz hoziroq, istasangiz keyinroq ro'yxatdan o'ting.",
           "gate.later": "Keyinroq", "gate.register": "Ro'yxatdan o'tish",
@@ -5529,6 +5826,23 @@
           "chat.ph": "Write a message...", "chat.workRefPrefix": "About",
           "chat.loadFail": "Couldn't load the conversation.", "chat.empty": "No messages yet. Be the first to write one!",
           "chat.sendFail": "Message not sent. Please try again.",
+          "call.startTitle": "Video call", "call.incoming": "Video calling...",
+          "call.decline": "Decline", "call.accept": "Accept", "call.calling": "Calling...",
+          "call.connecting": "Connecting...", "call.peerCameraOff": "Camera is off",
+          "call.toggleMic": "Microphone", "call.toggleCam": "Camera", "call.end": "End call",
+          "call.startFail": "Couldn't place the call. Please try again.",
+          "call.noCamera": "No camera found, connecting with audio only...",
+          "call.noMediaAccess": "Microphone/camera access was denied.",
+          "call.wasDeclined": "Call declined", "call.wasMissed": "No answer",
+          "call.wasBusy": "User is busy", "call.ended": "Call ended",
+          "profile.edit.callPrivacyTitle": "Choose who can video call you:",
+          "profile.edit.callPrivacyEveryone": "Everyone", "profile.edit.callPrivacySelected": "Only selected people",
+          "profile.edit.callPrivacyNobody": "No one",
+          "profile.edit.callPrivacyAddPh": "Enter a username...", "profile.edit.callPrivacyAdd": "Add",
+          "profile.edit.callPrivacyEmpty": "No one added yet.",
+          "profile.edit.callPrivacyRemove": "Remove",
+          "profile.edit.callPrivacyAddSelfErr": "You can't add yourself.",
+          "profile.edit.callPrivacyAddNotFound": "No such user found.",
           "gate.title": "Please sign up",
           "gate.desc": "You're currently browsing as a guest. This action needs an account — you can sign up now or later.",
           "gate.later": "Later", "gate.register": "Sign up",
@@ -7332,6 +7646,7 @@
         });
         $('#gotoProfileBtn').addEventListener('click', () => { switchView('profile'); $('#avatarDropdown').classList.remove('open'); });
         bindGamesEvents();
+        bindCallEvents();
         $('#avatarBtn').addEventListener('click', () => $('#avatarDropdown').classList.toggle('open'));
         document.addEventListener('click', (e) => {
           if (!e.target.closest('.avatar-menu')) $('#avatarDropdown').classList.remove('open');
@@ -7510,6 +7825,9 @@
         $('#editProfileBtn').addEventListener('click', guarded(openEditProfile));
         $('#cancelEditBtn').addEventListener('click', () => $('#editProfileCard').classList.add('hidden'));
         $('#saveProfileBtn').addEventListener('click', saveProfile);
+        $$('input[name="callPrivacyMode"]').forEach(r => r.addEventListener('change', updateCallPrivacySelectedVisibility));
+        $('#callPrivacyAddBtn').addEventListener('click', addCallPrivacyAllowedUser);
+        $('#callPrivacyAddInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCallPrivacyAllowedUser(); } });
         $('#adminActivateBtn').addEventListener('click', activateAdminMode);
         $('#bossActivateBtn').addEventListener('click', activateBossMode);
         $('#bannedLogoutBtn').addEventListener('click', async () => {
@@ -11617,6 +11935,13 @@
         $('#privacyPhone').checked = !!privacy.phone;
         $('#privacySocial').checked = !!privacy.social;
         $('#privacyEmail').checked = !!privacy.email;
+        const callPrivacy = u.callPrivacy || { mode: 'everyone', allowed: [] };
+        CALL_PRIVACY_ALLOWED = Array.isArray(callPrivacy.allowed) ? callPrivacy.allowed.slice() : [];
+        const modeInput = document.querySelector('input[name="callPrivacyMode"][value="' + (callPrivacy.mode || 'everyone') + '"]');
+        if (modeInput) modeInput.checked = true;
+        else $('#callPrivacyEveryone').checked = true;
+        renderCallPrivacyAllowedList();
+        updateCallPrivacySelectedVisibility();
         $('#editAvatarPreview').innerHTML = avatarInner(u.avatar, u.fullname || u.username);
         $('#adminPasswordInput').value = '';
         $('#adminActivateMsg').textContent = '';
@@ -11629,6 +11954,56 @@
         $('#bossActivateBlock').classList.toggle('hidden', !(u.isAdmin && !u.isBoss));
         $('#bossAlreadyOn').classList.toggle('hidden', !u.isBoss);
         $('#editProfileCard').classList.remove('hidden');
+      }
+
+      let CALL_PRIVACY_ALLOWED = []; // "Faqat tanlanganlar" rejimida ruxsat etilgan foydalanuvchi nomlari
+
+      function renderCallPrivacyAllowedList() {
+        const wrap = $('#callPrivacyAllowedList');
+        if (!CALL_PRIVACY_ALLOWED.length) {
+          wrap.innerHTML = `<div class="field-hint">${t('profile.edit.callPrivacyEmpty')}</div>`;
+          return;
+        }
+        wrap.innerHTML = CALL_PRIVACY_ALLOWED.map(uname => `
+          <span class="call-allowed-chip" data-username="${escapeHtml(uname)}">
+            @${escapeHtml(uname)}
+            <button type="button" data-remove="${escapeHtml(uname)}" aria-label="${t('profile.edit.callPrivacyRemove')}">✕</button>
+          </span>`).join('');
+        wrap.querySelectorAll('button[data-remove]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            CALL_PRIVACY_ALLOWED = CALL_PRIVACY_ALLOWED.filter(u => u !== btn.dataset.remove);
+            renderCallPrivacyAllowedList();
+          });
+        });
+      }
+
+      function updateCallPrivacySelectedVisibility() {
+        const mode = (document.querySelector('input[name="callPrivacyMode"]:checked') || {}).value || 'everyone';
+        $('#callPrivacySelectedWrap').classList.toggle('hidden', mode !== 'selected');
+      }
+
+      async function addCallPrivacyAllowedUser() {
+        const input = $('#callPrivacyAddInput');
+        const msgEl = $('#callPrivacyAddMsg');
+        msgEl.textContent = '';
+        const uname = input.value.trim().toLowerCase();
+        if (!uname) return;
+        if (CURRENT_USER && uname === CURRENT_USER.username) {
+          msgEl.textContent = t('profile.edit.callPrivacyAddSelfErr');
+          return;
+        }
+        if (CALL_PRIVACY_ALLOWED.includes(uname)) {
+          input.value = '';
+          return;
+        }
+        try {
+          await api('/api/users/' + encodeURIComponent(uname));
+          CALL_PRIVACY_ALLOWED.push(uname);
+          renderCallPrivacyAllowedList();
+          input.value = '';
+        } catch (e) {
+          msgEl.textContent = t('profile.edit.callPrivacyAddNotFound');
+        }
       }
 
       async function activateBossMode() {
@@ -11688,6 +12063,10 @@
               phone: $('#privacyPhone').checked,
               social: $('#privacySocial').checked,
               email: $('#privacyEmail').checked
+            },
+            callPrivacy: {
+              mode: (document.querySelector('input[name="callPrivacyMode"]:checked') || {}).value || 'everyone',
+              allowed: CALL_PRIVACY_ALLOWED
             }
           });
           CURRENT_USER = data.user;
@@ -12369,9 +12748,312 @@
           refreshUnreadBadge();
           checkNotifications();
         }, 20000);
+        startCallPolling();
       }
       function stopUnreadPolling() {
         if (unreadPollTimer) { clearInterval(unreadPollTimer); unreadPollTimer = null; }
+        stopCallPolling();
+      }
+
+      /* ===================== VIDEO QO'NG'IROQ (WebRTC) =====================
+         Server WebSocket ishlatmagani uchun, offer/answer/ICE ma'lumotlari
+         qisqa intervalli so'rovlar (polling) orqali almashtiriladi — xuddi
+         onlayn shaxmat/X-O o'yinlaridagi kabi andoza. */
+      const ICE_SERVERS = [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' }
+      ];
+
+      let CALL = null;            // { id, role, otherUser, status }
+      let callPC = null;          // RTCPeerConnection
+      let callLocalStream = null;
+      let callPollTimer = null;         // umumiy holat (current-call) so'rovi — doim ishlaydi
+      let callActivePollTimer = null;   // faol qo'ng'iroqda holat/kandidatlarni tez-tez so'raydi
+      let callMicOn = true;
+      let callCamOn = true;
+      let callStartedAt = null;
+      let callTimerInterval = null;
+      let callAppliedCandidateCount = 0;
+      let callOfferSent = false;
+      let callHandlingId = null; // qayta ishlanayotgan call id (bir vaqtda bitta oqim)
+
+      function startCallPolling() {
+        stopCallPollingLoop();
+        callPollTimer = setInterval(pollCurrentCall, 3000);
+        pollCurrentCall();
+      }
+      function stopCallPollingLoop() {
+        if (callPollTimer) { clearInterval(callPollTimer); callPollTimer = null; }
+      }
+      function stopCallPolling() {
+        stopCallPollingLoop();
+        stopActiveCallPolling();
+        hideIncomingBanner();
+        closeCallOverlay();
+      }
+
+      /* Har 3 soniyada — meni kutayotgan/faol qo'ng'iroq bormi, tekshiradi.
+         Agar shu paytgacha qo'ng'iroqda bo'lmasak-yu, yangi 'ringing' qo'ng'iroq
+         paydo bo'lsa (kimdir chaqiryapti) — kirish bannerini ko'rsatamiz. */
+      async function pollCurrentCall() {
+        if (IS_GUEST || !CURRENT_USER) return;
+        if (CALL) return; // allaqachon faol oqim bor — bu yerda aralashmaymiz
+        try {
+          const data = await api('/api/calls/current');
+          const call = data && data.call;
+          if (!call) { hideIncomingBanner(); return; }
+          if (call.status === 'ringing' && call.role === 'callee') {
+            showIncomingBanner(call);
+          }
+        } catch (e) { /* jim o'tkazamiz — internet uzilishi va h.k. */ }
+      }
+
+      function showIncomingBanner(call) {
+        if (INCOMING_CALL && INCOMING_CALL.id === call.id) return;
+        INCOMING_CALL = call;
+        $('#incallName').textContent = call.otherUser.fullname || call.otherUser.username;
+        $('#incallAvatar').innerHTML = avatarInner(call.otherUser.avatar, call.otherUser.fullname || call.otherUser.username);
+        $('#incallBanner').classList.add('open');
+      }
+      function hideIncomingBanner() {
+        INCOMING_CALL = null;
+        $('#incallBanner').classList.remove('open');
+      }
+      let INCOMING_CALL = null;
+
+      /* ---------- Qo'ng'iroqni boshlash (chaqiruvchi) ---------- */
+      async function startCall(username) {
+        if (IS_GUEST) { openGateModal(); return; }
+        if (!username || CALL) return;
+        try {
+          const data = await apiJSON('/api/calls/start', 'POST', { to: username });
+          await beginCallFlow(data.call, 'caller');
+        } catch (e) {
+          alert(e.message || t('call.startFail'));
+        }
+      }
+
+      /* ---------- Kiruvchi qo'ng'iroqni qabul qilish ---------- */
+      async function acceptIncomingCall() {
+        if (!INCOMING_CALL) return;
+        const call = INCOMING_CALL;
+        hideIncomingBanner();
+        await beginCallFlow(call, 'callee');
+      }
+      async function declineIncomingCall() {
+        if (!INCOMING_CALL) return;
+        const id = INCOMING_CALL.id;
+        hideIncomingBanner();
+        try { await apiJSON('/api/calls/' + id + '/decline', 'POST', {}); } catch (e) { /* ignore */ }
+      }
+
+      /* ---------- Umumiy oqim: peer connection ochish, media olish ---------- */
+      async function beginCallFlow(call, role) {
+        CALL = Object.assign({}, call, { role });
+        callHandlingId = call.id;
+        callOfferSent = false;
+        callAppliedCandidateCount = 0;
+        callMicOn = true;
+        callCamOn = true;
+
+        openCallOverlay(CALL);
+
+        try {
+          callLocalStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+        } catch (e) {
+          setCallStatusText(t('call.noCamera'));
+          try { callLocalStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false }); }
+          catch (e2) { alert(t('call.noMediaAccess')); await endCallCleanup(); return; }
+        }
+        $('#callLocalVideo').srcObject = callLocalStream;
+        updateLocalCamPreview();
+
+        callPC = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+        callLocalStream.getTracks().forEach(tr => callPC.addTrack(tr, callLocalStream));
+
+        callPC.ontrack = (ev) => {
+          const remoteVideo = $('#callRemoteVideo');
+          if (remoteVideo.srcObject !== ev.streams[0]) remoteVideo.srcObject = ev.streams[0];
+          remoteVideo.classList.remove('hidden');
+          $('#callPlaceholder').classList.add('hidden');
+        };
+        callPC.onicecandidate = (ev) => {
+          if (ev.candidate && CALL) {
+            apiJSON('/api/calls/' + CALL.id + '/candidate', 'POST', { candidate: ev.candidate.toJSON() }).catch(() => {});
+          }
+        };
+        callPC.onconnectionstatechange = () => {
+          if (!callPC) return;
+          if (['failed', 'closed'].includes(callPC.connectionState)) {
+            if (CALL && CALL.status !== 'ended') endCall();
+          }
+        };
+
+        if (role === 'caller') {
+          setCallStatusText(t('call.calling'));
+          const offer = await callPC.createOffer();
+          await callPC.setLocalDescription(offer);
+          await apiJSON('/api/calls/' + CALL.id + '/offer', 'POST', { sdp: offer });
+          callOfferSent = true;
+        } else {
+          setCallStatusText(t('call.connecting'));
+        }
+
+        startActiveCallPolling();
+      }
+
+      function startActiveCallPolling() {
+        stopActiveCallPolling();
+        callActivePollTimer = setInterval(pollActiveCall, 1200);
+        pollActiveCall();
+      }
+      function stopActiveCallPolling() {
+        if (callActivePollTimer) { clearInterval(callActivePollTimer); callActivePollTimer = null; }
+      }
+
+      async function pollActiveCall() {
+        if (!CALL || !callPC) return;
+        const id = CALL.id;
+        try {
+          const data = await api('/api/calls/' + id);
+          const call = data.call;
+          if (!call) return;
+
+          if (CALL.role === 'callee' && call.status === 'ringing' && call.offer && !callPC.currentRemoteDescription) {
+            await callPC.setRemoteDescription(new RTCSessionDescription(call.offer));
+            const answer = await callPC.createAnswer();
+            await callPC.setLocalDescription(answer);
+            await apiJSON('/api/calls/' + id + '/answer', 'POST', { sdp: answer });
+          }
+
+          if (CALL.role === 'caller' && call.status === 'accepted' && call.answer && !callPC.currentRemoteDescription) {
+            await callPC.setRemoteDescription(new RTCSessionDescription(call.answer));
+          }
+
+          if (call.status === 'accepted' && CALL.status !== 'accepted') {
+            setCallStatusText('');
+            startCallTimer();
+          }
+          CALL.status = call.status;
+
+          // Kandidatlarni qo'llash
+          try {
+            const cdata = await api('/api/calls/' + id + '/candidates');
+            const items = cdata.items || [];
+            for (let i = callAppliedCandidateCount; i < items.length; i++) {
+              try { await callPC.addIceCandidate(new RTCIceCandidate(items[i])); } catch (e) { /* ignore */ }
+            }
+            callAppliedCandidateCount = items.length;
+          } catch (e) { /* ignore */ }
+
+          // Narigi tomon kamerasi holati
+          $('#callPeerCamOffFlag').classList.toggle('hidden', !call.cameraOff);
+
+          if (['declined', 'missed', 'ended', 'cancelled', 'busy'].includes(call.status)) {
+            const msgKey = call.status === 'declined' ? 'call.wasDeclined'
+              : call.status === 'missed' ? 'call.wasMissed'
+              : call.status === 'busy' ? 'call.wasBusy'
+              : 'call.ended';
+            setCallStatusText(t(msgKey));
+            setTimeout(() => { if (CALL && CALL.id === id) endCallCleanup(); }, 900);
+          }
+        } catch (e) {
+          // qo'ng'iroq topilmadi yoki tarmoq xatosi — jim o'tkazamiz, keyingi pollga qoldiramiz
+        }
+      }
+
+      function setCallStatusText(text) {
+        $('#callStatusText').textContent = text;
+        $('#callStatusText').classList.toggle('hidden', !text);
+      }
+
+      function startCallTimer() {
+        callStartedAt = Date.now();
+        if (callTimerInterval) clearInterval(callTimerInterval);
+        callTimerInterval = setInterval(() => {
+          const s = Math.floor((Date.now() - callStartedAt) / 1000);
+          const mm = String(Math.floor(s / 60)).padStart(2, '0');
+          const ss = String(s % 60).padStart(2, '0');
+          $('#callTimer').textContent = mm + ':' + ss;
+        }, 500);
+      }
+      function stopCallTimer() {
+        if (callTimerInterval) { clearInterval(callTimerInterval); callTimerInterval = null; }
+        $('#callTimer').textContent = '00:00';
+      }
+
+      function openCallOverlay(call) {
+        $('#callOverlay').classList.add('open');
+        $('#callTopName').textContent = call.otherUser.fullname || call.otherUser.username;
+        $('#callPeerName').textContent = call.otherUser.fullname || call.otherUser.username;
+        $('#callPeerAvatar').innerHTML = avatarInner(call.otherUser.avatar, call.otherUser.fullname || call.otherUser.username);
+        $('#callPlaceholder').classList.remove('hidden');
+        $('#callRemoteVideo').classList.add('hidden');
+        $('#callRemoteVideo').srcObject = null;
+        $('#callPeerCamOffFlag').classList.add('hidden');
+        $('#callMicBtn').classList.remove('active-off');
+        $('#callCamBtn').classList.remove('active-off');
+        $('#callLocalOffFlag').classList.add('hidden');
+        stopCallTimer();
+      }
+
+      function closeCallOverlay() {
+        $('#callOverlay').classList.remove('open');
+        stopCallTimer();
+      }
+
+      function updateLocalCamPreview() {
+        $('#callLocalOffFlag').classList.toggle('hidden', callCamOn);
+        $('#callLocalVideo').classList.toggle('hidden', !callCamOn);
+      }
+
+      async function toggleCallMic() {
+        if (!callLocalStream) return;
+        callMicOn = !callMicOn;
+        callLocalStream.getAudioTracks().forEach(tr => tr.enabled = callMicOn);
+        $('#callMicBtn').classList.toggle('active-off', !callMicOn);
+      }
+
+      /* Kamerani o'chirish/yoqish — mikrofon ishlashda davom etadi,
+         narigi tomonga "kamera o'chirilgan" belgisi yuboriladi */
+      async function toggleCallCam() {
+        if (!callLocalStream) return;
+        callCamOn = !callCamOn;
+        callLocalStream.getVideoTracks().forEach(tr => tr.enabled = callCamOn);
+        $('#callCamBtn').classList.toggle('active-off', !callCamOn);
+        updateLocalCamPreview();
+        if (CALL) {
+          try { await apiJSON('/api/calls/' + CALL.id + '/camera', 'POST', { off: !callCamOn }); } catch (e) { /* ignore */ }
+        }
+      }
+
+      async function endCall() {
+        if (!CALL) return;
+        const id = CALL.id;
+        try {
+          const endpoint = (CALL.status === 'ringing' && CALL.role === 'caller') ? 'cancel' : 'end';
+          await apiJSON('/api/calls/' + id + '/' + endpoint, 'POST', {});
+        } catch (e) { /* ignore */ }
+        await endCallCleanup();
+      }
+
+      async function endCallCleanup() {
+        stopActiveCallPolling();
+        stopCallTimer();
+        if (callPC) { try { callPC.close(); } catch (e) {} callPC = null; }
+        if (callLocalStream) { callLocalStream.getTracks().forEach(tr => tr.stop()); callLocalStream = null; }
+        closeCallOverlay();
+        CALL = null;
+        callHandlingId = null;
+      }
+
+      function bindCallEvents() {
+        $('#chatCallBtn').addEventListener('click', guarded(() => { if (CHAT_WITH) startCall(CHAT_WITH); }));
+        $('#incallAcceptBtn').addEventListener('click', () => acceptIncomingCall());
+        $('#incallDeclineBtn').addEventListener('click', () => declineIncomingCall());
+        $('#callMicBtn').addEventListener('click', () => toggleCallMic());
+        $('#callCamBtn').addEventListener('click', () => toggleCallCam());
+        $('#callEndBtn').addEventListener('click', () => endCall());
       }
 
       async function refreshUnreadBadge() {
