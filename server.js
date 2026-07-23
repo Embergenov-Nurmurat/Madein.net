@@ -1277,6 +1277,17 @@ function getOrCreateConversation(a, b) {
   return db.messages[id];
 }
 
+function callPreviewText(m) {
+  switch (m.callStatus) {
+    case 'ended': return "Video qo'ng'iroq";
+    case 'missed': return "O'tkazib yuborilgan qo'ng'iroq";
+    case 'declined': return "Rad etilgan qo'ng'iroq";
+    case 'cancelled': return "Bekor qilingan qo'ng'iroq";
+    case 'busy': return "Foydalanuvchi band edi";
+    default: return "Qo'ng'iroq";
+  }
+}
+
 function unreadCountFor(conv, me) {
   const readUpto = (conv.readUpto && conv.readUpto[me]) || null;
   return conv.messages.filter(m => m.from !== me && (!readUpto || new Date(m.createdAt) > new Date(readUpto))).length;
@@ -1291,11 +1302,14 @@ app.get('/api/conversations', requireAuth, (req, res) => {
       const other = c.participants.find(p => p !== me) || me;
       const u = db.users[other];
       const last = c.messages[c.messages.length - 1] || null;
+      const lastPreview = last
+        ? (last.type === 'call' ? ('📞 ' + callPreviewText(last)) : last.text)
+        : '';
       return {
         username: other,
         fullname: (u && u.fullname) || other,
         avatar: (u && u.avatar) || null,
-        lastMessage: last ? last.text : '',
+        lastMessage: lastPreview,
         lastFrom: last ? last.from : null,
         updatedAt: c.updatedAt,
         unread: unreadCountFor(c, me)
@@ -1412,6 +1426,27 @@ function endCallInternal(call, status) {
   call.updatedAt = Date.now();
   if (userActiveCall.get(call.from) === call.id) userActiveCall.delete(call.from);
   if (userActiveCall.get(call.to) === call.id) userActiveCall.delete(call.to);
+
+  /* Telegramdagi kabi — suhbatga qo'ng'iroq haqida tizim xabari qo'shamiz
+     (masalan: "Video qo'ng'iroq · 3:24" yoki "Javob berilmadi") */
+  try {
+    const duration = (status === 'ended' && call.acceptedAt)
+      ? Math.max(0, Math.round((call.updatedAt - call.acceptedAt) / 1000))
+      : 0;
+    const conv = getOrCreateConversation(call.from, call.to);
+    const message = {
+      id: 'm' + Date.now() + crypto.randomBytes(4).toString('hex'),
+      from: call.from,
+      type: 'call',
+      callStatus: status,     // 'ended' | 'declined' | 'missed' | 'cancelled' | 'busy'
+      callDuration: duration, // soniyalarda; faqat 'ended' holatida > 0 bo'lishi mumkin
+      text: '',
+      createdAt: new Date(call.updatedAt).toISOString()
+    };
+    conv.messages.push(message);
+    conv.updatedAt = message.createdAt;
+    saveDB().catch(() => {});
+  } catch (e) { /* jim o'tkazamiz — xabar qo'shilmasa ham qo'ng'iroq tugashi kerak */ }
 }
 
 setInterval(() => {
@@ -1512,6 +1547,7 @@ app.post('/api/calls/:id/answer', requireAuth, (req, res) => {
   if (!sdp || typeof sdp !== 'object') return res.status(400).json({ error: "Noto'g'ri ma'lumot" });
   call.answer = sdp;
   call.status = 'accepted';
+  call.acceptedAt = Date.now();
   call.updatedAt = Date.now();
   res.json({ ok: true });
 });

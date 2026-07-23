@@ -2437,6 +2437,28 @@
     }
     .call-top-bar .call-timer { font-size: 13px; color: rgba(255,255,255,.65); font-variant-numeric: tabular-nums; }
 
+    /* ============ CHATDAGI QO'NG'IROQ XABARI (Telegram uslubi) ============ */
+    .chat-call-msg {
+      display: flex; align-items: center; gap: 9px;
+      cursor: pointer; user-select: none;
+    }
+    .chat-call-msg .chat-call-msg-icon {
+      width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,.06); color: inherit;
+    }
+    .chat-bubble-row.me .chat-call-msg .chat-call-msg-icon { background: rgba(255,255,255,.18); }
+    .chat-call-msg.missed .chat-call-msg-icon,
+    .chat-call-msg.declined .chat-call-msg-icon { color: var(--danger, #e2543f); }
+    .chat-call-msg .chat-call-msg-icon svg { width: 16px; height: 16px; }
+    .chat-call-msg-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    .chat-call-msg-title { font-weight: 700; font-size: 13.5px; }
+    .chat-call-msg.missed .chat-call-msg-title,
+    .chat-call-msg.declined .chat-call-msg-title { color: var(--danger, #e2543f); }
+    .chat-bubble-row.me .chat-call-msg.missed .chat-call-msg-title,
+    .chat-bubble-row.me .chat-call-msg.declined .chat-call-msg-title { color: #ffd7d1; }
+    .chat-call-msg-sub { font-size: 11.5px; opacity: .7; }
+
     .chat-view-avatar {
       width: 44px;
       height: 44px;
@@ -5597,6 +5619,9 @@
           "call.noMediaAccess": "Mikrofon/kameraga ruxsat berilmadi.",
           "call.wasDeclined": "Qo'ng'iroq rad etildi", "call.wasMissed": "Javob berilmadi",
           "call.wasBusy": "Foydalanuvchi band", "call.ended": "Qo'ng'iroq tugadi",
+          "call.msg.ended": "Video qo'ng'iroq", "call.msg.noAnswer": "Javob berilmadi",
+          "call.msg.missed": "O'tkazib yuborilgan qo'ng'iroq", "call.msg.declined": "Rad etilgan qo'ng'iroq",
+          "call.msg.cancelled": "Bekor qilingan qo'ng'iroq", "call.msg.busy": "Foydalanuvchi band edi",
           "profile.edit.callPrivacyTitle": "Video qo'ng'iroqlarni kimlar qila olishini tanlang:",
           "profile.edit.callPrivacyEveryone": "Hammadan", "profile.edit.callPrivacySelected": "Faqat tanlangan odamlardan",
           "profile.edit.callPrivacyNobody": "Hech kimdan",
@@ -5870,6 +5895,9 @@
           "call.noMediaAccess": "Microphone/camera access was denied.",
           "call.wasDeclined": "Call declined", "call.wasMissed": "No answer",
           "call.wasBusy": "User is busy", "call.ended": "Call ended",
+          "call.msg.ended": "Video call", "call.msg.noAnswer": "No answer",
+          "call.msg.missed": "Missed call", "call.msg.declined": "Declined call",
+          "call.msg.cancelled": "Cancelled call", "call.msg.busy": "User was busy",
           "profile.edit.callPrivacyTitle": "Choose who can video call you:",
           "profile.edit.callPrivacyEveryone": "Everyone", "profile.edit.callPrivacySelected": "Only selected people",
           "profile.edit.callPrivacyNobody": "No one",
@@ -12947,11 +12975,12 @@
 
         openCallOverlay(CALL);
 
+        const callAudioConstraints = { echoCancellation: true, noiseSuppression: true, autoGainControl: true };
         try {
-          callLocalStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+          callLocalStream = await navigator.mediaDevices.getUserMedia({ audio: callAudioConstraints, video: true });
         } catch (e) {
           setCallStatusText(t('call.noCamera'));
-          try { callLocalStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false }); }
+          try { callLocalStream = await navigator.mediaDevices.getUserMedia({ audio: callAudioConstraints, video: false }); }
           catch (e2) { alert(t('call.noMediaAccess')); await endCallCleanup(); return; }
         }
         $('#callLocalVideo').srcObject = callLocalStream;
@@ -13044,6 +13073,9 @@
               : call.status === 'busy' ? 'call.wasBusy'
               : 'call.ended';
             setCallStatusText(t(msgKey));
+            const durationSec = callStartedAt ? Math.floor((Date.now() - callStartedAt) / 1000) : 0;
+            const otherUsername = CALL.otherUser && CALL.otherUser.username;
+            if (otherUsername) appendLiveCallMessage(otherUsername, call.status, durationSec);
             setTimeout(() => { if (CALL && CALL.id === id) endCallCleanup(); }, 900);
           }
         } catch (e) {
@@ -13202,6 +13234,7 @@
 
       function chatBubbleHTML(m) {
         const mine = m.from === (CURRENT_USER && CURRENT_USER.username);
+        if (m.type === 'call') return chatCallBubbleHTML(m, mine);
         return `
       <div class="chat-bubble-row ${mine ? 'me' : ''}">
         <div class="chat-bubble">
@@ -13210,6 +13243,88 @@
           <span class="chat-bubble-time">${fmtChatTime(m.createdAt)}</span>
         </div>
       </div>`;
+      }
+
+      const callMsgIconSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`;
+      const callMsgMissedIconSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7 17 13"/><path d="M17 7l6 6"/><path d="M15.5 15.5a19.5 19.5 0 0 1-6.4-4.7 19.5 19.5 0 0 1-4.6-8A2 2 0 0 1 6.5 1h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L10.5 8.87a12 12 0 0 0 4.6 4.6l1.23-1.23a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7"/></svg>`;
+
+      function fmtCallDuration(sec) {
+        sec = Math.max(0, sec | 0);
+        const mm = Math.floor(sec / 60), ss = sec % 60;
+        return mm + ':' + String(ss).padStart(2, '0');
+      }
+
+      /* Telegramdagi kabi qo'ng'iroq xabari balonchasi — holatga qarab
+         matn/rang o'zgaradi, bosilganda o'sha odamga qayta qo'ng'iroq qilinadi */
+      function chatCallBubbleHTML(m, mine) {
+        const missedLike = ['missed', 'declined', 'cancelled', 'busy'].includes(m.callStatus);
+        const statusClass = m.callStatus === 'missed' ? 'missed' : (m.callStatus === 'declined' ? 'declined' : '');
+        let title, sub;
+        if (m.callStatus === 'ended') {
+          title = t('call.msg.ended') || "Video qo'ng'iroq";
+          sub = fmtCallDuration(m.callDuration || 0);
+        } else if (m.callStatus === 'missed') {
+          title = mine ? (t('call.msg.noAnswer') || 'Javob berilmadi') : (t('call.msg.missed') || "O'tkazib yuborilgan qo'ng'iroq");
+          sub = fmtChatTime(m.createdAt);
+        } else if (m.callStatus === 'declined') {
+          title = t('call.msg.declined') || "Rad etilgan qo'ng'iroq";
+          sub = fmtChatTime(m.createdAt);
+        } else if (m.callStatus === 'cancelled') {
+          title = t('call.msg.cancelled') || "Bekor qilingan qo'ng'iroq";
+          sub = fmtChatTime(m.createdAt);
+        } else if (m.callStatus === 'busy') {
+          title = t('call.msg.busy') || 'Band edi';
+          sub = fmtChatTime(m.createdAt);
+        } else {
+          title = t('call.msg.ended') || "Video qo'ng'iroq";
+          sub = fmtChatTime(m.createdAt);
+        }
+        const otherUsername = mine ? (CHAT_WITH || '') : m.from;
+        return `
+      <div class="chat-bubble-row ${mine ? 'me' : ''}">
+        <div class="chat-bubble chat-call-msg-wrap" data-call-redial="${escapeHtml(otherUsername)}">
+          <div class="chat-call-msg ${statusClass}">
+            <div class="chat-call-msg-icon">${missedLike ? callMsgMissedIconSVG : callMsgIconSVG}</div>
+            <div class="chat-call-msg-text">
+              <span class="chat-call-msg-title">${title}</span>
+              <span class="chat-call-msg-sub">${sub}</span>
+            </div>
+          </div>
+        </div>
+      </div>`;
+      }
+
+      /* Qo'ng'iroq xabarini bosganda — o'sha odamga qayta qo'ng'iroq qilamiz */
+      function bindCallMsgRedial(container) {
+        container.querySelectorAll('[data-call-redial]').forEach((el) => {
+          if (el.dataset.bound) return;
+          el.dataset.bound = '1';
+          el.addEventListener('click', () => {
+            const u = el.dataset.callRedial;
+            if (u) startCall(u);
+          });
+        });
+      }
+
+      /* Faol qo'ng'iroq tugaganda — ochiq turgan chatga darhol qo'ng'iroq
+         xabarini qo'shamiz (Telegramdagi kabi jonli ko'rinish uchun;
+         server tomonida ham saqlanadi, shuning uchun keyingi ochishda ham ko'rinadi) */
+      function appendLiveCallMessage(otherUsername, status, durationSec) {
+        if (CHAT_WITH !== otherUsername || !CURRENT_USER) return;
+        const list = $('#chatMessagesList');
+        if (!list) return;
+        const empty = list.querySelector('.comments-empty');
+        if (empty) list.innerHTML = '';
+        const msg = {
+          from: CURRENT_USER.username,
+          type: 'call',
+          callStatus: status,
+          callDuration: durationSec || 0,
+          createdAt: new Date().toISOString()
+        };
+        list.insertAdjacentHTML('beforeend', chatBubbleHTML(msg));
+        bindCallMsgRedial(list);
+        list.scrollTop = list.scrollHeight;
       }
 
       async function openChat(username, workRef) {
@@ -13255,6 +13370,7 @@
           list.innerHTML = `<div class="comments-empty">${t('chat.empty')}</div>`;
         } else {
           list.innerHTML = items.map(m => chatBubbleHTML(m)).join('');
+          bindCallMsgRedial(list);
         }
         list.scrollTop = list.scrollHeight;
       }
