@@ -2254,12 +2254,35 @@
       max-width: 92vw;
       transition: transform .35s cubic-bezier(.16, 1, .3, 1);
     }
-    .incall-banner.open { transform: translateX(-50%) translateY(0); }
+    .incall-banner.open {
+      transform: translateX(-50%) translateY(0);
+      animation: incallBannerBounce .55s cubic-bezier(.34, 1.56, .64, 1);
+    }
+    @keyframes incallBannerBounce {
+      0% { transform: translateX(-50%) translateY(-140%); }
+      55% { transform: translateX(-50%) translateY(10px); }
+      80% { transform: translateX(-50%) translateY(-3px); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+    .incall-banner.ringing { animation: incallBannerShake 1.1s ease-in-out infinite; }
+    @keyframes incallBannerShake {
+      0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+      20% { transform: translateX(-50%) translateY(0) rotate(-1.2deg); }
+      40% { transform: translateX(-50%) translateY(0) rotate(1.2deg); }
+      60% { transform: translateX(-50%) translateY(0) rotate(-1deg); }
+      80% { transform: translateX(-50%) translateY(0) rotate(1deg); }
+    }
     .incall-banner .incall-avatar {
       width: 44px; height: 44px; border-radius: 50%;
       background: var(--accent); color: #fff;
       display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 15px; overflow: hidden; flex-shrink: 0;
+      position: relative;
+      animation: incallAvatarPulse 1.4s ease-in-out infinite;
+    }
+    @keyframes incallAvatarPulse {
+      0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+      70% { box-shadow: 0 0 0 11px color-mix(in srgb, var(--accent) 0%, transparent); }
     }
     .incall-banner .incall-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .incall-banner .incall-info { min-width: 0; flex: 1; }
@@ -2272,7 +2295,14 @@
       transition: transform .15s ease;
     }
     .incall-banner .incall-btn:active { transform: scale(.92); }
-    .incall-btn.accept { background: #2fb35e; color: #fff; }
+    .incall-btn.accept {
+      background: #2fb35e; color: #fff;
+      animation: incallAcceptPulse 1.4s ease-in-out infinite;
+    }
+    @keyframes incallAcceptPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(47,179,94,.55); }
+      70% { box-shadow: 0 0 0 10px rgba(47,179,94,0); }
+    }
     .incall-btn.decline { background: #e2543f; color: #fff; }
 
     /* ============ VIDEO QO'NG'IROQ (TO'LIQ EKRAN) ============ */
@@ -2319,6 +2349,11 @@
       background: var(--accent); color: #fff;
       display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 34px; overflow: hidden;
+      animation: callAvatarBigPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes callAvatarBigPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,.28); }
+      70% { box-shadow: 0 0 0 22px rgba(255,255,255,0); }
     }
     .call-remote-placeholder .call-avatar-big img { width: 100%; height: 100%; object-fit: cover; }
     .call-remote-placeholder .call-status-text { font-size: 15px; color: rgba(255,255,255,.7); }
@@ -12813,13 +12848,67 @@
         INCOMING_CALL = call;
         $('#incallName').textContent = call.otherUser.fullname || call.otherUser.username;
         $('#incallAvatar').innerHTML = avatarInner(call.otherUser.avatar, call.otherUser.fullname || call.otherUser.username);
-        $('#incallBanner').classList.add('open');
+        $('#incallBanner').classList.add('open', 'ringing');
+        startRingtone();
       }
       function hideIncomingBanner() {
         INCOMING_CALL = null;
-        $('#incallBanner').classList.remove('open');
+        $('#incallBanner').classList.remove('open', 'ringing');
+        stopRingtone();
       }
       let INCOMING_CALL = null;
+
+      /* ---------- Kiruvchi qo'ng'iroq uchun sintez qilingan ring tovushi ----------
+         Tashqi audio fayl talab qilinmaydi — Web Audio API orqali klassik
+         ikki tonli "ring-ring" signal generatsiya qilinadi va banner ochiq
+         turgan vaqtda har 2 soniyada takrorlanadi. */
+      let ringAudioCtx = null;
+      let ringIntervalId = null;
+      let ringActiveOscillators = [];
+
+      function ensureRingAudioCtx() {
+        if (!ringAudioCtx) {
+          try { ringAudioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+          catch (e) { ringAudioCtx = null; }
+        }
+        return ringAudioCtx;
+      }
+
+      function playRingtoneBeep() {
+        const ctx = ensureRingAudioCtx();
+        if (!ctx) return;
+        if (ctx.state === 'suspended') { ctx.resume().catch(() => {}); }
+        const now = ctx.currentTime;
+        [440, 480].forEach((freq) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0, now);
+          gain.gain.linearRampToValueAtTime(0.16, now + 0.05);
+          gain.gain.setValueAtTime(0.16, now + 0.85);
+          gain.gain.linearRampToValueAtTime(0, now + 1.0);
+          osc.connect(gain).connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 1.05);
+          ringActiveOscillators.push(osc);
+          osc.onended = () => { ringActiveOscillators = ringActiveOscillators.filter((n) => n !== osc); };
+        });
+      }
+
+      function startRingtone() {
+        if (ringIntervalId) return;
+        playRingtoneBeep();
+        ringIntervalId = setInterval(playRingtoneBeep, 2000);
+        if (navigator.vibrate) { try { navigator.vibrate([500, 300, 500, 300]); } catch (e) {} }
+      }
+
+      function stopRingtone() {
+        if (ringIntervalId) { clearInterval(ringIntervalId); ringIntervalId = null; }
+        ringActiveOscillators.forEach((n) => { try { n.stop(); } catch (e) {} });
+        ringActiveOscillators = [];
+        if (navigator.vibrate) { try { navigator.vibrate(0); } catch (e) {} }
+      }
 
       /* ---------- Qo'ng'iroqni boshlash (chaqiruvchi) ---------- */
       async function startCall(username) {
