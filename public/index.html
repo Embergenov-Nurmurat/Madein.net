@@ -5910,6 +5910,8 @@
           "home.sub": "Platformadagi barcha foydalanuvchilar yuklagan asarlar — eng yangisidan boshlab.",
           "feed.end": "Boshqa asar qolmadi.",
           "feed.empty.title": "Hali hech narsa yo'q", "feed.empty.desc": "Birinchi bo'lib asar yuklang — u shu yerda paydo bo'ladi.",
+          "saved.loading": "Yuklanmoqda...", "saved.empty.title": "Hozircha bo'sh",
+          "saved.empty.desc": "Yoqtirgan asarlaringizni saqlash belgisi orqali shu yerga qo'shing.",
           "profile.empty.desc": "Birinchi asaringizni yuklab, koleksiyangizni boshlang.",
           "feed.likeAria": "Layk", "feed.commentAria": "Komentlar",
           "feed.contactAria": "Sotuvchi bilan bog'lanish", "feed.contactLabel": "Bog'lanish",
@@ -6188,6 +6190,8 @@
           "home.sub": "Everything uploaded on the platform — newest first.",
           "feed.end": "No more works to show.",
           "feed.empty.title": "Nothing here yet", "feed.empty.desc": "Upload the first piece and start your collection.",
+          "saved.loading": "Loading...", "saved.empty.title": "Nothing saved yet",
+          "saved.empty.desc": "Tap the save icon on pieces you like to add them here.",
           "profile.empty.desc": "Upload your first piece to start your collection.",
           "feed.likeAria": "Like", "feed.commentAria": "Comments",
           "feed.contactAria": "Contact the seller", "feed.contactLabel": "Contact",
@@ -6466,6 +6470,8 @@
           "home.sub": "平台上所有用户上传的作品 — 按最新排序。",
           "feed.end": "没有更多作品了。",
           "feed.empty.title": "这里还什么都没有", "feed.empty.desc": "上传您的第一件作品，开始您的收藏吧。",
+          "saved.loading": "加载中...", "saved.empty.title": "还没有收藏",
+          "saved.empty.desc": "点击喜欢的作品上的收藏图标，将它们添加到这里。",
           "profile.empty.desc": "上传您的第一件作品，开始您的收藏吧。",
           "feed.likeAria": "点赞", "feed.commentAria": "评论",
           "feed.contactAria": "联系卖家", "feed.contactLabel": "联系",
@@ -6724,6 +6730,8 @@
           "home.sub": "मंच पर सभी उपयोगकर्ताओं द्वारा अपलोड की गई कृतियाँ — नवीनतम पहले।",
           "feed.end": "और कोई कृति नहीं है।",
           "feed.empty.title": "अभी तक कुछ भी नहीं है", "feed.empty.desc": "अपनी पहली कृति अपलोड करके संग्रह शुरू करें।",
+          "saved.loading": "लोड हो रहा है...", "saved.empty.title": "अभी तक कुछ सहेजा नहीं गया",
+          "saved.empty.desc": "पसंद की गई कृतियों को यहाँ जोड़ने के लिए सेव आइकन दबाएँ।",
           "profile.empty.desc": "अपनी पहली कृति अपलोड करके अपना संग्रह शुरू करें।",
           "feed.likeAria": "लाइक", "feed.commentAria": "टिप्पणियाँ",
           "feed.contactAria": "विक्रेता से संपर्क करें", "feed.contactLabel": "संपर्क करें",
@@ -6982,6 +6990,8 @@
           "home.sub": "Todo lo que los usuarios han subido a la plataforma — lo más reciente primero.",
           "feed.end": "No hay más obras.",
           "feed.empty.title": "Todavía no hay nada aquí", "feed.empty.desc": "Sube tu primera obra y empieza tu colección.",
+          "saved.loading": "Cargando...", "saved.empty.title": "Aún no hay nada guardado",
+          "saved.empty.desc": "Toca el icono de guardar en las obras que te gusten para añadirlas aquí.",
           "profile.empty.desc": "Sube tu primera obra y empieza tu colección.",
           "feed.likeAria": "Me gusta", "feed.commentAria": "Comentarios",
           "feed.contactAria": "Contactar al vendedor", "feed.contactLabel": "Contactar",
@@ -7240,6 +7250,8 @@
           "home.sub": "كل ما رفعه المستخدمون على المنصة — الأحدث أولاً.",
           "feed.end": "لا مزيد من الأعمال.",
           "feed.empty.title": "لا يوجد شيء هنا بعد", "feed.empty.desc": "ارفع أول عمل لك وابدأ مجموعتك.",
+          "saved.loading": "جارٍ التحميل...", "saved.empty.title": "لا يوجد شيء محفوظ بعد",
+          "saved.empty.desc": "اضغط على أيقونة الحفظ في الأعمال التي تعجبك لإضافتها هنا.",
           "profile.empty.desc": "ارفع أول عمل لك لتبدأ مجموعتك.",
           "feed.likeAria": "إعجاب", "feed.commentAria": "التعليقات",
           "feed.contactAria": "التواصل مع البائع", "feed.contactLabel": "تواصل",
@@ -7498,6 +7510,8 @@
           "home.sub": "Всё, что загружено на платформу — сначала новое.",
           "feed.end": "Больше работ нет.",
           "feed.empty.title": "Здесь пока пусто", "feed.empty.desc": "Загрузите первую работу и начните свою коллекцию.",
+          "saved.loading": "Загрузка...", "saved.empty.title": "Пока ничего не сохранено",
+          "saved.empty.desc": "Нажмите значок сохранения на понравившихся работах, чтобы добавить их сюда.",
           "profile.empty.desc": "Загрузите свою первую работу, чтобы начать коллекцию.",
           "feed.likeAria": "Нравится", "feed.commentAria": "Комментарии",
           "feed.contactAria": "Связаться с продавцом", "feed.contactLabel": "Связаться",
@@ -13008,7 +13022,7 @@
       /* ===================== SAQLANGAN ASARLAR RO'YXATI ===================== */
       async function loadSaved() {
         const list = $('#savedList');
-        list.innerHTML = `<p class="view-sub">Yuklanmoqda...</p>`;
+        list.innerHTML = `<p class="view-sub">${t('saved.loading')}</p>`;
         try {
           const data = await api('/api/saved');
           const items = data.items || [];
@@ -13017,8 +13031,8 @@
             list.innerHTML = `
           <div class="empty-state">
             <div class="empty-stamp">🔖</div>
-            <h3>Hozircha bo'sh</h3>
-            <p>Yoqtirgan asarlaringizni saqlash belgisi orqali shu yerga qo'shing.</p>
+            <h3>${t('saved.empty.title')}</h3>
+            <p>${t('saved.empty.desc')}</p>
           </div>`;
             return;
           }
