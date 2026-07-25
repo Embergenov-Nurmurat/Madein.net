@@ -159,7 +159,7 @@
         <div class="nav-links">
           <button data-view="home" class="active" data-i18n="nav.home">Bosh sahifa</button>
           <button data-view="profile" data-i18n="nav.profile">Profil</button>
-          <button data-view="saved" data-i18n="nav.saved">Saqlanganlar</button>
+          <button data-view="cart" data-i18n="nav.cart">Korzinka<span class="cart-badge hidden" id="navCartBadge">0</span></button>
           <button data-view="messages"><span data-i18n="nav.messages">Xabarlar</span><span class="msg-badge hidden" id="navMsgBadge">0</span></button>
           <button data-view="admin" id="navAdminBtn" class="hidden" data-i18n="admin.nav">Administrator burchagi</button>
         </div>
@@ -171,7 +171,7 @@
           <button type="button" class="feed-search-clear" id="feedSearchClear" aria-label="Tozalash" data-i18n-aria="search.clearAria">&times;</button>
           <button type="button" class="nav-search-close-btn" id="navSearchCloseBtn" aria-label="Yopish" data-i18n-aria="search.closeAria">&times;</button>
         </div>
-        <button class="btn btn-primary btn-sm" id="openUploadBtn" data-i18n="nav.newWork">+ Yangi asar</button>
+        <button class="btn btn-primary btn-sm" id="openUploadBtn" data-i18n="nav.newWork">+</button>
         <div class="avatar-menu" id="avatarMenu">
           <button class="avatar-btn" id="avatarBtn">
             <div class="avatar-circle" id="avatarInitials">?</div>
@@ -195,9 +195,10 @@
         <span class="tab-icon">👤</span>
         <span data-i18n="nav.profile">Profil</span>
       </button>
-      <button data-view="saved">
-        <span class="tab-icon">🔖</span>
-        <span data-i18n="nav.saved">Saqlangan</span>
+      <button data-view="cart">
+        <span class="tab-icon">🛒</span>
+        <span data-i18n="nav.cart">Korzinka</span>
+        <span class="cart-badge hidden" id="navCartBadgeMobile">0</span>
       </button>
       <button data-view="messages">
         <span class="tab-icon">💬</span>
@@ -258,14 +259,15 @@
         <div id="feedEnd" class="feed-end hidden" data-i18n="feed.end">Boshqa asar qolmadi.</div>
       </section>
 
-      <!-- SAVED (BOOKMARKED) WORKS VIEW -->
-      <section id="savedView" class="view">
+      <!-- CART VIEW -->
+      <section id="cartView" class="view">
         <div class="view-hero">
-          <div class="eyebrow" data-i18n="saved.eyebrow">Sevimlilar</div>
-          <h1 class="view-title" data-i18n-html="saved.title">Saqlangan <span>asarlar</span></h1>
-          <p class="view-sub" data-i18n="saved.sub">Keyinroq ko'rish uchun saqlab qo'ygan asarlaringiz shu yerda.</p>
+          <div class="eyebrow" data-i18n="cart.eyebrow">Xarid</div>
+          <h1 class="view-title" data-i18n-html="cart.title">Sizning <span>korzinkangiz</span></h1>
+          <p class="view-sub" data-i18n="cart.sub">Savatga qo'shgan asarlaringiz shu yerda — miqdorini o'zgartiring va buyurtma bering.</p>
         </div>
-        <div id="savedList" class="feed-list"></div>
+        <div id="cartList" class="cart-list"></div>
+        <div id="cartSummaryWrap"></div>
       </section>
 
       <!-- PROFILE VIEW -->
@@ -295,7 +297,7 @@
 
         <div class="view-toolbar">
           <button class="btn btn-ghost btn-sm" id="editProfileBtn" data-i18n="profile.editBtn">Ma'lumotlarni tahrirlash</button>
-          <button class="btn btn-primary btn-sm" id="openUploadBtn2" data-i18n="nav.newWork">+ Yangi asar</button>
+          <button class="btn btn-primary btn-sm" id="openUploadBtn2" data-i18n="nav.newWork">+</button>
         </div>
 
         <div class="profile-edit-card hidden" id="editProfileCard">

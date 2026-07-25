@@ -101,7 +101,14 @@ function ensureModerationFields(u) {
   }
   if (!Array.isArray(u.notifications)) u.notifications = [];
   if (!Array.isArray(u.following)) u.following = [];
-  if (!Array.isArray(u.savedWorks)) u.savedWorks = [];
+  if (!u.cart || typeof u.cart !== 'object' || Array.isArray(u.cart)) {
+    // Eski "saqlanganlar" (savedWorks) ro'yxati bo'lsa, savatga 1 donadan ko'chiriladi
+    u.cart = {};
+    if (Array.isArray(u.savedWorks)) {
+      for (const id of u.savedWorks) u.cart[id] = 1;
+    }
+  }
+  delete u.savedWorks;
   if (!u.callPrivacy || typeof u.callPrivacy !== 'object') {
     u.callPrivacy = { mode: 'everyone', allowed: [] };
   } else {
@@ -187,6 +194,7 @@ function loadDB() {
 }
 let db = loadDB();
 if (!Array.isArray(db.reports)) db.reports = [];
+if (!Array.isArray(db.orders)) db.orders = [];
 
 /* ===================== ODDIY SO'ROV CHEKLOVCHI (RATE LIMIT) =====================
    Tashqi paketlarsiz, IP + amal turi bo'yicha oynali hisoblagich.
@@ -555,7 +563,7 @@ function publicUser(uname) {
     isOnline: isUserOnline(uname),
     followingCount: (u.following || []).length,
     followersCount: countFollowers(uname),
-    savedCount: (u.savedWorks || []).length,
+    cartCount: Object.keys(u.cart || {}).length,
     stats: userWorkStats(uname),
     moderation: {
       bannedUntil: u.moderation.bannedUntil,
@@ -654,7 +662,7 @@ app.post('/api/register', rateLimit('register', 8, 10 * 60 * 1000), async (req, 
       moderation: { bannedUntil: null, banReason: '', mutedUntil: null, muteReason: '' },
       notifications: [],
       following: [],
-      savedWorks: []
+      cart: {}
     };
     db.works[uname] = [];
     await saveDB();
@@ -840,58 +848,153 @@ app.get('/api/users/:username/following', (req, res) => {
   res.json({ items });
 });
 
-/* ===================== SAQLANGANLAR (BOOKMARK) ===================== */
-app.post('/api/works/:id/save', requireAuth, async (req, res) => {
+/* ===================== KORZINKA (SAVAT) =====================
+   Har bir foydalanuvchining savati u.cart obyektida saqlanadi:
+   { workId: miqdor }. Faqat "sotuvda" (status === 'sale') turgan
+   asarlarni savatga qo'shish mumkin — ko'rgazma asarlari sotilmaydi. */
+const CART_MAX_QTY = 99;
+
+function cartItemView(work, owner, ownerUser, qty) {
+  return {
+    id: work.id,
+    title: work.title,
+    type: work.type,
+    status: work.status,
+    price: work.price,
+    currency: work.currency || 'UZS',
+    images: workImages(work),
+    thumbs: workThumbs(work),
+    video: work.video || null,
+    poster: work.poster || null,
+    mediaType: work.mediaType || (work.video ? 'video' : 'image'),
+    createdAt: work.createdAt,
+    username: owner,
+    fullname: ownerUser.fullname || owner,
+    avatar: ownerUser.avatar || null,
+    qty,
+    lineTotal: Math.round((Number(work.price) || 0) * qty * 100) / 100
+  };
+}
+
+/* Lentada/feedda bosiladigan "savatga qo'shish" tugmasi — mavjud bo'lsa olib
+   tashlaydi, bo'lmasa 1 dona qo'shadi (tezkor qo'shish/olib tashlash). */
+app.post('/api/works/:id/cart-toggle', requireAuth, async (req, res) => {
   const found = findWork(req.params.id);
   if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
-  const u = db.users[req.session.username];
+  const { work, owner } = found;
+  const me = req.session.username;
+  if (owner === me) return res.status(400).json({ error: "O'z asaringizni savatga qo'sha olmaysiz" });
+  if (work.status !== 'sale') return res.status(400).json({ error: 'Bu asar sotuvda emas' });
+  const u = db.users[me];
   ensureModerationFields(u);
-  const idx = u.savedWorks.indexOf(req.params.id);
-  let saved;
-  if (idx === -1) { u.savedWorks.push(req.params.id); saved = true; }
-  else { u.savedWorks.splice(idx, 1); saved = false; }
+  let inCart;
+  if (u.cart[req.params.id]) { delete u.cart[req.params.id]; inCart = false; }
+  else { u.cart[req.params.id] = 1; inCart = true; }
   await saveDB();
-  res.json({ saved });
+  res.json({ inCart, qty: inCart ? 1 : 0, cartCount: Object.keys(u.cart).length });
 });
 
-app.get('/api/saved', requireAuth, (req, res) => {
+/* Savatdagi bitta mahsulot miqdorini aniq songa o'rnatadi (+ / - tugmalari uchun) */
+app.put('/api/cart/:id', requireAuth, async (req, res) => {
   const u = db.users[req.session.username];
   ensureModerationFields(u);
-  const me = req.session.username;
+  const found = findWork(req.params.id);
+  if (!found || !u.cart[req.params.id]) return res.status(404).json({ error: 'Bu asar savatda topilmadi' });
+  let qty = Math.floor(Number(req.body && req.body.qty));
+  if (!Number.isFinite(qty)) return res.status(400).json({ error: "Noto'g'ri miqdor" });
+  if (qty <= 0) { delete u.cart[req.params.id]; }
+  else { u.cart[req.params.id] = Math.min(qty, CART_MAX_QTY); }
+  await saveDB();
+  res.json({ ok: true, qty: u.cart[req.params.id] || 0 });
+});
+
+/* Mahsulotni savatdan butunlay olib tashlaydi */
+app.delete('/api/cart/:id', requireAuth, async (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  delete u.cart[req.params.id];
+  await saveDB();
+  res.json({ ok: true });
+});
+
+app.get('/api/cart', requireAuth, (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
   const items = [];
-  for (const id of u.savedWorks) {
+  let changed = false;
+  for (const id of Object.keys(u.cart)) {
     const found = findWork(id);
-    if (!found) continue;
+    const qty = u.cart[id];
+    if (!found || found.work.status !== 'sale') { delete u.cart[id]; changed = true; continue; }
     const { work, owner } = found;
     const ownerUser = db.users[owner];
-    if (!ownerUser) continue;
-    const likes = Array.isArray(work.likes) ? work.likes : [];
-    items.push({
-      id: work.id,
+    if (!ownerUser) { delete u.cart[id]; changed = true; continue; }
+    items.push(cartItemView(work, owner, ownerUser, qty));
+  }
+  if (changed) saveDB().catch(() => {});
+  items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const totalsByCurrency = {};
+  for (const it of items) {
+    totalsByCurrency[it.currency] = (totalsByCurrency[it.currency] || 0) + it.lineTotal;
+  }
+  res.json({ items, totalsByCurrency, count: items.length });
+});
+
+/* Savatdagi barcha asarlar bo'yicha buyurtma yaratadi, sotuvchilarga
+   bildirishnoma yuboradi va savatni bo'shatadi. */
+app.post('/api/cart/checkout', requireAuth, async (req, res) => {
+  const me = req.session.username;
+  const u = db.users[me];
+  ensureModerationFields(u);
+  const ids = Object.keys(u.cart);
+  if (!ids.length) return res.status(400).json({ error: "Savat bo'sh" });
+
+  const orderItems = [];
+  for (const id of ids) {
+    const found = findWork(id);
+    if (!found || found.work.status !== 'sale') { delete u.cart[id]; continue; }
+    const { work, owner } = found;
+    orderItems.push({
+      workId: work.id,
       title: work.title,
-      type: work.type,
-      status: work.status,
-      price: work.price,
+      qty: u.cart[id],
+      price: Number(work.price) || 0,
       currency: work.currency || 'UZS',
-      desc: work.desc,
-      images: workImages(work),
-      thumbs: workThumbs(work),
-      video: work.video || null,
-      poster: work.poster || null,
-      mediaType: work.mediaType || (work.video ? 'video' : 'image'),
-      createdAt: work.createdAt,
-      username: owner,
-      fullname: ownerUser.fullname || owner,
-      avatar: ownerUser.avatar || null,
-      likesCount: likes.length,
-      likedByMe: likes.includes(me),
-      commentsCount: Array.isArray(work.comments) ? work.comments.length : 0,
-      savedByMe: true,
-      isFollowing: !!(u && Array.isArray(u.following) && u.following.includes(owner))
+      sellerUsername: owner
     });
   }
-  items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  res.json({ items });
+  if (!orderItems.length) { await saveDB(); return res.status(400).json({ error: "Savat bo'sh" }); }
+
+  const totalsByCurrency = {};
+  for (const it of orderItems) {
+    totalsByCurrency[it.currency] = (totalsByCurrency[it.currency] || 0) + it.price * it.qty;
+  }
+
+  const order = {
+    id: 'ord' + Date.now() + crypto.randomBytes(4).toString('hex'),
+    buyer: me,
+    items: orderItems,
+    totalsByCurrency,
+    status: 'placed',
+    createdAt: new Date().toISOString()
+  };
+  db.orders.push(order);
+
+  const sellers = [...new Set(orderItems.map(it => it.sellerUsername))];
+  for (const seller of sellers) {
+    const sellerItems = orderItems.filter(it => it.sellerUsername === seller);
+    addNotification(seller, {
+      type: 'order-received',
+      from: me,
+      orderId: order.id,
+      itemsCount: sellerItems.length
+    });
+  }
+  addNotification(me, { type: 'order-placed', orderId: order.id });
+
+  u.cart = {};
+  await saveDB();
+  res.json({ ok: true, orderId: order.id, totalsByCurrency });
 });
 
 /* ===================== SHIKOYATLAR (REPORT) ===================== */
@@ -1144,7 +1247,7 @@ app.get('/api/feed', (req, res) => {
         avatar: u.avatar || null,
         likesCount: likes.length,
         likedByMe: likes.includes(me),
-        savedByMe: !!(meUser && Array.isArray(meUser.savedWorks) && meUser.savedWorks.includes(w.id)),
+        inCart: !!(meUser && meUser.cart && Object.prototype.hasOwnProperty.call(meUser.cart, w.id)),
         commentsCount: comments.length,
         viewsCount: Number(w.views) || 0,
         isFollowing: !!(meUser && Array.isArray(meUser.following) && meUser.following.includes(uname))

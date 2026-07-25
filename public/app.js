@@ -30,7 +30,7 @@
           "auth.guestBtn": "Hozircha shunchaki ko'rib chiqish",
           "auth.guestBtnSmall": "Ro'yxatdan o'tishni keyinroq amalga oshirasiz",
           "nav.home": "Bosh sahifa", "nav.profile": "Profil", "nav.messages": "Xabarlar",
-          "nav.newWork": "+ Yangi asar", "nav.myProfile": "Profilim", "nav.logout": "Chiqish",
+          "nav.newWork": "+", "nav.myProfile": "Profilim", "nav.logout": "Chiqish",
           "nav.register": "Ro'yxatdan o'tish",
           "guest.banner": "Siz saytni <b>mehmon</b> sifatida ko'ryapsiz — asar yuklash, layk va komentariya qoldirish uchun ro'yxatdan o'ting.",
           "guest.registerBtn": "Ro'yxatdan o'tish",
@@ -38,8 +38,13 @@
           "home.sub": "Platformadagi barcha foydalanuvchilar yuklagan asarlar — eng yangisidan boshlab.",
           "feed.end": "Boshqa asar qolmadi.",
           "feed.empty.title": "Hali hech narsa yo'q", "feed.empty.desc": "Birinchi bo'lib asar yuklang — u shu yerda paydo bo'ladi.",
-          "saved.loading": "Yuklanmoqda...", "saved.empty.title": "Hozircha bo'sh",
-          "saved.empty.desc": "Yoqtirgan asarlaringizni saqlash belgisi orqali shu yerga qo'shing.",
+          "cart.loading": "Yuklanmoqda...", "cart.empty.title": "Korzinka bo'sh",
+          "cart.empty.desc": "Yoqtirgan asarlaringizni savat belgisi orqali shu yerga qo'shing.",
+          "cart.addAria": "Savatga qo'shish", "cart.increaseAria": "Miqdorni oshirish", "cart.decreaseAria": "Miqdorni kamaytirish",
+          "cart.removeAria": "Savatdan olib tashlash", "cart.subtotal": "Jami", "cart.checkout": "Buyurtma berish",
+          "cart.checkoutConfirm": "Buyurtmani tasdiqlaysizmi?", "cart.orderPlaced": "Buyurtmangiz qabul qilindi! Sotuvchi tez orada siz bilan bog'lanadi.",
+          "cart.orderFail": "Buyurtma berib bo'lmadi",
+          "notif.orderReceived": "{name} sizdan {count} ta asar buyurtma qildi.", "notif.orderPlaced": "Buyurtmangiz muvaffaqiyatli qabul qilindi.",
           "profile.empty.desc": "Birinchi asaringizni yuklab, koleksiyangizni boshlang.",
           "feed.likeAria": "Layk", "feed.commentAria": "Komentlar",
           "feed.contactAria": "Sotuvchi bilan bog'lanish", "feed.contactLabel": "Bog'lanish",
@@ -170,13 +175,13 @@
           "notif.unmute": "Administrator mut jazoyingizni muddatidan avval bekor qildi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin.",
           "notif.banExpired": "Ban muddatingiz tugadi. Hisobingizdan yana foydalanishingiz mumkin.",
           "notif.muteExpired": "Mut muddatingiz tugadi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin.",
-          "nav.saved": "Saqlanganlar",
+          "nav.cart": "Korzinka",
           "search.placeholder": "Qidirish...", "filter.type.all": "Barcha turlar", "filter.sort.new": "Eng yangi", "filter.sort.top": "Eng ko'p yoqtirilgan", "filter.price.min": "Narx, dan", "filter.price.max": "Narx, gacha", "filter.onlyFollowing": "Faqat kuzatuvchilarim",
           "search.clearAria": "Tozalash",
           "search.closeAria": "Yopish",
-          "saved.eyebrow": "Sevimlilar",
-          "saved.title": "Saqlangan <span>asarlar</span>",
-          "saved.sub": "Keyinroq ko'rish uchun saqlab qo'ygan asarlaringiz shu yerda.",
+          "cart.eyebrow": "Xarid",
+          "cart.title": "Sizning <span>korzinkangiz</span>",
+          "cart.sub": "Savatga qo'shgan asarlaringiz shu yerda — miqdorini o'zgartiring va buyurtma bering.",
           "profile.stat.followers": "Obunachi",
           "profile.stat.following": "Obuna",
           "profile.stat.likes": "Layk",
@@ -258,7 +263,7 @@
           "auth.guestBtn": "Just browse for now",
           "auth.guestBtnSmall": "You can register later",
           "nav.home": "Home", "nav.profile": "Profile", "nav.messages": "Messages",
-          "nav.newWork": "+ New work", "nav.myProfile": "My profile", "nav.logout": "Log out",
+          "nav.newWork": "+", "nav.myProfile": "My profile", "nav.logout": "Log out",
           "nav.register": "Sign up",
           "guest.banner": "You're browsing as a <b>guest</b> — sign up to upload work, like, and comment.",
           "guest.registerBtn": "Sign up",
@@ -266,8 +271,13 @@
           "home.sub": "Everything uploaded on the platform — newest first.",
           "feed.end": "No more works to show.",
           "feed.empty.title": "Nothing here yet", "feed.empty.desc": "Upload the first piece and start your collection.",
-          "saved.loading": "Loading...", "saved.empty.title": "Nothing saved yet",
-          "saved.empty.desc": "Tap the save icon on pieces you like to add them here.",
+          "cart.loading": "Loading...", "cart.empty.title": "Your cart is empty",
+          "cart.empty.desc": "Tap the cart icon on pieces you like to add them here.",
+          "cart.addAria": "Add to cart", "cart.increaseAria": "Increase quantity", "cart.decreaseAria": "Decrease quantity",
+          "cart.removeAria": "Remove from cart", "cart.subtotal": "Subtotal", "cart.checkout": "Place order",
+          "cart.checkoutConfirm": "Confirm your order?", "cart.orderPlaced": "Your order has been placed! The seller will contact you soon.",
+          "cart.orderFail": "Couldn't place the order",
+          "notif.orderReceived": "{name} ordered {count} of your works.", "notif.orderPlaced": "Your order was placed successfully.",
           "profile.empty.desc": "Upload your first piece to start your collection.",
           "feed.likeAria": "Like", "feed.commentAria": "Comments",
           "feed.contactAria": "Contact the seller", "feed.contactLabel": "Contact",
@@ -398,13 +408,13 @@
           "notif.unmute": "Administrator lifted your mute early. You can comment, message, and upload new work again.",
           "notif.banExpired": "Your ban has expired. You can use your account again.",
           "notif.muteExpired": "Your mute has expired. You can comment, message, and upload new work again.",
-          "nav.saved": "Saved",
+          "nav.cart": "Cart",
           "search.placeholder": "Search...", "filter.type.all": "All types", "filter.sort.new": "Newest", "filter.sort.top": "Most liked", "filter.price.min": "Price from", "filter.price.max": "Price to", "filter.onlyFollowing": "Only who I follow",
           "search.clearAria": "Clear",
           "search.closeAria": "Close",
-          "saved.eyebrow": "Favorites",
-          "saved.title": "Saved <span>works</span>",
-          "saved.sub": "Works you've saved to view later are here.",
+          "cart.eyebrow": "Shopping",
+          "cart.title": "Your <span>cart</span>",
+          "cart.sub": "Works you've added to your cart are here — adjust quantities and place your order.",
           "profile.stat.followers": "Followers",
           "profile.stat.following": "Following",
           "profile.stat.likes": "Likes",
@@ -486,7 +496,7 @@
           "auth.guestBtn": "先随便看看",
           "auth.guestBtnSmall": "您可以稍后注册",
           "nav.home": "首页", "nav.profile": "个人资料", "nav.messages": "消息",
-          "nav.newWork": "+ 新作品", "nav.myProfile": "我的主页", "nav.logout": "退出登录",
+          "nav.newWork": "+", "nav.myProfile": "我的主页", "nav.logout": "退出登录",
           "nav.register": "注册",
           "guest.banner": "您正以<b>访客</b>身份浏览 — 注册后即可上传作品、点赞和评论。",
           "guest.registerBtn": "注册",
@@ -494,8 +504,13 @@
           "home.sub": "平台上所有用户上传的作品 — 按最新排序。",
           "feed.end": "没有更多作品了。",
           "feed.empty.title": "这里还什么都没有", "feed.empty.desc": "上传您的第一件作品，开始您的收藏吧。",
-          "saved.loading": "加载中...", "saved.empty.title": "还没有收藏",
-          "saved.empty.desc": "点击喜欢的作品上的收藏图标，将它们添加到这里。",
+          "cart.loading": "加载中...", "cart.empty.title": "购物车是空的",
+          "cart.empty.desc": "点击喜欢的作品上的购物车图标，将它们添加到这里。",
+          "cart.addAria": "加入购物车", "cart.increaseAria": "增加数量", "cart.decreaseAria": "减少数量",
+          "cart.removeAria": "从购物车中移除", "cart.subtotal": "小计", "cart.checkout": "下单",
+          "cart.checkoutConfirm": "确认下单吗？", "cart.orderPlaced": "您的订单已提交！卖家会尽快与您联系。",
+          "cart.orderFail": "下单失败",
+          "notif.orderReceived": "{name} 订购了您的 {count} 件作品。", "notif.orderPlaced": "您的订单已成功提交。",
           "profile.empty.desc": "上传您的第一件作品，开始您的收藏吧。",
           "feed.likeAria": "点赞", "feed.commentAria": "评论",
           "feed.contactAria": "联系卖家", "feed.contactLabel": "联系",
@@ -606,13 +621,13 @@
           "notif.unmute": "管理员已提前解除您的禁言。您可以再次评论、发消息和上传作品。",
           "notif.banExpired": "您的封禁期已结束。您可以再次使用账户。",
           "notif.muteExpired": "您的禁言期已结束。您可以再次评论、发消息和上传作品。",
-          "nav.saved": "已保存",
+          "nav.cart": "购物车",
           "search.placeholder": "搜索...", "filter.type.all": "所有类型", "filter.sort.new": "最新", "filter.sort.top": "最多点赞", "filter.price.min": "价格从", "filter.price.max": "价格到", "filter.onlyFollowing": "仅我关注的人",
           "search.clearAria": "清除",
           "search.closeAria": "关闭",
-          "saved.eyebrow": "收藏",
-          "saved.title": "已保存的<span>作品</span>",
-          "saved.sub": "您保存以便稍后查看的作品都在这里。",
+          "cart.eyebrow": "购物",
+          "cart.title": "您的<span>购物车</span>",
+          "cart.sub": "您添加到购物车的作品都在这里——调整数量并下单。",
           "profile.stat.followers": "粉丝",
           "profile.stat.following": "关注",
           "profile.stat.likes": "点赞",
@@ -694,7 +709,7 @@
           "auth.guestBtn": "अभी सिर्फ़ देखें",
           "auth.guestBtnSmall": "आप बाद में साइन अप कर सकते हैं",
           "nav.home": "होम", "nav.profile": "प्रोफ़ाइल", "nav.messages": "संदेश",
-          "nav.newWork": "+ नई कृति", "nav.myProfile": "मेरी प्रोफ़ाइल", "nav.logout": "लॉग आउट",
+          "nav.newWork": "+", "nav.myProfile": "मेरी प्रोफ़ाइल", "nav.logout": "लॉग आउट",
           "nav.register": "साइन अप करें",
           "guest.banner": "आप <b>अतिथि</b> के रूप में देख रहे हैं — अपलोड, लाइक और कमेंट के लिए साइन अप करें।",
           "guest.registerBtn": "साइन अप करें",
@@ -702,8 +717,13 @@
           "home.sub": "मंच पर सभी उपयोगकर्ताओं द्वारा अपलोड की गई कृतियाँ — नवीनतम पहले।",
           "feed.end": "और कोई कृति नहीं है।",
           "feed.empty.title": "अभी तक कुछ भी नहीं है", "feed.empty.desc": "अपनी पहली कृति अपलोड करके संग्रह शुरू करें।",
-          "saved.loading": "लोड हो रहा है...", "saved.empty.title": "अभी तक कुछ सहेजा नहीं गया",
-          "saved.empty.desc": "पसंद की गई कृतियों को यहाँ जोड़ने के लिए सेव आइकन दबाएँ।",
+          "cart.loading": "लोड हो रहा है...", "cart.empty.title": "आपकी कार्ट खाली है",
+          "cart.empty.desc": "पसंद की गई कृतियों को यहाँ जोड़ने के लिए कार्ट आइकन दबाएँ।",
+          "cart.addAria": "कार्ट में जोड़ें", "cart.increaseAria": "मात्रा बढ़ाएं", "cart.decreaseAria": "मात्रा घटाएं",
+          "cart.removeAria": "कार्ट से हटाएं", "cart.subtotal": "उप-योग", "cart.checkout": "ऑर्डर करें",
+          "cart.checkoutConfirm": "क्या आप ऑर्डर की पुष्टि करते हैं?", "cart.orderPlaced": "आपका ऑर्डर दे दिया गया है! विक्रेता जल्द ही आपसे संपर्क करेगा।",
+          "cart.orderFail": "ऑर्डर नहीं दिया जा सका",
+          "notif.orderReceived": "{name} ने आपकी {count} कृतियों का ऑर्डर दिया।", "notif.orderPlaced": "आपका ऑर्डर सफलतापूर्वक दे दिया गया।",
           "profile.empty.desc": "अपनी पहली कृति अपलोड करके अपना संग्रह शुरू करें।",
           "feed.likeAria": "लाइक", "feed.commentAria": "टिप्पणियाँ",
           "feed.contactAria": "विक्रेता से संपर्क करें", "feed.contactLabel": "संपर्क करें",
@@ -814,13 +834,13 @@
           "notif.unmute": "प्रशासक ने आपका म्यूट समय से पहले हटा दिया। अब आप फिर से टिप्पणी, संदेश और कृति अपलोड कर सकते हैं।",
           "notif.banExpired": "आपका बैन समाप्त हो गया है। अब आप अपने खाते का उपयोग फिर से कर सकते हैं।",
           "notif.muteExpired": "आपका म्यूट समाप्त हो गया है। अब आप फिर से टिप्पणी, संदेश और कृति अपलोड कर सकते हैं।",
-          "nav.saved": "सहेजे गए",
+          "nav.cart": "कार्ट",
           "search.placeholder": "खोजें...", "filter.type.all": "सभी प्रकार", "filter.sort.new": "सबसे नया", "filter.sort.top": "सबसे ज़्यादा पसंद किया गया", "filter.price.min": "कीमत से", "filter.price.max": "कीमत तक", "filter.onlyFollowing": "केवल जिन्हें मैं फॉलो करता हूँ",
           "search.clearAria": "साफ़ करें",
           "search.closeAria": "बंद करें",
-          "saved.eyebrow": "पसंदीदा",
-          "saved.title": "सहेजी गई <span>कृतियाँ</span>",
-          "saved.sub": "बाद में देखने के लिए सहेजी गई आपकी कृतियाँ यहाँ हैं।",
+          "cart.eyebrow": "खरीदारी",
+          "cart.title": "आपकी <span>कार्ट</span>",
+          "cart.sub": "आपने कार्ट में जोड़ी गई कृतियाँ यहाँ हैं — मात्रा बदलें और ऑर्डर करें।",
           "profile.stat.followers": "फ़ॉलोअर्स",
           "profile.stat.following": "फ़ॉलोइंग",
           "profile.stat.likes": "लाइक",
@@ -902,7 +922,7 @@
           "auth.guestBtn": "Solo quiero explorar por ahora",
           "auth.guestBtnSmall": "Puedes registrarte más tarde",
           "nav.home": "Inicio", "nav.profile": "Perfil", "nav.messages": "Mensajes",
-          "nav.newWork": "+ Nueva obra", "nav.myProfile": "Mi perfil", "nav.logout": "Cerrar sesión",
+          "nav.newWork": "+", "nav.myProfile": "Mi perfil", "nav.logout": "Cerrar sesión",
           "nav.register": "Registrarse",
           "guest.banner": "Estás navegando como <b>invitado</b> — regístrate para subir obras, dar like y comentar.",
           "guest.registerBtn": "Registrarse",
@@ -910,8 +930,13 @@
           "home.sub": "Todo lo que los usuarios han subido a la plataforma — lo más reciente primero.",
           "feed.end": "No hay más obras.",
           "feed.empty.title": "Todavía no hay nada aquí", "feed.empty.desc": "Sube tu primera obra y empieza tu colección.",
-          "saved.loading": "Cargando...", "saved.empty.title": "Aún no hay nada guardado",
-          "saved.empty.desc": "Toca el icono de guardar en las obras que te gusten para añadirlas aquí.",
+          "cart.loading": "Cargando...", "cart.empty.title": "Tu carrito está vacío",
+          "cart.empty.desc": "Toca el icono del carrito en las obras que te gusten para añadirlas aquí.",
+          "cart.addAria": "Añadir al carrito", "cart.increaseAria": "Aumentar cantidad", "cart.decreaseAria": "Disminuir cantidad",
+          "cart.removeAria": "Quitar del carrito", "cart.subtotal": "Subtotal", "cart.checkout": "Hacer pedido",
+          "cart.checkoutConfirm": "¿Confirmar tu pedido?", "cart.orderPlaced": "¡Tu pedido ha sido realizado! El vendedor se pondrá en contacto contigo pronto.",
+          "cart.orderFail": "No se pudo realizar el pedido",
+          "notif.orderReceived": "{name} pidió {count} de tus obras.", "notif.orderPlaced": "Tu pedido se realizó con éxito.",
           "profile.empty.desc": "Sube tu primera obra y empieza tu colección.",
           "feed.likeAria": "Me gusta", "feed.commentAria": "Comentarios",
           "feed.contactAria": "Contactar al vendedor", "feed.contactLabel": "Contactar",
@@ -1022,13 +1047,13 @@
           "notif.unmute": "El administrador quitó tu silencio antes de tiempo. Ya puedes comentar, enviar mensajes y subir obras de nuevo.",
           "notif.banExpired": "Tu baneo ha terminado. Ya puedes volver a usar tu cuenta.",
           "notif.muteExpired": "Tu silencio ha terminado. Ya puedes comentar, enviar mensajes y subir obras de nuevo.",
-          "nav.saved": "Guardados",
+          "nav.cart": "Carrito",
           "search.placeholder": "Buscar...", "filter.type.all": "Todos los tipos", "filter.sort.new": "Más reciente", "filter.sort.top": "Más gustados", "filter.price.min": "Precio desde", "filter.price.max": "Precio hasta", "filter.onlyFollowing": "Solo a quienes sigo",
           "search.clearAria": "Borrar",
           "search.closeAria": "Cerrar",
-          "saved.eyebrow": "Favoritos",
-          "saved.title": "Obras <span>guardadas</span>",
-          "saved.sub": "Aquí están las obras que guardaste para ver más tarde.",
+          "cart.eyebrow": "Compras",
+          "cart.title": "Tu <span>carrito</span>",
+          "cart.sub": "Las obras que agregaste al carrito están aquí — ajusta las cantidades y haz tu pedido.",
           "profile.stat.followers": "Seguidores",
           "profile.stat.following": "Siguiendo",
           "profile.stat.likes": "Me gusta",
@@ -1110,7 +1135,7 @@
           "auth.guestBtn": "تصفّح فقط الآن",
           "auth.guestBtnSmall": "يمكنك التسجيل لاحقًا",
           "nav.home": "الرئيسية", "nav.profile": "الملف الشخصي", "nav.messages": "الرسائل",
-          "nav.newWork": "+ عمل جديد", "nav.myProfile": "ملفي الشخصي", "nav.logout": "تسجيل الخروج",
+          "nav.newWork": "+", "nav.myProfile": "ملفي الشخصي", "nav.logout": "تسجيل الخروج",
           "nav.register": "إنشاء حساب",
           "guest.banner": "أنت تتصفح كـ<b>ضيف</b> — سجّل للتمكن من رفع الأعمال والإعجاب والتعليق.",
           "guest.registerBtn": "إنشاء حساب",
@@ -1118,8 +1143,13 @@
           "home.sub": "كل ما رفعه المستخدمون على المنصة — الأحدث أولاً.",
           "feed.end": "لا مزيد من الأعمال.",
           "feed.empty.title": "لا يوجد شيء هنا بعد", "feed.empty.desc": "ارفع أول عمل لك وابدأ مجموعتك.",
-          "saved.loading": "جارٍ التحميل...", "saved.empty.title": "لا يوجد شيء محفوظ بعد",
-          "saved.empty.desc": "اضغط على أيقونة الحفظ في الأعمال التي تعجبك لإضافتها هنا.",
+          "cart.loading": "جارٍ التحميل...", "cart.empty.title": "عربة التسوق فارغة",
+          "cart.empty.desc": "اضغط على أيقونة العربة في الأعمال التي تعجبك لإضافتها هنا.",
+          "cart.addAria": "أضف إلى العربة", "cart.increaseAria": "زيادة الكمية", "cart.decreaseAria": "تقليل الكمية",
+          "cart.removeAria": "إزالة من العربة", "cart.subtotal": "المجموع الفرعي", "cart.checkout": "تقديم الطلب",
+          "cart.checkoutConfirm": "هل تريد تأكيد الطلب؟", "cart.orderPlaced": "تم تقديم طلبك! سيتواصل معك البائع قريبًا.",
+          "cart.orderFail": "تعذر تقديم الطلب",
+          "notif.orderReceived": "طلب {name} {count} من أعمالك.", "notif.orderPlaced": "تم تقديم طلبك بنجاح.",
           "profile.empty.desc": "ارفع أول عمل لك لتبدأ مجموعتك.",
           "feed.likeAria": "إعجاب", "feed.commentAria": "التعليقات",
           "feed.contactAria": "التواصل مع البائع", "feed.contactLabel": "تواصل",
@@ -1230,13 +1260,13 @@
           "notif.unmute": "ألغى المشرف كتمك مبكرًا. يمكنك التعليق والمراسلة ورفع الأعمال مجددًا.",
           "notif.banExpired": "انتهت مدة حظرك. يمكنك استخدام حسابك مجددًا.",
           "notif.muteExpired": "انتهت مدة كتمك. يمكنك التعليق والمراسلة ورفع الأعمال مجددًا.",
-          "nav.saved": "المحفوظات",
+          "nav.cart": "عربة التسوق",
           "search.placeholder": "بحث...", "filter.type.all": "جميع الأنواع", "filter.sort.new": "الأحدث", "filter.sort.top": "الأكثر إعجابًا", "filter.price.min": "السعر من", "filter.price.max": "السعر إلى", "filter.onlyFollowing": "من أتابعهم فقط",
           "search.clearAria": "مسح",
           "search.closeAria": "إغلاق",
-          "saved.eyebrow": "المفضلة",
-          "saved.title": "الأعمال <span>المحفوظة</span>",
-          "saved.sub": "الأعمال التي حفظتها لمشاهدتها لاحقًا موجودة هنا.",
+          "cart.eyebrow": "التسوق",
+          "cart.title": "عربة <span>تسوقك</span>",
+          "cart.sub": "الأعمال التي أضفتها إلى عربة التسوق موجودة هنا — عدّل الكميات وقدّم طلبك.",
           "profile.stat.followers": "المتابعون",
           "profile.stat.following": "المتابَعون",
           "profile.stat.likes": "الإعجابات",
@@ -1318,7 +1348,7 @@
           "auth.guestBtn": "Просто посмотреть",
           "auth.guestBtnSmall": "Зарегистрироваться можно позже",
           "nav.home": "Главная", "nav.profile": "Профиль", "nav.messages": "Сообщения",
-          "nav.newWork": "+ Новая работа", "nav.myProfile": "Мой профиль", "nav.logout": "Выйти",
+          "nav.newWork": "+", "nav.myProfile": "Мой профиль", "nav.logout": "Выйти",
           "nav.register": "Регистрация",
           "guest.banner": "Вы просматриваете сайт как <b>гость</b> — зарегистрируйтесь, чтобы загружать работы, ставить лайки и комментировать.",
           "guest.registerBtn": "Регистрация",
@@ -1326,8 +1356,13 @@
           "home.sub": "Всё, что загружено на платформу — сначала новое.",
           "feed.end": "Больше работ нет.",
           "feed.empty.title": "Здесь пока пусто", "feed.empty.desc": "Загрузите первую работу и начните свою коллекцию.",
-          "saved.loading": "Загрузка...", "saved.empty.title": "Пока ничего не сохранено",
-          "saved.empty.desc": "Нажмите значок сохранения на понравившихся работах, чтобы добавить их сюда.",
+          "cart.loading": "Загрузка...", "cart.empty.title": "Ваша корзина пуста",
+          "cart.empty.desc": "Нажмите значок корзины на понравившихся работах, чтобы добавить их сюда.",
+          "cart.addAria": "Добавить в корзину", "cart.increaseAria": "Увеличить количество", "cart.decreaseAria": "Уменьшить количество",
+          "cart.removeAria": "Удалить из корзины", "cart.subtotal": "Промежуточный итог", "cart.checkout": "Оформить заказ",
+          "cart.checkoutConfirm": "Подтвердить заказ?", "cart.orderPlaced": "Ваш заказ оформлен! Продавец скоро свяжется с вами.",
+          "cart.orderFail": "Не удалось оформить заказ",
+          "notif.orderReceived": "{name} заказал(а) {count} ваших работ.", "notif.orderPlaced": "Ваш заказ успешно оформлен.",
           "profile.empty.desc": "Загрузите свою первую работу, чтобы начать коллекцию.",
           "feed.likeAria": "Нравится", "feed.commentAria": "Комментарии",
           "feed.contactAria": "Связаться с продавцом", "feed.contactLabel": "Связаться",
@@ -1438,13 +1473,13 @@
           "notif.unmute": "Администратор досрочно снял ваш мут. Вы снова можете комментировать, писать сообщения и загружать работы.",
           "notif.banExpired": "Срок вашего бана истёк. Вы снова можете пользоваться аккаунтом.",
           "notif.muteExpired": "Срок вашего мута истёк. Вы снова можете комментировать, писать сообщения и загружать работы.",
-          "nav.saved": "Сохранённые",
+          "nav.cart": "Корзина",
           "search.placeholder": "Поиск...", "filter.type.all": "Все типы", "filter.sort.new": "Новые", "filter.sort.top": "Популярные", "filter.price.min": "Цена от", "filter.price.max": "Цена до", "filter.onlyFollowing": "Только те, на кого я подписан",
           "search.clearAria": "Очистить",
           "search.closeAria": "Закрыть",
-          "saved.eyebrow": "Избранное",
-          "saved.title": "Сохранённые <span>работы</span>",
-          "saved.sub": "Здесь находятся работы, которые вы сохранили, чтобы посмотреть позже.",
+          "cart.eyebrow": "Покупки",
+          "cart.title": "Ваша <span>корзина</span>",
+          "cart.sub": "Работы, которые вы добавили в корзину, находятся здесь — измените количество и оформите заказ.",
           "profile.stat.followers": "Подписчики",
           "profile.stat.following": "Подписки",
           "profile.stat.likes": "Лайки",
@@ -1857,10 +1892,12 @@
 
         if (!IS_GUEST) {
           refreshUnreadBadge();
+          refreshCartBadge(CURRENT_USER.cartCount || 0);
           startUnreadPolling();
           checkNotifications();
         } else {
           $$('.msg-badge').forEach(b => b.classList.add('hidden'));
+          $$('.cart-badge').forEach(b => b.classList.add('hidden'));
         }
       }
 
@@ -1904,6 +1941,8 @@
           case 'admin-fired': return t('notif.adminFired');
           case 'admin-rehired': return t('notif.adminRehired');
           case 'admin-promoted': return t('notif.adminPromoted');
+          case 'order-received': return t('notif.orderReceived', { name: n.from || t('notif.someone'), count: n.itemsCount || 1 });
+          case 'order-placed': return t('notif.orderPlaced');
           default: return n.text || '';
         }
       }
@@ -1932,7 +1971,7 @@
       function bindAppEvents() {
         $$('.nav-links button[data-view]').forEach(btn => {
           btn.addEventListener('click', () => {
-            if (IS_GUEST && (btn.dataset.view === 'profile' || btn.dataset.view === 'messages' || btn.dataset.view === 'saved')) { openGateModal(); return; }
+            if (IS_GUEST && (btn.dataset.view === 'profile' || btn.dataset.view === 'messages' || btn.dataset.view === 'cart')) { openGateModal(); return; }
             switchView(btn.dataset.view);
           });
         });
@@ -2173,7 +2212,7 @@
         $('#userProfileView').classList.toggle('active', view === 'userProfile');
         $('#chatView').classList.toggle('active', view === 'chat');
         $('#adminView').classList.toggle('active', view === 'admin');
-        $('#savedView').classList.toggle('active', view === 'saved');
+        $('#cartView').classList.toggle('active', view === 'cart');
         if (view === 'profile') {
           renderProfileHeader();
           renderGridInto('#profileGrid', WORKS);
@@ -2186,8 +2225,8 @@
           loadAdminStats();
           if (!(CURRENT_USER && CURRENT_USER.isBoss)) loadAdminReports();
         }
-        if (view === 'saved') {
-          loadSaved();
+        if (view === 'cart') {
+          loadCart();
         }
       }
 
@@ -2932,8 +2971,8 @@
         return `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3V4z"/></svg>`;
       }
 
-      function saveIconSVG() {
-        return `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>`;
+      function cartIconSVG() {
+        return `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2.5 3h2.4l1.1 3M6 6l1.9 8.6a1.6 1.6 0 0 0 1.6 1.3h7.3a1.6 1.6 0 0 0 1.6-1.2L20 8H6z"/></svg>`;
       }
 
       function shareIconSVG() {
@@ -2965,9 +3004,10 @@
             ${commentIconSVG()}
             <span class="comment-count">${w.commentsCount || 0}</span>
           </button>
-          <button class="save-btn ${w.savedByMe ? 'saved' : ''}" data-id="${w.id}" aria-label="${t('save.aria')}">
-            ${saveIconSVG()}
-          </button>
+          ${w.status === 'sale' && (!CURRENT_USER || w.username !== CURRENT_USER.username) ? `
+          <button class="cart-btn ${w.inCart ? 'in-cart' : ''}" data-id="${w.id}" aria-label="${t('cart.addAria')}">
+            ${cartIconSVG()}
+          </button>` : ''}
           <button class="share-btn" data-id="${w.id}" data-title="${escapeHtml(w.title)}" aria-label="${t('share.aria')}">
             ${shareIconSVG()}
           </button>
@@ -3052,31 +3092,30 @@
             }).catch(() => {});
           });
         }
-        const saveBtn = card.querySelector('.save-btn');
-        if (saveBtn) saveBtn.addEventListener('click', guarded(() => toggleSave(id)));
+        const cartBtn = card.querySelector('.cart-btn');
+        if (cartBtn) cartBtn.addEventListener('click', guarded(() => toggleCart(id)));
         const shareBtn = card.querySelector('.share-btn');
         if (shareBtn) shareBtn.addEventListener('click', () => shareWork(shareBtn.dataset.id, shareBtn.dataset.title));
         const reportLink = card.querySelector('.report-link');
         if (reportLink) reportLink.addEventListener('click', guarded(() => openReportModal('work', reportLink.dataset.id, reportLink.dataset.title)));
       }
 
-      /* Lenta va saqlanganlar ro'yxatidagi barcha asarlarni id bo'yicha tez topish uchun */
+      /* Lenta va korzinka ro'yxatidagi barcha asarlarni id bo'yicha tez topish uchun */
       const ALL_ITEMS_BY_ID = {};
       function indexItems(items) { (items || []).forEach(w => { ALL_ITEMS_BY_ID[w.id] = w; }); }
 
-      /* Asarni saqlash/saqlashdan chiqarish */
-      async function toggleSave(id) {
-        const btns = document.querySelectorAll(`.save-btn[data-id="${id}"]`);
+      /* Asarni savatga qo'shish/savatdan olib tashlash (lentadagi tezkor tugma) */
+      async function toggleCart(id) {
+        const btns = document.querySelectorAll(`.cart-btn[data-id="${id}"]`);
         try {
-          const data = await apiJSON('/api/works/' + id + '/save', 'POST');
-          btns.forEach(btn => btn.classList.toggle('saved', data.saved));
+          const data = await apiJSON('/api/works/' + id + '/cart-toggle', 'POST');
+          btns.forEach(btn => btn.classList.toggle('in-cart', data.inCart));
           const item = ALL_ITEMS_BY_ID[id];
-          if (item) item.savedByMe = data.saved;
-          if (!data.saved && $('#savedView').classList.contains('active')) {
-            const card = document.querySelector(`#savedList .feed-card[data-id="${id}"]`);
-            if (card) card.remove();
-          }
-        } catch (e) { /* jim tarzda o'tkazib yuboriladi */ }
+          if (item) item.inCart = data.inCart;
+          refreshCartBadge(data.cartCount);
+        } catch (e) {
+          alert((e && e.message) || t('common.serverError'));
+        }
       }
 
       /* Asar havolasini ulashish (mavjud bo'lsa tizim ulashish oynasi, aks holda nusxalash) */
@@ -3120,32 +3159,118 @@
       }
 
       /* ===================== SAQLANGAN ASARLAR RO'YXATI ===================== */
-      async function loadSaved() {
-        const list = $('#savedList');
-        list.innerHTML = `<p class="view-sub">${t('saved.loading')}</p>`;
+      /* ===================== KORZINKA (SAVAT) ===================== */
+      function cartItemHTML(w) {
+        const thumb = (workThumbs(w) || [])[0] || w.poster || '';
+        return `
+      <div class="cart-item" data-id="${w.id}">
+        <div class="cart-item-thumb">${thumb ? `<img src="${thumb}" alt="${escapeHtml(w.title)}">` : ''}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-title">${escapeHtml(w.title)}</div>
+          <div class="cart-item-seller">@${escapeHtml(w.username)}</div>
+          <div class="cart-item-price">${fmtPrice(w.price, w.currency)}</div>
+        </div>
+        <div class="cart-item-qty">
+          <button type="button" class="cart-qty-btn cart-qty-dec" aria-label="${t('cart.decreaseAria')}">−</button>
+          <span class="cart-qty-value">${w.qty}</span>
+          <button type="button" class="cart-qty-btn cart-qty-inc" aria-label="${t('cart.increaseAria')}">+</button>
+        </div>
+        <div class="cart-item-linetotal">${fmtPrice(w.lineTotal, w.currency)}</div>
+        <button type="button" class="cart-remove-btn" aria-label="${t('cart.removeAria')}">${trashIconSVG()}</button>
+      </div>`;
+      }
+
+      function trashIconSVG() {
+        return `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3m-9 0 1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/></svg>`;
+      }
+
+      function renderCartSummary(totalsByCurrency) {
+        const currencies = Object.keys(totalsByCurrency || {});
+        if (!currencies.length) return '';
+        return `
+        <div class="cart-summary">
+          ${currencies.map(cur => `
+          <div class="cart-summary-row">
+            <span>${t('cart.subtotal')}${currencies.length > 1 ? ' (' + cur + ')' : ''}</span>
+            <b>${fmtPrice(totalsByCurrency[cur], cur)}</b>
+          </div>`).join('')}
+          <button type="button" class="btn btn-primary cart-checkout-btn" id="cartCheckoutBtn">${t('cart.checkout')}</button>
+        </div>`;
+      }
+
+      async function loadCart() {
+        const list = $('#cartList');
+        const summaryWrap = $('#cartSummaryWrap');
+        summaryWrap.innerHTML = '';
+        list.innerHTML = `<p class="view-sub">${t('cart.loading')}</p>`;
         try {
-          const data = await api('/api/saved');
+          const data = await api('/api/cart');
           const items = data.items || [];
           indexItems(items);
+          refreshCartBadge(data.count || 0);
           if (!items.length) {
             list.innerHTML = `
           <div class="empty-state">
-            <div class="empty-stamp">🔖</div>
-            <h3>${t('saved.empty.title')}</h3>
-            <p>${t('saved.empty.desc')}</p>
+            <div class="empty-stamp">🛒</div>
+            <h3>${t('cart.empty.title')}</h3>
+            <p>${t('cart.empty.desc')}</p>
           </div>`;
             return;
           }
-          const frag = document.createElement('div');
-          frag.innerHTML = items.map(w => feedCardHTML(w)).join('');
-          list.innerHTML = '';
-          Array.from(frag.children).forEach(card => {
-            list.appendChild(card);
-            bindFeedCardEvents(card);
-          });
+          list.innerHTML = items.map(w => cartItemHTML(w)).join('');
+          summaryWrap.innerHTML = renderCartSummary(data.totalsByCurrency);
+          $$('#cartList .cart-item').forEach(bindCartItemEvents);
+          const checkoutBtn = $('#cartCheckoutBtn');
+          if (checkoutBtn) checkoutBtn.addEventListener('click', guarded(checkoutCart));
         } catch (e) {
           list.innerHTML = `<p class="view-sub">${t('common.serverError')}</p>`;
         }
+      }
+
+      function bindCartItemEvents(row) {
+        const id = row.dataset.id;
+        row.querySelector('.cart-qty-inc').addEventListener('click', () => stepCartQty(id, 1));
+        row.querySelector('.cart-qty-dec').addEventListener('click', () => stepCartQty(id, -1));
+        row.querySelector('.cart-remove-btn').addEventListener('click', () => removeCartItem(id));
+      }
+
+      async function stepCartQty(id, delta) {
+        const item = ALL_ITEMS_BY_ID[id];
+        if (!item) return;
+        const nextQty = (item.qty || 1) + delta;
+        if (nextQty <= 0) return removeCartItem(id);
+        try {
+          await apiJSON('/api/cart/' + id, 'PUT', { qty: nextQty });
+          loadCart();
+        } catch (e) {
+          alert((e && e.message) || t('common.serverError'));
+        }
+      }
+
+      async function removeCartItem(id) {
+        try {
+          await apiJSON('/api/cart/' + id, 'DELETE');
+          loadCart();
+        } catch (e) { /* jim tarzda o'tkazib yuboriladi */ }
+      }
+
+      async function checkoutCart() {
+        if (!confirm(t('cart.checkoutConfirm'))) return;
+        try {
+          await apiJSON('/api/cart/checkout', 'POST');
+          alert(t('cart.orderPlaced'));
+          loadCart();
+        } catch (e) {
+          alert((e && e.message) || t('cart.orderFail'));
+        }
+      }
+
+      /* Navbar/tabbardagi korzinka belgisini (nechta mahsulot borligini) yangilaydi */
+      function refreshCartBadge(n) {
+        $$('.cart-badge').forEach(badge => {
+          badge.textContent = n > 99 ? '99+' : String(n);
+          badge.classList.toggle('hidden', !n);
+        });
       }
 
       function feedQueryString() {
@@ -3995,7 +4120,7 @@
           avatar: CURRENT_USER.avatar || null,
           likesCount: 0,
           likedByMe: false,
-          savedByMe: false,
+          inCart: false,
           commentsCount: 0
         };
         FEED.unshift(item);
