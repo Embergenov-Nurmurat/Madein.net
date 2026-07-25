@@ -131,10 +131,13 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'iltimos-buni-production-da-ozgartiring',
   resave: false,
   saveUninitialized: false,
+  proxy: true, // proksi (Render/Railway/Heroku va h.k.) orqasida X-Forwarded-Proto'ga ishonadi
   cookie: {
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 kun
     sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production' // HTTPS ostida true bo'ladi
+    secure: 'auto' // so'rov haqiqatan HTTPS bo'lsa avtomatik true, aks holda false
+                    // (NODE_ENV noto'g'ri sozlangan hostinglarda sessiya yo'qolib
+                    //  ctrl+R bosilganda hisobdan chiqib ketish muammosining asosiy sababi shu edi)
   }
 }));
 
