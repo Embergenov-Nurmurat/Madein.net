@@ -479,6 +479,74 @@ const upload = multer({
   }
 });
 
+/* ===================== CHATDA FAYL YUBORISH (rasm, video, ovozli xabar,
+   "krujok" — Telegramdagi kabi doiraviy video xabar, va istalgan fayl) ===================== */
+const ALLOWED_CHAT_VIDEO_MIMES = ALLOWED_VIDEO_MIMES.concat(['video/webm']);
+const ALLOWED_AUDIO_MIMES = ['audio/webm', 'audio/ogg', 'audio/mpeg', 'audio/mp4', 'audio/aac', 'audio/wav', 'audio/x-wav', 'audio/x-m4a'];
+const DANGEROUS_FILE_EXT = ['.exe', '.bat', '.cmd', '.sh', '.msi', '.com', '.scr', '.ps1', '.vbs', '.js', '.jar', '.app', '.apk'];
+const MAX_CHAT_VIDEO_SECONDS = 120;   // oddiy video xabar
+const MAX_CHAT_CIRCLE_SECONDS = 60;   // "krujok" video xabar
+const MAX_CHAT_VOICE_SECONDS = 300;   // ovozli xabar
+
+const chatMediaStorage = multer.diskStorage({
+  destination: UPLOADS_DIR,
+  filename: (req, file, cb) => {
+    const ext = (path.extname(file.originalname) || '').toLowerCase().slice(0, 12);
+    cb(null, crypto.randomBytes(14).toString('hex') + ext);
+  }
+});
+
+const chatUpload = multer({
+  storage: chatMediaStorage,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+  fileFilter: (req, file, cb) => {
+    // MUHIM: klient formasida 'type' maydoni 'file' maydonidan OLDIN
+    // qo'shilishi kerak — shundagina multer uni req.body.type sifatida
+    // shu yerga yetkazib bera oladi (multipart oqim tartibi saqlanadi).
+    const kind = String((req.body && req.body.type) || '').toLowerCase();
+    if (kind === 'file') {
+      const ext = (path.extname(file.originalname) || '').toLowerCase();
+      if (DANGEROUS_FILE_EXT.includes(ext)) return cb(new Error("Bu turdagi fayllarni yuborib bo'lmaydi"));
+      return cb(null, true);
+    }
+    if (kind === 'photo') {
+      if (file.mimetype.startsWith('image/')) return cb(null, true);
+      return cb(new Error('Faqat rasm fayllari qabul qilinadi'));
+    }
+    if (kind === 'video' || kind === 'circle') {
+      if (ALLOWED_CHAT_VIDEO_MIMES.includes(file.mimetype)) return cb(null, true);
+      return cb(new Error('Faqat video fayllari qabul qilinadi'));
+    }
+    if (kind === 'voice') {
+      if (ALLOWED_AUDIO_MIMES.includes(file.mimetype) || file.mimetype.startsWith('audio/')) return cb(null, true);
+      return cb(new Error('Faqat audio fayllari qabul qilinadi'));
+    }
+    return cb(new Error("Noma'lum xabar turi"));
+  }
+});
+
+/* Video xabarni ("krujok") kvadrat shaklga markazdan kesib, keyin
+   barcha brauzerlarda ishlaydigan H.264/AAC MP4 ga kodlaydi. Doira
+   ko'rinishini interfeys taraf (CSS border-radius) hosil qiladi. */
+function transcodeCircleVideo(inputPath, outputPath) {
+  return new Promise((resolve, reject) => {
+    ffmpeg(inputPath)
+      .videoCodec('libx264')
+      .audioCodec('aac')
+      .outputOptions([
+        '-pix_fmt yuv420p',
+        '-profile:v main',
+        '-preset veryfast',
+        '-crf 23',
+        '-movflags +faststart',
+        '-vf', "crop='min(iw,ih)':'min(iw,ih)',scale=480:480"
+      ])
+      .on('error', (err) => reject(err))
+      .on('end', () => resolve())
+      .save(outputPath);
+  });
+}
+
 /**
  * MP4/MOV faylning davomiyligini (soniyalarda) ffmpeg'siz, faylning
  * ISO-BMFF "box" tuzilmasini o'qib chiqadi (moov > mvhd). Bu formatlar
@@ -1597,6 +1665,20 @@ function unreadCountFor(conv, me) {
   return conv.messages.filter(m => m.from !== me && (!readUpto || new Date(m.createdAt) > new Date(readUpto))).length;
 }
 
+/* Suhbatlar ro'yxatidagi so'nggi xabar önizlemesi — media xabarlar uchun
+   matn o'rniga qisqa tavsif (emoji bilan) ko'rsatiladi */
+function lastMessagePreviewFor(last) {
+  if (!last || last.type === 'call') return '';
+  switch (last.type) {
+    case 'photo': return '📷 Rasm';
+    case 'video': return '🎥 Video';
+    case 'circle': return '⭕ Video xabar';
+    case 'voice': return '🎙️ Ovozli xabar';
+    case 'file': return '📎 ' + (last.fileName || 'Fayl');
+    default: return last.text || '';
+  }
+}
+
 /* Barcha suhbatlarim ro'yxati (oxirgi xabar va o'qilmagan soni bilan) */
 app.get('/api/conversations', requireAuth, (req, res) => {
   const me = req.session.username;
@@ -1610,7 +1692,7 @@ app.get('/api/conversations', requireAuth, (req, res) => {
         username: other,
         fullname: (u && u.fullname) || other,
         avatar: (u && u.avatar) || null,
-        lastMessage: last && last.type !== 'call' ? last.text : '',
+        lastMessage: lastMessagePreviewFor(last),
         lastCallStatus: last && last.type === 'call' ? (last.callStatus || 'ended') : null,
         lastFrom: last ? last.from : null,
         updatedAt: c.updatedAt,
@@ -1680,6 +1762,94 @@ app.post('/api/conversations/:username/messages', requireAuth, requireNotMuted, 
   await saveDB();
 
   res.json({ message });
+});
+
+/* Chatga rasm, video, ovozli xabar, "krujok" (doiraviy video xabar) yoki
+   istalgan fayl yuborish. `type` maydoni: photo | video | circle | voice | file */
+app.post('/api/conversations/:username/messages/media', requireAuth, requireNotMuted, rateLimit('message-media', 30, 60 * 1000), (req, res) => {
+  chatUpload.single('file')(req, res, async (err) => {
+    if (err) return res.status(400).json({ error: err.message });
+
+    const me = req.session.username;
+    const other = String(req.params.username || '').trim().toLowerCase();
+    const cleanup = () => { if (req.file) fs.unlink(req.file.path, () => {}); };
+
+    if (!db.users[other]) { cleanup(); return res.status(404).json({ error: 'Foydalanuvchi topilmadi' }); }
+    if (other === me) { cleanup(); return res.status(400).json({ error: "O'zingizga xabar yubora olmaysiz" }); }
+    if (!req.file) return res.status(400).json({ error: 'Fayl talab qilinadi' });
+
+    const kind = String(req.body.type || '').toLowerCase();
+    const caption = String(req.body.caption || '').trim().slice(0, 500);
+
+    try {
+      const message = {
+        id: 'm' + Date.now() + crypto.randomBytes(4).toString('hex'),
+        from: me,
+        type: kind,
+        text: caption,
+        createdAt: new Date().toISOString()
+      };
+
+      if (kind === 'photo') {
+        message.url = '/uploads/' + req.file.filename;
+
+      } else if (kind === 'video' || kind === 'circle') {
+        const transcodedFilename = crypto.randomBytes(14).toString('hex') + '.mp4';
+        const transcodedPath = path.join(UPLOADS_DIR, transcodedFilename);
+        try {
+          if (kind === 'circle') await transcodeCircleVideo(req.file.path, transcodedPath);
+          else await transcodeVideoToMp4(req.file.path, transcodedPath);
+        } catch (e) {
+          cleanup();
+          return res.status(400).json({ error: "Videoni qayta ishlashda xatolik yuz berdi. Boshqa video tanlab ko'ring." });
+        }
+        cleanup(); // asl (transkodlanmagan) faylni o'chiramiz
+
+        const realDuration = getMp4DurationSeconds(transcodedPath);
+        const maxSec = kind === 'circle' ? MAX_CHAT_CIRCLE_SECONDS : MAX_CHAT_VIDEO_SECONDS;
+        if (realDuration && realDuration > maxSec + 1) {
+          fs.unlink(transcodedPath, () => {});
+          return res.status(400).json({ error: `Video juda uzun (maksimal ${maxSec} soniya)` });
+        }
+
+        const posterFilename = transcodedFilename.replace(/\.mp4$/, '.jpg');
+        try {
+          await extractVideoPoster(transcodedPath, UPLOADS_DIR, posterFilename);
+          message.poster = '/uploads/' + posterFilename;
+        } catch (e) { /* poster bo'lmasa ham video ko'rinaveradi */ }
+
+        message.url = '/uploads/' + transcodedFilename;
+        message.duration = realDuration || (Number(req.body.duration) || null);
+
+      } else if (kind === 'voice') {
+        message.url = '/uploads/' + req.file.filename;
+        const dur = Number(req.body.duration);
+        message.duration = Number.isFinite(dur) && dur > 0 ? Math.min(Math.round(dur), MAX_CHAT_VOICE_SECONDS) : null;
+
+      } else if (kind === 'file') {
+        message.url = '/uploads/' + req.file.filename;
+        message.fileName = String(req.body.fileName || req.file.originalname || 'fayl').slice(0, 200);
+        message.fileSize = req.file.size;
+
+      } else {
+        cleanup();
+        return res.status(400).json({ error: "Noma'lum xabar turi" });
+      }
+
+      const conv = getOrCreateConversation(me, other);
+      conv.messages.push(message);
+      conv.updatedAt = message.createdAt;
+      if (!conv.readUpto) conv.readUpto = {};
+      conv.readUpto[me] = message.createdAt;
+      await saveDB();
+
+      res.json({ message });
+    } catch (e) {
+      cleanup();
+      console.error('Chat media xatoligi:', e.message);
+      res.status(500).json({ error: 'Server xatoligi' });
+    }
+  });
 });
 
 /* ===================== VIDEO QO'NG'IROQLAR (WebRTC signalizatsiya) =====================

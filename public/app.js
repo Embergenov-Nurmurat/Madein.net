@@ -116,6 +116,10 @@
           "chat.ph": "Xabar yozing...", "chat.workRefPrefix": "Asar haqida",
           "chat.loadFail": "Suhbatni yuklab bo'lmadi.", "chat.empty": "Hali xabar yo'q. Birinchi bo'lib yozing!",
           "chat.sendFail": "Xabar yuborilmadi. Qayta urinib ko'ring.",
+          "chat.attach.media": "Rasm / Video", "chat.attach.file": "Fayl",
+          "chat.micDenied": "Mikrofon yoki kameraga ruxsat berilmadi",
+          "chat.recordingVoice": "Ovozli xabar yozilmoqda...", "chat.recordingCircle": "Video xabar yozilmoqda...",
+          "chat.mediaSendFail": "Fayl yuborilmadi. Qayta urinib ko'ring.",
           "call.startTitle": "Video qo'ng'iroq", "call.incoming": "Video qo'ng'iroq qilyapti...",
           "call.decline": "Rad etish", "call.accept": "Qabul qilish", "call.calling": "Chaqirilmoqda...",
           "call.connecting": "Ulanmoqda...", "call.peerCameraOff": "Kamera o'chirilgan",
@@ -365,6 +369,10 @@
           "chat.ph": "Write a message...", "chat.workRefPrefix": "About",
           "chat.loadFail": "Couldn't load the conversation.", "chat.empty": "No messages yet. Be the first to write one!",
           "chat.sendFail": "Message not sent. Please try again.",
+          "chat.attach.media": "Photo / Video", "chat.attach.file": "File",
+          "chat.micDenied": "Microphone or camera access was denied",
+          "chat.recordingVoice": "Recording voice message...", "chat.recordingCircle": "Recording video message...",
+          "chat.mediaSendFail": "File wasn't sent. Please try again.",
           "call.startTitle": "Video call", "call.incoming": "Video calling...",
           "call.decline": "Decline", "call.accept": "Accept", "call.calling": "Calling...",
           "call.connecting": "Connecting...", "call.peerCameraOff": "Camera is off",
@@ -2266,6 +2274,41 @@
           if (!btn) return;
           insertEmojiIntoChatInput(btn.textContent);
         });
+        $('#chatAttachBtn').addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (IS_GUEST) { openGateModal(); return; }
+          $('#chatAttachMenu').classList.toggle('hidden');
+        });
+        $('#chatAttachMenu').querySelectorAll('.chat-attach-menu-item').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            $('#chatAttachMenu').classList.add('hidden');
+            if (btn.dataset.attach === 'media') $('#chatMediaInput').click();
+            else $('#chatFileInput').click();
+          });
+        });
+        document.addEventListener('click', (e) => {
+          const menu = $('#chatAttachMenu');
+          if (menu && !menu.classList.contains('hidden') && !e.target.closest('.chat-attach-wrap')) {
+            menu.classList.add('hidden');
+          }
+        });
+        $('#chatMediaInput').addEventListener('change', async (e) => {
+          const files = Array.from(e.target.files || []);
+          e.target.value = '';
+          for (const f of files) {
+            const kind = f.type.startsWith('video/') ? 'video' : 'photo';
+            await uploadChatMedia(f, kind, {});
+          }
+        });
+        $('#chatFileInput').addEventListener('change', async (e) => {
+          const f = e.target.files && e.target.files[0];
+          e.target.value = '';
+          if (f) await uploadChatMedia(f, 'file', {});
+        });
+        bindHoldToRecord($('#chatVoiceBtn'), 'voice');
+        bindHoldToRecord($('#chatCircleBtn'), 'circle');
+        $('#chatRecordCancel').addEventListener('click', () => cancelChatRecording());
+        $('#chatRecordSend').addEventListener('click', () => stopChatRecording(true));
         document.addEventListener('click', (e) => {
           const picker = $('#emojiPicker');
           if (!picker.classList.contains('hidden') && !e.target.closest('.emoji-picker-wrap')) {
@@ -4150,6 +4193,11 @@
       function chatBubbleHTML(m) {
         const mine = m.from === (CURRENT_USER && CURRENT_USER.username);
         if (m.type === 'call') return chatCallBubbleHTML(m, mine);
+        if (m.type === 'photo') return chatMediaBubbleHTML(m, mine, `<img src="${escapeHtml(m.url)}" class="chat-media-img" loading="lazy" alt="">`);
+        if (m.type === 'video') return chatMediaBubbleHTML(m, mine, `<video src="${escapeHtml(m.url)}" ${m.poster ? `poster="${escapeHtml(m.poster)}"` : ''} class="chat-media-video" controls playsinline preload="metadata"></video>`);
+        if (m.type === 'circle') return chatCircleBubbleHTML(m, mine);
+        if (m.type === 'voice') return chatVoiceBubbleHTML(m, mine);
+        if (m.type === 'file') return chatFileBubbleHTML(m, mine);
         return `
       <div class="chat-bubble-row ${mine ? 'me' : ''}">
         <div class="chat-bubble">
@@ -4157,6 +4205,65 @@
           ${escapeHtml(m.text)}
           <span class="chat-bubble-time">${fmtChatTime(m.createdAt)}</span>
         </div>
+      </div>`;
+      }
+
+      /* Rasm/video (odatdagi, doira emas) xabar balonchasi */
+      function chatMediaBubbleHTML(m, mine, innerHTML) {
+        return `
+      <div class="chat-bubble-row ${mine ? 'me' : ''}">
+        <div class="chat-bubble chat-bubble-media">
+          ${innerHTML}
+          ${m.text ? `<div class="chat-media-caption">${escapeHtml(m.text)}</div>` : ''}
+          <span class="chat-bubble-time chat-bubble-time-media">${fmtChatTime(m.createdAt)}</span>
+        </div>
+      </div>`;
+      }
+
+      /* Telegramdagi kabi doiraviy video xabar ("krujok") balonchasi */
+      function chatCircleBubbleHTML(m, mine) {
+        return `
+      <div class="chat-bubble-row ${mine ? 'me' : ''}">
+        <div class="chat-circle-msg">
+          <video src="${escapeHtml(m.url)}" ${m.poster ? `poster="${escapeHtml(m.poster)}"` : ''} class="chat-circle-video" playsinline controls preload="metadata"></video>
+          <span class="chat-circle-time">${fmtChatTime(m.createdAt)}</span>
+        </div>
+      </div>`;
+      }
+
+      /* Ovozli xabar balonchasi */
+      function chatVoiceBubbleHTML(m, mine) {
+        const dur = m.duration ? fmtCallDuration(m.duration) : '';
+        return `
+      <div class="chat-bubble-row ${mine ? 'me' : ''}">
+        <div class="chat-bubble chat-voice-msg">
+          <audio src="${escapeHtml(m.url)}" controls preload="metadata"></audio>
+          ${dur ? `<span class="chat-voice-duration">${dur}</span>` : ''}
+          <span class="chat-bubble-time">${fmtChatTime(m.createdAt)}</span>
+        </div>
+      </div>`;
+      }
+
+      function fmtFileSize(bytes) {
+        bytes = Number(bytes) || 0;
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+      }
+
+      /* Istalgan turdagi biriktirilgan fayl balonchasi (yuklab olish havolasi) */
+      function chatFileBubbleHTML(m, mine) {
+        const size = m.fileSize ? fmtFileSize(m.fileSize) : '';
+        return `
+      <div class="chat-bubble-row ${mine ? 'me' : ''}">
+        <a href="${escapeHtml(m.url)}" download="${escapeHtml(m.fileName || '')}" target="_blank" rel="noopener" class="chat-bubble chat-file-msg">
+          <div class="chat-file-icon">📎</div>
+          <div class="chat-file-info">
+            <div class="chat-file-name">${escapeHtml(m.fileName || 'Fayl')}</div>
+            <div class="chat-file-size">${size}</div>
+          </div>
+          <span class="chat-bubble-time">${fmtChatTime(m.createdAt)}</span>
+        </a>
       </div>`;
       }
 
@@ -4263,6 +4370,8 @@
           workRefEl.dataset.worktitle = '';
         }
         $('#emojiPicker').classList.add('hidden');
+        $('#chatAttachMenu').classList.add('hidden');
+        cancelChatRecording();
         switchView('chat');
         $('#chatInput').value = '';
         $('#chatSubmitBtn').classList.remove('active');
@@ -4291,9 +4400,11 @@
       }
 
       function closeChatModal() {
+        cancelChatRecording();
         switchView(CHAT_RETURN_VIEW || 'messages');
         CHAT_WITH = null;
         $('#emojiPicker').classList.add('hidden');
+        $('#chatAttachMenu').classList.add('hidden');
       }
 
       async function submitChatMessage(e) {
@@ -4321,6 +4432,152 @@
           input.value = text;
           alert(err.message || t('chat.sendFail'));
         }
+      }
+
+      /* ===================== CHATDA MEDIA YUBORISH (rasm/video/fayl) ===================== */
+      async function uploadChatMedia(file, type, extra) {
+        if (!CHAT_WITH) return;
+        if (IS_GUEST) { openGateModal(); return; }
+        extra = extra || {};
+        const list = $('#chatMessagesList');
+        const empty = list.querySelector('.comments-empty');
+        if (empty) list.innerHTML = '';
+        const tempId = 'tmp' + Date.now() + Math.random().toString(36).slice(2, 7);
+        list.insertAdjacentHTML('beforeend', `
+      <div class="chat-bubble-row me" id="${tempId}">
+        <div class="chat-bubble chat-bubble-uploading"><div class="feed-spinner" style="width:18px;height:18px;margin:0;border-width:2px;"></div></div>
+      </div>`);
+        list.scrollTop = list.scrollHeight;
+
+        const fd = new FormData();
+        // MUHIM: 'type' maydoni 'file' maydonidan oldin qo'shilishi kerak
+        // (server shu tartibga tayanadi — qarang: server.js chatUpload fileFilter)
+        fd.append('type', type);
+        if (extra.duration) fd.append('duration', String(extra.duration));
+        if (type === 'file') fd.append('fileName', file.name);
+        fd.append('file', file);
+
+        try {
+          const data = await api('/api/conversations/' + encodeURIComponent(CHAT_WITH) + '/messages/media', { method: 'POST', body: fd });
+          const el = document.getElementById(tempId);
+          if (el) el.remove();
+          list.insertAdjacentHTML('beforeend', chatBubbleHTML(data.message));
+          list.scrollTop = list.scrollHeight;
+          loadConversations().catch(() => {});
+        } catch (err) {
+          const el = document.getElementById(tempId);
+          if (el) el.remove();
+          alert(err.message || t('chat.mediaSendFail'));
+        }
+      }
+
+      /* ===================== OVOZLI / "KRUJOK" VIDEO XABARLARNI YOZIB OLISH =====================
+         Telegramdagi kabi — mikrofon (yoki old kamera) tugmasini bosib turish
+         orqali yozib olinadi, qo'yib yuborilganda avtomatik yuboriladi. */
+      let chatMediaRecorder = null;
+      let chatRecordedChunks = [];
+      let chatRecordStream = null;
+      let chatRecordType = null;   // 'voice' | 'circle'
+      let chatRecordStartAt = 0;
+      let chatRecordTimer = null;
+      let chatRecordingActive = false;
+
+      function bindHoldToRecord(btn, kind) {
+        if (!btn) return;
+        const start = (e) => { e.preventDefault(); startChatRecording(kind); };
+        const stop = () => { if (chatRecordingActive && chatRecordType === kind) stopChatRecording(true); };
+        btn.addEventListener('pointerdown', start);
+        btn.addEventListener('pointerup', stop);
+        btn.addEventListener('pointerleave', stop);
+        btn.addEventListener('pointercancel', stop);
+      }
+
+      async function startChatRecording(kind) {
+        if (chatRecordingActive) return;
+        if (IS_GUEST) { openGateModal(); return; }
+        if (!CHAT_WITH) return;
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          alert(t('chat.micDenied'));
+          return;
+        }
+        const constraints = kind === 'voice'
+          ? { audio: true }
+          : { audio: true, video: { facingMode: 'user', width: { ideal: 480 }, height: { ideal: 480 } } };
+        try {
+          chatRecordStream = await navigator.mediaDevices.getUserMedia(constraints);
+        } catch (e) {
+          alert(t('chat.micDenied'));
+          return;
+        }
+        chatRecordType = kind;
+        chatRecordedChunks = [];
+        let mime = '';
+        if (kind === 'voice') {
+          mime = (window.MediaRecorder && MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) ? 'audio/webm;codecs=opus' : 'audio/webm';
+        } else {
+          mime = (window.MediaRecorder && MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')) ? 'video/webm;codecs=vp9,opus' : 'video/webm';
+        }
+        try {
+          chatMediaRecorder = new MediaRecorder(chatRecordStream, { mimeType: mime });
+        } catch (e) {
+          chatMediaRecorder = new MediaRecorder(chatRecordStream);
+        }
+        chatMediaRecorder.ondataavailable = (e) => { if (e.data && e.data.size) chatRecordedChunks.push(e.data); };
+        chatMediaRecorder.start();
+        chatRecordStartAt = Date.now();
+        chatRecordingActive = true;
+        $('#chatForm').classList.add('hidden');
+        $('#chatRecordingBar').classList.remove('hidden');
+        $('#chatRecordingHint').textContent = kind === 'circle' ? t('chat.recordingCircle') : t('chat.recordingVoice');
+        $('#chatRecordingTime').textContent = '0:00';
+        chatRecordTimer = setInterval(() => {
+          const sec = Math.floor((Date.now() - chatRecordStartAt) / 1000);
+          $('#chatRecordingTime').textContent = fmtCallDuration(sec);
+          const limit = kind === 'circle' ? 60 : 300;
+          if (sec >= limit) stopChatRecording(true);
+        }, 200);
+      }
+
+      function hideChatRecordingBar() {
+        chatRecordingActive = false;
+        $('#chatForm').classList.remove('hidden');
+        $('#chatRecordingBar').classList.add('hidden');
+        $('#chatRecordingTime').textContent = '0:00';
+      }
+
+      function stopChatRecording(send) {
+        if (!chatMediaRecorder) { hideChatRecordingBar(); return; }
+        clearInterval(chatRecordTimer);
+        const kind = chatRecordType;
+        const startedAt = chatRecordStartAt;
+        const rec = chatMediaRecorder;
+        const stream = chatRecordStream;
+        rec.onstop = async () => {
+          if (stream) stream.getTracks().forEach((tr) => tr.stop());
+          const durationSec = Math.max(1, Math.round((Date.now() - startedAt) / 1000));
+          hideChatRecordingBar();
+          if (send && chatRecordedChunks.length) {
+            const blob = new Blob(chatRecordedChunks, { type: rec.mimeType || (kind === 'voice' ? 'audio/webm' : 'video/webm') });
+            const fname = (kind === 'voice' ? 'voice_' : 'circle_') + Date.now() + '.webm';
+            const file = new File([blob], fname, { type: blob.type });
+            await uploadChatMedia(file, kind, { duration: durationSec });
+          }
+        };
+        try { rec.stop(); } catch (e) { hideChatRecordingBar(); }
+        chatMediaRecorder = null;
+        chatRecordedChunks = [];
+      }
+
+      function cancelChatRecording() {
+        if (!chatMediaRecorder) { hideChatRecordingBar(); return; }
+        clearInterval(chatRecordTimer);
+        const rec = chatMediaRecorder;
+        const stream = chatRecordStream;
+        rec.onstop = () => { if (stream) stream.getTracks().forEach((tr) => tr.stop()); };
+        try { rec.stop(); } catch (e) {}
+        chatMediaRecorder = null;
+        chatRecordedChunks = [];
+        hideChatRecordingBar();
       }
 
       function prependToFeed(work) {
