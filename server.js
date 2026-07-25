@@ -122,6 +122,117 @@ function ensureReportsArray() {
   if (!Array.isArray(db.reports)) db.reports = [];
 }
 
+/* Foydalanuvchi nomi (login) shakli to'g'riligini tekshiradi */
+function isValidUsername(uname) {
+  return !!uname && /^[a-z0-9_]{3,32}$/.test(uname);
+}
+
+/* Foydalanuvchi login (username)ini butun bazada — profili, asarlari,
+   xabarlari, layklari, komentlari, obunalari, shikoyatlari, buyurtmalari
+   va joriy sessiyasi bo'yicha — xavfsiz almashtiradi. Login o'zgarganda
+   eski login boshqa hech kim tomonidan ishlatilmaydi va darhol bo'shab qoladi. */
+function renameUsernameEverywhere(oldU, newU) {
+  if (oldU === newU) return;
+
+  if (db.users[oldU]) {
+    db.users[newU] = db.users[oldU];
+    delete db.users[oldU];
+  }
+  if (db.works[oldU]) {
+    db.works[newU] = db.works[oldU];
+    delete db.works[oldU];
+  }
+
+  // Boshqalarning asarlaridagi layk/komentlar
+  for (const uname of Object.keys(db.works)) {
+    for (const w of db.works[uname]) {
+      if (Array.isArray(w.likes)) {
+        const i = w.likes.indexOf(oldU);
+        if (i !== -1) w.likes[i] = newU;
+      }
+      if (Array.isArray(w.comments)) {
+        for (const c of w.comments) if (c.username === oldU) c.username = newU;
+      }
+    }
+  }
+
+  // Suhbatlar (ishtirokchilar, xabarlar, o'qilgan belgisi) va ID'larini qayta hisoblash
+  const rebuiltMessages = {};
+  for (const key of Object.keys(db.messages)) {
+    const conv = db.messages[key];
+    if (Array.isArray(conv.participants)) {
+      conv.participants = conv.participants.map(p => (p === oldU ? newU : p)).sort();
+    }
+    if (Array.isArray(conv.messages)) {
+      for (const m of conv.messages) {
+        if (m.from === oldU) m.from = newU;
+        if (m.to === oldU) m.to = newU;
+      }
+    }
+    if (conv.readUpto && Object.prototype.hasOwnProperty.call(conv.readUpto, oldU)) {
+      conv.readUpto[newU] = conv.readUpto[oldU];
+      delete conv.readUpto[oldU];
+    }
+    const newKey = convId(conv.participants[0], conv.participants[1]);
+    conv.id = newKey;
+    rebuiltMessages[newKey] = conv;
+  }
+  db.messages = rebuiltMessages;
+
+  // Obunalar, video qo'ng'iroq ruxsat ro'yxatlari, bildirishnomalar
+  for (const uname of Object.keys(db.users)) {
+    const u = db.users[uname];
+    if (Array.isArray(u.following)) {
+      const i = u.following.indexOf(oldU);
+      if (i !== -1) u.following[i] = newU;
+    }
+    if (u.callPrivacy && Array.isArray(u.callPrivacy.allowed)) {
+      const i = u.callPrivacy.allowed.indexOf(oldU);
+      if (i !== -1) u.callPrivacy.allowed[i] = newU;
+    }
+    if (Array.isArray(u.notifications)) {
+      for (const n of u.notifications) {
+        if (n.from === oldU) n.from = newU;
+      }
+    }
+  }
+
+  // Shikoyatlar
+  if (Array.isArray(db.reports)) {
+    for (const r of db.reports) {
+      if (r.reporter === oldU) r.reporter = newU;
+      if (r.targetOwner === oldU) r.targetOwner = newU;
+      if (r.type === 'user' && r.targetId === oldU) r.targetId = newU;
+    }
+  }
+
+  // Buyurtmalar
+  if (Array.isArray(db.orders)) {
+    for (const o of db.orders) {
+      if (o.buyer === oldU) o.buyer = newU;
+      if (Array.isArray(o.items)) {
+        for (const it of o.items) if (it.sellerUsername === oldU) it.sellerUsername = newU;
+      }
+    }
+  }
+
+  // Xotiradagi holat (onlayn, faol qo'ng'iroqlar)
+  if (Object.prototype.hasOwnProperty.call(lastActiveMap, oldU)) {
+    lastActiveMap[newU] = lastActiveMap[oldU];
+    delete lastActiveMap[oldU];
+  }
+  if (typeof userActiveCall !== 'undefined' && userActiveCall.has(oldU)) {
+    userActiveCall.set(newU, userActiveCall.get(oldU));
+    userActiveCall.delete(oldU);
+  }
+  if (typeof activeCalls !== 'undefined') {
+    for (const call of activeCalls.values()) {
+      if (call.from === oldU) call.from = newU;
+      if (call.to === oldU) call.to = newU;
+    }
+  }
+}
+
 /* Ko'rib chiqilgan (resolved) shikoyatlar shu muddatdan keyin ro'yxatdan
    avtomatik o'chiriladi — admin panelini eski shikoyatlar bilan
    to'ldirmaslik uchun. */
@@ -636,7 +747,7 @@ app.post('/api/register', rateLimit('register', 8, 10 * 60 * 1000), async (req, 
     const { username, password, fullname, email } = req.body || {};
     const uname = String(username || '').trim().toLowerCase().replace(/\s+/g, '_');
 
-    if (!uname || !/^[a-z0-9_]{3,32}$/.test(uname)) {
+    if (!isValidUsername(uname)) {
       return res.status(400).json({ error: "Foydalanuvchi nomi 3-32 belgi, faqat lotin harflari/raqam/pastki chiziq bo'lishi kerak" });
     }
     if (!password || password.length < 4) {
@@ -746,6 +857,58 @@ app.put('/api/profile', requireAuth, async (req, res) => {
   }
   await saveDB();
   res.json({ user: publicUser(req.session.username) });
+});
+
+/* Login (username) va/yoki parolni o'zgartirish.
+   Xavfsizlik uchun joriy parol talab qilinadi. Javob xatoliklari qisqa
+   kod shaklida qaytariladi (masalan "usernameTaken"), chunki bu matnlar
+   frontendda saytning joriy tiliga tarjima qilinadi. */
+app.put('/api/profile/credentials', rateLimit('credentials', 10, 10 * 60 * 1000), requireAuth, async (req, res) => {
+  const me = req.session.username;
+  const u = db.users[me];
+  if (!u) return res.status(404).json({ error: 'userNotFound' });
+
+  const { newUsername, currentPassword, newPassword } = req.body || {};
+  const wantsUsernameChange = newUsername !== undefined && String(newUsername || '').trim() !== '';
+  const wantsPasswordChange = newPassword !== undefined && String(newPassword || '') !== '';
+
+  if (!wantsUsernameChange && !wantsPasswordChange) {
+    return res.status(400).json({ error: 'noChanges' });
+  }
+
+  if (!currentPassword) {
+    return res.status(400).json({ error: 'currentPasswordRequired' });
+  }
+  const passwordOk = await bcrypt.compare(String(currentPassword), u.passwordHash);
+  if (!passwordOk) {
+    return res.status(401).json({ error: 'currentPasswordIncorrect' });
+  }
+
+  let uname = me;
+  if (wantsUsernameChange) {
+    const candidate = String(newUsername).trim().toLowerCase().replace(/\s+/g, '_');
+    if (!isValidUsername(candidate)) {
+      return res.status(400).json({ error: 'usernameInvalid' });
+    }
+    if (candidate !== me) {
+      if (db.users[candidate]) {
+        return res.status(409).json({ error: 'usernameTaken' });
+      }
+      renameUsernameEverywhere(me, candidate);
+      uname = candidate;
+      req.session.username = candidate;
+    }
+  }
+
+  if (wantsPasswordChange) {
+    if (String(newPassword).length < 4) {
+      return res.status(400).json({ error: 'passwordTooShort' });
+    }
+    db.users[uname].passwordHash = await bcrypt.hash(String(newPassword), 10);
+  }
+
+  await saveDB();
+  res.json({ user: publicUser(uname) });
 });
 
 /* Profil rasmini (avatar) yuklash */
@@ -1429,17 +1592,6 @@ function getOrCreateConversation(a, b) {
   return db.messages[id];
 }
 
-function callPreviewText(m) {
-  switch (m.callStatus) {
-    case 'ended': return "Video qo'ng'iroq";
-    case 'missed': return "O'tkazib yuborilgan qo'ng'iroq";
-    case 'declined': return "Rad etilgan qo'ng'iroq";
-    case 'cancelled': return "Bekor qilingan qo'ng'iroq";
-    case 'busy': return "Foydalanuvchi band edi";
-    default: return "Qo'ng'iroq";
-  }
-}
-
 function unreadCountFor(conv, me) {
   const readUpto = (conv.readUpto && conv.readUpto[me]) || null;
   return conv.messages.filter(m => m.from !== me && (!readUpto || new Date(m.createdAt) > new Date(readUpto))).length;
@@ -1454,14 +1606,12 @@ app.get('/api/conversations', requireAuth, (req, res) => {
       const other = c.participants.find(p => p !== me) || me;
       const u = db.users[other];
       const last = c.messages[c.messages.length - 1] || null;
-      const lastPreview = last
-        ? (last.type === 'call' ? ('📞 ' + callPreviewText(last)) : last.text)
-        : '';
       return {
         username: other,
         fullname: (u && u.fullname) || other,
         avatar: (u && u.avatar) || null,
-        lastMessage: lastPreview,
+        lastMessage: last && last.type !== 'call' ? last.text : '',
+        lastCallStatus: last && last.type === 'call' ? (last.callStatus || 'ended') : null,
         lastFrom: last ? last.from : null,
         updatedAt: c.updatedAt,
         unread: unreadCountFor(c, me)

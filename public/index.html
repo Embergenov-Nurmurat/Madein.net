@@ -365,6 +365,25 @@
               <option value="ar">العربية</option>
             </select>
           </div>
+          <div class="privacy-block" id="accountCredentialsBlock">
+            <div class="field-hint" style="margin-bottom:6px;" data-i18n="account.title">Login va parol</div>
+            <div class="field"><label data-i18n="account.usernameLabel">Foydalanuvchi nomi (login)</label>
+              <input type="text" id="editUsername" autocomplete="username">
+              <div class="field-hint" data-i18n="account.usernameHint">Boshqalar sizni shu nom orqali topadi, siz ham shu nom bilan kirasiz.</div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label data-i18n="account.newPassword">Yangi parol</label>
+                <input type="password" id="editNewPassword" autocomplete="new-password" data-i18n-ph="account.newPasswordPh" placeholder="ixtiyoriy, kamida 4 belgi"></div>
+              <div class="field"><label data-i18n="account.newPassword2">Yangi parolni tasdiqlash</label>
+                <input type="password" id="editNewPassword2" autocomplete="new-password" data-i18n-ph="account.newPassword2Ph" placeholder="qayta kiriting"></div>
+            </div>
+            <div class="field"><label data-i18n="account.currentPassword">Joriy parol</label>
+              <input type="password" id="editCurrentPassword" autocomplete="current-password" data-i18n-ph="account.currentPasswordPh" placeholder="o'zgartirish uchun kiriting"></div>
+            <div class="field-row" style="align-items:center;">
+              <button type="button" class="btn btn-ghost btn-sm" id="saveCredentialsBtn" data-i18n="account.save">Saqlash</button>
+              <div class="field-hint" id="credentialsMsg"></div>
+            </div>
+          </div>
           <div class="field lang-field" id="adminActivateBlock">
             <label for="adminPasswordInput" data-i18n="admin.activate.label">Administrator rejimi</label>
             <div class="field-row" style="align-items:flex-start;">

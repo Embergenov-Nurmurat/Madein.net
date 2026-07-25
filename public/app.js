@@ -65,6 +65,20 @@
           "profile.joined": "A'zo bo'lgan",
           "profile.online": "Onlayn", "profile.offline": "Oflayn",
           "profile.avatarUploadFail": "Rasmni yuklab bo'lmadi. Qayta urinib ko'ring.",
+          "account.title": "Login va parol",
+          "account.usernameLabel": "Foydalanuvchi nomi (login)",
+          "account.usernameHint": "Boshqalar sizni shu nom orqali topadi, siz ham shu nom bilan kirasiz.",
+          "account.currentPassword": "Joriy parol", "account.currentPasswordPh": "o'zgartirish uchun kiriting",
+          "account.newPassword": "Yangi parol", "account.newPasswordPh": "ixtiyoriy, kamida 4 belgi",
+          "account.newPassword2": "Yangi parolni tasdiqlash", "account.newPassword2Ph": "qayta kiriting",
+          "account.save": "Saqlash", "account.saved": "Saqlandi!",
+          "account.err.noChanges": "Hech narsa o'zgartirilmadi.",
+          "account.err.currentPasswordRequired": "Davom etish uchun joriy parolingizni kiriting.",
+          "account.err.currentPasswordIncorrect": "Joriy parol noto'g'ri.",
+          "account.err.usernameInvalid": "Login 3-32 belgi, faqat lotin harflari/raqam/pastki chiziq bo'lishi kerak.",
+          "account.err.usernameTaken": "Bu foydalanuvchi nomi allaqachon band.",
+          "account.err.passwordTooShort": "Yangi parol kamida 4 belgidan iborat bo'lishi kerak.",
+          "account.err.mismatch": "Yangi parollar mos kelmadi.",
           "messages.eyebrow": "Muloqot", "messages.title": "Sotuvchilar bilan <span>xabarlar</span>",
           "messages.sub": "Sotuvdagi asar haqida savol berish yoki sotuvchi bilan bog'lanish uchun suhbatlaringiz shu yerda.",
           "messages.empty.title": "Hali suhbatlar yo'q",
@@ -300,6 +314,20 @@
           "profile.joined": "Joined",
           "profile.online": "Online", "profile.offline": "Offline",
           "profile.avatarUploadFail": "Couldn't upload the photo. Please try again.",
+          "account.title": "Login & password",
+          "account.usernameLabel": "Username (login)",
+          "account.usernameHint": "Others find you by this name, and you use it to log in.",
+          "account.currentPassword": "Current password", "account.currentPasswordPh": "enter to make changes",
+          "account.newPassword": "New password", "account.newPasswordPh": "optional, at least 4 characters",
+          "account.newPassword2": "Confirm new password", "account.newPassword2Ph": "type it again",
+          "account.save": "Save", "account.saved": "Saved!",
+          "account.err.noChanges": "Nothing was changed.",
+          "account.err.currentPasswordRequired": "Enter your current password to continue.",
+          "account.err.currentPasswordIncorrect": "Current password is incorrect.",
+          "account.err.usernameInvalid": "Username must be 3-32 characters, letters/numbers/underscore only.",
+          "account.err.usernameTaken": "This username is already taken.",
+          "account.err.passwordTooShort": "New password must be at least 4 characters.",
+          "account.err.mismatch": "New passwords don't match.",
           "messages.eyebrow": "Conversations", "messages.title": "Messages with <span>sellers</span>",
           "messages.sub": "Ask about a piece for sale or reach out to a seller — your chats live here.",
           "messages.empty.title": "No conversations yet",
@@ -535,6 +563,20 @@
           "profile.joined": "加入时间",
           "profile.online": "在线", "profile.offline": "离线",
           "profile.avatarUploadFail": "照片上传失败，请重试。",
+          "account.title": "登录名与密码",
+          "account.usernameLabel": "用户名（登录名）",
+          "account.usernameHint": "其他人通过该名称找到您，登录时也使用它。",
+          "account.currentPassword": "当前密码", "account.currentPasswordPh": "输入以进行更改",
+          "account.newPassword": "新密码", "account.newPasswordPh": "可选，至少4个字符",
+          "account.newPassword2": "确认新密码", "account.newPassword2Ph": "再次输入",
+          "account.save": "保存", "account.saved": "已保存！",
+          "account.err.noChanges": "没有任何更改。",
+          "account.err.currentPasswordRequired": "请输入当前密码以继续。",
+          "account.err.currentPasswordIncorrect": "当前密码不正确。",
+          "account.err.usernameInvalid": "用户名须为3-32个字符，仅限字母、数字和下划线。",
+          "account.err.usernameTaken": "该用户名已被占用。",
+          "account.err.passwordTooShort": "新密码至少需要4个字符。",
+          "account.err.mismatch": "两次输入的新密码不一致。",
           "messages.eyebrow": "交流", "messages.title": "与<span>卖家</span>的消息",
           "messages.sub": "在这里可以询问出售中的作品，或联系卖家 — 所有对话都在这里。",
           "messages.empty.title": "还没有对话",
@@ -750,6 +792,20 @@
           "profile.joined": "शामिल हुए",
           "profile.online": "ऑनलाइन", "profile.offline": "ऑफ़लाइन",
           "profile.avatarUploadFail": "फ़ोटो अपलोड नहीं हो सकी। फिर कोशिश करें।",
+          "account.title": "लॉगिन और पासवर्ड",
+          "account.usernameLabel": "उपयोगकर्ता नाम (लॉगिन)",
+          "account.usernameHint": "दूसरे लोग आपको इसी नाम से खोजते हैं, और आप इसी से लॉगिन करते हैं।",
+          "account.currentPassword": "मौजूदा पासवर्ड", "account.currentPasswordPh": "बदलाव के लिए दर्ज करें",
+          "account.newPassword": "नया पासवर्ड", "account.newPasswordPh": "वैकल्पिक, कम से कम 4 अक्षर",
+          "account.newPassword2": "नए पासवर्ड की पुष्टि करें", "account.newPassword2Ph": "दोबारा लिखें",
+          "account.save": "सहेजें", "account.saved": "सहेज लिया गया!",
+          "account.err.noChanges": "कुछ भी नहीं बदला गया।",
+          "account.err.currentPasswordRequired": "जारी रखने के लिए अपना मौजूदा पासवर्ड दर्ज करें।",
+          "account.err.currentPasswordIncorrect": "मौजूदा पासवर्ड गलत है।",
+          "account.err.usernameInvalid": "उपयोगकर्ता नाम 3-32 अक्षर का होना चाहिए, केवल अक्षर/अंक/अंडरस्कोर।",
+          "account.err.usernameTaken": "यह उपयोगकर्ता नाम पहले से लिया जा चुका है।",
+          "account.err.passwordTooShort": "नया पासवर्ड कम से कम 4 अक्षर का होना चाहिए।",
+          "account.err.mismatch": "नए पासवर्ड मेल नहीं खाते।",
           "messages.eyebrow": "बातचीत", "messages.title": "<span>विक्रेताओं</span> के साथ संदेश",
           "messages.sub": "बिक्री की किसी कृति के बारे में पूछें या विक्रेता से संपर्क करें — आपकी बातचीत यहाँ है।",
           "messages.empty.title": "अभी तक कोई बातचीत नहीं",
@@ -965,6 +1021,20 @@
           "profile.joined": "Se unió el",
           "profile.online": "En línea", "profile.offline": "Desconectado",
           "profile.avatarUploadFail": "No se pudo subir la foto. Inténtalo de nuevo.",
+          "account.title": "Usuario y contraseña",
+          "account.usernameLabel": "Nombre de usuario (login)",
+          "account.usernameHint": "Los demás te encuentran por este nombre, y también lo usas para iniciar sesión.",
+          "account.currentPassword": "Contraseña actual", "account.currentPasswordPh": "introdúcela para hacer cambios",
+          "account.newPassword": "Nueva contraseña", "account.newPasswordPh": "opcional, mínimo 4 caracteres",
+          "account.newPassword2": "Confirmar nueva contraseña", "account.newPassword2Ph": "vuelve a escribirla",
+          "account.save": "Guardar", "account.saved": "¡Guardado!",
+          "account.err.noChanges": "No se cambió nada.",
+          "account.err.currentPasswordRequired": "Introduce tu contraseña actual para continuar.",
+          "account.err.currentPasswordIncorrect": "La contraseña actual es incorrecta.",
+          "account.err.usernameInvalid": "El usuario debe tener 3-32 caracteres, solo letras/números/guion bajo.",
+          "account.err.usernameTaken": "Ese nombre de usuario ya está en uso.",
+          "account.err.passwordTooShort": "La nueva contraseña debe tener al menos 4 caracteres.",
+          "account.err.mismatch": "Las nuevas contraseñas no coinciden.",
           "messages.eyebrow": "Conversaciones", "messages.title": "Mensajes con <span>vendedores</span>",
           "messages.sub": "Pregunta sobre alguna obra en venta o contacta a un vendedor — tus chats están aquí.",
           "messages.empty.title": "Todavía no hay conversaciones",
@@ -1180,6 +1250,20 @@
           "profile.joined": "تاريخ الانضمام",
           "profile.online": "متصل", "profile.offline": "غير متصل",
           "profile.avatarUploadFail": "تعذّر رفع الصورة. حاول مرة أخرى.",
+          "account.title": "اسم الدخول وكلمة المرور",
+          "account.usernameLabel": "اسم المستخدم (تسجيل الدخول)",
+          "account.usernameHint": "يجدك الآخرون بهذا الاسم، وتستخدمه أيضًا لتسجيل الدخول.",
+          "account.currentPassword": "كلمة المرور الحالية", "account.currentPasswordPh": "أدخلها لإجراء التغييرات",
+          "account.newPassword": "كلمة مرور جديدة", "account.newPasswordPh": "اختياري، 4 أحرف على الأقل",
+          "account.newPassword2": "تأكيد كلمة المرور الجديدة", "account.newPassword2Ph": "أعد كتابتها",
+          "account.save": "حفظ", "account.saved": "تم الحفظ!",
+          "account.err.noChanges": "لم يتم تغيير أي شيء.",
+          "account.err.currentPasswordRequired": "أدخل كلمة المرور الحالية للمتابعة.",
+          "account.err.currentPasswordIncorrect": "كلمة المرور الحالية غير صحيحة.",
+          "account.err.usernameInvalid": "يجب أن يتكون اسم المستخدم من 3-32 حرفًا، أحرف/أرقام/شرطة سفلية فقط.",
+          "account.err.usernameTaken": "اسم المستخدم هذا مُستخدم بالفعل.",
+          "account.err.passwordTooShort": "يجب أن تتكون كلمة المرور الجديدة من 4 أحرف على الأقل.",
+          "account.err.mismatch": "كلمتا المرور الجديدتان غير متطابقتين.",
           "messages.eyebrow": "المحادثات", "messages.title": "رسائل مع <span>البائعين</span>",
           "messages.sub": "اسأل عن عمل معروض للبيع أو تواصل مع بائع — محادثاتك هنا.",
           "messages.empty.title": "لا توجد محادثات بعد",
@@ -1395,6 +1479,20 @@
           "profile.joined": "Дата регистрации",
           "profile.online": "Онлайн", "profile.offline": "Оффлайн",
           "profile.avatarUploadFail": "Не удалось загрузить фото. Попробуйте ещё раз.",
+          "account.title": "Логин и пароль",
+          "account.usernameLabel": "Имя пользователя (логин)",
+          "account.usernameHint": "По этому имени вас находят другие, и вы используете его для входа.",
+          "account.currentPassword": "Текущий пароль", "account.currentPasswordPh": "введите, чтобы внести изменения",
+          "account.newPassword": "Новый пароль", "account.newPasswordPh": "необязательно, минимум 4 символа",
+          "account.newPassword2": "Подтверждение нового пароля", "account.newPassword2Ph": "введите ещё раз",
+          "account.save": "Сохранить", "account.saved": "Сохранено!",
+          "account.err.noChanges": "Ничего не изменено.",
+          "account.err.currentPasswordRequired": "Введите текущий пароль, чтобы продолжить.",
+          "account.err.currentPasswordIncorrect": "Текущий пароль неверен.",
+          "account.err.usernameInvalid": "Имя пользователя должно быть 3-32 символа, только латиница/цифры/подчёркивание.",
+          "account.err.usernameTaken": "Это имя пользователя уже занято.",
+          "account.err.passwordTooShort": "Новый пароль должен содержать минимум 4 символа.",
+          "account.err.mismatch": "Новые пароли не совпадают.",
           "messages.eyebrow": "Переписка", "messages.title": "Сообщения с <span>продавцами</span>",
           "messages.sub": "Задайте вопрос о работе или свяжитесь с продавцом — все чаты здесь.",
           "messages.empty.title": "Пока нет переписок",
@@ -1601,6 +1699,15 @@
             const list = document.getElementById('feedList');
             if (list) { list.innerHTML = ''; appendFeedItems(FEED); }
           } catch (e) { /* not ready yet */ }
+        }
+        /* Suhbatlar ro'yxati "Video qo'ng'iroq" kabi tizim xabarlarini
+           o'z ichiga olishi mumkin — til almashtirilganda shularni ham
+           yangi tilda qayta chizish uchun ro'yxatni qayta yuklaymiz */
+        if (typeof loadConversations === 'function' && typeof CURRENT_USER !== 'undefined' && CURRENT_USER && !IS_GUEST) {
+          const convList = document.getElementById('conversationsList');
+          if (convList && convList.children.length) {
+            try { loadConversations(); } catch (e) { /* not ready yet */ }
+          }
         }
       }
 
@@ -2177,6 +2284,7 @@
         $('#editProfileBtn').addEventListener('click', guarded(openEditProfile));
         $('#cancelEditBtn').addEventListener('click', () => $('#editProfileCard').classList.add('hidden'));
         $('#saveProfileBtn').addEventListener('click', saveProfile);
+        $('#saveCredentialsBtn').addEventListener('click', saveCredentials);
         $$('input[name="callPrivacyMode"]').forEach(r => r.addEventListener('change', updateCallPrivacySelectedVisibility));
         $('#callPrivacyAddBtn').addEventListener('click', addCallPrivacyAllowedUser);
         $('#callPrivacyAddInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCallPrivacyAllowedUser(); } });
@@ -2636,6 +2744,12 @@
         $('#editBio').value = u.bio || '';
         $('#editPhone').value = u.phone || '';
         $('#editSocial').value = u.social || '';
+        $('#editUsername').value = u.username || '';
+        $('#editNewPassword').value = '';
+        $('#editNewPassword2').value = '';
+        $('#editCurrentPassword').value = '';
+        $('#credentialsMsg').textContent = '';
+        $('#credentialsMsg').classList.remove('field-hint-ok');
         const privacy = u.privacy || { phone: true, social: true, email: false };
         $('#privacyPhone').checked = !!privacy.phone;
         $('#privacySocial').checked = !!privacy.social;
@@ -2778,6 +2892,57 @@
           $('#editProfileCard').classList.add('hidden');
           renderProfileHeader();
         } catch (e) { /* keep the edit card open so the person can retry */ }
+      }
+
+      /* Login (username) va/yoki parolni serverga yuboradi. Xatoliklar server
+         tomonidan qisqa kod shaklida qaytadi va shu yerda joriy sayt tiliga
+         tarjima qilinadi — shu bois xabarlar hech qachon faqat o'zbekcha
+         qolib ketmaydi. */
+      async function saveCredentials() {
+        const msgEl = $('#credentialsMsg');
+        msgEl.textContent = '';
+        msgEl.classList.remove('field-hint-ok');
+
+        const newUsername = $('#editUsername').value.trim().toLowerCase();
+        const newPassword = $('#editNewPassword').value;
+        const newPassword2 = $('#editNewPassword2').value;
+        const currentPassword = $('#editCurrentPassword').value;
+
+        const usernameChanged = newUsername && CURRENT_USER && newUsername !== CURRENT_USER.username;
+        const passwordChanged = !!newPassword || !!newPassword2;
+
+        if (!usernameChanged && !passwordChanged) {
+          msgEl.textContent = t('account.err.noChanges');
+          return;
+        }
+        if (passwordChanged && newPassword !== newPassword2) {
+          msgEl.textContent = t('account.err.mismatch');
+          return;
+        }
+        if (!currentPassword) {
+          msgEl.textContent = t('account.err.currentPasswordRequired');
+          return;
+        }
+
+        try {
+          const body = { currentPassword };
+          if (usernameChanged) body.newUsername = newUsername;
+          if (passwordChanged) body.newPassword = newPassword;
+          const data = await apiJSON('/api/profile/credentials', 'PUT', body);
+          CURRENT_USER = data.user;
+          $('#editUsername').value = CURRENT_USER.username || '';
+          $('#editNewPassword').value = '';
+          $('#editNewPassword2').value = '';
+          $('#editCurrentPassword').value = '';
+          msgEl.textContent = t('account.saved');
+          msgEl.classList.add('field-hint-ok');
+          renderProfileHeader();
+        } catch (e) {
+          const code = (e && e.message) || '';
+          const key = 'account.err.' + code;
+          const translated = t(key);
+          msgEl.textContent = (translated !== key) ? translated : (code || t('common.serverError'));
+        }
       }
 
       async function handleAvatarFileSelect(e) {
@@ -3929,13 +4094,28 @@
         return d.toLocaleString('uz-UZ', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
       }
 
+      /* Suhbatlar ro'yxatidagi so'nggi qo'ng'iroq holatini joriy sayt
+         tilida ko'rsatadi (server faqat holat kodini yuboradi, matnni
+         emas — shu bois bu yerda tarjima qilinadi). */
+      function callStatusPreviewText(status) {
+        switch (status) {
+          case 'missed': return t('call.msg.missed');
+          case 'declined': return t('call.msg.declined');
+          case 'cancelled': return t('call.msg.cancelled');
+          case 'busy': return t('call.msg.busy');
+          case 'ended':
+          default: return t('call.msg.ended');
+        }
+      }
+
       function conversationItemHTML(c) {
+        const previewText = c.lastCallStatus ? ('📞 ' + callStatusPreviewText(c.lastCallStatus)) : (c.lastMessage || '');
         return `
       <div class="conversation-item ${c.unread ? 'unread' : ''}" data-username="${escapeHtml(c.username)}">
         <div class="conversation-avatar">${avatarInner(c.avatar, c.fullname || c.username)}</div>
         <div class="conversation-body">
           <div class="conversation-name">${escapeHtml(c.fullname || c.username)}</div>
-          <div class="conversation-preview">${escapeHtml(c.lastFrom === (CURRENT_USER && CURRENT_USER.username) ? t('messages.you') + ': ' + (c.lastMessage || '') : (c.lastMessage || ''))}</div>
+          <div class="conversation-preview">${escapeHtml(c.lastFrom === (CURRENT_USER && CURRENT_USER.username) ? t('messages.you') + ': ' + previewText : previewText)}</div>
         </div>
         <div class="conversation-meta">
           <div class="conversation-time">${c.updatedAt ? fmtChatTime(c.updatedAt) : ''}</div>
