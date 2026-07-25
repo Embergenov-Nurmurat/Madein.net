@@ -3127,6 +3127,7 @@
 
     .current-pass-field {
       margin-top: 14px;
+      margin-bottom: 16px;
       padding: 12px 14px 14px;
       background: color-mix(in srgb, var(--accent) 6%, var(--surface));
       border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
