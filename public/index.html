@@ -47,7 +47,7 @@
         <div class="field">
           <label data-i18n="auth.loginUsername">Foydalanuvchi nomi</label>
           <div class="input-wrap">
-            <input type="text" id="loginUsername" autocomplete="username" required placeholder="masalan: dilnoza_art" data-i18n-ph="auth.loginUsernamePh">
+            <input type="text" id="loginUsername" autocomplete="username" spellcheck="false" autocapitalize="off" required placeholder="masalan: dilnoza_art" data-i18n-ph="auth.loginUsernamePh">
             <span class="input-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none"><path d="M5 6.5 12 3l7 3.5v7c0 4.4-3 7.6-7 8.5-4-.9-7-4.1-7-8.5v-7Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m9.3 12.2 1.8 1.8 3.6-3.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
@@ -79,7 +79,7 @@
         <div class="field">
           <label data-i18n="auth.regUsername">Foydalanuvchi nomi</label>
           <div class="input-wrap">
-            <input type="text" id="regUsername" required placeholder="lotin harflari, bo'shliqsiz" data-i18n-ph="auth.regUsernamePh" autocomplete="username">
+            <input type="text" id="regUsername" required placeholder="lotin harflari, bo'shliqsiz" data-i18n-ph="auth.regUsernamePh" autocomplete="username" spellcheck="false" autocapitalize="off">
             <span class="input-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none"><path d="M5 6.5 12 3l7 3.5v7c0 4.4-3 7.6-7 8.5-4-.9-7-4.1-7-8.5v-7Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m9.3 12.2 1.8 1.8 3.6-3.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
@@ -368,7 +368,7 @@
           <div class="privacy-block" id="accountCredentialsBlock">
             <div class="field-hint" style="margin-bottom:6px;" data-i18n="account.title">Login va parol</div>
             <div class="field"><label data-i18n="account.usernameLabel">Foydalanuvchi nomi (login)</label>
-              <input type="text" id="editUsername" autocomplete="username">
+              <input type="text" id="editUsername" autocomplete="username" spellcheck="false" autocapitalize="off">
               <div class="field-hint" data-i18n="account.usernameHint">Boshqalar sizni shu nom orqali topadi, siz ham shu nom bilan kirasiz.</div>
             </div>
             <div class="field-row">
@@ -416,7 +416,7 @@
             <label class="privacy-toggle"><input type="radio" name="callPrivacyMode" value="nobody" id="callPrivacyNobody"> <span data-i18n="profile.edit.callPrivacyNobody">Hech kimdan</span></label>
             <div id="callPrivacySelectedWrap" class="hidden" style="margin-top:10px;">
               <div class="field-row" style="align-items:flex-start;">
-                <input type="text" id="callPrivacyAddInput" style="flex:1;" data-i18n-ph="profile.edit.callPrivacyAddPh" placeholder="Foydalanuvchi nomini kiriting...">
+                <input type="text" id="callPrivacyAddInput" style="flex:1;" spellcheck="false" autocapitalize="off" data-i18n-ph="profile.edit.callPrivacyAddPh" placeholder="Foydalanuvchi nomini kiriting...">
                 <button type="button" class="btn btn-ghost btn-sm" id="callPrivacyAddBtn" style="white-space:nowrap;" data-i18n="profile.edit.callPrivacyAdd">Qo'shish</button>
               </div>
               <div class="field-hint" id="callPrivacyAddMsg"></div>

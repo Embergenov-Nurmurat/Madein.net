@@ -479,7 +479,8 @@
 
     .field input,
     .field select,
-    .field textarea {
+    .field textarea,
+    #callPrivacyAddInput {
       background: var(--bg-alt);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
@@ -493,7 +494,8 @@
 
     .field input:focus,
     .field select:focus,
-    .field textarea:focus {
+    .field textarea:focus,
+    #callPrivacyAddInput:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
