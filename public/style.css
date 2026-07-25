@@ -871,6 +871,13 @@
       font-size: 12.5px;
     }
 
+    .upload-plus-btn {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1;
+      padding: 6px 16px;
+    }
+
     .btn:disabled {
       opacity: .55;
       pointer-events: none;
@@ -4141,3 +4148,41 @@
       .cart-remove-btn { grid-area: remove; justify-self: end; }
       .cart-summary { max-width: none; margin-left: 0; }
     }
+
+    /* ============ UPLOAD: STOCK MODE TOGGLE ============ */
+    .stock-mode-toggle {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .stock-mode-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .stock-mode-option input[type="radio"] {
+      accent-color: var(--accent);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+
+    /* ============ STOCK / ORDER BADGE (feed, lightbox, cart) ============ */
+    .stock-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+    .stock-badge.low { color: #d98a1f; border-color: #d98a1f; }
+    .stock-badge.out { color: #e0554f; border-color: #e0554f; }
+    .stock-badge.order { color: var(--accent); border-color: var(--accent); }

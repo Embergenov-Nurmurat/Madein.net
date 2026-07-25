@@ -794,6 +794,8 @@ app.get('/api/users/:username', (req, res) => {
       status: w.status,
       price: w.price,
       currency: w.currency || 'UZS',
+      stockMode: w.stockMode || null,
+      stockQty: (typeof w.stockQty === 'number') ? w.stockQty : null,
       desc: w.desc,
       image: w.image,
       images: workImages(w),
@@ -854,6 +856,15 @@ app.get('/api/users/:username/following', (req, res) => {
    asarlarni savatga qo'shish mumkin — ko'rgazma asarlari sotilmaydi. */
 const CART_MAX_QTY = 99;
 
+/* Asar "belgilangan miqdor" rejimida bo'lsa — zaxiradagi sondan oshiq
+   savatga qo'shib bo'lmaydi. "Buyurtma asosida" bo'lsa — cheklov yo'q. */
+function stockLimitFor(work) {
+  if (work.stockMode === 'fixed' && typeof work.stockQty === 'number') {
+    return Math.max(0, Math.min(work.stockQty, CART_MAX_QTY));
+  }
+  return CART_MAX_QTY;
+}
+
 function cartItemView(work, owner, ownerUser, qty) {
   return {
     id: work.id,
@@ -862,6 +873,8 @@ function cartItemView(work, owner, ownerUser, qty) {
     status: work.status,
     price: work.price,
     currency: work.currency || 'UZS',
+    stockMode: work.stockMode || null,
+    stockQty: (typeof work.stockQty === 'number') ? work.stockQty : null,
     images: workImages(work),
     thumbs: workThumbs(work),
     video: work.video || null,
@@ -872,6 +885,7 @@ function cartItemView(work, owner, ownerUser, qty) {
     fullname: ownerUser.fullname || owner,
     avatar: ownerUser.avatar || null,
     qty,
+    limit: stockLimitFor(work),
     lineTotal: Math.round((Number(work.price) || 0) * qty * 100) / 100
   };
 }
@@ -885,6 +899,8 @@ app.post('/api/works/:id/cart-toggle', requireAuth, async (req, res) => {
   const me = req.session.username;
   if (owner === me) return res.status(400).json({ error: "O'z asaringizni savatga qo'sha olmaysiz" });
   if (work.status !== 'sale') return res.status(400).json({ error: 'Bu asar sotuvda emas' });
+  const limit = stockLimitFor(work);
+  if (limit <= 0) return res.status(400).json({ error: 'Bu asar tugagan' });
   const u = db.users[me];
   ensureModerationFields(u);
   let inCart;
@@ -903,7 +919,11 @@ app.put('/api/cart/:id', requireAuth, async (req, res) => {
   let qty = Math.floor(Number(req.body && req.body.qty));
   if (!Number.isFinite(qty)) return res.status(400).json({ error: "Noto'g'ri miqdor" });
   if (qty <= 0) { delete u.cart[req.params.id]; }
-  else { u.cart[req.params.id] = Math.min(qty, CART_MAX_QTY); }
+  else {
+    const limit = stockLimitFor(found.work);
+    if (qty > limit) return res.status(400).json({ error: `Faqat ${limit} dona mavjud` });
+    u.cart[req.params.id] = qty;
+  }
   await saveDB();
   res.json({ ok: true, qty: u.cart[req.params.id] || 0 });
 });
@@ -929,7 +949,11 @@ app.get('/api/cart', requireAuth, (req, res) => {
     const { work, owner } = found;
     const ownerUser = db.users[owner];
     if (!ownerUser) { delete u.cart[id]; changed = true; continue; }
-    items.push(cartItemView(work, owner, ownerUser, qty));
+    const limit = stockLimitFor(work);
+    let effQty = qty;
+    if (limit <= 0) { delete u.cart[id]; changed = true; continue; }
+    if (effQty > limit) { effQty = limit; u.cart[id] = effQty; changed = true; }
+    items.push(cartItemView(work, owner, ownerUser, effQty));
   }
   if (changed) saveDB().catch(() => {});
   items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -954,14 +978,20 @@ app.post('/api/cart/checkout', requireAuth, async (req, res) => {
     const found = findWork(id);
     if (!found || found.work.status !== 'sale') { delete u.cart[id]; continue; }
     const { work, owner } = found;
+    const limit = stockLimitFor(work);
+    if (limit <= 0) { delete u.cart[id]; continue; }
+    const qty = Math.min(u.cart[id], limit);
     orderItems.push({
       workId: work.id,
       title: work.title,
-      qty: u.cart[id],
+      qty,
       price: Number(work.price) || 0,
       currency: work.currency || 'UZS',
       sellerUsername: owner
     });
+    if (work.stockMode === 'fixed' && typeof work.stockQty === 'number') {
+      work.stockQty = Math.max(0, work.stockQty - qty);
+    }
   }
   if (!orderItems.length) { await saveDB(); return res.status(400).json({ error: "Savat bo'sh" }); }
 
@@ -1056,9 +1086,15 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
     if (err) return res.status(400).json({ error: err.message });
     if (!req.files || !req.files.length) return res.status(400).json({ error: 'Kamida bitta rasm yoki video talab qilinadi' });
 
-    const { title, type, status, price, currency, desc } = req.body || {};
+    const { title, type, status, price, currency, desc, stockMode: stockModeRaw, stockQty: stockQtyRaw } = req.body || {};
     const isSale = status === 'sale';
     const CURRENCIES = ['UZS', 'USD', 'EUR', 'RUB'];
+    const stockMode = isSale && stockModeRaw === 'fixed' ? 'fixed' : 'order';
+    let stockQty = null;
+    if (isSale && stockMode === 'fixed') {
+      const n = Math.floor(Number(stockQtyRaw));
+      stockQty = Number.isFinite(n) && n > 0 ? Math.min(n, 9999) : 1;
+    }
 
     const videoFile = req.files.find(f => ALLOWED_VIDEO_MIMES.includes(f.mimetype));
     const imageFiles = req.files.filter(f => f.mimetype.startsWith('image/'));
@@ -1104,6 +1140,8 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
         status: isSale ? 'sale' : 'expo',
         price: isSale ? (Number(price) || 0) : 0,
         currency: isSale && CURRENCIES.includes(currency) ? currency : 'UZS',
+        stockMode: isSale ? stockMode : null,
+        stockQty: isSale ? stockQty : null,
         desc: String(desc || '').slice(0, 2000),
         mediaType: 'video',
         video: '/uploads/' + transcodedFilename,
@@ -1144,6 +1182,8 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
       status: isSale ? 'sale' : 'expo',
       price: isSale ? (Number(price) || 0) : 0,
       currency: isSale && CURRENCIES.includes(currency) ? currency : 'UZS',
+      stockMode: isSale ? stockMode : null,
+      stockQty: isSale ? stockQty : null,
       desc: String(desc || '').slice(0, 2000),
       mediaType: 'image',
       video: null,
@@ -1234,6 +1274,8 @@ app.get('/api/feed', (req, res) => {
         status: w.status,
         price: w.price,
         currency: w.currency || 'UZS',
+        stockMode: w.stockMode || null,
+        stockQty: (typeof w.stockQty === 'number') ? w.stockQty : null,
         desc: w.desc,
         image: w.image,
         images: workImages(w),

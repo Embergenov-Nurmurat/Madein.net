@@ -171,7 +171,7 @@
           <button type="button" class="feed-search-clear" id="feedSearchClear" aria-label="Tozalash" data-i18n-aria="search.clearAria">&times;</button>
           <button type="button" class="nav-search-close-btn" id="navSearchCloseBtn" aria-label="Yopish" data-i18n-aria="search.closeAria">&times;</button>
         </div>
-        <button class="btn btn-primary btn-sm" id="openUploadBtn" data-i18n="nav.newWork">+</button>
+        <button class="btn btn-primary btn-sm upload-plus-btn" id="openUploadBtn" data-i18n="nav.newWork">+</button>
         <div class="avatar-menu" id="avatarMenu">
           <button class="avatar-btn" id="avatarBtn">
             <div class="avatar-circle" id="avatarInitials">?</div>
@@ -297,7 +297,7 @@
 
         <div class="view-toolbar">
           <button class="btn btn-ghost btn-sm" id="editProfileBtn" data-i18n="profile.editBtn">Ma'lumotlarni tahrirlash</button>
-          <button class="btn btn-primary btn-sm" id="openUploadBtn2" data-i18n="nav.newWork">+</button>
+          <button class="btn btn-primary btn-sm upload-plus-btn" id="openUploadBtn2" data-i18n="nav.newWork">+</button>
         </div>
 
         <div class="profile-edit-card hidden" id="editProfileCard">
@@ -592,6 +592,20 @@
               </select>
             </div>
           </div>
+          <div class="field" style="margin-top:14px;">
+            <label data-i18n="upload.stockLabel">Mavjudligi</label>
+            <div class="stock-mode-toggle">
+              <label class="stock-mode-option">
+                <input type="radio" name="stockMode" id="stockModeFixed" value="fixed" checked>
+                <span data-i18n="upload.stock.fixed">Belgilangan miqdor</span>
+              </label>
+              <label class="stock-mode-option">
+                <input type="radio" name="stockMode" id="stockModeOrder" value="order">
+                <span data-i18n="upload.stock.order">Buyurtmaga ishlanadi</span>
+              </label>
+            </div>
+            <input type="number" id="workStockQty" min="1" value="1" style="margin-top:8px;" data-i18n-ph="upload.stock.qtyPh" placeholder="Nechta dona bor?">
+          </div>
         </div>
         <div class="field" style="margin-bottom:18px;">
           <label data-i18n="upload.descLabel">Tavsif</label>
@@ -617,6 +631,7 @@
           <span class="chip" id="lightboxType">—</span>
           <span class="chip accent" id="lightboxStatus">—</span>
           <span class="chip" id="lightboxDate">—</span>
+          <span class="chip hidden" id="lightboxStock">—</span>
         </div>
         <div class="edit-actions" style="margin-top:18px;">
           <button class="btn btn-ghost btn-sm" id="deleteWorkBtn" data-i18n="lightbox.delete">O'chirish</button>

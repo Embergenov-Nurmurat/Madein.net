@@ -84,6 +84,8 @@
           "upload.type.mulaj": "Mulaj", "upload.type.boshqa": "Boshqa",
           "upload.statusLabel": "Holati", "upload.status.expo": "Faqat ko'rgazma", "upload.status.sale": "Sotuvda",
           "upload.priceLabel": "Narx", "upload.currencyLabel": "Valyuta",
+          "upload.stockLabel": "Mavjudligi", "upload.stock.fixed": "Belgilangan miqdor", "upload.stock.order": "Buyurtmaga ishlanadi", "upload.stock.qtyPh": "Nechta dona bor?",
+          "stock.order": "Buyurtmaga ishlanadi", "stock.out": "Tugadi", "stock.left": "{n} dona qoldi",
           "upload.descLabel": "Tavsif", "upload.descPh": "Asar haqida qisqacha ma'lumot...",
           "upload.save": "Saqlash", "upload.removeAria": "O'chirish",
                     "upload.errNoImage": "Iltimos, kamida bitta rasm tanlang.",
@@ -317,6 +319,8 @@
           "upload.type.mulaj": "Model", "upload.type.boshqa": "Other",
           "upload.statusLabel": "Status", "upload.status.expo": "Display only", "upload.status.sale": "For sale",
           "upload.priceLabel": "Price", "upload.currencyLabel": "Currency",
+          "upload.stockLabel": "Availability", "upload.stock.fixed": "Fixed quantity", "upload.stock.order": "Made to order", "upload.stock.qtyPh": "How many are available?",
+          "stock.order": "Made to order", "stock.out": "Sold out", "stock.left": "{n} left",
           "upload.descLabel": "Description", "upload.descPh": "A short description of the piece...",
           "upload.save": "Save", "upload.removeAria": "Remove",
                     "upload.errNoImage": "Please choose at least one photo.",
@@ -550,6 +554,8 @@
           "upload.type.mulaj": "模型", "upload.type.boshqa": "其他",
           "upload.statusLabel": "状态", "upload.status.expo": "仅展示", "upload.status.sale": "出售中",
           "upload.priceLabel": "价格", "upload.currencyLabel": "货币",
+          "upload.stockLabel": "库存情况", "upload.stock.fixed": "固定数量", "upload.stock.order": "按需定制", "upload.stock.qtyPh": "有多少件？",
+          "stock.order": "按需定制", "stock.out": "已售罄", "stock.left": "仅剩 {n} 件",
           "upload.descLabel": "描述", "upload.descPh": "简单描述一下这件作品...",
           "upload.save": "保存", "upload.removeAria": "移除",
                     "upload.errNoImage": "请至少选择一张照片。",
@@ -763,6 +769,8 @@
           "upload.type.mulaj": "मॉडल", "upload.type.boshqa": "अन्य",
           "upload.statusLabel": "स्थिति", "upload.status.expo": "केवल प्रदर्शन", "upload.status.sale": "बिक्री के लिए",
           "upload.priceLabel": "मूल्य", "upload.currencyLabel": "मुद्रा",
+          "upload.stockLabel": "उपलब्धता", "upload.stock.fixed": "निश्चित मात्रा", "upload.stock.order": "ऑर्डर पर बनाया जाता है", "upload.stock.qtyPh": "कितनी नग उपलब्ध हैं?",
+          "stock.order": "ऑर्डर पर बनाया जाता है", "stock.out": "बिक चुका है", "stock.left": "केवल {n} बचे हैं",
           "upload.descLabel": "विवरण", "upload.descPh": "कृति के बारे में संक्षिप्त जानकारी...",
           "upload.save": "सहेजें", "upload.removeAria": "हटाएं",
                     "upload.errNoImage": "कृपया कम से कम एक फ़ोटो चुनें।",
@@ -976,6 +984,8 @@
           "upload.type.mulaj": "Maqueta", "upload.type.boshqa": "Otro",
           "upload.statusLabel": "Estado", "upload.status.expo": "Solo exhibición", "upload.status.sale": "En venta",
           "upload.priceLabel": "Precio", "upload.currencyLabel": "Moneda",
+          "upload.stockLabel": "Disponibilidad", "upload.stock.fixed": "Cantidad fija", "upload.stock.order": "Se hace por encargo", "upload.stock.qtyPh": "¿Cuántas unidades hay?",
+          "stock.order": "Se hace por encargo", "stock.out": "Agotado", "stock.left": "Quedan {n}",
           "upload.descLabel": "Descripción", "upload.descPh": "Una breve descripción de la obra...",
           "upload.save": "Guardar", "upload.removeAria": "Quitar",
                     "upload.errNoImage": "Por favor elige al menos una foto.",
@@ -1189,6 +1199,8 @@
           "upload.type.mulaj": "مجسم", "upload.type.boshqa": "أخرى",
           "upload.statusLabel": "الحالة", "upload.status.expo": "للعرض فقط", "upload.status.sale": "للبيع",
           "upload.priceLabel": "السعر", "upload.currencyLabel": "العملة",
+          "upload.stockLabel": "التوفر", "upload.stock.fixed": "كمية محددة", "upload.stock.order": "يُصنع حسب الطلب", "upload.stock.qtyPh": "كم عدد القطع المتوفرة؟",
+          "stock.order": "يُصنع حسب الطلب", "stock.out": "نفدت الكمية", "stock.left": "تبقّى {n} فقط",
           "upload.descLabel": "الوصف", "upload.descPh": "وصف مختصر للعمل...",
           "upload.save": "حفظ", "upload.removeAria": "إزالة",
                     "upload.errNoImage": "الرجاء اختيار صورة واحدة على الأقل.",
@@ -1402,6 +1414,8 @@
           "upload.type.mulaj": "Макет", "upload.type.boshqa": "Другое",
           "upload.statusLabel": "Статус", "upload.status.expo": "Только показ", "upload.status.sale": "Продаётся",
           "upload.priceLabel": "Цена", "upload.currencyLabel": "Валюта",
+          "upload.stockLabel": "Наличие", "upload.stock.fixed": "Точное количество", "upload.stock.order": "Изготавливается на заказ", "upload.stock.qtyPh": "Сколько штук в наличии?",
+          "stock.order": "Изготавливается на заказ", "stock.out": "Распродано", "stock.left": "Осталось {n}",
           "upload.descLabel": "Описание", "upload.descPh": "Краткое описание работы...",
           "upload.save": "Сохранить", "upload.removeAria": "Удалить",
                     "upload.errNoImage": "Выберите хотя бы одно фото.",
@@ -2089,6 +2103,9 @@
         $('#workStatus').addEventListener('change', () => {
           $('#priceField').classList.toggle('hidden', $('#workStatus').value !== 'sale');
         });
+        $$('input[name="stockMode"]').forEach(r => r.addEventListener('change', () => {
+          $('#workStockQty').classList.toggle('hidden', $('#stockModeOrder').checked);
+        }));
         $('#uploadForm').addEventListener('submit', handleUploadSubmit);
 
         $('#closeLightbox').addEventListener('click', closeLightbox);
@@ -2575,6 +2592,19 @@
         return Number(price).toLocaleString(locale) + ' ' + label;
       }
 
+      /* Sotuvdagi asar uchun zaxira/buyurtma belgisini (badge) chizadi */
+      function stockBadgeHTML(w) {
+        if (w.stockMode === 'order') {
+          return `<span class="stock-badge order">${t('stock.order')}</span>`;
+        }
+        if (w.stockMode === 'fixed' && typeof w.stockQty === 'number') {
+          if (w.stockQty <= 0) return `<span class="stock-badge out">${t('stock.out')}</span>`;
+          if (w.stockQty <= 3) return `<span class="stock-badge low">${t('stock.left', { n: w.stockQty })}</span>`;
+          return `<span class="stock-badge">${t('stock.left', { n: w.stockQty })}</span>`;
+        }
+        return '';
+      }
+
       function renderProfileHeader() {
         const u = CURRENT_USER;
         if (!u) return;
@@ -3022,6 +3052,7 @@
           <div class="feed-meta">
             <span>${fmtDate(w.createdAt)}</span>
             ${w.status === 'sale' && w.price ? `<span class="feed-price">${fmtPrice(w.price, w.currency)}</span>` : ''}
+            ${w.status === 'sale' ? stockBadgeHTML(w) : ''}
           </div>
           <button class="report-link" data-type="work" data-id="${w.id}" data-title="${escapeHtml(w.title)}">${t('report.action')}</button>
         </div>
@@ -3162,6 +3193,7 @@
       /* ===================== KORZINKA (SAVAT) ===================== */
       function cartItemHTML(w) {
         const thumb = (workThumbs(w) || [])[0] || w.poster || '';
+        const atLimit = typeof w.limit === 'number' && w.qty >= w.limit;
         return `
       <div class="cart-item" data-id="${w.id}">
         <div class="cart-item-thumb">${thumb ? `<img src="${thumb}" alt="${escapeHtml(w.title)}">` : ''}</div>
@@ -3169,11 +3201,12 @@
           <div class="cart-item-title">${escapeHtml(w.title)}</div>
           <div class="cart-item-seller">@${escapeHtml(w.username)}</div>
           <div class="cart-item-price">${fmtPrice(w.price, w.currency)}</div>
+          ${stockBadgeHTML(w)}
         </div>
         <div class="cart-item-qty">
           <button type="button" class="cart-qty-btn cart-qty-dec" aria-label="${t('cart.decreaseAria')}">−</button>
           <span class="cart-qty-value">${w.qty}</span>
-          <button type="button" class="cart-qty-btn cart-qty-inc" aria-label="${t('cart.increaseAria')}">+</button>
+          <button type="button" class="cart-qty-btn cart-qty-inc" ${atLimit ? 'disabled' : ''} aria-label="${t('cart.increaseAria')}">+</button>
         </div>
         <div class="cart-item-linetotal">${fmtPrice(w.lineTotal, w.currency)}</div>
         <button type="button" class="cart-remove-btn" aria-label="${t('cart.removeAria')}">${trashIconSVG()}</button>
@@ -4144,6 +4177,7 @@
         uploadMediaItems = [];
         renderUploadPreview();
         $('#priceField').classList.add('hidden');
+        $('#workStockQty').classList.remove('hidden');
         $('#uploadError').classList.remove('show');
         $('#uploadModal').classList.add('open');
       }
@@ -4308,6 +4342,8 @@
         fd.append('status', $('#workStatus').value);
         fd.append('price', $('#workStatus').value === 'sale' ? (Number($('#workPrice').value) || 0) : 0);
         fd.append('currency', $('#workCurrency').value);
+        fd.append('stockMode', $('#stockModeOrder').checked ? 'order' : 'fixed');
+        fd.append('stockQty', $('#workStockQty').value);
         fd.append('desc', $('#workDesc').value.trim());
         try {
           const data = await api('/api/works', { method: 'POST', body: fd });
@@ -4344,6 +4380,15 @@
         $('#lightboxType').textContent = typeLabel(w.type);
         $('#lightboxStatus').textContent = w.status === 'sale' ? (w.price ? fmtPrice(w.price, w.currency) : t('feed.sale')) : t('upload.status.expo');
         $('#lightboxDate').textContent = fmtDate(w.createdAt);
+        const stockChip = $('#lightboxStock');
+        if (w.status === 'sale' && w.stockMode) {
+          stockChip.textContent = w.stockMode === 'order'
+            ? t('stock.order')
+            : (typeof w.stockQty === 'number' ? (w.stockQty <= 0 ? t('stock.out') : t('stock.left', { n: w.stockQty })) : '');
+          stockChip.classList.toggle('hidden', !stockChip.textContent);
+        } else {
+          stockChip.classList.add('hidden');
+        }
         $('#lightbox').classList.add('open');
         api('/api/works/' + id + '/view', { method: 'POST' }).then(res => {
           w.views = res.viewsCount;
