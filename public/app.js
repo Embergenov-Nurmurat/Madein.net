@@ -120,6 +120,8 @@
           "chat.micDenied": "Mikrofon yoki kameraga ruxsat berilmadi",
           "chat.recordingVoice": "Ovozli xabar yozilmoqda...", "chat.recordingCircle": "Video xabar yozilmoqda...",
           "chat.mediaSendFail": "Fayl yuborilmadi. Qayta urinib ko'ring.",
+          "chat.attachTitle": "Fayl biriktirish", "chat.circleTitle": "Video xabar (bosish orqali yozib olish)",
+          "chat.voiceTitle": "Ovozli xabar (bosish orqali yozib olish)", "chat.recordCancelTitle": "Bekor qilish", "chat.recordSendTitle": "Yuborish",
           "call.startTitle": "Video qo'ng'iroq", "call.incoming": "Video qo'ng'iroq qilyapti...",
           "call.decline": "Rad etish", "call.accept": "Qabul qilish", "call.calling": "Chaqirilmoqda...",
           "call.connecting": "Ulanmoqda...", "call.peerCameraOff": "Kamera o'chirilgan",
@@ -373,6 +375,8 @@
           "chat.micDenied": "Microphone or camera access was denied",
           "chat.recordingVoice": "Recording voice message...", "chat.recordingCircle": "Recording video message...",
           "chat.mediaSendFail": "File wasn't sent. Please try again.",
+          "chat.attachTitle": "Attach a file", "chat.circleTitle": "Video message (click to record)",
+          "chat.voiceTitle": "Voice message (click to record)", "chat.recordCancelTitle": "Cancel", "chat.recordSendTitle": "Send",
           "call.startTitle": "Video call", "call.incoming": "Video calling...",
           "call.decline": "Decline", "call.accept": "Accept", "call.calling": "Calling...",
           "call.connecting": "Connecting...", "call.peerCameraOff": "Camera is off",
@@ -622,6 +626,12 @@
           "chat.ph": "输入消息...", "chat.workRefPrefix": "关于",
           "chat.loadFail": "对话加载失败。", "chat.empty": "还没有消息，快来发第一条吧！",
           "chat.sendFail": "消息发送失败，请重试。",
+          "chat.attach.media": "照片/视频", "chat.attach.file": "文件",
+          "chat.micDenied": "麦克风或摄像头权限被拒绝",
+          "chat.recordingVoice": "正在录制语音消息...", "chat.recordingCircle": "正在录制视频消息...",
+          "chat.mediaSendFail": "文件发送失败，请重试。",
+          "chat.attachTitle": "添加附件", "chat.circleTitle": "视频消息（点击录制）",
+          "chat.voiceTitle": "语音消息（点击录制）", "chat.recordCancelTitle": "取消", "chat.recordSendTitle": "发送",
           "gate.title": "请注册",
           "gate.desc": "您目前以访客身份浏览。此操作需要账户 — 您可以现在注册，也可以稍后再说。",
           "gate.later": "稍后", "gate.register": "注册",
@@ -851,6 +861,12 @@
           "chat.ph": "संदेश लिखें...", "chat.workRefPrefix": "इस बारे में",
           "chat.loadFail": "बातचीत लोड नहीं हो सकी।", "chat.empty": "अभी तक कोई संदेश नहीं। पहले आप लिखें!",
           "chat.sendFail": "संदेश नहीं भेजा जा सका। फिर कोशिश करें।",
+          "chat.attach.media": "फ़ोटो / वीडियो", "chat.attach.file": "फ़ाइल",
+          "chat.micDenied": "माइक्रोफ़ोन या कैमरे की अनुमति नहीं मिली",
+          "chat.recordingVoice": "वॉइस मैसेज रिकॉर्ड हो रहा है...", "chat.recordingCircle": "वीडियो मैसेज रिकॉर्ड हो रहा है...",
+          "chat.mediaSendFail": "फ़ाइल नहीं भेजी जा सकी। फिर कोशिश करें।",
+          "chat.attachTitle": "फ़ाइल जोड़ें", "chat.circleTitle": "वीडियो संदेश (रिकॉर्ड करने के लिए क्लिक करें)",
+          "chat.voiceTitle": "वॉइस संदेश (रिकॉर्ड करने के लिए क्लिक करें)", "chat.recordCancelTitle": "रद्द करें", "chat.recordSendTitle": "भेजें",
           "gate.title": "कृपया साइन अप करें",
           "gate.desc": "आप अभी अतिथि के रूप में देख रहे हैं। इस कार्य के लिए खाता चाहिए — अभी या बाद में साइन अप करें।",
           "gate.later": "बाद में", "gate.register": "साइन अप करें",
@@ -1080,6 +1096,12 @@
           "chat.ph": "Escribe un mensaje...", "chat.workRefPrefix": "Sobre",
           "chat.loadFail": "No se pudo cargar la conversación.", "chat.empty": "Aún no hay mensajes. ¡Sé el primero en escribir uno!",
           "chat.sendFail": "No se pudo enviar el mensaje. Inténtalo de nuevo.",
+          "chat.attach.media": "Foto / Video", "chat.attach.file": "Archivo",
+          "chat.micDenied": "Se denegó el acceso al micrófono o la cámara",
+          "chat.recordingVoice": "Grabando mensaje de voz...", "chat.recordingCircle": "Grabando mensaje de video...",
+          "chat.mediaSendFail": "No se pudo enviar el archivo. Inténtalo de nuevo.",
+          "chat.attachTitle": "Adjuntar archivo", "chat.circleTitle": "Mensaje de video (clic para grabar)",
+          "chat.voiceTitle": "Mensaje de voz (clic para grabar)", "chat.recordCancelTitle": "Cancelar", "chat.recordSendTitle": "Enviar",
           "gate.title": "Regístrate",
           "gate.desc": "Por ahora estás navegando como invitado. Esta acción requiere una cuenta — puedes registrarte ahora o más tarde.",
           "gate.later": "Más tarde", "gate.register": "Registrarse",
@@ -1309,6 +1331,12 @@
           "chat.ph": "اكتب رسالة...", "chat.workRefPrefix": "بخصوص",
           "chat.loadFail": "تعذّر تحميل المحادثة.", "chat.empty": "لا توجد رسائل بعد. كن أول من يكتب!",
           "chat.sendFail": "تعذّر إرسال الرسالة. حاول مرة أخرى.",
+          "chat.attach.media": "صورة / فيديو", "chat.attach.file": "ملف",
+          "chat.micDenied": "تم رفض إذن الميكروفون أو الكاميرا",
+          "chat.recordingVoice": "جارٍ تسجيل رسالة صوتية...", "chat.recordingCircle": "جارٍ تسجيل رسالة فيديو...",
+          "chat.mediaSendFail": "تعذّر إرسال الملف. حاول مرة أخرى.",
+          "chat.attachTitle": "إرفاق ملف", "chat.circleTitle": "رسالة فيديو (انقر للتسجيل)",
+          "chat.voiceTitle": "رسالة صوتية (انقر للتسجيل)", "chat.recordCancelTitle": "إلغاء", "chat.recordSendTitle": "إرسال",
           "gate.title": "الرجاء إنشاء حساب",
           "gate.desc": "أنت تتصفح حاليًا كضيف. تتطلب هذه العملية حسابًا — يمكنك التسجيل الآن أو لاحقًا.",
           "gate.later": "لاحقًا", "gate.register": "إنشاء حساب",
@@ -1538,6 +1566,12 @@
           "chat.ph": "Написать сообщение...", "chat.workRefPrefix": "О работе",
           "chat.loadFail": "Не удалось загрузить переписку.", "chat.empty": "Сообщений пока нет. Будьте первым!",
           "chat.sendFail": "Сообщение не отправлено. Попробуйте ещё раз.",
+          "chat.attach.media": "Фото / видео", "chat.attach.file": "Файл",
+          "chat.micDenied": "Доступ к микрофону или камере запрещён",
+          "chat.recordingVoice": "Запись голосового сообщения...", "chat.recordingCircle": "Запись видеосообщения...",
+          "chat.mediaSendFail": "Не удалось отправить файл. Попробуйте ещё раз.",
+          "chat.attachTitle": "Прикрепить файл", "chat.circleTitle": "Видеосообщение (нажмите для записи)",
+          "chat.voiceTitle": "Голосовое сообщение (нажмите для записи)", "chat.recordCancelTitle": "Отмена", "chat.recordSendTitle": "Отправить",
           "gate.title": "Пожалуйста, зарегистрируйтесь",
           "gate.desc": "Сейчас вы просматриваете сайт как гость. Для этого действия нужен аккаунт — можно зарегистрироваться сейчас или позже.",
           "gate.later": "Позже", "gate.register": "Регистрация",
@@ -2305,8 +2339,8 @@
           e.target.value = '';
           if (f) await uploadChatMedia(f, 'file', {});
         });
-        bindHoldToRecord($('#chatVoiceBtn'), 'voice');
-        bindHoldToRecord($('#chatCircleBtn'), 'circle');
+        bindRecordButton($('#chatVoiceBtn'), 'voice');
+        bindRecordButton($('#chatCircleBtn'), 'circle');
         $('#chatRecordCancel').addEventListener('click', () => cancelChatRecording());
         $('#chatRecordSend').addEventListener('click', () => stopChatRecording(true));
         document.addEventListener('click', (e) => {
@@ -4237,6 +4271,7 @@
         return `
       <div class="chat-bubble-row ${mine ? 'me' : ''}">
         <div class="chat-bubble chat-voice-msg">
+          <span class="chat-voice-icon">🎙️</span>
           <audio src="${escapeHtml(m.url)}" controls preload="metadata"></audio>
           ${dur ? `<span class="chat-voice-duration">${dur}</span>` : ''}
           <span class="chat-bubble-time">${fmtChatTime(m.createdAt)}</span>
@@ -4472,8 +4507,9 @@
       }
 
       /* ===================== OVOZLI / "KRUJOK" VIDEO XABARLARNI YOZIB OLISH =====================
-         Telegramdagi kabi — mikrofon (yoki old kamera) tugmasini bosib turish
-         orqali yozib olinadi, qo'yib yuborilganda avtomatik yuboriladi. */
+         Mikrofon (yoki old kamera) tugmasi bosilganda yozib olish boshlanadi;
+         pastdagi panelda "Yuborish" yoki "Bekor qilish" tugmalari orqali
+         yakunlanadi. */
       let chatMediaRecorder = null;
       let chatRecordedChunks = [];
       let chatRecordStream = null;
@@ -4481,55 +4517,74 @@
       let chatRecordStartAt = 0;
       let chatRecordTimer = null;
       let chatRecordingActive = false;
+      let chatRecordToken = 0; // ruxsat so'rovi kutilayotganda foydalanuvchi bekor qilsa/qayta bossa, eskirgan natijani e'tiborsiz qoldirish uchun
 
-      function bindHoldToRecord(btn, kind) {
+      function bindRecordButton(btn, kind) {
         if (!btn) return;
-        const start = (e) => { e.preventDefault(); startChatRecording(kind); };
-        const stop = () => { if (chatRecordingActive && chatRecordType === kind) stopChatRecording(true); };
-        btn.addEventListener('pointerdown', start);
-        btn.addEventListener('pointerup', stop);
-        btn.addEventListener('pointerleave', stop);
-        btn.addEventListener('pointercancel', stop);
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          startChatRecording(kind);
+        });
       }
 
       async function startChatRecording(kind) {
         if (chatRecordingActive) return;
         if (IS_GUEST) { openGateModal(); return; }
         if (!CHAT_WITH) return;
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
           alert(t('chat.micDenied'));
           return;
         }
+
+        // Darhol "band" deb belgilaymiz, shu bilan tugma tez-tez bosilsa ham
+        // bir nechta ruxsat so'rovi yuborilmaydi. Panel ham darhol ko'rinadi,
+        // ruxsat kutilayotganda ham foydalanuvchi "bekor qilish"ni bosa oladi.
+        chatRecordingActive = true;
+        chatRecordType = kind;
+        const myToken = ++chatRecordToken;
+        $('#chatForm').classList.add('hidden');
+        $('#chatRecordingBar').classList.remove('hidden');
+        $('#chatRecordingTime').textContent = '0:00';
+        $('#chatRecordingHint').textContent = kind === 'circle' ? t('chat.recordingCircle') : t('chat.recordingVoice');
+
         const constraints = kind === 'voice'
           ? { audio: true }
           : { audio: true, video: { facingMode: 'user', width: { ideal: 480 }, height: { ideal: 480 } } };
+
+        let stream;
         try {
-          chatRecordStream = await navigator.mediaDevices.getUserMedia(constraints);
+          stream = await navigator.mediaDevices.getUserMedia(constraints);
         } catch (e) {
-          alert(t('chat.micDenied'));
+          if (myToken === chatRecordToken) {
+            chatRecordingActive = false;
+            hideChatRecordingBar();
+            alert(t('chat.micDenied'));
+          }
           return;
         }
-        chatRecordType = kind;
+        // Ruxsat kelguncha foydalanuvchi bekor qilgan yoki chatdan chiqib ketgan
+        // bo'lsa — bu oqimni darhol to'xtatamiz, hech narsa yozib olinmaydi.
+        if (myToken !== chatRecordToken) {
+          stream.getTracks().forEach((tr) => tr.stop());
+          return;
+        }
+
+        chatRecordStream = stream;
         chatRecordedChunks = [];
         let mime = '';
         if (kind === 'voice') {
-          mime = (window.MediaRecorder && MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) ? 'audio/webm;codecs=opus' : 'audio/webm';
+          mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/webm';
         } else {
-          mime = (window.MediaRecorder && MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')) ? 'video/webm;codecs=vp9,opus' : 'video/webm';
+          mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus') ? 'video/webm;codecs=vp9,opus' : 'video/webm';
         }
         try {
-          chatMediaRecorder = new MediaRecorder(chatRecordStream, { mimeType: mime });
+          chatMediaRecorder = new MediaRecorder(stream, { mimeType: mime });
         } catch (e) {
-          chatMediaRecorder = new MediaRecorder(chatRecordStream);
+          chatMediaRecorder = new MediaRecorder(stream);
         }
         chatMediaRecorder.ondataavailable = (e) => { if (e.data && e.data.size) chatRecordedChunks.push(e.data); };
         chatMediaRecorder.start();
         chatRecordStartAt = Date.now();
-        chatRecordingActive = true;
-        $('#chatForm').classList.add('hidden');
-        $('#chatRecordingBar').classList.remove('hidden');
-        $('#chatRecordingHint').textContent = kind === 'circle' ? t('chat.recordingCircle') : t('chat.recordingVoice');
-        $('#chatRecordingTime').textContent = '0:00';
         chatRecordTimer = setInterval(() => {
           const sec = Math.floor((Date.now() - chatRecordStartAt) / 1000);
           $('#chatRecordingTime').textContent = fmtCallDuration(sec);
@@ -4540,43 +4595,45 @@
 
       function hideChatRecordingBar() {
         chatRecordingActive = false;
+        chatRecordType = null;
         $('#chatForm').classList.remove('hidden');
         $('#chatRecordingBar').classList.add('hidden');
         $('#chatRecordingTime').textContent = '0:00';
       }
 
       function stopChatRecording(send) {
+        chatRecordToken++; // kutilayotgan har qanday ruxsat so'rovini ham bekor qilamiz
         if (!chatMediaRecorder) { hideChatRecordingBar(); return; }
         clearInterval(chatRecordTimer);
         const kind = chatRecordType;
         const startedAt = chatRecordStartAt;
         const rec = chatMediaRecorder;
         const stream = chatRecordStream;
+        const chunks = chatRecordedChunks;
+        chatMediaRecorder = null;
         rec.onstop = async () => {
           if (stream) stream.getTracks().forEach((tr) => tr.stop());
           const durationSec = Math.max(1, Math.round((Date.now() - startedAt) / 1000));
           hideChatRecordingBar();
-          if (send && chatRecordedChunks.length) {
-            const blob = new Blob(chatRecordedChunks, { type: rec.mimeType || (kind === 'voice' ? 'audio/webm' : 'video/webm') });
+          if (send && chunks.length) {
+            const blob = new Blob(chunks, { type: rec.mimeType || (kind === 'voice' ? 'audio/webm' : 'video/webm') });
             const fname = (kind === 'voice' ? 'voice_' : 'circle_') + Date.now() + '.webm';
             const file = new File([blob], fname, { type: blob.type });
             await uploadChatMedia(file, kind, { duration: durationSec });
           }
         };
         try { rec.stop(); } catch (e) { hideChatRecordingBar(); }
-        chatMediaRecorder = null;
-        chatRecordedChunks = [];
       }
 
       function cancelChatRecording() {
+        chatRecordToken++; // ruxsat kutilayotgan bo'lsa ham shu yerda to'xtatiladi
         if (!chatMediaRecorder) { hideChatRecordingBar(); return; }
         clearInterval(chatRecordTimer);
         const rec = chatMediaRecorder;
         const stream = chatRecordStream;
+        chatMediaRecorder = null;
         rec.onstop = () => { if (stream) stream.getTracks().forEach((tr) => tr.stop()); };
         try { rec.stop(); } catch (e) {}
-        chatMediaRecorder = null;
-        chatRecordedChunks = [];
         hideChatRecordingBar();
       }
 
