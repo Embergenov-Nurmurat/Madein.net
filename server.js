@@ -791,6 +791,7 @@ app.get('/api/users/:username', (req, res) => {
       id: w.id,
       title: w.title,
       type: w.type,
+      typeCustom: w.typeCustom || null,
       status: w.status,
       price: w.price,
       currency: w.currency || 'UZS',
@@ -870,6 +871,7 @@ function cartItemView(work, owner, ownerUser, qty) {
     id: work.id,
     title: work.title,
     type: work.type,
+    typeCustom: work.typeCustom || null,
     status: work.status,
     price: work.price,
     currency: work.currency || 'UZS',
@@ -1086,9 +1088,11 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
     if (err) return res.status(400).json({ error: err.message });
     if (!req.files || !req.files.length) return res.status(400).json({ error: 'Kamida bitta rasm yoki video talab qilinadi' });
 
-    const { title, type, status, price, currency, desc, stockMode: stockModeRaw, stockQty: stockQtyRaw } = req.body || {};
+    const { title, type, status, price, currency, desc, stockMode: stockModeRaw, stockQty: stockQtyRaw, typeCustom: typeCustomRaw } = req.body || {};
     const isSale = status === 'sale';
     const CURRENCIES = ['UZS', 'USD', 'EUR', 'RUB'];
+    const workType = ['rasm', 'haykal', 'mulaj', 'boshqa'].includes(type) ? type : 'boshqa';
+    const typeCustom = workType === 'boshqa' ? String(typeCustomRaw || '').trim().slice(0, 60) : '';
     const stockMode = isSale && stockModeRaw === 'fixed' ? 'fixed' : 'order';
     let stockQty = null;
     if (isSale && stockMode === 'fixed') {
@@ -1136,7 +1140,8 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
       const work = {
         id: 'w' + Date.now() + crypto.randomBytes(4).toString('hex'),
         title: String(title || '').slice(0, 200),
-        type: ['rasm', 'haykal', 'mulaj', 'boshqa'].includes(type) ? type : 'boshqa',
+        type: workType,
+        typeCustom: typeCustom || undefined,
         status: isSale ? 'sale' : 'expo',
         price: isSale ? (Number(price) || 0) : 0,
         currency: isSale && CURRENCIES.includes(currency) ? currency : 'UZS',
@@ -1178,7 +1183,8 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
     const work = {
       id: 'w' + Date.now() + crypto.randomBytes(4).toString('hex'),
       title: String(title || '').slice(0, 200),
-      type: ['rasm', 'haykal', 'mulaj', 'boshqa'].includes(type) ? type : 'boshqa',
+      type: workType,
+      typeCustom: typeCustom || undefined,
       status: isSale ? 'sale' : 'expo',
       price: isSale ? (Number(price) || 0) : 0,
       currency: isSale && CURRENCIES.includes(currency) ? currency : 'UZS',
@@ -1271,6 +1277,7 @@ app.get('/api/feed', (req, res) => {
         id: w.id,
         title: w.title,
         type: w.type,
+        typeCustom: w.typeCustom || null,
         status: w.status,
         price: w.price,
         currency: w.currency || 'UZS',

@@ -81,7 +81,7 @@
           "upload.dropFull": "3 ta rasm tanlandi — kollaj bo'lib ko'rinadi",
           "upload.titleLabel": "Sarlavha", "upload.titlePh": "Masalan: «Kuz manzarasi»",
           "upload.typeLabel": "Turi", "upload.type.rasm": "Rasm (chizma)", "upload.type.haykal": "Haykal",
-          "upload.type.mulaj": "Mulaj", "upload.type.boshqa": "Boshqa",
+          "upload.type.mulaj": "Mulaj", "upload.type.boshqa": "Boshqa", "upload.type.otherPh": "Turini kiriting",
           "upload.statusLabel": "Holati", "upload.status.expo": "Faqat ko'rgazma", "upload.status.sale": "Sotuvda",
           "upload.priceLabel": "Narx", "upload.currencyLabel": "Valyuta",
           "upload.stockLabel": "Mavjudligi", "upload.stock.fixed": "Belgilangan miqdor", "upload.stock.order": "Buyurtmaga ishlanadi", "upload.stock.qtyPh": "Nechta dona bor?",
@@ -316,7 +316,7 @@
           "upload.dropFull": "3 photos chosen — shown as a collage",
           "upload.titleLabel": "Title", "upload.titlePh": "e.g. \"Autumn landscape\"",
           "upload.typeLabel": "Type", "upload.type.rasm": "Painting / drawing", "upload.type.haykal": "Sculpture",
-          "upload.type.mulaj": "Model", "upload.type.boshqa": "Other",
+          "upload.type.mulaj": "Model", "upload.type.boshqa": "Other", "upload.type.otherPh": "Enter the type",
           "upload.statusLabel": "Status", "upload.status.expo": "Display only", "upload.status.sale": "For sale",
           "upload.priceLabel": "Price", "upload.currencyLabel": "Currency",
           "upload.stockLabel": "Availability", "upload.stock.fixed": "Fixed quantity", "upload.stock.order": "Made to order", "upload.stock.qtyPh": "How many are available?",
@@ -551,7 +551,7 @@
           "upload.dropFull": "已选择3张照片 — 将以拼图形式展示",
           "upload.titleLabel": "标题", "upload.titlePh": "例如：《秋日风景》",
           "upload.typeLabel": "类型", "upload.type.rasm": "绘画", "upload.type.haykal": "雕塑",
-          "upload.type.mulaj": "模型", "upload.type.boshqa": "其他",
+          "upload.type.mulaj": "模型", "upload.type.boshqa": "其他", "upload.type.otherPh": "请输入类型",
           "upload.statusLabel": "状态", "upload.status.expo": "仅展示", "upload.status.sale": "出售中",
           "upload.priceLabel": "价格", "upload.currencyLabel": "货币",
           "upload.stockLabel": "库存情况", "upload.stock.fixed": "固定数量", "upload.stock.order": "按需定制", "upload.stock.qtyPh": "有多少件？",
@@ -766,7 +766,7 @@
           "upload.dropFull": "3 फ़ोटो चुनी गईं — कोलाज के रूप में दिखेंगी",
           "upload.titleLabel": "शीर्षक", "upload.titlePh": "उदाहरण: «शरद ऋतु का दृश्य»",
           "upload.typeLabel": "प्रकार", "upload.type.rasm": "पेंटिंग / चित्र", "upload.type.haykal": "मूर्ति",
-          "upload.type.mulaj": "मॉडल", "upload.type.boshqa": "अन्य",
+          "upload.type.mulaj": "मॉडल", "upload.type.boshqa": "अन्य", "upload.type.otherPh": "प्रकार दर्ज करें",
           "upload.statusLabel": "स्थिति", "upload.status.expo": "केवल प्रदर्शन", "upload.status.sale": "बिक्री के लिए",
           "upload.priceLabel": "मूल्य", "upload.currencyLabel": "मुद्रा",
           "upload.stockLabel": "उपलब्धता", "upload.stock.fixed": "निश्चित मात्रा", "upload.stock.order": "ऑर्डर पर बनाया जाता है", "upload.stock.qtyPh": "कितनी नग उपलब्ध हैं?",
@@ -981,7 +981,7 @@
           "upload.dropFull": "3 fotos elegidas — se mostrarán como collage",
           "upload.titleLabel": "Título", "upload.titlePh": "p. ej.: «Paisaje de otoño»",
           "upload.typeLabel": "Tipo", "upload.type.rasm": "Pintura / dibujo", "upload.type.haykal": "Escultura",
-          "upload.type.mulaj": "Maqueta", "upload.type.boshqa": "Otro",
+          "upload.type.mulaj": "Maqueta", "upload.type.boshqa": "Otro", "upload.type.otherPh": "Escribe el tipo",
           "upload.statusLabel": "Estado", "upload.status.expo": "Solo exhibición", "upload.status.sale": "En venta",
           "upload.priceLabel": "Precio", "upload.currencyLabel": "Moneda",
           "upload.stockLabel": "Disponibilidad", "upload.stock.fixed": "Cantidad fija", "upload.stock.order": "Se hace por encargo", "upload.stock.qtyPh": "¿Cuántas unidades hay?",
@@ -1196,7 +1196,7 @@
           "upload.dropFull": "تم اختيار 3 صور — ستُعرض كصورة مجمّعة",
           "upload.titleLabel": "العنوان", "upload.titlePh": "مثال: «منظر الخريف»",
           "upload.typeLabel": "النوع", "upload.type.rasm": "لوحة / رسم", "upload.type.haykal": "منحوتة",
-          "upload.type.mulaj": "مجسم", "upload.type.boshqa": "أخرى",
+          "upload.type.mulaj": "مجسم", "upload.type.boshqa": "أخرى", "upload.type.otherPh": "أدخل النوع",
           "upload.statusLabel": "الحالة", "upload.status.expo": "للعرض فقط", "upload.status.sale": "للبيع",
           "upload.priceLabel": "السعر", "upload.currencyLabel": "العملة",
           "upload.stockLabel": "التوفر", "upload.stock.fixed": "كمية محددة", "upload.stock.order": "يُصنع حسب الطلب", "upload.stock.qtyPh": "كم عدد القطع المتوفرة؟",
@@ -1411,7 +1411,7 @@
           "upload.dropFull": "Выбрано 3 фото — показываются как коллаж",
           "upload.titleLabel": "Заголовок", "upload.titlePh": "например: «Осенний пейзаж»",
           "upload.typeLabel": "Тип", "upload.type.rasm": "Картина / рисунок", "upload.type.haykal": "Скульптура",
-          "upload.type.mulaj": "Макет", "upload.type.boshqa": "Другое",
+          "upload.type.mulaj": "Макет", "upload.type.boshqa": "Другое", "upload.type.otherPh": "Укажите тип",
           "upload.statusLabel": "Статус", "upload.status.expo": "Только показ", "upload.status.sale": "Продаётся",
           "upload.priceLabel": "Цена", "upload.currencyLabel": "Валюта",
           "upload.stockLabel": "Наличие", "upload.stock.fixed": "Точное количество", "upload.stock.order": "Изготавливается на заказ", "upload.stock.qtyPh": "Сколько штук в наличии?",
@@ -2100,6 +2100,11 @@
         $('#reportForm').addEventListener('submit', submitReportForm);
 
         $('#uploadFile').addEventListener('change', handleFileSelect);
+        $('#workType').addEventListener('change', () => {
+          const isOther = $('#workType').value === 'boshqa';
+          $('#workTypeOther').classList.toggle('hidden', !isOther);
+          $('#workTypeOther').required = isOther;
+        });
         $('#workStatus').addEventListener('change', () => {
           $('#priceField').classList.toggle('hidden', $('#workStatus').value !== 'sale');
         });
@@ -2897,7 +2902,12 @@
       /* ===================== GALLERY RENDER =====================
          typeLabels/status text are the site's own vocabulary (categories,
          not user text), so they translate along with the interface. */
-      function typeLabel(type) {
+      function typeLabel(w) {
+        // Eski chaqiruvlar bilan moslik uchun oddiy satr (masalan 'rasm') ham qabul qilinadi
+        const type = (w && typeof w === 'object') ? w.type : w;
+        if (type === 'boshqa' && w && typeof w === 'object' && w.typeCustom) {
+          return w.typeCustom;
+        }
         const key = 'upload.type.' + type;
         return I18N.uz[key] !== undefined ? t(key) : t('lightbox.workTagFallback');
       }
@@ -2938,7 +2948,7 @@
       <div class="work-card" data-id="${w.id}">
         <div class="work-thumb">
           ${collageHTML(workThumbs(w), w.title, w.video, w.poster)}
-          <div class="work-tag">${typeLabel(w.type)}</div>
+          <div class="work-tag">${typeLabel(w)}</div>
           <div class="work-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
         </div>
         <div class="work-body">
@@ -4177,6 +4187,8 @@
         uploadMediaItems = [];
         renderUploadPreview();
         $('#priceField').classList.add('hidden');
+        $('#workTypeOther').classList.add('hidden');
+        $('#workTypeOther').required = false;
         $('#workStockQty').classList.remove('hidden');
         $('#uploadError').classList.remove('show');
         $('#uploadModal').classList.add('open');
@@ -4339,6 +4351,7 @@
         });
         fd.append('title', $('#workTitle').value.trim());
         fd.append('type', $('#workType').value);
+        fd.append('typeCustom', $('#workType').value === 'boshqa' ? $('#workTypeOther').value.trim() : '');
         fd.append('status', $('#workStatus').value);
         fd.append('price', $('#workStatus').value === 'sale' ? (Number($('#workPrice').value) || 0) : 0);
         fd.append('currency', $('#workCurrency').value);
@@ -4377,7 +4390,7 @@
         }
         $('#lightboxTitle').textContent = w.title;
         $('#lightboxDesc').textContent = w.desc || t('lightbox.noDesc');
-        $('#lightboxType').textContent = typeLabel(w.type);
+        $('#lightboxType').textContent = typeLabel(w);
         $('#lightboxStatus').textContent = w.status === 'sale' ? (w.price ? fmtPrice(w.price, w.currency) : t('feed.sale')) : t('upload.status.expo');
         $('#lightboxDate').textContent = fmtDate(w.createdAt);
         const stockChip = $('#lightboxStock');
