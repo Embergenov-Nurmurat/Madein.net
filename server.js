@@ -323,10 +323,21 @@ function rateLimit(key, limit, windowMs) {
     }
     bucket.count++;
     if (bucket.count > limit) {
-      return res.status(429).json({ error: "Juda ko'p urinish qilindi, birozdan so'ng qayta urinib ko'ring" });
+      return res.status(429).json({ error: "Juda ko'p urinish qilindi, birozdan so'ng qayta urinib ko'ring", code: 'tooManyAttempts' });
     }
     next();
   };
+}
+
+/* multer xatoligini (bizning fileFilter'dan yoki multer'ning o'z ichki
+   limitlaridan, masalan fayl hajmi) barqaror kod bilan javob shakliga
+   o'giradi — shunda upload xatoliklari ham frontendda saytning joriy
+   tiliga tarjima qilinadi. */
+function multerErrCode(err) {
+  if (err && err.code === 'LIMIT_FILE_SIZE') return 'fileTooLarge';
+  if (err && (err.code === 'LIMIT_FILE_COUNT' || err.code === 'LIMIT_UNEXPECTED_FILE')) return 'tooManyFiles';
+  if (err && err.code && typeof err.code === 'string') return err.code; // bizning fileFilter'dagi o'z kodimiz
+  return 'uploadError';
 }
 setInterval(() => {
   const now = Date.now();
@@ -475,7 +486,9 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith('image/')) return cb(null, true);
     if (ALLOWED_VIDEO_MIMES.includes(file.mimetype)) return cb(null, true);
-    return cb(new Error('Faqat rasm yoki video (mp4/mov, 10 soniyagacha) fayllari qabul qilinadi'));
+    const err = new Error('Faqat rasm yoki video (mp4/mov, 10 soniyagacha) fayllari qabul qilinadi');
+    err.code = 'invalidWorkMediaType';
+    return cb(err);
   }
 });
 
@@ -506,22 +519,62 @@ const chatUpload = multer({
     const kind = String((req.body && req.body.type) || '').toLowerCase();
     if (kind === 'file') {
       const ext = (path.extname(file.originalname) || '').toLowerCase();
-      if (DANGEROUS_FILE_EXT.includes(ext)) return cb(new Error("Bu turdagi fayllarni yuborib bo'lmaydi"));
+      if (DANGEROUS_FILE_EXT.includes(ext)) {
+        const err = new Error("Bu turdagi fayllarni yuborib bo'lmaydi");
+        err.code = 'dangerousFileType';
+        return cb(err);
+      }
       return cb(null, true);
     }
     if (kind === 'photo') {
       if (file.mimetype.startsWith('image/')) return cb(null, true);
-      return cb(new Error('Faqat rasm fayllari qabul qilinadi'));
+      const err = new Error('Faqat rasm fayllari qabul qilinadi');
+      err.code = 'onlyImagesAllowed';
+      return cb(err);
     }
-    if (kind === 'video' || kind === 'circle') {
-      if (ALLOWED_CHAT_VIDEO_MIMES.includes(file.mimetype)) return cb(null, true);
-      return cb(new Error('Faqat video fayllari qabul qilinadi'));
+    if (kind === 'circle') {
+      // "Krujok" (doiraviy) videolar FAQAT bizning JS MediaRecorder kodimiz
+      // orqali yaratiladi — foydalanuvchi bu yerda hech qachon ixtiyoriy
+      // fayl tanlamaydi, shu bois mimetype'ga qarab rad etish shart emas.
+      //
+      // ASOSIY SABAB (nima uchun oldingi "startsWith('video/')" tekshiruvi
+      // ham yetarli emas edi): brauzer video+audio uchun IKKITA kodekni
+      // vergul bilan ajratib beradi, masalan "video/webm;codecs=vp9,opus".
+      // Multer ichida ishlatiladigan Busboy content-type parametrini RFC
+      // 7230 "token" qoidasiga qat'iy rioya qilib o'qiydi — vergul esa
+      // token belgisi HISOBLANMAYDI. Shu sabab butun content-type qatori
+      // "buzilgan" deb topilib, Busboy uni umuman o'qimay, o'zining
+      // standart "text/plain" qiymatiga tushib qoladi — ya'ni
+      // file.mimetype "video/webm;codecs=..." emas, balki "text/plain"
+      // bo'lib keladi, va hech qanday "video/" bilan solishtirish bunga
+      // yordam bermaydi. (Ovozli xabar birgina "opus" kodekini yuborgani
+      // uchun vergul muammosiga duch kelmaydi — shu bois faqat krujok
+      // buzilgan, ovozli xabar esa doim ishlagan.) Haqiqiy himoya keyingi
+      // bosqichda: fayl ffmpeg orqali qayta kodlanadi (transcodeCircleVideo)
+      // va agar bayt oqimi aslida video bo'lmasa, shu yerda tabiiy ravishda
+      // xatolik (videoProcessingFailed) qaytadi.
+      return cb(null, true);
+    }
+    if (kind === 'video') {
+      // Bu yerga foydalanuvchi diskdan haqiqiy video fayl tanlaydi (fayl
+      // tanlash oynasi orqali), shuning uchun mimetype odatda toza keladi
+      // (masalan "video/mp4") — MediaRecorder'ning krujokka xos kodek
+      // muammosi bunga tegishli emas. Baribir startsWith tekshiruvi
+      // qo'shimcha moslashuvchanlik uchun saqlanadi.
+      if (ALLOWED_CHAT_VIDEO_MIMES.includes(file.mimetype) || file.mimetype.startsWith('video/')) return cb(null, true);
+      const err = new Error('Faqat video fayllari qabul qilinadi');
+      err.code = 'onlyVideosAllowed';
+      return cb(err);
     }
     if (kind === 'voice') {
       if (ALLOWED_AUDIO_MIMES.includes(file.mimetype) || file.mimetype.startsWith('audio/')) return cb(null, true);
-      return cb(new Error('Faqat audio fayllari qabul qilinadi'));
+      const err = new Error('Faqat audio fayllari qabul qilinadi');
+      err.code = 'onlyAudioAllowed';
+      return cb(err);
     }
-    return cb(new Error("Noma'lum xabar turi"));
+    const err = new Error("Noma'lum xabar turi");
+    err.code = 'unknownMessageType';
+    return cb(err);
   }
 });
 
@@ -657,14 +710,14 @@ async function compressAndThumbnail(absPath) {
 function requireAuth(req, res, next) {
   const uname = req.session.username;
   if (!uname || !db.users[uname]) {
-    return res.status(401).json({ error: 'Avval tizimga kiring' });
+    return res.status(401).json({ error: 'Avval tizimga kiring', code: 'authRequired' });
   }
   const u = db.users[uname];
   ensureModerationFields(u);
   if (refreshModeration(u, uname)) saveDB();
   if (u.moderation.bannedUntil) {
     return res.status(403).json({
-      error: 'Hisobingiz vaqtincha bloklangan (ban)',
+      error: 'Hisobingiz vaqtincha bloklangan (ban)', code: 'accountBanned',
       banned: true,
       until: u.moderation.bannedUntil,
       reason: u.moderation.banReason || ''
@@ -681,7 +734,7 @@ function requireNotMuted(req, res, next) {
     if (refreshModeration(u, req.session.username)) saveDB();
     if (u.moderation.mutedUntil) {
       return res.status(403).json({
-        error: "Siz vaqtincha jimlik jazosidasiz (mut), shuning uchun bu amalni bajara olmaysiz",
+        error: "Siz vaqtincha jimlik jazosidasiz (mut), shuning uchun bu amalni bajara olmaysiz", code: 'muted',
         muted: true,
         until: u.moderation.mutedUntil,
         reason: u.moderation.muteReason || ''
@@ -694,7 +747,7 @@ function requireNotMuted(req, res, next) {
 function requireAdmin(req, res, next) {
   const u = db.users[req.session.username];
   if (!u || !(u.isAdmin || u.isBoss)) {
-    return res.status(403).json({ error: 'Bu amal uchun administrator huquqi kerak' });
+    return res.status(403).json({ error: 'Bu amal uchun administrator huquqi kerak', code: 'adminRequired' });
   }
   next();
 }
@@ -703,7 +756,7 @@ function requireAdmin(req, res, next) {
 function requireBoss(req, res, next) {
   const u = db.users[req.session.username];
   if (!u || !u.isBoss) {
-    return res.status(403).json({ error: 'Bu amal uchun boss huquqi kerak' });
+    return res.status(403).json({ error: 'Bu amal uchun boss huquqi kerak', code: 'bossRequired' });
   }
   next();
 }
@@ -712,10 +765,10 @@ function requireBoss(req, res, next) {
 function requireAdminNotBoss(req, res, next) {
   const u = db.users[req.session.username];
   if (!u || !(u.isAdmin || u.isBoss)) {
-    return res.status(403).json({ error: 'Bu amal uchun administrator huquqi kerak' });
+    return res.status(403).json({ error: 'Bu amal uchun administrator huquqi kerak', code: 'adminRequired' });
   }
   if (u.isBoss) {
-    return res.status(403).json({ error: 'Boss shikoyatlar bilan ishlamaydi' });
+    return res.status(403).json({ error: 'Boss shikoyatlar bilan ishlamaydi', code: 'bossNoReports' });
   }
   next();
 }
@@ -816,13 +869,13 @@ app.post('/api/register', rateLimit('register', 8, 10 * 60 * 1000), async (req, 
     const uname = String(username || '').trim().toLowerCase().replace(/\s+/g, '_');
 
     if (!isValidUsername(uname)) {
-      return res.status(400).json({ error: "Foydalanuvchi nomi 3-32 belgi, faqat lotin harflari/raqam/pastki chiziq bo'lishi kerak" });
+      return res.status(400).json({ error: "Foydalanuvchi nomi 3-32 belgi, faqat lotin harflari/raqam/pastki chiziq bo'lishi kerak", code: 'usernameInvalid' });
     }
     if (!password || password.length < 4) {
-      return res.status(400).json({ error: "Parol kamida 4 belgidan iborat bo'lishi kerak" });
+      return res.status(400).json({ error: "Parol kamida 4 belgidan iborat bo'lishi kerak", code: 'passwordTooShort' });
     }
     if (db.users[uname]) {
-      return res.status(409).json({ error: 'Bu foydalanuvchi nomi allaqachon band' });
+      return res.status(409).json({ error: 'Bu foydalanuvchi nomi allaqachon band', code: 'usernameTaken' });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -850,7 +903,7 @@ app.post('/api/register', rateLimit('register', 8, 10 * 60 * 1000), async (req, 
     res.json({ user: publicUser(uname) });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ error: "Ro'yxatdan o'tishda server xatoligi" });
+    res.status(500).json({ error: "Ro'yxatdan o'tishda server xatoligi", code: 'registerServerError' });
   }
 });
 
@@ -861,14 +914,14 @@ app.post('/api/login', rateLimit('login', 15, 10 * 60 * 1000), async (req, res) 
     const u = db.users[uname];
     const ok = u && await bcrypt.compare(String(password || ''), u.passwordHash);
     if (!ok) {
-      return res.status(401).json({ error: "Foydalanuvchi nomi yoki parol noto'g'ri" });
+      return res.status(401).json({ error: "Foydalanuvchi nomi yoki parol noto'g'ri", code: 'loginInvalid' });
     }
 
     ensureModerationFields(u);
     if (refreshModeration(u, uname)) await saveDB();
     if (u.moderation.bannedUntil) {
       return res.status(403).json({
-        error: 'Hisobingiz vaqtincha bloklangan (ban)',
+        error: 'Hisobingiz vaqtincha bloklangan (ban)', code: 'accountBanned',
         banned: true,
         until: u.moderation.bannedUntil,
         reason: u.moderation.banReason || ''
@@ -879,7 +932,7 @@ app.post('/api/login', rateLimit('login', 15, 10 * 60 * 1000), async (req, res) 
     res.json({ user: publicUser(uname) });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ error: 'Kirishda server xatoligi' });
+    res.status(500).json({ error: 'Kirishda server xatoligi', code: 'loginServerError' });
   }
 });
 
@@ -934,33 +987,33 @@ app.put('/api/profile', requireAuth, async (req, res) => {
 app.put('/api/profile/credentials', rateLimit('credentials', 10, 10 * 60 * 1000), requireAuth, async (req, res) => {
   const me = req.session.username;
   const u = db.users[me];
-  if (!u) return res.status(404).json({ error: 'userNotFound' });
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
 
   const { newUsername, currentPassword, newPassword } = req.body || {};
   const wantsUsernameChange = newUsername !== undefined && String(newUsername || '').trim() !== '';
   const wantsPasswordChange = newPassword !== undefined && String(newPassword || '') !== '';
 
   if (!wantsUsernameChange && !wantsPasswordChange) {
-    return res.status(400).json({ error: 'noChanges' });
+    return res.status(400).json({ error: 'Hech narsa o\'zgartirilmadi', code: 'noChanges' });
   }
 
   if (!currentPassword) {
-    return res.status(400).json({ error: 'currentPasswordRequired' });
+    return res.status(400).json({ error: 'Davom etish uchun joriy parolingizni kiriting', code: 'currentPasswordRequired' });
   }
   const passwordOk = await bcrypt.compare(String(currentPassword), u.passwordHash);
   if (!passwordOk) {
-    return res.status(401).json({ error: 'currentPasswordIncorrect' });
+    return res.status(401).json({ error: 'Joriy parol noto\'g\'ri', code: 'currentPasswordIncorrect' });
   }
 
   let uname = me;
   if (wantsUsernameChange) {
     const candidate = String(newUsername).trim().toLowerCase().replace(/\s+/g, '_');
     if (!isValidUsername(candidate)) {
-      return res.status(400).json({ error: 'usernameInvalid' });
+      return res.status(400).json({ error: 'Foydalanuvchi nomi 3-32 belgi, faqat lotin harflari/raqam/pastki chiziq bo\'lishi kerak', code: 'usernameInvalid' });
     }
     if (candidate !== me) {
       if (db.users[candidate]) {
-        return res.status(409).json({ error: 'usernameTaken' });
+        return res.status(409).json({ error: 'Bu foydalanuvchi nomi allaqachon band', code: 'usernameTaken' });
       }
       renameUsernameEverywhere(me, candidate);
       uname = candidate;
@@ -970,7 +1023,7 @@ app.put('/api/profile/credentials', rateLimit('credentials', 10, 10 * 60 * 1000)
 
   if (wantsPasswordChange) {
     if (String(newPassword).length < 4) {
-      return res.status(400).json({ error: 'passwordTooShort' });
+      return res.status(400).json({ error: 'Parol kamida 4 belgidan iborat bo\'lishi kerak', code: 'passwordTooShort' });
     }
     db.users[uname].passwordHash = await bcrypt.hash(String(newPassword), 10);
   }
@@ -982,8 +1035,8 @@ app.put('/api/profile/credentials', rateLimit('credentials', 10, 10 * 60 * 1000)
 /* Profil rasmini (avatar) yuklash */
 app.post('/api/profile/avatar', requireAuth, (req, res) => {
   upload.single('avatar')(req, res, async (err) => {
-    if (err) return res.status(400).json({ error: err.message });
-    if (!req.file) return res.status(400).json({ error: 'Rasm talab qilinadi' });
+    if (err) return res.status(400).json({ error: err.message, code: multerErrCode(err) });
+    if (!req.file) return res.status(400).json({ error: 'Rasm talab qilinadi', code: 'imageRequired' });
 
     // Avatarni 400x400 kvadratga siqamiz — profil doim tez yuklanadi
     try {
@@ -1010,7 +1063,7 @@ app.post('/api/profile/avatar', requireAuth, (req, res) => {
 /* Boshqa foydalanuvchining ochiq profili (maxfiylikka rioya qilib) */
 app.get('/api/users/:username', (req, res) => {
   const uname = String(req.params.username || '').trim().toLowerCase();
-  if (!db.users[uname]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (!db.users[uname]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
 
   const viewer = req.session && req.session.username;
   const profile = publicProfile(uname, viewer);
@@ -1044,8 +1097,8 @@ app.get('/api/users/:username', (req, res) => {
 app.post('/api/users/:username/follow', requireAuth, async (req, res) => {
   const target = String(req.params.username || '').trim().toLowerCase();
   const me = req.session.username;
-  if (target === me) return res.status(400).json({ error: "O'zingizga obuna bo'la olmaysiz" });
-  if (!db.users[target]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (target === me) return res.status(400).json({ error: "O'zingizga obuna bo'la olmaysiz", code: 'cannotFollowSelf' });
+  if (!db.users[target]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
 
   const u = db.users[me];
   ensureModerationFields(u);
@@ -1064,7 +1117,7 @@ app.post('/api/users/:username/follow', requireAuth, async (req, res) => {
 
 app.get('/api/users/:username/followers', (req, res) => {
   const target = String(req.params.username || '').trim().toLowerCase();
-  if (!db.users[target]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (!db.users[target]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
   const items = Object.keys(db.users)
     .filter(uname => Array.isArray(db.users[uname].following) && db.users[uname].following.includes(target))
     .map(uname => ({ username: uname, fullname: db.users[uname].fullname || uname, avatar: db.users[uname].avatar || null }));
@@ -1074,7 +1127,7 @@ app.get('/api/users/:username/followers', (req, res) => {
 app.get('/api/users/:username/following', (req, res) => {
   const target = String(req.params.username || '').trim().toLowerCase();
   const u = db.users[target];
-  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
   ensureModerationFields(u);
   const items = (u.following || [])
     .filter(uname => db.users[uname])
@@ -1127,13 +1180,13 @@ function cartItemView(work, owner, ownerUser, qty) {
    tashlaydi, bo'lmasa 1 dona qo'shadi (tezkor qo'shish/olib tashlash). */
 app.post('/api/works/:id/cart-toggle', requireAuth, async (req, res) => {
   const found = findWork(req.params.id);
-  if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
   const { work, owner } = found;
   const me = req.session.username;
-  if (owner === me) return res.status(400).json({ error: "O'z asaringizni savatga qo'sha olmaysiz" });
-  if (work.status !== 'sale') return res.status(400).json({ error: 'Bu asar sotuvda emas' });
+  if (owner === me) return res.status(400).json({ error: "O'z asaringizni savatga qo'sha olmaysiz", code: 'cannotCartOwnWork' });
+  if (work.status !== 'sale') return res.status(400).json({ error: 'Bu asar sotuvda emas', code: 'workNotForSale' });
   const limit = stockLimitFor(work);
-  if (limit <= 0) return res.status(400).json({ error: 'Bu asar tugagan' });
+  if (limit <= 0) return res.status(400).json({ error: 'Bu asar tugagan', code: 'workOutOfStock' });
   const u = db.users[me];
   ensureModerationFields(u);
   let inCart;
@@ -1148,13 +1201,13 @@ app.put('/api/cart/:id', requireAuth, async (req, res) => {
   const u = db.users[req.session.username];
   ensureModerationFields(u);
   const found = findWork(req.params.id);
-  if (!found || !u.cart[req.params.id]) return res.status(404).json({ error: 'Bu asar savatda topilmadi' });
+  if (!found || !u.cart[req.params.id]) return res.status(404).json({ error: 'Bu asar savatda topilmadi', code: 'workNotInCart' });
   let qty = Math.floor(Number(req.body && req.body.qty));
-  if (!Number.isFinite(qty)) return res.status(400).json({ error: "Noto'g'ri miqdor" });
+  if (!Number.isFinite(qty)) return res.status(400).json({ error: "Noto'g'ri miqdor", code: 'invalidQuantity' });
   if (qty <= 0) { delete u.cart[req.params.id]; }
   else {
     const limit = stockLimitFor(found.work);
-    if (qty > limit) return res.status(400).json({ error: `Faqat ${limit} dona mavjud` });
+    if (qty > limit) return res.status(400).json({ error: `Faqat ${limit} dona mavjud`, code: 'notEnoughStock', params: { n: limit } });
     u.cart[req.params.id] = qty;
   }
   await saveDB();
@@ -1204,7 +1257,7 @@ app.post('/api/cart/checkout', requireAuth, async (req, res) => {
   const u = db.users[me];
   ensureModerationFields(u);
   const ids = Object.keys(u.cart);
-  if (!ids.length) return res.status(400).json({ error: "Savat bo'sh" });
+  if (!ids.length) return res.status(400).json({ error: "Savat bo'sh", code: 'cartEmpty' });
 
   const orderItems = [];
   for (const id of ids) {
@@ -1226,7 +1279,7 @@ app.post('/api/cart/checkout', requireAuth, async (req, res) => {
       work.stockQty = Math.max(0, work.stockQty - qty);
     }
   }
-  if (!orderItems.length) { await saveDB(); return res.status(400).json({ error: "Savat bo'sh" }); }
+  if (!orderItems.length) { await saveDB(); return res.status(400).json({ error: "Savat bo'sh", code: 'cartEmpty' }); }
 
   const totalsByCurrency = {};
   for (const it of orderItems) {
@@ -1263,7 +1316,7 @@ app.post('/api/cart/checkout', requireAuth, async (req, res) => {
 /* ===================== SHIKOYATLAR (REPORT) ===================== */
 app.post('/api/works/:id/report', requireAuth, rateLimit('report', 15, 10 * 60 * 1000), async (req, res) => {
   const found = findWork(req.params.id);
-  if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
   ensureReportsArray();
   const reason = String((req.body && req.body.reason) || '').trim().slice(0, 300);
   db.reports.push({
@@ -1283,7 +1336,7 @@ app.post('/api/works/:id/report', requireAuth, rateLimit('report', 15, 10 * 60 *
 
 app.post('/api/users/:username/report', requireAuth, rateLimit('report', 15, 10 * 60 * 1000), async (req, res) => {
   const target = String(req.params.username || '').trim().toLowerCase();
-  if (!db.users[target]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (!db.users[target]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
   ensureReportsArray();
   const reason = String((req.body && req.body.reason) || '').trim().slice(0, 300);
   db.reports.push({
@@ -1316,8 +1369,8 @@ app.get('/api/works', requireAuth, (req, res) => {
 
 app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
   upload.array('images', 3)(req, res, async (err) => {
-    if (err) return res.status(400).json({ error: err.message });
-    if (!req.files || !req.files.length) return res.status(400).json({ error: 'Kamida bitta rasm yoki video talab qilinadi' });
+    if (err) return res.status(400).json({ error: err.message, code: multerErrCode(err) });
+    if (!req.files || !req.files.length) return res.status(400).json({ error: 'Kamida bitta rasm yoki video talab qilinadi', code: 'mediaRequired' });
 
     const { title, type, status, price, currency, desc, stockMode: stockModeRaw, stockQty: stockQtyRaw, typeCustom: typeCustomRaw } = req.body || {};
     const isSale = status === 'sale';
@@ -1335,18 +1388,18 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
     const imageFiles = req.files.filter(f => f.mimetype.startsWith('image/'));
 
     // Yordamchi: yuklangan fayllarni diskdan o'chirib, xatolik qaytaradi
-    function rejectWithCleanup(status, message) {
+    function rejectWithCleanup(status, message, code) {
       req.files.forEach(f => fs.unlink(f.path, () => {}));
-      return res.status(status).json({ error: message });
+      return res.status(status).json({ error: message, code });
     }
 
     if (videoFile) {
       if (req.files.length > 1) {
-        return rejectWithCleanup(400, "Video bilan birga boshqa fayl yuklab bo'lmaydi — faqat bitta video tanlang");
+        return rejectWithCleanup(400, "Video bilan birga boshqa fayl yuklab bo'lmaydi — faqat bitta video tanlang", 'videoWithOtherFiles');
       }
       const durationSec = getMp4DurationSeconds(videoFile.path);
       if (durationSec !== null && durationSec > MAX_VIDEO_SECONDS) {
-        return rejectWithCleanup(400, 'Video 10 soniyadan uzun bo\'lmasligi kerak');
+        return rejectWithCleanup(400, 'Video 10 soniyadan uzun bo\'lmasligi kerak', 'videoTooLong10s');
       }
 
       // Videoni har doim H.264/AAC MP4'ga qayta kodlaymiz (asl fayl mp4 yoki
@@ -1362,7 +1415,7 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
       } catch (e) {
         fs.unlink(transcodedPath, () => {});
         fs.unlink(path.join(UPLOADS_DIR, posterFilename), () => {});
-        return rejectWithCleanup(400, "Videoni qayta ishlashda xatolik yuz berdi. Boshqa video tanlab ko'ring.");
+        return rejectWithCleanup(400, "Videoni qayta ishlashda xatolik yuz berdi. Boshqa video tanlab ko'ring.", 'videoProcessingFailed');
       }
 
       // Asl yuklangan fayl endi kerak emas — qayta kodlangan nusxa saqlanadi
@@ -1397,7 +1450,7 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
       return res.json({ work });
     }
 
-    if (!imageFiles.length) return rejectWithCleanup(400, 'Kamida bitta rasm yoki video talab qilinadi');
+    if (!imageFiles.length) return rejectWithCleanup(400, 'Kamida bitta rasm yoki video talab qilinadi', 'mediaRequired');
 
     // Har bir rasmni siqib, thumbnail yaratamiz (rasm sifati deyarli
     // o'zgarmaydi, lekin fayl hajmi va sahifa yuklanish tezligi yaxshilanadi)
@@ -1545,7 +1598,7 @@ app.get('/api/feed', (req, res) => {
 
 app.post('/api/works/:id/like', requireAuth, async (req, res) => {
   const found = findWork(req.params.id);
-  if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
   const { work } = found;
   if (!Array.isArray(work.likes)) work.likes = [];
 
@@ -1562,7 +1615,7 @@ app.post('/api/works/:id/like', requireAuth, async (req, res) => {
 /* Asarni to'liq hajmda ochganda chaqiriladi — statistikada ko'rishlar sonini oshiradi */
 app.post('/api/works/:id/view', rateLimit('view', 120, 60 * 1000), async (req, res) => {
   const found = findWork(req.params.id);
-  if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
   const { work } = found;
   work.views = (Number(work.views) || 0) + 1;
   await saveDB();
@@ -1572,7 +1625,7 @@ app.post('/api/works/:id/view', rateLimit('view', 120, 60 * 1000), async (req, r
 /* ===================== KOMENTLAR ===================== */
 app.get('/api/works/:id/comments', (req, res) => {
   const found = findWork(req.params.id);
-  if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
   const list = Array.isArray(found.work.comments) ? found.work.comments : [];
   const items = list.map(c => {
     const u = db.users[c.username];
@@ -1589,11 +1642,11 @@ app.get('/api/works/:id/comments', (req, res) => {
 
 app.post('/api/works/:id/comments', requireAuth, requireNotMuted, rateLimit('comment', 30, 60 * 1000), async (req, res) => {
   const found = findWork(req.params.id);
-  if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
   const { work } = found;
 
   const text = String((req.body && req.body.text) || '').trim().slice(0, 500);
-  if (!text) return res.status(400).json({ error: 'Koment matni bo\'sh bo\'lishi mumkin emas' });
+  if (!text) return res.status(400).json({ error: 'Koment matni bo\'sh bo\'lishi mumkin emas', code: 'commentEmpty' });
 
   if (!Array.isArray(work.comments)) work.comments = [];
   const me = req.session.username;
@@ -1621,19 +1674,19 @@ app.post('/api/works/:id/comments', requireAuth, requireNotMuted, rateLimit('com
 
 app.delete('/api/works/:id/comments/:commentId', requireAuth, async (req, res) => {
   const found = findWork(req.params.id);
-  if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
   const { work } = found;
   if (!Array.isArray(work.comments)) work.comments = [];
 
   const me = req.session.username;
   const idx = work.comments.findIndex(c => c.id === req.params.commentId);
-  if (idx === -1) return res.status(404).json({ error: 'Koment topilmadi' });
+  if (idx === -1) return res.status(404).json({ error: 'Koment topilmadi', code: 'commentNotFound' });
 
   const comment = work.comments[idx];
   const isOwner = comment.username === me;
   const isWorkOwner = found.owner === me;
   if (!isOwner && !isWorkOwner) {
-    return res.status(403).json({ error: "Bu komentni o'chirishga ruxsatingiz yo'q" });
+    return res.status(403).json({ error: "Bu komentni o'chirishga ruxsatingiz yo'q", code: 'commentDeleteForbidden' });
   }
 
   work.comments.splice(idx, 1);
@@ -1665,17 +1718,22 @@ function unreadCountFor(conv, me) {
   return conv.messages.filter(m => m.from !== me && (!readUpto || new Date(m.createdAt) > new Date(readUpto))).length;
 }
 
-/* Suhbatlar ro'yxatidagi so'nggi xabar önizlemesi — media xabarlar uchun
-   matn o'rniga qisqa tavsif (emoji bilan) ko'rsatiladi */
+/* Suhbatlar ro'yxatidagi so'nggi xabar önizlemesi. MUHIM: bu yerda matnni
+   tayyor holda (masalan "🎙️ Ovozli xabar") qaytarib bo'lmaydi — u har doim
+   o'zbekcha bo'lib qolib, foydalanuvchi boshqa til tanlagan bo'lsa ham
+   tarjima qilinmay ko'rinaverardi. Shu sabab faqat TUR (type) qaytariladi;
+   emoji+matnni frontend joriy sayt tiliga qarab o'zi hosil qiladi —
+   xuddi lastCallStatus'ni chatCallStatusPreviewText() orqali tarjima
+   qilgani kabi. */
 function lastMessagePreviewFor(last) {
-  if (!last || last.type === 'call') return '';
+  if (!last || last.type === 'call') return { type: null, text: '' };
   switch (last.type) {
-    case 'photo': return '📷 Rasm';
-    case 'video': return '🎥 Video';
-    case 'circle': return '⭕ Video xabar';
-    case 'voice': return '🎙️ Ovozli xabar';
-    case 'file': return '📎 ' + (last.fileName || 'Fayl');
-    default: return last.text || '';
+    case 'photo': return { type: 'photo', text: '' };
+    case 'video': return { type: 'video', text: '' };
+    case 'circle': return { type: 'circle', text: '' };
+    case 'voice': return { type: 'voice', text: '' };
+    case 'file': return { type: 'file', text: '', fileName: last.fileName || '' };
+    default: return { type: 'text', text: last.text || '' };
   }
 }
 
@@ -1688,11 +1746,14 @@ app.get('/api/conversations', requireAuth, (req, res) => {
       const other = c.participants.find(p => p !== me) || me;
       const u = db.users[other];
       const last = c.messages[c.messages.length - 1] || null;
+      const preview = lastMessagePreviewFor(last);
       return {
         username: other,
         fullname: (u && u.fullname) || other,
         avatar: (u && u.avatar) || null,
-        lastMessage: lastMessagePreviewFor(last),
+        lastMessage: preview.text,
+        lastMessageType: preview.type,
+        lastFileName: preview.fileName || null,
         lastCallStatus: last && last.type === 'call' ? (last.callStatus || 'ended') : null,
         lastFrom: last ? last.from : null,
         updatedAt: c.updatedAt,
@@ -1718,8 +1779,8 @@ app.get('/api/conversations/unread-count', requireAuth, (req, res) => {
 app.get('/api/conversations/:username/messages', requireAuth, async (req, res) => {
   const me = req.session.username;
   const other = String(req.params.username || '').trim().toLowerCase();
-  if (!db.users[other]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
-  if (other === me) return res.status(400).json({ error: "O'zingizga xabar yubora olmaysiz" });
+  if (!db.users[other]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
+  if (other === me) return res.status(400).json({ error: "O'zingizga xabar yubora olmaysiz", code: 'cannotMessageSelf' });
 
   const conv = getOrCreateConversation(me, other);
   if (!conv.readUpto) conv.readUpto = {};
@@ -1737,11 +1798,11 @@ app.get('/api/conversations/:username/messages', requireAuth, async (req, res) =
 app.post('/api/conversations/:username/messages', requireAuth, requireNotMuted, rateLimit('message', 40, 60 * 1000), async (req, res) => {
   const me = req.session.username;
   const other = String(req.params.username || '').trim().toLowerCase();
-  if (!db.users[other]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
-  if (other === me) return res.status(400).json({ error: "O'zingizga xabar yubora olmaysiz" });
+  if (!db.users[other]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
+  if (other === me) return res.status(400).json({ error: "O'zingizga xabar yubora olmaysiz", code: 'cannotMessageSelf' });
 
   const text = String((req.body && req.body.text) || '').trim().slice(0, 1000);
-  if (!text) return res.status(400).json({ error: "Xabar matni bo'sh bo'lishi mumkin emas" });
+  if (!text) return res.status(400).json({ error: "Xabar matni bo'sh bo'lishi mumkin emas", code: 'messageEmpty' });
 
   const workId = req.body && req.body.workId ? String(req.body.workId).slice(0, 60) : null;
   const workTitle = req.body && req.body.workTitle ? String(req.body.workTitle).slice(0, 200) : null;
@@ -1768,15 +1829,15 @@ app.post('/api/conversations/:username/messages', requireAuth, requireNotMuted, 
    istalgan fayl yuborish. `type` maydoni: photo | video | circle | voice | file */
 app.post('/api/conversations/:username/messages/media', requireAuth, requireNotMuted, rateLimit('message-media', 30, 60 * 1000), (req, res) => {
   chatUpload.single('file')(req, res, async (err) => {
-    if (err) return res.status(400).json({ error: err.message });
+    if (err) return res.status(400).json({ error: err.message, code: multerErrCode(err) });
 
     const me = req.session.username;
     const other = String(req.params.username || '').trim().toLowerCase();
     const cleanup = () => { if (req.file) fs.unlink(req.file.path, () => {}); };
 
-    if (!db.users[other]) { cleanup(); return res.status(404).json({ error: 'Foydalanuvchi topilmadi' }); }
-    if (other === me) { cleanup(); return res.status(400).json({ error: "O'zingizga xabar yubora olmaysiz" }); }
-    if (!req.file) return res.status(400).json({ error: 'Fayl talab qilinadi' });
+    if (!db.users[other]) { cleanup(); return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' }); }
+    if (other === me) { cleanup(); return res.status(400).json({ error: "O'zingizga xabar yubora olmaysiz", code: 'cannotMessageSelf' }); }
+    if (!req.file) return res.status(400).json({ error: 'Fayl talab qilinadi', code: 'fileRequired' });
 
     const kind = String(req.body.type || '').toLowerCase();
     const caption = String(req.body.caption || '').trim().slice(0, 500);
@@ -1801,7 +1862,7 @@ app.post('/api/conversations/:username/messages/media', requireAuth, requireNotM
           else await transcodeVideoToMp4(req.file.path, transcodedPath);
         } catch (e) {
           cleanup();
-          return res.status(400).json({ error: "Videoni qayta ishlashda xatolik yuz berdi. Boshqa video tanlab ko'ring." });
+          return res.status(400).json({ error: "Videoni qayta ishlashda xatolik yuz berdi. Boshqa video tanlab ko'ring.", code: 'videoProcessingFailed' });
         }
         cleanup(); // asl (transkodlanmagan) faylni o'chiramiz
 
@@ -1809,7 +1870,7 @@ app.post('/api/conversations/:username/messages/media', requireAuth, requireNotM
         const maxSec = kind === 'circle' ? MAX_CHAT_CIRCLE_SECONDS : MAX_CHAT_VIDEO_SECONDS;
         if (realDuration && realDuration > maxSec + 1) {
           fs.unlink(transcodedPath, () => {});
-          return res.status(400).json({ error: `Video juda uzun (maksimal ${maxSec} soniya)` });
+          return res.status(400).json({ error: `Video juda uzun (maksimal ${maxSec} soniya)`, code: 'videoTooLong', params: { n: maxSec } });
         }
 
         const posterFilename = transcodedFilename.replace(/\.mp4$/, '.jpg');
@@ -1833,7 +1894,7 @@ app.post('/api/conversations/:username/messages/media', requireAuth, requireNotM
 
       } else {
         cleanup();
-        return res.status(400).json({ error: "Noma'lum xabar turi" });
+        return res.status(400).json({ error: "Noma'lum xabar turi", code: 'unknownMessageType' });
       }
 
       const conv = getOrCreateConversation(me, other);
@@ -1847,7 +1908,7 @@ app.post('/api/conversations/:username/messages/media', requireAuth, requireNotM
     } catch (e) {
       cleanup();
       console.error('Chat media xatoligi:', e.message);
-      res.status(500).json({ error: 'Server xatoligi' });
+      res.status(500).json({ error: 'Server xatoligi', code: 'serverError' });
     }
   });
 });
@@ -1937,16 +1998,16 @@ setInterval(() => {
 app.post('/api/calls/start', requireAuth, requireNotMuted, rateLimit('call-start', 20, 60 * 1000), (req, res) => {
   const me = req.session.username;
   const to = String((req.body && req.body.to) || '').trim().toLowerCase();
-  if (!to || !db.users[to]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
-  if (to === me) return res.status(400).json({ error: "O'zingizga qo'ng'iroq qila olmaysiz" });
+  if (!to || !db.users[to]) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
+  if (to === me) return res.status(400).json({ error: "O'zingizga qo'ng'iroq qila olmaysiz", code: 'cannotCallSelf' });
 
-  if (userActiveCall.has(me)) return res.status(409).json({ error: "Sizda allaqachon faol qo'ng'iroq bor" });
-  if (userActiveCall.has(to)) return res.status(409).json({ error: "Foydalanuvchi hozir band", busy: true });
+  if (userActiveCall.has(me)) return res.status(409).json({ error: "Sizda allaqachon faol qo'ng'iroq bor", code: 'callAlreadyActive' });
+  if (userActiveCall.has(to)) return res.status(409).json({ error: "Foydalanuvchi hozir band", code: 'userBusy', busy: true });
 
   const check = callPrivacyCheck(me, to);
   if (!check.ok) {
     return res.status(403).json({
-      error: "Bu foydalanuvchi video qo'ng'iroqlarni cheklagan",
+      error: "Bu foydalanuvchi video qo'ng'iroqlarni cheklagan", code: 'callBlocked',
       blocked: true
     });
   }
@@ -1983,7 +2044,7 @@ function getCallForParticipant(req, res) {
   const me = req.session.username;
   const call = activeCalls.get(req.params.id);
   if (!call || (call.from !== me && call.to !== me)) {
-    res.status(404).json({ error: "Qo'ng'iroq topilmadi" });
+    res.status(404).json({ error: "Qo'ng'iroq topilmadi", code: 'callNotFound' });
     return null;
   }
   return call;
@@ -2000,9 +2061,9 @@ app.post('/api/calls/:id/offer', requireAuth, (req, res) => {
   const call = getCallForParticipant(req, res);
   if (!call) return;
   const me = req.session.username;
-  if (call.from !== me) return res.status(403).json({ error: 'Faqat chaqiruvchi taklif yubora oladi' });
+  if (call.from !== me) return res.status(403).json({ error: 'Faqat chaqiruvchi taklif yubora oladi', code: 'onlyCallerCanOffer' });
   const sdp = req.body && req.body.sdp;
-  if (!sdp || typeof sdp !== 'object') return res.status(400).json({ error: "Noto'g'ri ma'lumot" });
+  if (!sdp || typeof sdp !== 'object') return res.status(400).json({ error: "Noto'g'ri ma'lumot", code: 'invalidData' });
   call.offer = sdp;
   call.updatedAt = Date.now();
   res.json({ ok: true });
@@ -2013,10 +2074,10 @@ app.post('/api/calls/:id/answer', requireAuth, (req, res) => {
   const call = getCallForParticipant(req, res);
   if (!call) return;
   const me = req.session.username;
-  if (call.to !== me) return res.status(403).json({ error: 'Faqat qabul qiluvchi javob bera oladi' });
-  if (call.status !== 'ringing') return res.status(400).json({ error: "Qo'ng'iroq allaqachon tugagan" });
+  if (call.to !== me) return res.status(403).json({ error: 'Faqat qabul qiluvchi javob bera oladi', code: 'onlyCalleeCanAnswer' });
+  if (call.status !== 'ringing') return res.status(400).json({ error: "Qo'ng'iroq allaqachon tugagan", code: 'callAlreadyEnded' });
   const sdp = req.body && req.body.sdp;
-  if (!sdp || typeof sdp !== 'object') return res.status(400).json({ error: "Noto'g'ri ma'lumot" });
+  if (!sdp || typeof sdp !== 'object') return res.status(400).json({ error: "Noto'g'ri ma'lumot", code: 'invalidData' });
   call.answer = sdp;
   call.status = 'accepted';
   call.acceptedAt = Date.now();
@@ -2030,7 +2091,7 @@ app.post('/api/calls/:id/candidate', requireAuth, (req, res) => {
   if (!call) return;
   const me = req.session.username;
   const candidate = req.body && req.body.candidate;
-  if (!candidate || typeof candidate !== 'object') return res.status(400).json({ error: "Noto'g'ri ma'lumot" });
+  if (!candidate || typeof candidate !== 'object') return res.status(400).json({ error: "Noto'g'ri ma'lumot", code: 'invalidData' });
   if (!Array.isArray(call.candidates[me])) call.candidates[me] = [];
   call.candidates[me].push(candidate);
   if (call.candidates[me].length > 200) call.candidates[me].shift();
@@ -2050,7 +2111,7 @@ app.post('/api/calls/:id/decline', requireAuth, (req, res) => {
   const call = getCallForParticipant(req, res);
   if (!call) return;
   const me = req.session.username;
-  if (call.to !== me) return res.status(403).json({ error: 'Faqat qabul qiluvchi rad eta oladi' });
+  if (call.to !== me) return res.status(403).json({ error: 'Faqat qabul qiluvchi rad eta oladi', code: 'onlyCalleeCanDecline' });
   if (call.status === 'ringing') endCallInternal(call, 'declined');
   res.json({ ok: true });
 });
@@ -2060,7 +2121,7 @@ app.post('/api/calls/:id/cancel', requireAuth, (req, res) => {
   const call = getCallForParticipant(req, res);
   if (!call) return;
   const me = req.session.username;
-  if (call.from !== me) return res.status(403).json({ error: 'Faqat chaqiruvchi bekor qila oladi' });
+  if (call.from !== me) return res.status(403).json({ error: 'Faqat chaqiruvchi bekor qila oladi', code: 'onlyCallerCanCancel' });
   if (call.status === 'ringing') endCallInternal(call, 'cancelled');
   res.json({ ok: true });
 });
@@ -2091,11 +2152,11 @@ app.post('/api/admin/activate', requireAuth, async (req, res) => {
   const u = db.users[req.session.username];
   ensureModerationFields(u);
   if (u.adminAccessRevoked) {
-    return res.status(403).json({ error: "Administrator huquqingiz boss tomonidan bekor qilingan. Faqat boss ruxsati bilan qaytadan faollashtira olasiz" });
+    return res.status(403).json({ error: "Administrator huquqingiz boss tomonidan bekor qilingan. Faqat boss ruxsati bilan qaytadan faollashtira olasiz", code: 'adminAccessRevoked' });
   }
   const { password } = req.body || {};
   if (!checkAdminPassword(password)) {
-    return res.status(403).json({ error: "Maxfiy parol noto'g'ri" });
+    return res.status(403).json({ error: "Maxfiy parol noto'g'ri", code: 'wrongAdminPassword' });
   }
   u.isAdmin = true;
   await saveDB();
@@ -2107,7 +2168,7 @@ app.post('/api/admin/activate', requireAuth, async (req, res) => {
 app.post('/api/admin/boss/activate', requireAuth, requireAdmin, async (req, res) => {
   const { code } = req.body || {};
   if (!checkBossPassword(code)) {
-    return res.status(403).json({ error: "Maxfiy kod noto'g'ri" });
+    return res.status(403).json({ error: "Maxfiy kod noto'g'ri", code: 'wrongBossCode' });
   }
   const u = db.users[req.session.username];
   u.isAdmin = true;
@@ -2155,12 +2216,12 @@ function parseModerationMinutes(body) {
 app.post('/api/admin/users/:username/ban', requireAuth, requireAdmin, async (req, res) => {
   const target = String(req.params.username || '').trim().toLowerCase();
   const u = db.users[target];
-  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
-  if (target === req.session.username) return res.status(400).json({ error: "O'zingizni ban qila olmaysiz" });
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
+  if (target === req.session.username) return res.status(400).json({ error: "O'zingizni ban qila olmaysiz", code: 'cannotBanSelf' });
   ensureModerationFields(u);
   const actor = db.users[req.session.username];
-  if (u.isBoss) return res.status(400).json({ error: "Boss'ni ban qila olmaysiz" });
-  if (u.isAdmin && !(actor && actor.isBoss)) return res.status(400).json({ error: "Boshqa administratorni ban qila olmaysiz" });
+  if (u.isBoss) return res.status(400).json({ error: "Boss'ni ban qila olmaysiz", code: 'cannotBanBoss' });
+  if (u.isAdmin && !(actor && actor.isBoss)) return res.status(400).json({ error: "Boshqa administratorni ban qila olmaysiz", code: 'cannotBanAdmin' });
 
   const minutes = parseModerationMinutes(req.body);
   const reason = String((req.body && req.body.reason) || '').trim().slice(0, 300);
@@ -2178,7 +2239,7 @@ app.post('/api/admin/users/:username/ban', requireAuth, requireAdmin, async (req
 app.post('/api/admin/users/:username/unban', requireAuth, requireAdmin, async (req, res) => {
   const target = String(req.params.username || '').trim().toLowerCase();
   const u = db.users[target];
-  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
 
   ensureModerationFields(u);
   const wasBanned = !!u.moderation.bannedUntil;
@@ -2197,12 +2258,12 @@ app.post('/api/admin/users/:username/unban', requireAuth, requireAdmin, async (r
 app.post('/api/admin/users/:username/mute', requireAuth, requireAdmin, async (req, res) => {
   const target = String(req.params.username || '').trim().toLowerCase();
   const u = db.users[target];
-  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
-  if (target === req.session.username) return res.status(400).json({ error: "O'zingizni mut qila olmaysiz" });
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
+  if (target === req.session.username) return res.status(400).json({ error: "O'zingizni mut qila olmaysiz", code: 'cannotMuteSelf' });
   ensureModerationFields(u);
   const actor = db.users[req.session.username];
-  if (u.isBoss) return res.status(400).json({ error: "Boss'ni mut qila olmaysiz" });
-  if (u.isAdmin && !(actor && actor.isBoss)) return res.status(400).json({ error: "Boshqa administratorni mut qila olmaysiz" });
+  if (u.isBoss) return res.status(400).json({ error: "Boss'ni mut qila olmaysiz", code: 'cannotMuteBoss' });
+  if (u.isAdmin && !(actor && actor.isBoss)) return res.status(400).json({ error: "Boshqa administratorni mut qila olmaysiz", code: 'cannotMuteAdmin' });
 
   const minutes = parseModerationMinutes(req.body);
   const reason = String((req.body && req.body.reason) || '').trim().slice(0, 300);
@@ -2220,7 +2281,7 @@ app.post('/api/admin/users/:username/mute', requireAuth, requireAdmin, async (re
 app.post('/api/admin/users/:username/unmute', requireAuth, requireAdmin, async (req, res) => {
   const target = String(req.params.username || '').trim().toLowerCase();
   const u = db.users[target];
-  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
 
   ensureModerationFields(u);
   const wasMuted = !!u.moderation.mutedUntil;
@@ -2240,11 +2301,11 @@ app.post('/api/admin/users/:username/unmute', requireAuth, requireAdmin, async (
 app.post('/api/admin/users/:username/fire', requireAuth, requireBoss, async (req, res) => {
   const target = String(req.params.username || '').trim().toLowerCase();
   const u = db.users[target];
-  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
-  if (target === req.session.username) return res.status(400).json({ error: "O'zingizni ishdan bo'shata olmaysiz" });
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
+  if (target === req.session.username) return res.status(400).json({ error: "O'zingizni ishdan bo'shata olmaysiz", code: 'cannotFireSelf' });
   ensureModerationFields(u);
-  if (u.isBoss) return res.status(400).json({ error: "Boss'ni ishdan bo'shata olmaysiz" });
-  if (!u.isAdmin) return res.status(400).json({ error: 'Bu foydalanuvchi administrator emas' });
+  if (u.isBoss) return res.status(400).json({ error: "Boss'ni ishdan bo'shata olmaysiz", code: 'cannotFireBoss' });
+  if (!u.isAdmin) return res.status(400).json({ error: 'Bu foydalanuvchi administrator emas', code: 'userNotAdmin' });
 
   u.isAdmin = false;
   u.adminAccessRevoked = true;
@@ -2259,11 +2320,11 @@ app.post('/api/admin/users/:username/fire', requireAuth, requireBoss, async (req
 app.post('/api/admin/users/:username/promote', requireAuth, requireBoss, async (req, res) => {
   const target = String(req.params.username || '').trim().toLowerCase();
   const u = db.users[target];
-  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
-  if (target === req.session.username) return res.status(400).json({ error: "O'zingizni admin qila olmaysiz" });
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
+  if (target === req.session.username) return res.status(400).json({ error: "O'zingizni admin qila olmaysiz", code: 'cannotPromoteSelf' });
   ensureModerationFields(u);
-  if (u.isBoss) return res.status(400).json({ error: "Bu foydalanuvchi allaqachon Boss" });
-  if (u.isAdmin) return res.status(400).json({ error: 'Bu foydalanuvchi allaqachon administrator' });
+  if (u.isBoss) return res.status(400).json({ error: "Bu foydalanuvchi allaqachon Boss", code: 'userAlreadyBoss' });
+  if (u.isAdmin) return res.status(400).json({ error: 'Bu foydalanuvchi allaqachon administrator', code: 'userAlreadyAdmin' });
 
   u.isAdmin = true;
   u.adminAccessRevoked = false;
@@ -2278,9 +2339,9 @@ app.post('/api/admin/users/:username/promote', requireAuth, requireBoss, async (
 app.post('/api/admin/users/:username/rehire', requireAuth, requireBoss, async (req, res) => {
   const target = String(req.params.username || '').trim().toLowerCase();
   const u = db.users[target];
-  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
   ensureModerationFields(u);
-  if (!u.adminAccessRevoked) return res.status(400).json({ error: "Bu foydalanuvchi ishdan bo'shatilmagan" });
+  if (!u.adminAccessRevoked) return res.status(400).json({ error: "Bu foydalanuvchi ishdan bo'shatilmagan", code: 'userNotFired' });
 
   u.adminAccessRevoked = false;
   addNotification(target, { type: 'admin-rehired' });
@@ -2345,7 +2406,7 @@ app.get('/api/admin/reports', requireAuth, requireAdminNotBoss, async (req, res)
 app.post('/api/admin/reports/:id/resolve', requireAuth, requireAdminNotBoss, async (req, res) => {
   ensureReportsArray();
   const r = db.reports.find(x => x.id === req.params.id);
-  if (!r) return res.status(404).json({ error: 'Shikoyat topilmadi' });
+  if (!r) return res.status(404).json({ error: 'Shikoyat topilmadi', code: 'reportNotFound' });
   r.status = 'resolved';
   r.resolvedBy = req.session.username;
   r.resolvedAt = new Date().toISOString();
@@ -2356,7 +2417,7 @@ app.post('/api/admin/reports/:id/resolve', requireAuth, requireAdminNotBoss, asy
 /* Admin: shikoyat qilingan asarni (suratni) butunlay o'chirish */
 app.delete('/api/admin/works/:id', requireAuth, requireAdminNotBoss, async (req, res) => {
   const found = findWork(req.params.id);
-  if (!found) return res.status(404).json({ error: 'Asar topilmadi' });
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
   const { work, owner } = found;
   db.works[owner] = (db.works[owner] || []).filter(w => w.id !== work.id);
   workImages(work).forEach(img => fs.unlink(path.join(__dirname, img), () => {}));

@@ -79,6 +79,91 @@
           "account.err.usernameTaken": "Bu foydalanuvchi nomi allaqachon band.",
           "account.err.passwordTooShort": "Yangi parol kamida 4 belgidan iborat bo'lishi kerak.",
           "account.err.mismatch": "Yangi parollar mos kelmadi.",
+          /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
+          "err.adminAccessRevoked": "Administrator huquqingiz boss tomonidan bekor qilingan. Faqat boss ruxsati bilan qaytadan faollashtira olasiz",
+          "err.cannotBanAdmin": "Boshqa administratorni ban qila olmaysiz",
+          "err.cannotMuteAdmin": "Boshqa administratorni mut qila olmaysiz",
+          "err.cannotBanBoss": "Boss'ni ban qila olmaysiz",
+          "err.cannotFireBoss": "Boss'ni ishdan bo'shata olmaysiz",
+          "err.cannotMuteBoss": "Boss'ni mut qila olmaysiz",
+          "err.userAlreadyBoss": "Bu foydalanuvchi allaqachon Boss",
+          "err.userNotFired": "Bu foydalanuvchi ishdan bo'shatilmagan",
+          "err.callBlocked": "Bu foydalanuvchi video qo'ng'iroqlarni cheklagan",
+          "err.commentDeleteForbidden": "Bu komentni o'chirishga ruxsatingiz yo'q",
+          "err.userBusy": "Foydalanuvchi hozir band",
+          "err.usernameInvalid": "Foydalanuvchi nomi 3-32 belgi, faqat lotin harflari/raqam/pastki chiziq bo'lishi kerak",
+          "err.loginInvalid": "Foydalanuvchi nomi yoki parol noto'g'ri",
+          "err.tooManyAttempts": "Juda ko'p urinish qilindi, birozdan so'ng qayta urinib ko'ring",
+          "err.wrongBossCode": "Maxfiy kod noto'g'ri",
+          "err.wrongAdminPassword": "Maxfiy parol noto'g'ri",
+          "err.unknownMessageType": "Noma'lum xabar turi",
+          "err.invalidData": "Noto'g'ri ma'lumot",
+          "err.invalidQuantity": "Noto'g'ri miqdor",
+          "err.cannotCartOwnWork": "O'z asaringizni savatga qo'sha olmaysiz",
+          "err.cannotFollowSelf": "O'zingizga obuna bo'la olmaysiz",
+          "err.cannotCallSelf": "O'zingizga qo'ng'iroq qila olmaysiz",
+          "err.cannotMessageSelf": "O'zingizga xabar yubora olmaysiz",
+          "err.cannotPromoteSelf": "O'zingizni admin qila olmaysiz",
+          "err.cannotBanSelf": "O'zingizni ban qila olmaysiz",
+          "err.cannotFireSelf": "O'zingizni ishdan bo'shata olmaysiz",
+          "err.cannotMuteSelf": "O'zingizni mut qila olmaysiz",
+          "err.passwordTooShort": "Parol kamida 4 belgidan iborat bo'lishi kerak",
+          "err.callAlreadyEnded": "Qo'ng'iroq allaqachon tugagan",
+          "err.callNotFound": "Qo'ng'iroq topilmadi",
+          "err.registerServerError": "Ro'yxatdan o'tishda server xatoligi",
+          "err.cartEmpty": "Savat bo'sh",
+          "err.muted": "Siz vaqtincha jimlik jazosidasiz (mut), shuning uchun bu amalni bajara olmaysiz",
+          "err.callAlreadyActive": "Sizda allaqachon faol qo'ng'iroq bor",
+          "err.videoProcessingFailed": "Videoni qayta ishlashda xatolik yuz berdi. Boshqa video tanlab ko'ring.",
+          "err.messageEmpty": "Xabar matni bo'sh bo'lishi mumkin emas",
+          "err.workNotFound": "Asar topilmadi",
+          "err.authRequired": "Avval tizimga kiring",
+          "err.bossNoReports": "Boss shikoyatlar bilan ishlamaydi",
+          "err.adminRequired": "Bu amal uchun administrator huquqi kerak",
+          "err.bossRequired": "Bu amal uchun boss huquqi kerak",
+          "err.workNotInCart": "Bu asar savatda topilmadi",
+          "err.workNotForSale": "Bu asar sotuvda emas",
+          "err.workOutOfStock": "Bu asar tugagan",
+          "err.userNotAdmin": "Bu foydalanuvchi administrator emas",
+          "err.userAlreadyAdmin": "Bu foydalanuvchi allaqachon administrator",
+          "err.usernameTaken": "Bu foydalanuvchi nomi allaqachon band",
+          "err.onlyCallerCanCancel": "Faqat chaqiruvchi bekor qila oladi",
+          "err.onlyCallerCanOffer": "Faqat chaqiruvchi taklif yubora oladi",
+          "err.onlyCalleeCanAnswer": "Faqat qabul qiluvchi javob bera oladi",
+          "err.onlyCalleeCanDecline": "Faqat qabul qiluvchi rad eta oladi",
+          "err.fileRequired": "Fayl talab qilinadi",
+          "err.userNotFound": "Foydalanuvchi topilmadi",
+          "err.accountBanned": "Hisobingiz vaqtincha bloklangan (ban)",
+          "err.mediaRequired": "Kamida bitta rasm yoki video talab qilinadi",
+          "err.loginServerError": "Kirishda server xatoligi",
+          "err.commentEmpty": "Koment matni bo'sh bo'lishi mumkin emas",
+          "err.commentNotFound": "Koment topilmadi",
+          "err.imageRequired": "Rasm talab qilinadi",
+          "err.serverError": "Server xatoligi",
+          "err.reportNotFound": "Shikoyat topilmadi",
+          "err.noChanges": "Hech narsa o'zgartirilmadi",
+          "err.currentPasswordRequired": "Davom etish uchun joriy parolingizni kiriting",
+          "err.currentPasswordIncorrect": "Joriy parol noto'g'ri",
+          "err.videoWithOtherFiles": "Video bilan birga boshqa fayl yuklab bo'lmaydi — faqat bitta video tanlang",
+          "err.videoTooLong10s": "Video 10 soniyadan uzun bo'lmasligi kerak",
+          "err.invalidWorkMediaType": "Faqat rasm yoki video (mp4/mov, 10 soniyagacha) fayllari qabul qilinadi",
+          "err.dangerousFileType": "Bu turdagi fayllarni yuborib bo'lmaydi",
+          "err.onlyImagesAllowed": "Faqat rasm fayllari qabul qilinadi",
+          "err.onlyVideosAllowed": "Faqat video fayllari qabul qilinadi",
+          "err.onlyAudioAllowed": "Faqat audio fayllari qabul qilinadi",
+          "err.fileTooLarge": "Fayl hajmi juda katta",
+          "err.tooManyFiles": "Juda ko'p fayl yuklandi",
+          "err.uploadError": "Faylni yuklashda xatolik yuz berdi",
+          "err.notEnoughStock": "Faqat {n} dona mavjud",
+          "err.videoTooLong": "Video juda uzun (maksimal {n} soniya)",
+          /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
+          "chat.preview.photo": "📷 Rasm",
+          "chat.preview.video": "🎥 Video",
+          "chat.preview.circle": "⭕ Video xabar",
+          "chat.preview.voice": "🎙️ Ovozli xabar",
+          "chat.preview.file": "📎 Fayl",
+          "chat.voiceAria": "Ovozli xabar", "chat.circleAria": "Video xabar",
+          "filter.typeAria": "Kategoriya", "filter.sortAria": "Saralash", "chat.emojiAria": "Emoji",
           "messages.eyebrow": "Muloqot", "messages.title": "Sotuvchilar bilan <span>xabarlar</span>",
           "messages.sub": "Sotuvdagi asar haqida savol berish yoki sotuvchi bilan bog'lanish uchun suhbatlaringiz shu yerda.",
           "messages.empty.title": "Hali suhbatlar yo'q",
@@ -249,7 +334,7 @@
           "follow.shortAdd": "+ Obuna",
           "notif.follow": "{name} sizga obuna bo'ldi",
           "save.aria": "Saqlash",
-          "share.aria": "Ulashish",
+          "share.aria": "Ulashish", "share.linkCopied": "Havola nusxalandi: {url}", "share.copyPrompt": "Havolani nusxalang:",
           "feedThumb.aria": "Rasmni to'liq hajmda ko'rish",
           "notif.someone": "Kimdir",
           "notif.adminFired": "Boss sizni administrator lavozimidan ozod qildi. Endi oddiy foydalanuvchisiz — qaytadan administrator bo'lish uchun boss ruxsati kerak.",
@@ -334,6 +419,91 @@
           "account.err.usernameTaken": "This username is already taken.",
           "account.err.passwordTooShort": "New password must be at least 4 characters.",
           "account.err.mismatch": "New passwords don't match.",
+          /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
+          "err.adminAccessRevoked": "Your administrator access was revoked by the boss. Only the boss can reactivate it",
+          "err.cannotBanAdmin": "You can't ban another administrator",
+          "err.cannotMuteAdmin": "You can't mute another administrator",
+          "err.cannotBanBoss": "You can't ban the Boss",
+          "err.cannotFireBoss": "You can't fire the Boss",
+          "err.cannotMuteBoss": "You can't mute the Boss",
+          "err.userAlreadyBoss": "This user is already the Boss",
+          "err.userNotFired": "This user hasn't been fired",
+          "err.callBlocked": "This user has restricted video calls",
+          "err.commentDeleteForbidden": "You don't have permission to delete this comment",
+          "err.userBusy": "This user is currently busy",
+          "err.usernameInvalid": "Username must be 3-32 characters, Latin letters/numbers/underscore only",
+          "err.loginInvalid": "Incorrect username or password",
+          "err.tooManyAttempts": "Too many attempts, please try again shortly",
+          "err.wrongBossCode": "Incorrect secret code",
+          "err.wrongAdminPassword": "Incorrect secret password",
+          "err.unknownMessageType": "Unknown message type",
+          "err.invalidData": "Invalid data",
+          "err.invalidQuantity": "Invalid quantity",
+          "err.cannotCartOwnWork": "You can't add your own work to the cart",
+          "err.cannotFollowSelf": "You can't follow yourself",
+          "err.cannotCallSelf": "You can't call yourself",
+          "err.cannotMessageSelf": "You can't message yourself",
+          "err.cannotPromoteSelf": "You can't make yourself an admin",
+          "err.cannotBanSelf": "You can't ban yourself",
+          "err.cannotFireSelf": "You can't fire yourself",
+          "err.cannotMuteSelf": "You can't mute yourself",
+          "err.passwordTooShort": "Password must be at least 4 characters",
+          "err.callAlreadyEnded": "The call has already ended",
+          "err.callNotFound": "Call not found",
+          "err.registerServerError": "Server error during registration",
+          "err.cartEmpty": "Cart is empty",
+          "err.muted": "You're temporarily muted, so you can't perform this action",
+          "err.callAlreadyActive": "You already have an active call",
+          "err.videoProcessingFailed": "Something went wrong processing the video. Please choose another one.",
+          "err.messageEmpty": "Message text can't be empty",
+          "err.workNotFound": "Work not found",
+          "err.authRequired": "Please log in first",
+          "err.bossNoReports": "The Boss doesn't handle reports",
+          "err.adminRequired": "Administrator access is required for this action",
+          "err.bossRequired": "Boss access is required for this action",
+          "err.workNotInCart": "This work isn't in your cart",
+          "err.workNotForSale": "This work isn't for sale",
+          "err.workOutOfStock": "This work is out of stock",
+          "err.userNotAdmin": "This user isn't an administrator",
+          "err.userAlreadyAdmin": "This user is already an administrator",
+          "err.usernameTaken": "This username is already taken",
+          "err.onlyCallerCanCancel": "Only the caller can cancel",
+          "err.onlyCallerCanOffer": "Only the caller can send an offer",
+          "err.onlyCalleeCanAnswer": "Only the recipient can answer",
+          "err.onlyCalleeCanDecline": "Only the recipient can decline",
+          "err.fileRequired": "A file is required",
+          "err.userNotFound": "User not found",
+          "err.accountBanned": "Your account is temporarily blocked (banned)",
+          "err.mediaRequired": "At least one photo or video is required",
+          "err.loginServerError": "Server error while logging in",
+          "err.commentEmpty": "Comment text can't be empty",
+          "err.commentNotFound": "Comment not found",
+          "err.imageRequired": "An image is required",
+          "err.serverError": "Server error",
+          "err.reportNotFound": "Report not found",
+          "err.noChanges": "Nothing was changed",
+          "err.currentPasswordRequired": "Enter your current password to continue",
+          "err.currentPasswordIncorrect": "Current password is incorrect",
+          "err.videoWithOtherFiles": "You can't upload a video together with other files — choose just one video",
+          "err.videoTooLong10s": "The video must not be longer than 10 seconds",
+          "err.invalidWorkMediaType": "Only photo or video files (mp4/mov, up to 10 seconds) are accepted",
+          "err.dangerousFileType": "This type of file can't be sent",
+          "err.onlyImagesAllowed": "Only image files are accepted",
+          "err.onlyVideosAllowed": "Only video files are accepted",
+          "err.onlyAudioAllowed": "Only audio files are accepted",
+          "err.fileTooLarge": "The file is too large",
+          "err.tooManyFiles": "Too many files uploaded",
+          "err.uploadError": "Something went wrong uploading the file",
+          "err.notEnoughStock": "Only {n} left in stock",
+          "err.videoTooLong": "Video is too long (maximum {n} seconds)",
+          /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
+          "chat.preview.photo": "📷 Photo",
+          "chat.preview.video": "🎥 Video",
+          "chat.preview.circle": "⭕ Video message",
+          "chat.preview.voice": "🎙️ Voice message",
+          "chat.preview.file": "📎 File",
+          "chat.voiceAria": "Voice message", "chat.circleAria": "Video message",
+          "filter.typeAria": "Category", "filter.sortAria": "Sort", "chat.emojiAria": "Emoji",
           "messages.eyebrow": "Conversations", "messages.title": "Messages with <span>sellers</span>",
           "messages.sub": "Ask about a piece for sale or reach out to a seller — your chats live here.",
           "messages.empty.title": "No conversations yet",
@@ -504,7 +674,7 @@
           "follow.shortAdd": "+ Follow",
           "notif.follow": "{name} started following you",
           "save.aria": "Save",
-          "share.aria": "Share",
+          "share.aria": "Share", "share.linkCopied": "Link copied: {url}", "share.copyPrompt": "Copy the link:",
           "feedThumb.aria": "View image in full size",
           "notif.someone": "Someone",
           "notif.adminFired": "The boss has dismissed you from the administrator role. You are now a regular user — you'll need the boss's permission to become an administrator again.",
@@ -589,6 +759,91 @@
           "account.err.usernameTaken": "该用户名已被占用。",
           "account.err.passwordTooShort": "新密码至少需要4个字符。",
           "account.err.mismatch": "两次输入的新密码不一致。",
+          /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
+          "err.adminAccessRevoked": "您的管理员权限已被老板撤销。只有老板才能重新激活",
+          "err.cannotBanAdmin": "您不能封禁其他管理员",
+          "err.cannotMuteAdmin": "您不能禁言其他管理员",
+          "err.cannotBanBoss": "您不能封禁老板",
+          "err.cannotFireBoss": "您不能解雇老板",
+          "err.cannotMuteBoss": "您不能禁言老板",
+          "err.userAlreadyBoss": "该用户已经是老板",
+          "err.userNotFired": "该用户尚未被解雇",
+          "err.callBlocked": "该用户已限制视频通话",
+          "err.commentDeleteForbidden": "您无权删除此评论",
+          "err.userBusy": "该用户当前忙线中",
+          "err.usernameInvalid": "用户名须为3-32个字符，仅限拉丁字母、数字和下划线",
+          "err.loginInvalid": "用户名或密码错误",
+          "err.tooManyAttempts": "尝试次数过多，请稍后再试",
+          "err.wrongBossCode": "密钥不正确",
+          "err.wrongAdminPassword": "密码不正确",
+          "err.unknownMessageType": "未知的消息类型",
+          "err.invalidData": "数据无效",
+          "err.invalidQuantity": "数量无效",
+          "err.cannotCartOwnWork": "您不能将自己的作品加入购物车",
+          "err.cannotFollowSelf": "您不能关注自己",
+          "err.cannotCallSelf": "您不能给自己打电话",
+          "err.cannotMessageSelf": "您不能给自己发消息",
+          "err.cannotPromoteSelf": "您不能将自己设为管理员",
+          "err.cannotBanSelf": "您不能封禁自己",
+          "err.cannotFireSelf": "您不能解雇自己",
+          "err.cannotMuteSelf": "您不能禁言自己",
+          "err.passwordTooShort": "密码至少需要4个字符",
+          "err.callAlreadyEnded": "通话已结束",
+          "err.callNotFound": "未找到通话",
+          "err.registerServerError": "注册时服务器出错",
+          "err.cartEmpty": "购物车为空",
+          "err.muted": "您当前处于禁言状态，无法执行此操作",
+          "err.callAlreadyActive": "您已有正在进行的通话",
+          "err.videoProcessingFailed": "处理视频时出错，请选择其他视频。",
+          "err.messageEmpty": "消息内容不能为空",
+          "err.workNotFound": "未找到该作品",
+          "err.authRequired": "请先登录",
+          "err.bossNoReports": "老板不处理举报",
+          "err.adminRequired": "此操作需要管理员权限",
+          "err.bossRequired": "此操作需要老板权限",
+          "err.workNotInCart": "购物车中未找到该作品",
+          "err.workNotForSale": "该作品不出售",
+          "err.workOutOfStock": "该作品已售罄",
+          "err.userNotAdmin": "该用户不是管理员",
+          "err.userAlreadyAdmin": "该用户已经是管理员",
+          "err.usernameTaken": "该用户名已被占用",
+          "err.onlyCallerCanCancel": "只有拨打方可以取消",
+          "err.onlyCallerCanOffer": "只有拨打方可以发送邀请",
+          "err.onlyCalleeCanAnswer": "只有接听方可以接听",
+          "err.onlyCalleeCanDecline": "只有接听方可以拒绝",
+          "err.fileRequired": "需要提供文件",
+          "err.userNotFound": "未找到该用户",
+          "err.accountBanned": "您的账号已被暂时封禁",
+          "err.mediaRequired": "至少需要一张照片或一个视频",
+          "err.loginServerError": "登录时服务器出错",
+          "err.commentEmpty": "评论内容不能为空",
+          "err.commentNotFound": "未找到该评论",
+          "err.imageRequired": "需要提供图片",
+          "err.serverError": "服务器错误",
+          "err.reportNotFound": "未找到该举报",
+          "err.noChanges": "没有任何更改",
+          "err.currentPasswordRequired": "请输入当前密码以继续",
+          "err.currentPasswordIncorrect": "当前密码不正确",
+          "err.videoWithOtherFiles": "视频不能与其他文件一起上传——请只选择一个视频",
+          "err.videoTooLong10s": "视频时长不能超过10秒",
+          "err.invalidWorkMediaType": "仅接受照片或视频文件（mp4/mov，最长10秒）",
+          "err.dangerousFileType": "无法发送此类型的文件",
+          "err.onlyImagesAllowed": "仅接受图片文件",
+          "err.onlyVideosAllowed": "仅接受视频文件",
+          "err.onlyAudioAllowed": "仅接受音频文件",
+          "err.fileTooLarge": "文件太大",
+          "err.tooManyFiles": "上传的文件过多",
+          "err.uploadError": "上传文件时出错",
+          "err.notEnoughStock": "仅剩 {n} 件",
+          "err.videoTooLong": "视频过长（最长 {n} 秒）",
+          /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
+          "chat.preview.photo": "📷 图片",
+          "chat.preview.video": "🎥 视频",
+          "chat.preview.circle": "⭕ 视频消息",
+          "chat.preview.voice": "🎙️ 语音消息",
+          "chat.preview.file": "📎 文件",
+          "chat.voiceAria": "语音消息", "chat.circleAria": "视频消息",
+          "filter.typeAria": "类别", "filter.sortAria": "排序", "chat.emojiAria": "表情符号",
           "messages.eyebrow": "交流", "messages.title": "与<span>卖家</span>的消息",
           "messages.sub": "在这里可以询问出售中的作品，或联系卖家 — 所有对话都在这里。",
           "messages.empty.title": "还没有对话",
@@ -739,7 +994,41 @@
           "follow.shortAdd": "+ 关注",
           "notif.follow": "{name} 关注了您",
           "save.aria": "保存",
-          "share.aria": "分享",
+          "share.aria": "分享", "share.linkCopied": "链接已复制：{url}", "share.copyPrompt": "复制链接：",
+          /* ---- video call feature (previously missing from this language) ---- */
+          "call.startTitle": "视频通话",
+          "call.incoming": "正在视频通话...",
+          "call.decline": "拒绝",
+          "call.accept": "接受",
+          "call.calling": "正在呼叫...",
+          "call.connecting": "正在连接...",
+          "call.peerCameraOff": "摄像头已关闭",
+          "call.toggleMic": "麦克风",
+          "call.toggleCam": "摄像头",
+          "call.end": "结束通话",
+          "call.startFail": "无法拨打电话，请重试。",
+          "call.noCamera": "未找到摄像头，仅以语音方式连接...",
+          "call.noMediaAccess": "麦克风/摄像头访问被拒绝。",
+          "call.wasDeclined": "通话被拒绝",
+          "call.wasMissed": "无人接听",
+          "call.wasBusy": "用户正忙",
+          "call.ended": "通话已结束",
+          "call.msg.ended": "视频通话",
+          "call.msg.noAnswer": "无人接听",
+          "call.msg.missed": "未接来电",
+          "call.msg.declined": "已拒绝的通话",
+          "call.msg.cancelled": "已取消的通话",
+          "call.msg.busy": "用户当时正忙",
+          "profile.edit.callPrivacyTitle": "选择谁可以给您打视频电话：",
+          "profile.edit.callPrivacyEveryone": "所有人",
+          "profile.edit.callPrivacySelected": "仅限所选人员",
+          "profile.edit.callPrivacyNobody": "任何人都不可以",
+          "profile.edit.callPrivacyAddPh": "输入用户名...",
+          "profile.edit.callPrivacyAdd": "添加",
+          "profile.edit.callPrivacyEmpty": "尚未添加任何人。",
+          "profile.edit.callPrivacyRemove": "移除",
+          "profile.edit.callPrivacyAddSelfErr": "您不能添加自己。",
+          "profile.edit.callPrivacyAddNotFound": "未找到该用户。",
           "feedThumb.aria": "查看大图",
           "notif.someone": "有人",
           "notif.adminFired": "老板已解除您的管理员职务。您现在是普通用户——需要老板许可才能再次成为管理员。",
@@ -824,6 +1113,91 @@
           "account.err.usernameTaken": "यह उपयोगकर्ता नाम पहले से लिया जा चुका है।",
           "account.err.passwordTooShort": "नया पासवर्ड कम से कम 4 अक्षर का होना चाहिए।",
           "account.err.mismatch": "नए पासवर्ड मेल नहीं खाते।",
+          /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
+          "err.adminAccessRevoked": "आपका प्रशासक अधिकार बॉस द्वारा रद्द कर दिया गया है। इसे केवल बॉस की अनुमति से दोबारा सक्रिय किया जा सकता है",
+          "err.cannotBanAdmin": "आप किसी अन्य प्रशासक को बैन नहीं कर सकते",
+          "err.cannotMuteAdmin": "आप किसी अन्य प्रशासक को म्यूट नहीं कर सकते",
+          "err.cannotBanBoss": "आप बॉस को बैन नहीं कर सकते",
+          "err.cannotFireBoss": "आप बॉस को नौकरी से नहीं निकाल सकते",
+          "err.cannotMuteBoss": "आप बॉस को म्यूट नहीं कर सकते",
+          "err.userAlreadyBoss": "यह उपयोगकर्ता पहले से ही बॉस है",
+          "err.userNotFired": "इस उपयोगकर्ता को नौकरी से नहीं निकाला गया है",
+          "err.callBlocked": "इस उपयोगकर्ता ने वीडियो कॉल प्रतिबंधित कर दी है",
+          "err.commentDeleteForbidden": "इस टिप्पणी को हटाने की आपको अनुमति नहीं है",
+          "err.userBusy": "यह उपयोगकर्ता अभी व्यस्त है",
+          "err.usernameInvalid": "उपयोगकर्ता नाम 3-32 अक्षर का होना चाहिए, केवल लैटिन अक्षर/अंक/अंडरस्कोर की अनुमति है",
+          "err.loginInvalid": "उपयोगकर्ता नाम या पासवर्ड गलत है",
+          "err.tooManyAttempts": "बहुत अधिक प्रयास किए गए, कृपया थोड़ी देर बाद पुनः प्रयास करें",
+          "err.wrongBossCode": "गुप्त कोड गलत है",
+          "err.wrongAdminPassword": "गुप्त पासवर्ड गलत है",
+          "err.unknownMessageType": "अज्ञात संदेश प्रकार",
+          "err.invalidData": "अमान्य डेटा",
+          "err.invalidQuantity": "अमान्य मात्रा",
+          "err.cannotCartOwnWork": "आप अपनी खुद की कृति को कार्ट में नहीं जोड़ सकते",
+          "err.cannotFollowSelf": "आप खुद को फॉलो नहीं कर सकते",
+          "err.cannotCallSelf": "आप खुद को कॉल नहीं कर सकते",
+          "err.cannotMessageSelf": "आप खुद को संदेश नहीं भेज सकते",
+          "err.cannotPromoteSelf": "आप खुद को प्रशासक नहीं बना सकते",
+          "err.cannotBanSelf": "आप खुद को बैन नहीं कर सकते",
+          "err.cannotFireSelf": "आप खुद को नौकरी से नहीं निकाल सकते",
+          "err.cannotMuteSelf": "आप खुद को म्यूट नहीं कर सकते",
+          "err.passwordTooShort": "पासवर्ड कम से कम 4 अक्षर का होना चाहिए",
+          "err.callAlreadyEnded": "कॉल पहले ही समाप्त हो चुकी है",
+          "err.callNotFound": "कॉल नहीं मिली",
+          "err.registerServerError": "पंजीकरण के दौरान सर्वर त्रुटि",
+          "err.cartEmpty": "कार्ट खाली है",
+          "err.muted": "आप अस्थायी रूप से म्यूट हैं, इसलिए यह कार्रवाई नहीं कर सकते",
+          "err.callAlreadyActive": "आपकी पहले से एक सक्रिय कॉल है",
+          "err.videoProcessingFailed": "वीडियो प्रोसेस करते समय त्रुटि हुई। कृपया कोई दूसरा वीडियो चुनें।",
+          "err.messageEmpty": "संदेश खाली नहीं हो सकता",
+          "err.workNotFound": "कृति नहीं मिली",
+          "err.authRequired": "कृपया पहले लॉग इन करें",
+          "err.bossNoReports": "बॉस शिकायतों को नहीं संभालता",
+          "err.adminRequired": "इस कार्रवाई के लिए प्रशासक अधिकार आवश्यक है",
+          "err.bossRequired": "इस कार्रवाई के लिए बॉस अधिकार आवश्यक है",
+          "err.workNotInCart": "यह कृति कार्ट में नहीं मिली",
+          "err.workNotForSale": "यह कृति बिक्री के लिए नहीं है",
+          "err.workOutOfStock": "यह कृति स्टॉक में नहीं है",
+          "err.userNotAdmin": "यह उपयोगकर्ता प्रशासक नहीं है",
+          "err.userAlreadyAdmin": "यह उपयोगकर्ता पहले से ही प्रशासक है",
+          "err.usernameTaken": "यह उपयोगकर्ता नाम पहले से लिया जा चुका है",
+          "err.onlyCallerCanCancel": "केवल कॉल करने वाला ही रद्द कर सकता है",
+          "err.onlyCallerCanOffer": "केवल कॉल करने वाला ही ऑफर भेज सकता है",
+          "err.onlyCalleeCanAnswer": "केवल प्राप्तकर्ता ही जवाब दे सकता है",
+          "err.onlyCalleeCanDecline": "केवल प्राप्तकर्ता ही अस्वीकार कर सकता है",
+          "err.fileRequired": "फ़ाइल आवश्यक है",
+          "err.userNotFound": "उपयोगकर्ता नहीं मिला",
+          "err.accountBanned": "आपका खाता अस्थायी रूप से ब्लॉक (बैन) है",
+          "err.mediaRequired": "कम से कम एक फोटो या वीडियो आवश्यक है",
+          "err.loginServerError": "लॉगिन के दौरान सर्वर त्रुटि",
+          "err.commentEmpty": "टिप्पणी खाली नहीं हो सकती",
+          "err.commentNotFound": "टिप्पणी नहीं मिली",
+          "err.imageRequired": "छवि आवश्यक है",
+          "err.serverError": "सर्वर त्रुटि",
+          "err.reportNotFound": "शिकायत नहीं मिली",
+          "err.noChanges": "कुछ भी नहीं बदला गया",
+          "err.currentPasswordRequired": "जारी रखने के लिए अपना मौजूदा पासवर्ड दर्ज करें",
+          "err.currentPasswordIncorrect": "मौजूदा पासवर्ड गलत है",
+          "err.videoWithOtherFiles": "वीडियो को अन्य फ़ाइलों के साथ अपलोड नहीं किया जा सकता — केवल एक वीडियो चुनें",
+          "err.videoTooLong10s": "वीडियो 10 सेकंड से लंबा नहीं होना चाहिए",
+          "err.invalidWorkMediaType": "केवल फोटो या वीडियो फ़ाइलें (mp4/mov, 10 सेकंड तक) स्वीकार की जाती हैं",
+          "err.dangerousFileType": "इस प्रकार की फ़ाइलें नहीं भेजी जा सकतीं",
+          "err.onlyImagesAllowed": "केवल छवि फ़ाइलें स्वीकार की जाती हैं",
+          "err.onlyVideosAllowed": "केवल वीडियो फ़ाइलें स्वीकार की जाती हैं",
+          "err.onlyAudioAllowed": "केवल ऑडियो फ़ाइलें स्वीकार की जाती हैं",
+          "err.fileTooLarge": "फ़ाइल बहुत बड़ी है",
+          "err.tooManyFiles": "बहुत अधिक फ़ाइलें अपलोड की गईं",
+          "err.uploadError": "फ़ाइल अपलोड करते समय त्रुटि हुई",
+          "err.notEnoughStock": "केवल {n} बचे हैं",
+          "err.videoTooLong": "वीडियो बहुत लंबा है (अधिकतम {n} सेकंड)",
+          /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
+          "chat.preview.photo": "📷 फोटो",
+          "chat.preview.video": "🎥 वीडियो",
+          "chat.preview.circle": "⭕ वीडियो संदेश",
+          "chat.preview.voice": "🎙️ वॉइस संदेश",
+          "chat.preview.file": "📎 फ़ाइल",
+          "chat.voiceAria": "वॉइस संदेश", "chat.circleAria": "वीडियो संदेश",
+          "filter.typeAria": "श्रेणी", "filter.sortAria": "क्रमबद्ध करें", "chat.emojiAria": "इमोजी",
           "messages.eyebrow": "बातचीत", "messages.title": "<span>विक्रेताओं</span> के साथ संदेश",
           "messages.sub": "बिक्री की किसी कृति के बारे में पूछें या विक्रेता से संपर्क करें — आपकी बातचीत यहाँ है।",
           "messages.empty.title": "अभी तक कोई बातचीत नहीं",
@@ -974,7 +1348,41 @@
           "follow.shortAdd": "+ फ़ॉलो",
           "notif.follow": "{name} ने आपको फ़ॉलो करना शुरू किया",
           "save.aria": "सहेजें",
-          "share.aria": "शेयर करें",
+          "share.aria": "शेयर करें", "share.linkCopied": "लिंक कॉपी हो गया: {url}", "share.copyPrompt": "लिंक कॉपी करें:",
+          /* ---- video call feature (previously missing from this language) ---- */
+          "call.startTitle": "वीडियो कॉल",
+          "call.incoming": "वीडियो कॉल आ रही है...",
+          "call.decline": "अस्वीकार करें",
+          "call.accept": "स्वीकार करें",
+          "call.calling": "कॉल की जा रही है...",
+          "call.connecting": "कनेक्ट हो रहा है...",
+          "call.peerCameraOff": "कैमरा बंद है",
+          "call.toggleMic": "माइक्रोफ़ोन",
+          "call.toggleCam": "कैमरा",
+          "call.end": "कॉल समाप्त करें",
+          "call.startFail": "कॉल नहीं हो सकी। कृपया पुनः प्रयास करें।",
+          "call.noCamera": "कैमरा नहीं मिला, केवल ऑडियो से जोड़ा जा रहा है...",
+          "call.noMediaAccess": "माइक्रोफ़ोन/कैमरा एक्सेस अस्वीकृत कर दिया गया।",
+          "call.wasDeclined": "कॉल अस्वीकार कर दी गई",
+          "call.wasMissed": "कोई जवाब नहीं",
+          "call.wasBusy": "उपयोगकर्ता व्यस्त है",
+          "call.ended": "कॉल समाप्त हुई",
+          "call.msg.ended": "वीडियो कॉल",
+          "call.msg.noAnswer": "कोई जवाब नहीं",
+          "call.msg.missed": "छूटी हुई कॉल",
+          "call.msg.declined": "अस्वीकृत कॉल",
+          "call.msg.cancelled": "रद्द की गई कॉल",
+          "call.msg.busy": "उपयोगकर्ता व्यस्त था",
+          "profile.edit.callPrivacyTitle": "चुनें कि आपको वीडियो कॉल कौन कर सकता है:",
+          "profile.edit.callPrivacyEveryone": "सभी",
+          "profile.edit.callPrivacySelected": "केवल चुनिंदा लोग",
+          "profile.edit.callPrivacyNobody": "कोई नहीं",
+          "profile.edit.callPrivacyAddPh": "उपयोगकर्ता नाम दर्ज करें...",
+          "profile.edit.callPrivacyAdd": "जोड़ें",
+          "profile.edit.callPrivacyEmpty": "अभी तक कोई नहीं जोड़ा गया है।",
+          "profile.edit.callPrivacyRemove": "हटाएं",
+          "profile.edit.callPrivacyAddSelfErr": "आप खुद को नहीं जोड़ सकते।",
+          "profile.edit.callPrivacyAddNotFound": "ऐसा कोई उपयोगकर्ता नहीं मिला।",
           "feedThumb.aria": "छवि को पूर्ण आकार में देखें",
           "notif.someone": "किसी ने",
           "notif.adminFired": "बॉस ने आपको व्यवस्थापक पद से हटा दिया है। अब आप एक सामान्य उपयोगकर्ता हैं — फिर से व्यवस्थापक बनने के लिए बॉस की अनुमति चाहिए होगी।",
@@ -1059,6 +1467,91 @@
           "account.err.usernameTaken": "Ese nombre de usuario ya está en uso.",
           "account.err.passwordTooShort": "La nueva contraseña debe tener al menos 4 caracteres.",
           "account.err.mismatch": "Las nuevas contraseñas no coinciden.",
+          /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
+          "err.adminAccessRevoked": "Tus permisos de administrador fueron revocados por el jefe. Solo el jefe puede reactivarlos",
+          "err.cannotBanAdmin": "No puedes banear a otro administrador",
+          "err.cannotMuteAdmin": "No puedes silenciar a otro administrador",
+          "err.cannotBanBoss": "No puedes banear al Jefe",
+          "err.cannotFireBoss": "No puedes despedir al Jefe",
+          "err.cannotMuteBoss": "No puedes silenciar al Jefe",
+          "err.userAlreadyBoss": "Este usuario ya es el Jefe",
+          "err.userNotFired": "Este usuario no ha sido despedido",
+          "err.callBlocked": "Este usuario ha restringido las videollamadas",
+          "err.commentDeleteForbidden": "No tienes permiso para eliminar este comentario",
+          "err.userBusy": "Este usuario está ocupado en este momento",
+          "err.usernameInvalid": "El nombre de usuario debe tener 3-32 caracteres: solo letras latinas, números y guion bajo",
+          "err.loginInvalid": "Nombre de usuario o contraseña incorrectos",
+          "err.tooManyAttempts": "Demasiados intentos, inténtalo de nuevo en un momento",
+          "err.wrongBossCode": "Código secreto incorrecto",
+          "err.wrongAdminPassword": "Contraseña secreta incorrecta",
+          "err.unknownMessageType": "Tipo de mensaje desconocido",
+          "err.invalidData": "Datos no válidos",
+          "err.invalidQuantity": "Cantidad no válida",
+          "err.cannotCartOwnWork": "No puedes añadir tu propia obra al carrito",
+          "err.cannotFollowSelf": "No puedes seguirte a ti mismo",
+          "err.cannotCallSelf": "No puedes llamarte a ti mismo",
+          "err.cannotMessageSelf": "No puedes enviarte un mensaje a ti mismo",
+          "err.cannotPromoteSelf": "No puedes convertirte en administrador a ti mismo",
+          "err.cannotBanSelf": "No puedes banearte a ti mismo",
+          "err.cannotFireSelf": "No puedes despedirte a ti mismo",
+          "err.cannotMuteSelf": "No puedes silenciarte a ti mismo",
+          "err.passwordTooShort": "La contraseña debe tener al menos 4 caracteres",
+          "err.callAlreadyEnded": "La llamada ya ha terminado",
+          "err.callNotFound": "Llamada no encontrada",
+          "err.registerServerError": "Error del servidor durante el registro",
+          "err.cartEmpty": "El carrito está vacío",
+          "err.muted": "Estás temporalmente silenciado, así que no puedes realizar esta acción",
+          "err.callAlreadyActive": "Ya tienes una llamada activa",
+          "err.videoProcessingFailed": "Se produjo un error al procesar el video. Elige otro video.",
+          "err.messageEmpty": "El texto del mensaje no puede estar vacío",
+          "err.workNotFound": "Obra no encontrada",
+          "err.authRequired": "Primero inicia sesión",
+          "err.bossNoReports": "El Jefe no gestiona reportes",
+          "err.adminRequired": "Esta acción requiere permisos de administrador",
+          "err.bossRequired": "Esta acción requiere permisos de jefe",
+          "err.workNotInCart": "Esta obra no está en el carrito",
+          "err.workNotForSale": "Esta obra no está en venta",
+          "err.workOutOfStock": "Esta obra se ha agotado",
+          "err.userNotAdmin": "Este usuario no es administrador",
+          "err.userAlreadyAdmin": "Este usuario ya es administrador",
+          "err.usernameTaken": "Este nombre de usuario ya está en uso",
+          "err.onlyCallerCanCancel": "Solo quien llama puede cancelar",
+          "err.onlyCallerCanOffer": "Solo quien llama puede enviar la oferta",
+          "err.onlyCalleeCanAnswer": "Solo el destinatario puede responder",
+          "err.onlyCalleeCanDecline": "Solo el destinatario puede rechazar",
+          "err.fileRequired": "Se requiere un archivo",
+          "err.userNotFound": "Usuario no encontrado",
+          "err.accountBanned": "Tu cuenta está bloqueada temporalmente (baneada)",
+          "err.mediaRequired": "Se requiere al menos una foto o video",
+          "err.loginServerError": "Error del servidor al iniciar sesión",
+          "err.commentEmpty": "El texto del comentario no puede estar vacío",
+          "err.commentNotFound": "Comentario no encontrado",
+          "err.imageRequired": "Se requiere una imagen",
+          "err.serverError": "Error del servidor",
+          "err.reportNotFound": "Reporte no encontrado",
+          "err.noChanges": "No se cambió nada",
+          "err.currentPasswordRequired": "Introduce tu contraseña actual para continuar",
+          "err.currentPasswordIncorrect": "La contraseña actual es incorrecta",
+          "err.videoWithOtherFiles": "No puedes subir un video junto con otros archivos — elige solo un video",
+          "err.videoTooLong10s": "El video no debe durar más de 10 segundos",
+          "err.invalidWorkMediaType": "Solo se aceptan fotos o videos (mp4/mov, hasta 10 segundos)",
+          "err.dangerousFileType": "No se pueden enviar archivos de este tipo",
+          "err.onlyImagesAllowed": "Solo se aceptan archivos de imagen",
+          "err.onlyVideosAllowed": "Solo se aceptan archivos de video",
+          "err.onlyAudioAllowed": "Solo se aceptan archivos de audio",
+          "err.fileTooLarge": "El archivo es demasiado grande",
+          "err.tooManyFiles": "Se subieron demasiados archivos",
+          "err.uploadError": "Se produjo un error al subir el archivo",
+          "err.notEnoughStock": "Solo quedan {n} unidades",
+          "err.videoTooLong": "El video es demasiado largo (máximo {n} segundos)",
+          /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
+          "chat.preview.photo": "📷 Foto",
+          "chat.preview.video": "🎥 Video",
+          "chat.preview.circle": "⭕ Videomensaje",
+          "chat.preview.voice": "🎙️ Mensaje de voz",
+          "chat.preview.file": "📎 Archivo",
+          "chat.voiceAria": "Mensaje de voz", "chat.circleAria": "Videomensaje",
+          "filter.typeAria": "Categoría", "filter.sortAria": "Ordenar", "chat.emojiAria": "Emoji",
           "messages.eyebrow": "Conversaciones", "messages.title": "Mensajes con <span>vendedores</span>",
           "messages.sub": "Pregunta sobre alguna obra en venta o contacta a un vendedor — tus chats están aquí.",
           "messages.empty.title": "Todavía no hay conversaciones",
@@ -1209,7 +1702,41 @@
           "follow.shortAdd": "+ Seguir",
           "notif.follow": "{name} empezó a seguirte",
           "save.aria": "Guardar",
-          "share.aria": "Compartir",
+          "share.aria": "Compartir", "share.linkCopied": "Enlace copiado: {url}", "share.copyPrompt": "Copia el enlace:",
+          /* ---- video call feature (previously missing from this language) ---- */
+          "call.startTitle": "Videollamada",
+          "call.incoming": "Videollamada entrante...",
+          "call.decline": "Rechazar",
+          "call.accept": "Aceptar",
+          "call.calling": "Llamando...",
+          "call.connecting": "Conectando...",
+          "call.peerCameraOff": "La cámara está apagada",
+          "call.toggleMic": "Micrófono",
+          "call.toggleCam": "Cámara",
+          "call.end": "Finalizar llamada",
+          "call.startFail": "No se pudo realizar la llamada. Inténtalo de nuevo.",
+          "call.noCamera": "No se encontró cámara, conectando solo con audio...",
+          "call.noMediaAccess": "Se denegó el acceso al micrófono/cámara.",
+          "call.wasDeclined": "Llamada rechazada",
+          "call.wasMissed": "Sin respuesta",
+          "call.wasBusy": "El usuario está ocupado",
+          "call.ended": "Llamada finalizada",
+          "call.msg.ended": "Videollamada",
+          "call.msg.noAnswer": "Sin respuesta",
+          "call.msg.missed": "Llamada perdida",
+          "call.msg.declined": "Llamada rechazada",
+          "call.msg.cancelled": "Llamada cancelada",
+          "call.msg.busy": "El usuario estaba ocupado",
+          "profile.edit.callPrivacyTitle": "Elige quién puede hacerte videollamadas:",
+          "profile.edit.callPrivacyEveryone": "Todos",
+          "profile.edit.callPrivacySelected": "Solo personas seleccionadas",
+          "profile.edit.callPrivacyNobody": "Nadie",
+          "profile.edit.callPrivacyAddPh": "Introduce un nombre de usuario...",
+          "profile.edit.callPrivacyAdd": "Añadir",
+          "profile.edit.callPrivacyEmpty": "Aún no se ha añadido a nadie.",
+          "profile.edit.callPrivacyRemove": "Quitar",
+          "profile.edit.callPrivacyAddSelfErr": "No puedes añadirte a ti mismo.",
+          "profile.edit.callPrivacyAddNotFound": "No se encontró ese usuario.",
           "feedThumb.aria": "Ver imagen a tamaño completo",
           "notif.someone": "Alguien",
           "notif.adminFired": "El jefe te ha destituido del cargo de administrador. Ahora eres un usuario normal — necesitarás el permiso del jefe para volver a ser administrador.",
@@ -1294,6 +1821,91 @@
           "account.err.usernameTaken": "اسم المستخدم هذا مُستخدم بالفعل.",
           "account.err.passwordTooShort": "يجب أن تتكون كلمة المرور الجديدة من 4 أحرف على الأقل.",
           "account.err.mismatch": "كلمتا المرور الجديدتان غير متطابقتين.",
+          /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
+          "err.adminAccessRevoked": "تم إلغاء صلاحيات المشرف الخاصة بك من قبل الرئيس. يمكن للرئيس فقط إعادة تفعيلها",
+          "err.cannotBanAdmin": "لا يمكنك حظر مشرف آخر",
+          "err.cannotMuteAdmin": "لا يمكنك كتم مشرف آخر",
+          "err.cannotBanBoss": "لا يمكنك حظر الرئيس",
+          "err.cannotFireBoss": "لا يمكنك طرد الرئيس",
+          "err.cannotMuteBoss": "لا يمكنك كتم الرئيس",
+          "err.userAlreadyBoss": "هذا المستخدم هو الرئيس بالفعل",
+          "err.userNotFired": "هذا المستخدم لم يتم طرده",
+          "err.callBlocked": "قام هذا المستخدم بتقييد مكالمات الفيديو",
+          "err.commentDeleteForbidden": "ليس لديك إذن لحذف هذا التعليق",
+          "err.userBusy": "هذا المستخدم مشغول حاليًا",
+          "err.usernameInvalid": "يجب أن يتكون اسم المستخدم من 3-32 حرفًا، وأحرف لاتينية/أرقام/شرطة سفلية فقط",
+          "err.loginInvalid": "اسم المستخدم أو كلمة المرور غير صحيحة",
+          "err.tooManyAttempts": "محاولات كثيرة جدًا، يرجى المحاولة مرة أخرى بعد قليل",
+          "err.wrongBossCode": "الرمز السري غير صحيح",
+          "err.wrongAdminPassword": "كلمة المرور السرية غير صحيحة",
+          "err.unknownMessageType": "نوع رسالة غير معروف",
+          "err.invalidData": "بيانات غير صالحة",
+          "err.invalidQuantity": "كمية غير صالحة",
+          "err.cannotCartOwnWork": "لا يمكنك إضافة عملك الخاص إلى السلة",
+          "err.cannotFollowSelf": "لا يمكنك متابعة نفسك",
+          "err.cannotCallSelf": "لا يمكنك الاتصال بنفسك",
+          "err.cannotMessageSelf": "لا يمكنك مراسلة نفسك",
+          "err.cannotPromoteSelf": "لا يمكنك ترقية نفسك إلى مشرف",
+          "err.cannotBanSelf": "لا يمكنك حظر نفسك",
+          "err.cannotFireSelf": "لا يمكنك طرد نفسك",
+          "err.cannotMuteSelf": "لا يمكنك كتم نفسك",
+          "err.passwordTooShort": "يجب أن تتكون كلمة المرور من 4 أحرف على الأقل",
+          "err.callAlreadyEnded": "المكالمة انتهت بالفعل",
+          "err.callNotFound": "المكالمة غير موجودة",
+          "err.registerServerError": "خطأ في الخادم أثناء التسجيل",
+          "err.cartEmpty": "السلة فارغة",
+          "err.muted": "أنت مكتوم مؤقتًا، لذا لا يمكنك تنفيذ هذا الإجراء",
+          "err.callAlreadyActive": "لديك بالفعل مكالمة نشطة",
+          "err.videoProcessingFailed": "حدث خطأ أثناء معالجة الفيديو. يرجى اختيار فيديو آخر.",
+          "err.messageEmpty": "لا يمكن أن يكون نص الرسالة فارغًا",
+          "err.workNotFound": "العمل غير موجود",
+          "err.authRequired": "يرجى تسجيل الدخول أولاً",
+          "err.bossNoReports": "الرئيس لا يتعامل مع البلاغات",
+          "err.adminRequired": "هذا الإجراء يتطلب صلاحيات مشرف",
+          "err.bossRequired": "هذا الإجراء يتطلب صلاحيات الرئيس",
+          "err.workNotInCart": "هذا العمل غير موجود في السلة",
+          "err.workNotForSale": "هذا العمل ليس للبيع",
+          "err.workOutOfStock": "نفدت الكمية من هذا العمل",
+          "err.userNotAdmin": "هذا المستخدم ليس مشرفًا",
+          "err.userAlreadyAdmin": "هذا المستخدم مشرف بالفعل",
+          "err.usernameTaken": "اسم المستخدم هذا مُستخدم بالفعل",
+          "err.onlyCallerCanCancel": "يمكن للمتصل فقط الإلغاء",
+          "err.onlyCallerCanOffer": "يمكن للمتصل فقط إرسال العرض",
+          "err.onlyCalleeCanAnswer": "يمكن للمستلم فقط الرد",
+          "err.onlyCalleeCanDecline": "يمكن للمستلم فقط الرفض",
+          "err.fileRequired": "الملف مطلوب",
+          "err.userNotFound": "المستخدم غير موجود",
+          "err.accountBanned": "تم حظر حسابك مؤقتًا",
+          "err.mediaRequired": "مطلوب صورة أو فيديو واحد على الأقل",
+          "err.loginServerError": "خطأ في الخادم أثناء تسجيل الدخول",
+          "err.commentEmpty": "لا يمكن أن يكون نص التعليق فارغًا",
+          "err.commentNotFound": "التعليق غير موجود",
+          "err.imageRequired": "الصورة مطلوبة",
+          "err.serverError": "خطأ في الخادم",
+          "err.reportNotFound": "البلاغ غير موجود",
+          "err.noChanges": "لم يتم تغيير أي شيء",
+          "err.currentPasswordRequired": "أدخل كلمة المرور الحالية للمتابعة",
+          "err.currentPasswordIncorrect": "كلمة المرور الحالية غير صحيحة",
+          "err.videoWithOtherFiles": "لا يمكن رفع فيديو مع ملفات أخرى — اختر فيديو واحدًا فقط",
+          "err.videoTooLong10s": "يجب ألا تتجاوز مدة الفيديو 10 ثوانٍ",
+          "err.invalidWorkMediaType": "يُقبل فقط الصور أو الفيديوهات (mp4/mov، حتى 10 ثوانٍ)",
+          "err.dangerousFileType": "لا يمكن إرسال هذا النوع من الملفات",
+          "err.onlyImagesAllowed": "يُقبل فقط ملفات الصور",
+          "err.onlyVideosAllowed": "يُقبل فقط ملفات الفيديو",
+          "err.onlyAudioAllowed": "يُقبل فقط ملفات الصوت",
+          "err.fileTooLarge": "حجم الملف كبير جدًا",
+          "err.tooManyFiles": "تم رفع عدد كبير جدًا من الملفات",
+          "err.uploadError": "حدث خطأ أثناء رفع الملف",
+          "err.notEnoughStock": "لم يتبقَّ سوى {n}",
+          "err.videoTooLong": "الفيديو طويل جدًا (الحد الأقصى {n} ثانية)",
+          /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
+          "chat.preview.photo": "📷 صورة",
+          "chat.preview.video": "🎥 فيديو",
+          "chat.preview.circle": "⭕ رسالة فيديو",
+          "chat.preview.voice": "🎙️ رسالة صوتية",
+          "chat.preview.file": "📎 ملف",
+          "chat.voiceAria": "رسالة صوتية", "chat.circleAria": "رسالة فيديو",
+          "filter.typeAria": "الفئة", "filter.sortAria": "الترتيب", "chat.emojiAria": "الرموز التعبيرية",
           "messages.eyebrow": "المحادثات", "messages.title": "رسائل مع <span>البائعين</span>",
           "messages.sub": "اسأل عن عمل معروض للبيع أو تواصل مع بائع — محادثاتك هنا.",
           "messages.empty.title": "لا توجد محادثات بعد",
@@ -1444,7 +2056,41 @@
           "follow.shortAdd": "+ متابعة",
           "notif.follow": "بدأ {name} بمتابعتك",
           "save.aria": "حفظ",
-          "share.aria": "مشاركة",
+          "share.aria": "مشاركة", "share.linkCopied": "تم نسخ الرابط: {url}", "share.copyPrompt": "انسخ الرابط:",
+          /* ---- video call feature (previously missing from this language) ---- */
+          "call.startTitle": "مكالمة فيديو",
+          "call.incoming": "مكالمة فيديو واردة...",
+          "call.decline": "رفض",
+          "call.accept": "قبول",
+          "call.calling": "جارٍ الاتصال...",
+          "call.connecting": "جارٍ الربط...",
+          "call.peerCameraOff": "الكاميرا مغلقة",
+          "call.toggleMic": "الميكروفون",
+          "call.toggleCam": "الكاميرا",
+          "call.end": "إنهاء المكالمة",
+          "call.startFail": "تعذر إجراء المكالمة. يرجى المحاولة مرة أخرى.",
+          "call.noCamera": "لم يتم العثور على كاميرا، يتم الاتصال بالصوت فقط...",
+          "call.noMediaAccess": "تم رفض الوصول إلى الميكروفون/الكاميرا.",
+          "call.wasDeclined": "تم رفض المكالمة",
+          "call.wasMissed": "لا يوجد رد",
+          "call.wasBusy": "المستخدم مشغول",
+          "call.ended": "انتهت المكالمة",
+          "call.msg.ended": "مكالمة فيديو",
+          "call.msg.noAnswer": "لا يوجد رد",
+          "call.msg.missed": "مكالمة فائتة",
+          "call.msg.declined": "مكالمة مرفوضة",
+          "call.msg.cancelled": "مكالمة ملغاة",
+          "call.msg.busy": "كان المستخدم مشغولاً",
+          "profile.edit.callPrivacyTitle": "اختر من يمكنه الاتصال بك عبر الفيديو:",
+          "profile.edit.callPrivacyEveryone": "الجميع",
+          "profile.edit.callPrivacySelected": "الأشخاص المحددون فقط",
+          "profile.edit.callPrivacyNobody": "لا أحد",
+          "profile.edit.callPrivacyAddPh": "أدخل اسم المستخدم...",
+          "profile.edit.callPrivacyAdd": "إضافة",
+          "profile.edit.callPrivacyEmpty": "لم تتم إضافة أي شخص بعد.",
+          "profile.edit.callPrivacyRemove": "إزالة",
+          "profile.edit.callPrivacyAddSelfErr": "لا يمكنك إضافة نفسك.",
+          "profile.edit.callPrivacyAddNotFound": "لم يتم العثور على هذا المستخدم.",
           "feedThumb.aria": "عرض الصورة بالحجم الكامل",
           "notif.someone": "شخص ما",
           "notif.adminFired": "قام الرئيس بإعفائك من منصب المشرف. أنت الآن مستخدم عادي — ستحتاج إلى إذن الرئيس لتصبح مشرفًا مرة أخرى.",
@@ -1529,6 +2175,91 @@
           "account.err.usernameTaken": "Это имя пользователя уже занято.",
           "account.err.passwordTooShort": "Новый пароль должен содержать минимум 4 символа.",
           "account.err.mismatch": "Новые пароли не совпадают.",
+          /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
+          "err.adminAccessRevoked": "Ваши права администратора отменены боссом. Заново активировать их может только босс",
+          "err.cannotBanAdmin": "Вы не можете забанить другого администратора",
+          "err.cannotMuteAdmin": "Вы не можете заглушить другого администратора",
+          "err.cannotBanBoss": "Вы не можете забанить Босса",
+          "err.cannotFireBoss": "Вы не можете уволить Босса",
+          "err.cannotMuteBoss": "Вы не можете заглушить Босса",
+          "err.userAlreadyBoss": "Этот пользователь уже Босс",
+          "err.userNotFired": "Этот пользователь не был уволен",
+          "err.callBlocked": "Этот пользователь ограничил видеозвонки",
+          "err.commentDeleteForbidden": "У вас нет прав на удаление этого комментария",
+          "err.userBusy": "Пользователь сейчас занят",
+          "err.usernameInvalid": "Имя пользователя должно содержать 3-32 символа: только латинские буквы, цифры и подчёркивание",
+          "err.loginInvalid": "Неверное имя пользователя или пароль",
+          "err.tooManyAttempts": "Слишком много попыток, повторите чуть позже",
+          "err.wrongBossCode": "Неверный секретный код",
+          "err.wrongAdminPassword": "Неверный секретный пароль",
+          "err.unknownMessageType": "Неизвестный тип сообщения",
+          "err.invalidData": "Неверные данные",
+          "err.invalidQuantity": "Неверное количество",
+          "err.cannotCartOwnWork": "Вы не можете добавить свою работу в корзину",
+          "err.cannotFollowSelf": "Вы не можете подписаться на самого себя",
+          "err.cannotCallSelf": "Вы не можете позвонить самому себе",
+          "err.cannotMessageSelf": "Вы не можете отправить сообщение самому себе",
+          "err.cannotPromoteSelf": "Вы не можете назначить себя администратором",
+          "err.cannotBanSelf": "Вы не можете забанить самого себя",
+          "err.cannotFireSelf": "Вы не можете уволить самого себя",
+          "err.cannotMuteSelf": "Вы не можете заглушить самого себя",
+          "err.passwordTooShort": "Пароль должен содержать не менее 4 символов",
+          "err.callAlreadyEnded": "Звонок уже завершён",
+          "err.callNotFound": "Звонок не найден",
+          "err.registerServerError": "Ошибка сервера при регистрации",
+          "err.cartEmpty": "Корзина пуста",
+          "err.muted": "Вы временно в режиме без права голоса (мут), поэтому не можете выполнить это действие",
+          "err.callAlreadyActive": "У вас уже есть активный звонок",
+          "err.videoProcessingFailed": "Не удалось обработать видео. Выберите другое видео.",
+          "err.messageEmpty": "Текст сообщения не может быть пустым",
+          "err.workNotFound": "Работа не найдена",
+          "err.authRequired": "Сначала войдите в систему",
+          "err.bossNoReports": "Босс не занимается жалобами",
+          "err.adminRequired": "Для этого действия нужны права администратора",
+          "err.bossRequired": "Для этого действия нужны права босса",
+          "err.workNotInCart": "Эта работа не найдена в корзине",
+          "err.workNotForSale": "Эта работа не продаётся",
+          "err.workOutOfStock": "Эта работа закончилась",
+          "err.userNotAdmin": "Этот пользователь не администратор",
+          "err.userAlreadyAdmin": "Этот пользователь уже администратор",
+          "err.usernameTaken": "Это имя пользователя уже занято",
+          "err.onlyCallerCanCancel": "Отменить может только позвонивший",
+          "err.onlyCallerCanOffer": "Отправить предложение может только позвонивший",
+          "err.onlyCalleeCanAnswer": "Ответить может только тот, кому звонят",
+          "err.onlyCalleeCanDecline": "Отклонить может только тот, кому звонят",
+          "err.fileRequired": "Требуется файл",
+          "err.userNotFound": "Пользователь не найден",
+          "err.accountBanned": "Ваш аккаунт временно заблокирован (бан)",
+          "err.mediaRequired": "Требуется хотя бы одно фото или видео",
+          "err.loginServerError": "Ошибка сервера при входе",
+          "err.commentEmpty": "Текст комментария не может быть пустым",
+          "err.commentNotFound": "Комментарий не найден",
+          "err.imageRequired": "Требуется изображение",
+          "err.serverError": "Ошибка сервера",
+          "err.reportNotFound": "Жалоба не найдена",
+          "err.noChanges": "Ничего не изменено",
+          "err.currentPasswordRequired": "Введите текущий пароль, чтобы продолжить",
+          "err.currentPasswordIncorrect": "Текущий пароль неверен",
+          "err.videoWithOtherFiles": "Нельзя загрузить видео вместе с другими файлами — выберите только одно видео",
+          "err.videoTooLong10s": "Видео не должно быть длиннее 10 секунд",
+          "err.invalidWorkMediaType": "Принимаются только фото или видео (mp4/mov, до 10 секунд)",
+          "err.dangerousFileType": "Файлы такого типа отправлять нельзя",
+          "err.onlyImagesAllowed": "Принимаются только файлы изображений",
+          "err.onlyVideosAllowed": "Принимаются только видеофайлы",
+          "err.onlyAudioAllowed": "Принимаются только аудиофайлы",
+          "err.fileTooLarge": "Файл слишком большой",
+          "err.tooManyFiles": "Загружено слишком много файлов",
+          "err.uploadError": "Ошибка при загрузке файла",
+          "err.notEnoughStock": "Осталось только {n} шт.",
+          "err.videoTooLong": "Видео слишком длинное (максимум {n} секунд)",
+          /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
+          "chat.preview.photo": "📷 Фото",
+          "chat.preview.video": "🎥 Видео",
+          "chat.preview.circle": "⭕ Видеосообщение",
+          "chat.preview.voice": "🎙️ Голосовое сообщение",
+          "chat.preview.file": "📎 Файл",
+          "chat.voiceAria": "Голосовое сообщение", "chat.circleAria": "Видеосообщение",
+          "filter.typeAria": "Категория", "filter.sortAria": "Сортировка", "chat.emojiAria": "Эмодзи",
           "messages.eyebrow": "Переписка", "messages.title": "Сообщения с <span>продавцами</span>",
           "messages.sub": "Задайте вопрос о работе или свяжитесь с продавцом — все чаты здесь.",
           "messages.empty.title": "Пока нет переписок",
@@ -1679,7 +2410,41 @@
           "follow.shortAdd": "+ Подписаться",
           "notif.follow": "{name} подписался(ась) на вас",
           "save.aria": "Сохранить",
-          "share.aria": "Поделиться",
+          "share.aria": "Поделиться", "share.linkCopied": "Ссылка скопирована: {url}", "share.copyPrompt": "Скопируйте ссылку:",
+          /* ---- video call feature (previously missing from this language) ---- */
+          "call.startTitle": "Видеозвонок",
+          "call.incoming": "Входящий видеозвонок...",
+          "call.decline": "Отклонить",
+          "call.accept": "Принять",
+          "call.calling": "Вызов...",
+          "call.connecting": "Соединение...",
+          "call.peerCameraOff": "Камера выключена",
+          "call.toggleMic": "Микрофон",
+          "call.toggleCam": "Камера",
+          "call.end": "Завершить звонок",
+          "call.startFail": "Не удалось совершить звонок. Попробуйте ещё раз.",
+          "call.noCamera": "Камера не найдена, подключение только по аудио...",
+          "call.noMediaAccess": "Доступ к микрофону/камере был запрещён.",
+          "call.wasDeclined": "Звонок отклонён",
+          "call.wasMissed": "Нет ответа",
+          "call.wasBusy": "Пользователь занят",
+          "call.ended": "Звонок завершён",
+          "call.msg.ended": "Видеозвонок",
+          "call.msg.noAnswer": "Нет ответа",
+          "call.msg.missed": "Пропущенный звонок",
+          "call.msg.declined": "Отклонённый звонок",
+          "call.msg.cancelled": "Отменённый звонок",
+          "call.msg.busy": "Пользователь был занят",
+          "profile.edit.callPrivacyTitle": "Выберите, кто может звонить вам по видео:",
+          "profile.edit.callPrivacyEveryone": "Все",
+          "profile.edit.callPrivacySelected": "Только выбранные люди",
+          "profile.edit.callPrivacyNobody": "Никто",
+          "profile.edit.callPrivacyAddPh": "Введите имя пользователя...",
+          "profile.edit.callPrivacyAdd": "Добавить",
+          "profile.edit.callPrivacyEmpty": "Пока никто не добавлен.",
+          "profile.edit.callPrivacyRemove": "Удалить",
+          "profile.edit.callPrivacyAddSelfErr": "Вы не можете добавить самого себя.",
+          "profile.edit.callPrivacyAddNotFound": "Такой пользователь не найден.",
           "feedThumb.aria": "Посмотреть изображение в полном размере",
           "notif.someone": "Кто-то",
           "notif.adminFired": "Босс освободил вас от должности администратора. Теперь вы обычный пользователь — чтобы снова стать администратором, потребуется разрешение босса.",
@@ -1772,8 +2537,29 @@
         if (res.status === 403 && data && data.banned) {
           handleBannedNow(data);
         }
-        if (!res.ok) throw new Error((data && data.error) || t('common.serverError'));
+        if (!res.ok) {
+          const err = new Error(translateApiError(data));
+          err.code = data && data.code;
+          err.status = res.status;
+          throw err;
+        }
         return data;
+      }
+
+      /* Server har bir xatolikda barqaror "code" qaytaradi (masalan
+         "userNotFound", "cartEmpty"...) — shu kod orqali xabar joriy sayt
+         tiliga tarjima qilinadi. Shu bois xatolik xabarlari hech qachon
+         faqat o'zbekcha qolib ketmaydi, til qanday bo'lsa ham tarjima
+         ko'rsatiladi. Agar kod uchun tarjima topilmasa (yoki server umuman
+         kod yubormasa), serverning o'z (o'zbekcha) matniga, undan keyin esa
+         umumiy "server xatoligi" xabariga tushiladi. */
+      function translateApiError(data) {
+        if (data && data.code) {
+          const key = 'err.' + data.code;
+          const translated = t(key, data.params);
+          if (translated !== key) return translated;
+        }
+        return (data && data.error) || t('common.serverError');
       }
 
       /* Ishlatilayotgan sessiya davomida admin foydalanuvchini ban qilib qo'ysa,
@@ -3015,10 +3801,7 @@
           msgEl.classList.add('field-hint-ok');
           renderProfileHeader();
         } catch (e) {
-          const code = (e && e.message) || '';
-          const key = 'account.err.' + code;
-          const translated = t(key);
-          msgEl.textContent = (translated !== key) ? translated : (code || t('common.serverError'));
+          msgEl.textContent = e.message || t('common.serverError');
         }
       }
 
@@ -3409,9 +4192,9 @@
         }
         try {
           await navigator.clipboard.writeText(url);
-          alert("Havola nusxalandi: " + url);
+          alert(t('share.linkCopied', { url }));
         } catch (e) {
-          prompt("Havolani nusxalang:", url);
+          prompt(t('share.copyPrompt'), url);
         }
       }
 
@@ -4185,8 +4968,24 @@
         }
       }
 
+      /* Suhbatlar ro'yxatidagi so'nggi media xabar önizlemesini joriy sayt
+         tilida ko'rsatadi (server faqat xabar TURINI yuboradi, tayyor
+         emoji+matnni emas — aks holda matn doim o'zbekcha ko'rinib qolardi). */
+      function messageTypePreviewText(type, fileName) {
+        switch (type) {
+          case 'photo': return t('chat.preview.photo');
+          case 'video': return t('chat.preview.video');
+          case 'circle': return t('chat.preview.circle');
+          case 'voice': return t('chat.preview.voice');
+          case 'file': return '📎 ' + (fileName || t('chat.preview.file'));
+          default: return '';
+        }
+      }
+
       function conversationItemHTML(c) {
-        const previewText = c.lastCallStatus ? ('📞 ' + callStatusPreviewText(c.lastCallStatus)) : (c.lastMessage || '');
+        const previewText = c.lastCallStatus
+          ? ('📞 ' + callStatusPreviewText(c.lastCallStatus))
+          : (c.lastMessageType && c.lastMessageType !== 'text' ? messageTypePreviewText(c.lastMessageType, c.lastFileName) : (c.lastMessage || ''));
         return `
       <div class="conversation-item ${c.unread ? 'unread' : ''}" data-username="${escapeHtml(c.username)}">
         <div class="conversation-avatar">${avatarInner(c.avatar, c.fullname || c.username)}</div>
@@ -4254,29 +5053,231 @@
       </div>`;
       }
 
-      /* Telegramdagi kabi doiraviy video xabar ("krujok") balonchasi */
+      /* Telegramdagi kabi doiraviy video xabar ("krujok") balonchasi.
+         Andoza (native) <video controls> ishlatilganda, brauzer boshqaruv
+         panelini doira shakliga moslab chizib berolmaydi — pastki
+         burchaklardagi tugmalar (jumladan "play" tugmasining o'zi) doira
+         tashqarisida kesilib, deyarli bosib bo'lmaydigan holga kelardi.
+         Aynan shu sabab foydalanuvchiga "ishlamayapti" bo'lib ko'rinardi.
+         Shuning uchun native boshqaruvlar butunlay olib tashlanadi va
+         o'rniga markazda oddiy "play" tugmasi + progress halqasi chiziladi. */
       function chatCircleBubbleHTML(m, mine) {
+        const dur = fmtCallDuration(m.duration || 0);
         return `
       <div class="chat-bubble-row ${mine ? 'me' : ''}">
-        <div class="chat-circle-msg">
-          <video src="${escapeHtml(m.url)}" ${m.poster ? `poster="${escapeHtml(m.poster)}"` : ''} class="chat-circle-video" playsinline controls preload="metadata"></video>
-          <span class="chat-circle-time">${fmtChatTime(m.createdAt)}</span>
+        <div class="chat-circle-msg" data-circle-msg>
+          <div class="chat-circle-wrap">
+            <video src="${escapeHtml(m.url)}" ${m.poster ? `poster="${escapeHtml(m.poster)}"` : ''} class="chat-circle-video" playsinline preload="metadata"></video>
+            <svg class="chat-circle-ring" viewBox="0 0 100 100" data-circle-ring>
+              <circle cx="50" cy="50" r="47" />
+            </svg>
+            <button type="button" class="chat-circle-play" data-circle-toggle aria-label="${escapeHtml(t('chat.circleAria'))}">
+              <svg class="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+            </button>
+          </div>
+          <div class="chat-circle-foot">
+            <span class="chat-circle-duration" data-circle-duration>${dur}</span>
+            <span class="chat-circle-time">${fmtChatTime(m.createdAt)}</span>
+          </div>
         </div>
       </div>`;
       }
 
-      /* Ovozli xabar balonchasi */
+      /* Ovozli xabar balonchasi — Telegramdagi kabi: doiraviy "play" tugmasi +
+         waveform ko'rinishidagi progress + davomiylik. Haqiqiy audio signalidan
+         "waveform" chizish uchun har bir xabarni Web Audio API bilan qayta
+         dekodlash kerak bo'lardi (qo'shimcha tarmoq so'rovi va ishlamay qolish
+         xavfi bilan); buning o'rniga xabar ID'siga bog'liq psevdo-tasodifiy,
+         lekin barqaror (har safar bir xil ko'rinadigan) panellar ishlatiladi —
+         faqat TASHQI ko'rinish uchun. Ijro jarayonining o'zi (progress, vaqt)
+         to'liq haqiqiy <audio> elementidan olinadi. */
+      function seededRandom01(seed) {
+        let s = seed % 2147483647;
+        if (s <= 0) s += 2147483646;
+        return function () {
+          s = (s * 16807) % 2147483647;
+          return (s - 1) / 2147483646;
+        };
+      }
+      function hashSeedStr(str) {
+        str = String(str || '');
+        let h = 0;
+        for (let i = 0; i < str.length; i++) { h = (h * 31 + str.charCodeAt(i)) | 0; }
+        return Math.abs(h) || 1;
+      }
+      function voiceBarHeights(seed, count) {
+        const rand = seededRandom01(hashSeedStr(seed));
+        const heights = [];
+        let prev = 0.5;
+        for (let i = 0; i < count; i++) {
+          const v = prev * 0.45 + rand() * 0.55;
+          prev = v;
+          heights.push(0.24 + v * 0.76);
+        }
+        return heights;
+      }
+      function voiceBarsHTML(seed) {
+        return voiceBarHeights(seed, 27).map(h =>
+          `<span class="voice-bar" style="height:${Math.round(h * 100)}%"></span>`
+        ).join('');
+      }
+
       function chatVoiceBubbleHTML(m, mine) {
-        const dur = m.duration ? fmtCallDuration(m.duration) : '';
+        const totalDur = fmtCallDuration(m.duration || 0);
+        const bars = voiceBarsHTML(m.id || m.createdAt);
         return `
       <div class="chat-bubble-row ${mine ? 'me' : ''}">
         <div class="chat-bubble chat-voice-msg">
-          <span class="chat-voice-icon">🎙️</span>
-          <audio src="${escapeHtml(m.url)}" controls preload="metadata"></audio>
-          ${dur ? `<span class="chat-voice-duration">${dur}</span>` : ''}
-          <span class="chat-bubble-time">${fmtChatTime(m.createdAt)}</span>
+          <audio class="chat-voice-audio" src="${escapeHtml(m.url)}" preload="metadata"></audio>
+          <div class="voice-row">
+            <button type="button" class="voice-play-btn" data-voice-toggle aria-label="${escapeHtml(t('chat.voiceAria'))}">
+              <svg class="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+            </button>
+            <div class="voice-track" data-voice-track>
+              <div class="voice-bars">${bars}</div>
+              <div class="voice-bars-progress" data-voice-progress><div class="voice-bars">${bars}</div></div>
+            </div>
+          </div>
+          <div class="voice-foot">
+            <span class="voice-duration" data-voice-duration>${totalDur}</span>
+            <span class="chat-bubble-time">${fmtChatTime(m.createdAt)}</span>
+          </div>
         </div>
       </div>`;
+      }
+
+      /* Bir vaqtda faqat bitta ovozli xabar ijro etilishi uchun (Telegram/
+         WhatsApp'dagi kabi) — yangisi bosilganda avvalgisi to'xtaydi. */
+      let currentPlayingVoiceAudio = null;
+
+      function resetVoiceButton(bubble) {
+        if (!bubble) return;
+        const btn = bubble.querySelector('[data-voice-toggle]');
+        if (!btn) return;
+        btn.querySelector('.i-play').hidden = false;
+        btn.querySelector('.i-pause').hidden = true;
+      }
+
+      function bindVoicePlayers(container) {
+        container.querySelectorAll('.chat-voice-msg').forEach((bubble) => {
+          if (bubble.dataset.bound) return;
+          bubble.dataset.bound = '1';
+
+          const audio = bubble.querySelector('.chat-voice-audio');
+          const btn = bubble.querySelector('[data-voice-toggle]');
+          const track = bubble.querySelector('[data-voice-track]');
+          const progress = bubble.querySelector('[data-voice-progress]');
+          const durationEl = bubble.querySelector('[data-voice-duration]');
+          const iPlay = btn.querySelector('.i-play');
+          const iPause = btn.querySelector('.i-pause');
+          const totalDurText = durationEl.textContent;
+
+          function setProgress(ratio) {
+            progress.style.width = (Math.max(0, Math.min(1, ratio)) * 100) + '%';
+          }
+
+          btn.addEventListener('click', () => {
+            if (audio.paused) {
+              if (currentPlayingVoiceAudio && currentPlayingVoiceAudio !== audio) {
+                currentPlayingVoiceAudio.pause();
+              }
+              audio.play().catch(() => {});
+              currentPlayingVoiceAudio = audio;
+            } else {
+              audio.pause();
+            }
+          });
+
+          audio.addEventListener('play', () => {
+            iPlay.hidden = true;
+            iPause.hidden = false;
+          });
+          audio.addEventListener('pause', () => {
+            iPlay.hidden = false;
+            iPause.hidden = true;
+          });
+          audio.addEventListener('timeupdate', () => {
+            if (audio.duration) setProgress(audio.currentTime / audio.duration);
+            durationEl.textContent = fmtCallDuration(Math.floor(audio.currentTime));
+          });
+          audio.addEventListener('ended', () => {
+            setProgress(0);
+            durationEl.textContent = totalDurText;
+            if (currentPlayingVoiceAudio === audio) currentPlayingVoiceAudio = null;
+          });
+          audio.addEventListener('loadedmetadata', () => {
+            if (!totalDurText || totalDurText === '0:00') {
+              durationEl.textContent = fmtCallDuration(Math.floor(audio.duration || 0));
+            }
+          });
+
+          track.addEventListener('click', (e) => {
+            if (!audio.duration) return;
+            const rect = track.getBoundingClientRect();
+            const ratio = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = Math.max(0, Math.min(1, ratio)) * audio.duration;
+            setProgress(ratio);
+          });
+        });
+      }
+
+      /* Bir vaqtda faqat bitta "krujok" video ijro etilishi uchun */
+      let currentPlayingCircleVideo = null;
+
+      function bindCircleVideos(container) {
+        container.querySelectorAll('[data-circle-msg]').forEach((wrap) => {
+          if (wrap.dataset.bound) return;
+          wrap.dataset.bound = '1';
+
+          const video = wrap.querySelector('.chat-circle-video');
+          const btn = wrap.querySelector('[data-circle-toggle]');
+          const ring = wrap.querySelector('[data-circle-ring] circle');
+          const durationEl = wrap.querySelector('[data-circle-duration]');
+          const iPlay = btn.querySelector('.i-play');
+          const iPause = btn.querySelector('.i-pause');
+          const totalDurText = durationEl.textContent;
+          const circumference = 2 * Math.PI * 47;
+          ring.style.strokeDasharray = String(circumference);
+          ring.style.strokeDashoffset = '0';
+
+          function toggle() {
+            if (video.paused) {
+              if (currentPlayingCircleVideo && currentPlayingCircleVideo !== video) {
+                currentPlayingCircleVideo.pause();
+                currentPlayingCircleVideo.currentTime = 0;
+              }
+              if (currentPlayingVoiceAudio) { currentPlayingVoiceAudio.pause(); }
+              video.play().catch(() => {});
+              currentPlayingCircleVideo = video;
+            } else {
+              video.pause();
+            }
+          }
+
+          btn.addEventListener('click', toggle);
+          video.addEventListener('click', toggle);
+
+          video.addEventListener('play', () => { iPlay.hidden = true; iPause.hidden = false; wrap.classList.add('playing'); });
+          video.addEventListener('pause', () => { iPlay.hidden = false; iPause.hidden = true; wrap.classList.remove('playing'); });
+          video.addEventListener('timeupdate', () => {
+            if (video.duration) {
+              ring.style.strokeDashoffset = String(circumference * (1 - video.currentTime / video.duration));
+              durationEl.textContent = fmtCallDuration(Math.floor(video.currentTime));
+            }
+          });
+          video.addEventListener('ended', () => {
+            ring.style.strokeDashoffset = String(circumference);
+            durationEl.textContent = totalDurText;
+            if (currentPlayingCircleVideo === video) currentPlayingCircleVideo = null;
+          });
+          video.addEventListener('loadedmetadata', () => {
+            if (!totalDurText || totalDurText === '0:00') {
+              durationEl.textContent = fmtCallDuration(Math.floor(video.duration || 0));
+            }
+          });
+        });
       }
 
       function fmtFileSize(bytes) {
@@ -4381,6 +5382,8 @@
         };
         list.insertAdjacentHTML('beforeend', chatBubbleHTML(msg));
         bindCallMsgRedial(list);
+        bindVoicePlayers(list);
+        bindCircleVideos(list);
         list.scrollTop = list.scrollHeight;
       }
 
@@ -4430,6 +5433,8 @@
         } else {
           list.innerHTML = items.map(m => chatBubbleHTML(m)).join('');
           bindCallMsgRedial(list);
+          bindVoicePlayers(list);
+          bindCircleVideos(list);
         }
         list.scrollTop = list.scrollHeight;
       }
@@ -4497,6 +5502,8 @@
           const el = document.getElementById(tempId);
           if (el) el.remove();
           list.insertAdjacentHTML('beforeend', chatBubbleHTML(data.message));
+          bindVoicePlayers(list);
+          bindCircleVideos(list);
           list.scrollTop = list.scrollHeight;
           loadConversations().catch(() => {});
         } catch (err) {
@@ -4616,7 +5623,18 @@
           const durationSec = Math.max(1, Math.round((Date.now() - startedAt) / 1000));
           hideChatRecordingBar();
           if (send && chunks.length) {
-            const blob = new Blob(chunks, { type: rec.mimeType || (kind === 'voice' ? 'audio/webm' : 'video/webm') });
+            // MUHIM: rec.mimeType ko'pincha kodek parametri bilan keladi,
+            // masalan "video/webm;codecs=vp9,opus" — bunda VERGUL bor.
+            // Ba'zi serverlar (jumladan bizniki, busboy orqali) bunday
+            // vergulli Content-Type qiymatini to'g'ri tahlil qilolmay,
+            // uni "text/plain"ga aylantirib qo'yadi — natijada video/ovozli
+            // xabar serverda "noma'lum fayl turi" sifatida rad etilardi.
+            // Serverga faylning ASOSIY turi (masalan "video/webm") kifoya,
+            // kodek nomi kerak emas — shu sabab bu yerda ";" dan keyingi
+            // qism butunlay olib tashlanadi.
+            const rawType = rec.mimeType || (kind === 'voice' ? 'audio/webm' : 'video/webm');
+            const cleanType = rawType.split(';')[0].trim() || (kind === 'voice' ? 'audio/webm' : 'video/webm');
+            const blob = new Blob(chunks, { type: cleanType });
             const fname = (kind === 'voice' ? 'voice_' : 'circle_') + Date.now() + '.webm';
             const file = new File([blob], fname, { type: blob.type });
             await uploadChatMedia(file, kind, { duration: durationSec });

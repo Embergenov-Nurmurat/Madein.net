@@ -2492,16 +2492,35 @@
     }
 
     /* ============ CHAT VIEW (to'liq sahifa) ============ */
+    /* Mobilda (va aslida hamma joyda) chat oynasi butun sahifa bilan birga
+       emas, MUSTAQIL ravishda sirg'aladi: sarlavha va yozish paneli doim
+       ko'rinib turadi, faqat xabarlar ro'yxati o'ziga xos scroll'ga ega.
+       Avval "min-height: calc(100vh - 260px)" hiylasi ishlatilgan edi —
+       mobil brauzerlarda 100vh manzil satri yashirin joyni ham hisoblagani
+       uchun forma va "yuborish" tugmasi ekran tashqarisida qolib,
+       foydalanuvchi pastga surishga majbur bo'lardi. Endi #chatView o'zi
+       butun ekranni egallovchi flex ustun: sarlavha va forma o'lchami
+       o'zgarmas, faqat o'rtadagi xabarlar bloki cho'ziladi va ichida
+       aylanadi. */
+    #chatView.active {
+      position: fixed;
+      inset: 0;
+      z-index: 250;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      height: 100vh;
+      height: 100dvh;
+    }
+
     .chat-view-head {
       display: flex;
       align-items: center;
       gap: 16px;
       padding: 22px 28px;
       border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
+      flex-shrink: 0;
       background: var(--bg);
-      z-index: 5;
     }
 
     .chat-view-head .btn {
@@ -2797,20 +2816,20 @@
       flex-direction: column;
       gap: 10px;
       padding: 24px 28px;
-      min-height: calc(100vh - 260px);
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .chat-view-form {
       display: flex;
       gap: 10px;
       align-items: center;
-      padding: 16px 28px 26px;
-      padding-bottom: max(26px, calc(16px + env(safe-area-inset-bottom)));
+      padding: 16px 28px calc(20px + env(safe-area-inset-bottom));
       border-top: 1px solid var(--border);
-      position: sticky;
-      bottom: 0;
+      flex-shrink: 0;
       background: var(--bg);
-      z-index: 100;
     }
 
     .chat-view-form input {
@@ -2909,7 +2928,7 @@
     @media (max-width: 720px) {
       .chat-view-head { padding: 16px 16px; }
       .chat-view-messages { padding: 18px 16px; }
-      .chat-view-form { padding: 12px 16px 18px; gap: 6px; }
+      .chat-view-form { padding: 12px 16px calc(18px + env(safe-area-inset-bottom)); gap: 6px; }
       .emoji-picker { width: 232px; grid-template-columns: repeat(6, 1fr); }
       .chat-view-form input { padding: 12px 14px; font-size: 14px; }
       .chat-icon-btn, .emoji-toggle-btn { width: 36px; height: 36px; }
@@ -2922,7 +2941,7 @@
     }
 
     @media (max-width: 400px) {
-      .chat-view-form { gap: 4px; padding: 10px 10px 16px; }
+      .chat-view-form { gap: 4px; padding: 10px 10px calc(16px + env(safe-area-inset-bottom)); }
       .chat-icon-btn, .emoji-toggle-btn { width: 32px; height: 32px; }
       .chat-view-form input { padding: 10px 12px; }
       .chat-view-form button[type="submit"] { font-size: 12.5px; padding: 4px 2px; }
@@ -3072,6 +3091,7 @@
       margin: 10px 20px;
       padding: 10px 16px;
       border-radius: 999px;
+      flex-shrink: 0;
       background: linear-gradient(0deg, color-mix(in srgb, var(--danger, #e2543f) 8%, var(--bg-alt)), var(--bg-alt));
       border: 1px solid color-mix(in srgb, var(--danger, #e2543f) 30%, var(--border));
       box-shadow: 0 8px 24px rgba(0,0,0,.14);
@@ -3191,7 +3211,7 @@
       .chat-recording-bar { padding: 7px 10px; gap: 8px; }
       .chat-recording-hint { display: none; }
       .chat-record-cancel-btn, .chat-record-send-btn { width: 34px; height: 34px; }
-      .chat-voice-msg audio { max-width: 170px; }
+      .voice-track { min-width: 90px; }
       .chat-file-name { max-width: 130px; }
     }
 
@@ -3230,116 +3250,191 @@
       opacity: .75;
     }
 
+    /* ---------- "Krujok" (doiraviy) video xabar — custom pleer ---------- */
     .chat-circle-msg {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
+    }
+
+    .chat-circle-wrap {
+      position: relative;
+      width: 208px;
+      height: 208px;
     }
 
     .chat-circle-video {
-      width: 208px;
-      height: 208px;
-      min-width: 208px;
-      min-height: 208px;
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
       object-fit: cover;
-      object-position: center;
       background: #000;
-      padding: 3px;
-      border: none;
-      background-image: linear-gradient(#000,#000), linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 40%, #7dd3fc));
-      background-origin: border-box;
-      background-clip: content-box, border-box;
-      box-shadow: 0 6px 20px rgba(0,0,0,.22);
       display: block;
-      overflow: hidden;
-      aspect-ratio: 1 / 1;
+      cursor: pointer;
     }
 
-    .chat-circle-time {
-      font-size: 10.5px;
-      opacity: .6;
-      font-family: var(--font-mono);
+    /* Progress halqasi video atrofida — Telegramdagi kabi ijro jarayonini
+       ko'rsatadi. stroke-dasharray/offset qiymatlari JS orqali beriladi. */
+    .chat-circle-ring {
+      position: absolute;
+      inset: -6px;
+      width: calc(100% + 12px);
+      height: calc(100% + 12px);
+      transform: rotate(-90deg);
+      pointer-events: none;
     }
 
-    @media (max-width: 480px) {
-      .chat-circle-video { width: 168px; height: 168px; }
+    .chat-circle-ring circle {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 3;
+      stroke-linecap: round;
+      transition: stroke-dashoffset .12s linear;
     }
 
-    .chat-voice-msg {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: nowrap;
-      min-width: 240px;
-      padding: 8px 10px 8px 12px;
-      background: rgba(0, 0, 0, 0.08);
-      border-radius: 18px;
-      transition: background 0.2s ease;
-    }
-
-    .chat-bubble-row.me .chat-voice-msg {
-      background: rgba(255, 255, 255, 0.12);
-    }
-
-    .chat-voice-msg:hover {
-      background: rgba(0, 0, 0, 0.12);
-    }
-
-    .chat-bubble-row.me .chat-voice-msg:hover {
-      background: rgba(255, 255, 255, 0.18);
-    }
-
-    .chat-voice-icon {
-      width: 36px;
-      height: 36px;
+    .chat-circle-play {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
-      background: var(--accent);
+      border: none;
+      background: rgba(10,10,14,.42);
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(2px);
+    }
+
+    .chat-circle-play .i-play { width: 22px; height: 22px; margin-left: 2px; }
+    .chat-circle-play .i-pause { width: 20px; height: 20px; }
+
+    .chat-circle-foot {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 10.5px;
+      opacity: .65;
+      font-family: var(--font-mono);
+    }
+
+    .chat-circle-duration::after {
+      content: '•';
+      margin-left: 7px;
+    }
+
+    @media (max-width: 480px) {
+      .chat-circle-wrap { width: 168px; height: 168px; }
+    }
+
+    /* ---------- Ovozli xabar — Telegramdagi kabi custom pleer ---------- */
+    .chat-voice-audio {
+      display: none;
+    }
+
+    .chat-voice-msg {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 232px;
+      padding: 3px 4px 4px;
+    }
+
+    .voice-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .voice-play-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
       flex-shrink: 0;
       cursor: pointer;
-      font-size: 14px;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: color-mix(in srgb, var(--accent) 18%, transparent);
+      color: var(--accent);
     }
 
-    .chat-voice-icon:hover {
-      transform: scale(1.08);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    .chat-voice-icon:active {
-      transform: scale(0.95);
-    }
-
-    .chat-bubble-row.me .chat-voice-icon {
-      background: rgba(255, 255, 255, 0.3);
+    .chat-bubble-row.me .voice-play-btn {
+      background: rgba(255,255,255,.22);
       color: #fff;
     }
 
-    .chat-voice-msg audio {
-      height: 28px;
-      max-width: 200px;
-      border-radius: 999px;
-      accent-color: var(--accent);
-      cursor: pointer;
+    .voice-play-btn .i-play { width: 15px; height: 15px; margin-left: 2px; }
+    .voice-play-btn .i-pause { width: 14px; height: 14px; }
+
+    .voice-track {
+      position: relative;
       flex: 1;
+      height: 28px;
+      cursor: pointer;
+      min-width: 0;
     }
 
-    .chat-bubble-row.me .chat-voice-msg audio {
-      accent-color: #fff;
+    .voice-bars {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      gap: 2.5px;
     }
 
-    .chat-voice-duration {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      opacity: 0.75;
+    .voice-bar {
+      width: 2.5px;
+      min-height: 2px;
+      border-radius: 2px;
       flex-shrink: 0;
-      min-width: 40px;
-      text-align: right;
+      background: var(--text-dim);
+      opacity: .55;
+    }
+
+    .voice-bars-progress {
+      position: absolute;
+      inset: 0;
+      width: 0%;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .voice-bars-progress .voice-bar {
+      background: var(--accent);
+      opacity: 1;
+    }
+
+    .chat-bubble-row.me .voice-bar {
+      background: rgba(255,255,255,.4);
+    }
+
+    .chat-bubble-row.me .voice-bars-progress .voice-bar {
+      background: #fff;
+    }
+
+    .voice-foot {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-left: 46px;
+      margin-top: 2px;
+    }
+
+    .voice-duration {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      opacity: .75;
+      flex-shrink: 0;
+    }
+
+    .voice-foot .chat-bubble-time {
+      margin-top: 0;
     }
 
     .chat-file-msg {
