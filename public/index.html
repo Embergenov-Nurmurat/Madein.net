@@ -679,8 +679,35 @@
             <option value="sale" data-i18n="upload.status.sale">Sotuvda</option>
           </select>
           <div class="field" id="lightboxPriceField" style="margin-bottom:0;">
-            <label for="lightboxPriceInput" data-i18n="upload.priceLabel">Narxi</label>
-            <input type="number" id="lightboxPriceInput" min="0" placeholder="masalan: 150000">
+            <div class="field-row">
+              <div class="field" style="flex:2;">
+                <label for="lightboxPriceInput" data-i18n="upload.priceLabel">Narxi</label>
+                <input type="number" id="lightboxPriceInput" min="0" placeholder="masalan: 150000">
+              </div>
+              <div class="field" style="flex:1;">
+                <label for="lightboxCurrency" data-i18n="upload.currencyLabel">Valyuta</label>
+                <select id="lightboxCurrency">
+                  <option value="UZS">so'm</option>
+                  <option value="USD">USD</option>
+                  <option value="EUR">EUR</option>
+                  <option value="RUB">RUB</option>
+                </select>
+              </div>
+            </div>
+            <div class="field" style="margin-top:14px;">
+              <label data-i18n="upload.stockLabel">Mavjudligi</label>
+              <div class="stock-mode-toggle">
+                <label class="stock-mode-option">
+                  <input type="radio" name="lightboxStockMode" id="lightboxStockModeFixed" value="fixed" checked>
+                  <span data-i18n="upload.stock.fixed">Belgilangan miqdor</span>
+                </label>
+                <label class="stock-mode-option">
+                  <input type="radio" name="lightboxStockMode" id="lightboxStockModeOrder" value="order">
+                  <span data-i18n="upload.stock.order">Buyurtmaga ishlanadi</span>
+                </label>
+              </div>
+              <input type="number" id="lightboxStockQty" min="1" value="1" style="margin-top:8px;" data-i18n-ph="upload.stock.qtyPh" placeholder="Nechta dona bor?">
+            </div>
           </div>
           <div class="field-row" style="margin-top:12px;">
             <button type="button" class="btn btn-primary btn-sm" id="saveStatusBtn" data-i18n="profile.edit.save">Saqlash</button>

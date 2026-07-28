@@ -2850,6 +2850,9 @@
         $('#lightboxStatusSelect').addEventListener('change', () => {
           $('#lightboxPriceField').classList.toggle('hidden', $('#lightboxStatusSelect').value !== 'sale');
         });
+        $$('input[name="lightboxStockMode"]').forEach(r => r.addEventListener('change', () => {
+          $('#lightboxStockQty').classList.toggle('hidden', $('#lightboxStockModeOrder').checked);
+        }));
         $('#saveStatusBtn').addEventListener('click', handleSaveStatus);
 
         $('#lightboxImg').addEventListener('click', (e) => {
@@ -5682,6 +5685,12 @@
         if (!w) return;
         $('#lightboxStatusSelect').value = w.status === 'sale' ? 'sale' : 'expo';
         $('#lightboxPriceInput').value = w.price || '';
+        $('#lightboxCurrency').value = w.currency || 'UZS';
+        const isOrder = w.status === 'sale' && w.stockMode === 'order';
+        $('#lightboxStockModeFixed').checked = !isOrder;
+        $('#lightboxStockModeOrder').checked = isOrder;
+        $('#lightboxStockQty').value = (typeof w.stockQty === 'number' && w.stockQty > 0) ? w.stockQty : 1;
+        $('#lightboxStockQty').classList.toggle('hidden', isOrder);
         $('#lightboxPriceField').classList.toggle('hidden', w.status !== 'sale');
         $('#editStatusMsg').textContent = '';
         $('#editStatusForm').classList.remove('hidden');
@@ -5696,10 +5705,13 @@
         if (!pendingDeleteId) return;
         const status = $('#lightboxStatusSelect').value;
         const price = $('#lightboxPriceInput').value;
+        const currency = $('#lightboxCurrency').value;
+        const stockMode = $('#lightboxStockModeOrder').checked ? 'order' : 'fixed';
+        const stockQty = $('#lightboxStockQty').value;
         const msgEl = $('#editStatusMsg');
         msgEl.textContent = '';
         try {
-          const data = await apiJSON('/api/works/' + pendingDeleteId + '/status', 'PATCH', { status, price });
+          const data = await apiJSON('/api/works/' + pendingDeleteId + '/status', 'PATCH', { status, price, currency, stockMode, stockQty });
           const updated = data.work;
           const wIdx = WORKS.findIndex(x => x.id === pendingDeleteId);
           if (wIdx !== -1) WORKS[wIdx] = { ...WORKS[wIdx], ...updated };
