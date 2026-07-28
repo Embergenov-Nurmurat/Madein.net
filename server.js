@@ -1691,14 +1691,29 @@ app.post('/api/works/:id/like', requireAuth, async (req, res) => {
   res.json({ liked, likesCount: work.likes.length });
 });
 
-/* Asarni to'liq hajmda ochganda chaqiriladi — statistikada ko'rishlar sonini oshiradi */
+/* Asarni to'liq hajmda ochganda chaqiriladi — statistikada ko'rishlar sonini oshiradi.
+   Bitta odam bitta asarga kuniga faqat 1 marta prosmotr qo'sha oladi (sessiya orqali kuzatiladi). */
 app.post('/api/works/:id/view', rateLimit('view', 120, 60 * 1000), async (req, res) => {
   const found = findWork(req.params.id);
   if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
   const { work } = found;
-  work.views = (Number(work.views) || 0) + 1;
-  await saveDB();
-  res.json({ viewsCount: work.views });
+
+  const today = new Date().toISOString().slice(0, 10); // masalan: 2026-07-28
+  if (!req.session.viewedWorks || typeof req.session.viewedWorks !== 'object') {
+    req.session.viewedWorks = {};
+  }
+  // Bugungidan boshqa kunga tegishli eski yozuvlarni tozalab boramiz — sessiya shishib ketmasin
+  for (const wid of Object.keys(req.session.viewedWorks)) {
+    if (req.session.viewedWorks[wid] !== today) delete req.session.viewedWorks[wid];
+  }
+
+  const alreadyViewedToday = req.session.viewedWorks[work.id] === today;
+  if (!alreadyViewedToday) {
+    work.views = (Number(work.views) || 0) + 1;
+    req.session.viewedWorks[work.id] = today;
+    await saveDB();
+  }
+  res.json({ viewsCount: work.views, counted: !alreadyViewedToday });
 });
 
 /* ===================== KOMENTLAR ===================== */
