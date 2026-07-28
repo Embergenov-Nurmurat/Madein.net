@@ -4114,7 +4114,14 @@
       max-width: 640px;
       width: 100%;
       padding: 0;
-      overflow: hidden;
+      /* Faqat gorizontal tomondan yashirilsin (rasm burchaklarini modal
+         radiusiga moslab kesish uchun) — vertikal skroll esa .modal
+         klassidan meros bo'lib qolishi kerak, aks holda rasm ostidagi
+         "Holatni o'zgartirish" formasi (select + narx + Saqlash tugmasi)
+         ekrandan pastda qolib, foydalanuvchi ularga sira yeta olmaydi. */
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .lightbox-img {
