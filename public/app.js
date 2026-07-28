@@ -50,7 +50,7 @@
           "cart.orderFail": "Buyurtma berib bo'lmadi",
           "notif.orderReceived": "{name} sizdan {count} ta asar buyurtma qildi.", "notif.orderPlaced": "Buyurtmangiz muvaffaqiyatli qabul qilindi.",
           "profile.empty.desc": "Birinchi asaringizni yuklab, koleksiyangizni boshlang.",
-          "feed.likeAria": "Layk", "feed.commentAria": "Komentlar",
+          "feed.likeAria": "Layk", "feed.commentAria": "Komentlar", "feed.viewsAria": "Ko'rishlar soni",
           "feed.contactAria": "Sotuvchi bilan bog'lanish", "feed.contactLabel": "Bog'lanish",
           "feed.sale": "Sotuvda", "feed.expo": "Ko'rgazma",
           "profile.stat.total": "Jami", "profile.stat.sale": "Sotuvda", "profile.stat.expo": "Ko'rgazmada",
@@ -361,7 +361,7 @@
           "cart.orderFail": "Couldn't place the order",
           "notif.orderReceived": "{name} ordered {count} of your works.", "notif.orderPlaced": "Your order was placed successfully.",
           "profile.empty.desc": "Upload your first piece to start your collection.",
-          "feed.likeAria": "Like", "feed.commentAria": "Comments",
+          "feed.likeAria": "Like", "feed.commentAria": "Comments", "feed.viewsAria": "View count",
           "feed.contactAria": "Contact the seller", "feed.contactLabel": "Contact",
           "feed.sale": "For sale", "feed.expo": "On display",
           "profile.stat.total": "Total", "profile.stat.sale": "For sale", "profile.stat.expo": "On display",
@@ -672,7 +672,7 @@
           "cart.orderFail": "下单失败",
           "notif.orderReceived": "{name} 订购了您的 {count} 件作品。", "notif.orderPlaced": "您的订单已成功提交。",
           "profile.empty.desc": "上传您的第一件作品，开始您的收藏吧。",
-          "feed.likeAria": "点赞", "feed.commentAria": "评论",
+          "feed.likeAria": "点赞", "feed.commentAria": "评论", "feed.viewsAria": "浏览次数",
           "feed.contactAria": "联系卖家", "feed.contactLabel": "联系",
           "feed.sale": "出售中", "feed.expo": "展览中",
           "profile.stat.total": "总数", "profile.stat.sale": "出售中", "profile.stat.expo": "展览中",
@@ -997,7 +997,7 @@
           "cart.orderFail": "ऑर्डर नहीं दिया जा सका",
           "notif.orderReceived": "{name} ने आपकी {count} कृतियों का ऑर्डर दिया।", "notif.orderPlaced": "आपका ऑर्डर सफलतापूर्वक दे दिया गया।",
           "profile.empty.desc": "अपनी पहली कृति अपलोड करके अपना संग्रह शुरू करें।",
-          "feed.likeAria": "लाइक", "feed.commentAria": "टिप्पणियाँ",
+          "feed.likeAria": "लाइक", "feed.commentAria": "टिप्पणियाँ", "feed.viewsAria": "व्यूज़ की संख्या",
           "feed.contactAria": "विक्रेता से संपर्क करें", "feed.contactLabel": "संपर्क करें",
           "feed.sale": "बिक्री के लिए", "feed.expo": "प्रदर्शन में",
           "profile.stat.total": "कुल", "profile.stat.sale": "बिक्री के लिए", "profile.stat.expo": "प्रदर्शन में",
@@ -1322,7 +1322,7 @@
           "cart.orderFail": "No se pudo realizar el pedido",
           "notif.orderReceived": "{name} pidió {count} de tus obras.", "notif.orderPlaced": "Tu pedido se realizó con éxito.",
           "profile.empty.desc": "Sube tu primera obra y empieza tu colección.",
-          "feed.likeAria": "Me gusta", "feed.commentAria": "Comentarios",
+          "feed.likeAria": "Me gusta", "feed.commentAria": "Comentarios", "feed.viewsAria": "Número de vistas",
           "feed.contactAria": "Contactar al vendedor", "feed.contactLabel": "Contactar",
           "feed.sale": "En venta", "feed.expo": "En exhibición",
           "profile.stat.total": "Total", "profile.stat.sale": "En venta", "profile.stat.expo": "En exhibición",
@@ -1647,7 +1647,7 @@
           "cart.orderFail": "تعذر تقديم الطلب",
           "notif.orderReceived": "طلب {name} {count} من أعمالك.", "notif.orderPlaced": "تم تقديم طلبك بنجاح.",
           "profile.empty.desc": "ارفع أول عمل لك لتبدأ مجموعتك.",
-          "feed.likeAria": "إعجاب", "feed.commentAria": "التعليقات",
+          "feed.likeAria": "إعجاب", "feed.commentAria": "التعليقات", "feed.viewsAria": "عدد المشاهدات",
           "feed.contactAria": "التواصل مع البائع", "feed.contactLabel": "تواصل",
           "feed.sale": "للبيع", "feed.expo": "للعرض",
           "profile.stat.total": "الإجمالي", "profile.stat.sale": "للبيع", "profile.stat.expo": "للعرض",
@@ -1972,7 +1972,7 @@
           "cart.orderFail": "Не удалось оформить заказ",
           "notif.orderReceived": "{name} заказал(а) {count} ваших работ.", "notif.orderPlaced": "Ваш заказ успешно оформлен.",
           "profile.empty.desc": "Загрузите свою первую работу, чтобы начать коллекцию.",
-          "feed.likeAria": "Нравится", "feed.commentAria": "Комментарии",
+          "feed.likeAria": "Нравится", "feed.commentAria": "Комментарии", "feed.viewsAria": "Количество просмотров",
           "feed.contactAria": "Связаться с продавцом", "feed.contactLabel": "Связаться",
           "feed.sale": "Продаётся", "feed.expo": "На выставке",
           "profile.stat.total": "Всего", "profile.stat.sale": "Продаётся", "profile.stat.expo": "На выставке",
@@ -3306,6 +3306,18 @@
         } catch (e) { return ''; }
       }
 
+      /* Katta sonlarni ixcham ko'rinishda ko'rsatadi: 950, 1.2k, 3.4mln kabi */
+      function fmtCount(n) {
+        n = Number(n) || 0;
+        if (n < 1000) return String(n);
+        if (n < 1000000) {
+          const v = n / 1000;
+          return (v >= 100 ? Math.round(v) : v.toFixed(v < 10 ? 1 : 0)) + 'k';
+        }
+        const v = n / 1000000;
+        return (v >= 100 ? Math.round(v) : v.toFixed(v < 10 ? 1 : 0)) + 'M';
+      }
+
       /* Admin uchun: foydalanuvchi oxirgi marta qachon saytda bo'lganini o'qilishi oson shaklda ko'rsatadi */
       function fmtLastSeen(ts) {
         if (!ts) return t('admin.lastSeen.never');
@@ -3759,6 +3771,10 @@
         return `<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.7"/><circle cx="6" cy="12" r="2.7"/><circle cx="18" cy="19" r="2.7"/><line x1="8.4" y1="10.6" x2="15.6" y2="6.4"/><line x1="8.4" y1="13.4" x2="15.6" y2="17.6"/></svg>`;
       }
 
+      function eyeIconSVG() {
+        return `<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"/><circle cx="12" cy="12" r="3"/></svg>`;
+      }
+
       function feedCardHTML(w) {
         return `
       <article class="feed-card" data-id="${w.id}">
@@ -3801,6 +3817,7 @@
           <div class="feed-title">${escapeHtml(w.title)}</div>
           <div class="feed-meta">
             <span>${fmtDate(w.createdAt)}</span>
+            <span class="view-stat" aria-label="${t('feed.viewsAria')}">${eyeIconSVG()}${fmtCount(w.viewsCount || 0)}</span>
             ${w.status === 'sale' && w.price ? (
               (!CURRENT_USER || w.username !== CURRENT_USER.username)
                 ? `<button type="button" class="feed-price feed-price-buy" aria-label="${t('buyNow.aria')}">${fmtPrice(w.price, w.currency)}</button>`
