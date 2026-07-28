@@ -387,25 +387,6 @@
               <div class="field-hint" id="credentialsMsg"></div>
             </div>
           </div>
-          <div class="field lang-field" id="adminActivateBlock">
-            <label for="adminPasswordInput" data-i18n="admin.activate.label">Administrator rejimi</label>
-            <div class="field-row" style="align-items:flex-start;">
-              <input type="password" id="adminPasswordInput" style="flex:1;" data-i18n-ph="admin.activate.ph" placeholder="Maxfiy parolni kiriting">
-              <button type="button" class="btn btn-ghost btn-sm" id="adminActivateBtn" style="white-space:nowrap;" data-i18n="admin.activate.btn">Ishga tushirish</button>
-            </div>
-            <div class="field-hint" id="adminActivateMsg"></div>
-          </div>
-          <div class="field-hint" id="adminAlreadyOn" style="margin-bottom:14px;" data-i18n="admin.activate.already">Administrator rejimi ushbu hisobda faol.</div>
-          <div class="field-hint hidden" id="adminAccessRevokedNotice" style="margin-bottom:14px; color: var(--danger, #e2543f);" data-i18n="admin.accessRevokedNotice">Administrator huquqingiz boss tomonidan bekor qilingan. Faqat boss ruxsati bilan qaytadan faollashtirishingiz mumkin.</div>
-          <div class="field lang-field hidden" id="bossActivateBlock">
-            <label for="bossCodeInput" data-i18n="boss.activate.label">Boss rejimi</label>
-            <div class="field-row" style="align-items:flex-start;">
-              <input type="password" id="bossCodeInput" style="flex:1;" data-i18n-ph="boss.activate.ph" placeholder="Maxfiy kodni kiriting">
-              <button type="button" class="btn btn-ghost btn-sm" id="bossActivateBtn" style="white-space:nowrap;" data-i18n="admin.activate.btn">Ishga tushirish</button>
-            </div>
-            <div class="field-hint" id="bossActivateMsg"></div>
-          </div>
-          <div class="field-hint hidden" id="bossAlreadyOn" style="margin-bottom:14px;" data-i18n="boss.activate.already">Boss rejimi ushbu hisobda faol.</div>
           <div class="privacy-block">
             <div class="field-hint" style="margin-bottom:6px;" data-i18n="profile.edit.privacyTitle">Boshqalar profilingizda nimani ko'ra olishini tanlang:</div>
             <label class="privacy-toggle"><input type="checkbox" id="privacyPhone"> <span data-i18n="profile.edit.privacyPhone">Telefon raqamimni ko'rsatish</span></label>
@@ -626,11 +607,11 @@
             <label data-i18n="upload.statusLabel">Holati</label>
             <select id="workStatus">
               <option value="expo" data-i18n="upload.status.expo">Faqat ko'rgazma</option>
-              <option value="sale" data-i18n="upload.status.sale">Sotuvda</option>
+              <option value="sale" selected data-i18n="upload.status.sale">Sotuvda</option>
             </select>
           </div>
         </div>
-        <div class="field hidden" id="priceField" style="margin-bottom:14px;">
+        <div class="field" id="priceField" style="margin-bottom:14px;">
           <div class="field-row">
             <div class="field" style="flex:2;">
               <label data-i18n="upload.priceLabel">Narx</label>

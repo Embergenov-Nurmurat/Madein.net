@@ -38,6 +38,14 @@
       text-decoration: none;
     }
 
+    /* Brauzerlarda <svg hidden> odatiy holatda yashirilmaydi (SVG o'zining
+       alohida UA stil varag'iga ega, [hidden] qoidasi unga tarqalmaydi).
+       Shu sabab bu qoidani ochiq belgilaymiz — aks holda ovozli/videoli
+       xabarlarning play/pause ikonalari bir vaqtning o'zida ko'rinib qoladi. */
+    [hidden] {
+      display: none !important;
+    }
+
     /* ============ THEME TOKENS ============ */
     :root {
       --font-display: 'Big Shoulders Display', sans-serif;
@@ -1085,19 +1093,6 @@
     @keyframes adminBadgeGlow {
       0%, 100% { box-shadow: 0 0 0 0 rgba(155, 93, 229, 0.55); }
       50% { box-shadow: 0 0 9px 3px rgba(155, 93, 229, 0.55); }
-    }
-
-    .admin-badge.boss {
-      color: #fff;
-      background: linear-gradient(90deg, #ff5252, #ffb347, #f9f871, #4ade80, #38bdf8, #a78bfa, #ff5252);
-      background-size: 300% 100%;
-      animation: bossBadgeRainbow 3s linear infinite;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-    }
-
-    @keyframes bossBadgeRainbow {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 300% 50%; }
     }
 
     .admin-user-actions {
@@ -3520,6 +3515,24 @@
       font-family: var(--font-mono);
       color: var(--accent);
       font-weight: 700;
+    }
+
+    button.feed-price.feed-price-buy {
+      background: color-mix(in srgb, var(--accent) 14%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+      border-radius: 999px;
+      padding: 4px 12px;
+      cursor: pointer;
+      transition: background .15s ease, transform .1s ease, border-color .15s ease;
+    }
+
+    button.feed-price.feed-price-buy:hover {
+      background: color-mix(in srgb, var(--accent) 26%, transparent);
+      border-color: var(--accent);
+    }
+
+    button.feed-price.feed-price-buy:active {
+      transform: scale(0.96);
     }
 
     .feed-sentinel {

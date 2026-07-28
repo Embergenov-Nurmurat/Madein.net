@@ -41,6 +41,10 @@
           "cart.loading": "Yuklanmoqda...", "cart.empty.title": "Korzinka bo'sh",
           "cart.empty.desc": "Yoqtirgan asarlaringizni savat belgisi orqali shu yerga qo'shing.",
           "cart.addAria": "Savatga qo'shish", "cart.increaseAria": "Miqdorni oshirish", "cart.decreaseAria": "Miqdorni kamaytirish",
+          "buyNow.aria": "Hoziroq sotib olish",
+          "buyNow.confirm": "{item} — hoziroq shu narxda sotib olasizmi?",
+          "buyNow.success": "Buyurtmangiz qabul qilindi!",
+          "buyNow.fail": "Xatolik yuz berdi. Qaytadan urinib ko'ring.",
           "cart.removeAria": "Savatdan olib tashlash", "cart.subtotal": "Jami", "cart.checkout": "Buyurtma berish",
           "cart.checkoutConfirm": "Buyurtmani tasdiqlaysizmi?", "cart.orderPlaced": "Buyurtmangiz qabul qilindi! Sotuvchi tez orada siz bilan bog'lanadi.",
           "cart.orderFail": "Buyurtma berib bo'lmadi",
@@ -80,32 +84,23 @@
           "account.err.passwordTooShort": "Yangi parol kamida 4 belgidan iborat bo'lishi kerak.",
           "account.err.mismatch": "Yangi parollar mos kelmadi.",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
-          "err.adminAccessRevoked": "Administrator huquqingiz boss tomonidan bekor qilingan. Faqat boss ruxsati bilan qaytadan faollashtira olasiz",
           "err.cannotBanAdmin": "Boshqa administratorni ban qila olmaysiz",
           "err.cannotMuteAdmin": "Boshqa administratorni mut qila olmaysiz",
-          "err.cannotBanBoss": "Boss'ni ban qila olmaysiz",
-          "err.cannotFireBoss": "Boss'ni ishdan bo'shata olmaysiz",
-          "err.cannotMuteBoss": "Boss'ni mut qila olmaysiz",
-          "err.userAlreadyBoss": "Bu foydalanuvchi allaqachon Boss",
-          "err.userNotFired": "Bu foydalanuvchi ishdan bo'shatilmagan",
           "err.callBlocked": "Bu foydalanuvchi video qo'ng'iroqlarni cheklagan",
           "err.commentDeleteForbidden": "Bu komentni o'chirishga ruxsatingiz yo'q",
           "err.userBusy": "Foydalanuvchi hozir band",
           "err.usernameInvalid": "Foydalanuvchi nomi 3-32 belgi, faqat lotin harflari/raqam/pastki chiziq bo'lishi kerak",
           "err.loginInvalid": "Foydalanuvchi nomi yoki parol noto'g'ri",
           "err.tooManyAttempts": "Juda ko'p urinish qilindi, birozdan so'ng qayta urinib ko'ring",
-          "err.wrongBossCode": "Maxfiy kod noto'g'ri",
-          "err.wrongAdminPassword": "Maxfiy parol noto'g'ri",
           "err.unknownMessageType": "Noma'lum xabar turi",
           "err.invalidData": "Noto'g'ri ma'lumot",
           "err.invalidQuantity": "Noto'g'ri miqdor",
           "err.cannotCartOwnWork": "O'z asaringizni savatga qo'sha olmaysiz",
+          "err.cannotBuyOwnWork": "O'z asaringizni sotib ola olmaysiz",
           "err.cannotFollowSelf": "O'zingizga obuna bo'la olmaysiz",
           "err.cannotCallSelf": "O'zingizga qo'ng'iroq qila olmaysiz",
           "err.cannotMessageSelf": "O'zingizga xabar yubora olmaysiz",
-          "err.cannotPromoteSelf": "O'zingizni admin qila olmaysiz",
           "err.cannotBanSelf": "O'zingizni ban qila olmaysiz",
-          "err.cannotFireSelf": "O'zingizni ishdan bo'shata olmaysiz",
           "err.cannotMuteSelf": "O'zingizni mut qila olmaysiz",
           "err.passwordTooShort": "Parol kamida 4 belgidan iborat bo'lishi kerak",
           "err.callAlreadyEnded": "Qo'ng'iroq allaqachon tugagan",
@@ -118,14 +113,10 @@
           "err.messageEmpty": "Xabar matni bo'sh bo'lishi mumkin emas",
           "err.workNotFound": "Asar topilmadi",
           "err.authRequired": "Avval tizimga kiring",
-          "err.bossNoReports": "Boss shikoyatlar bilan ishlamaydi",
           "err.adminRequired": "Bu amal uchun administrator huquqi kerak",
-          "err.bossRequired": "Bu amal uchun boss huquqi kerak",
           "err.workNotInCart": "Bu asar savatda topilmadi",
           "err.workNotForSale": "Bu asar sotuvda emas",
           "err.workOutOfStock": "Bu asar tugagan",
-          "err.userNotAdmin": "Bu foydalanuvchi administrator emas",
-          "err.userAlreadyAdmin": "Bu foydalanuvchi allaqachon administrator",
           "err.usernameTaken": "Bu foydalanuvchi nomi allaqachon band",
           "err.onlyCallerCanCancel": "Faqat chaqiruvchi bekor qila oladi",
           "err.onlyCallerCanOffer": "Faqat chaqiruvchi taklif yubora oladi",
@@ -234,11 +225,6 @@
           "theme.tungi": "Tungi", "theme.yorug": "Yorug'", "theme.cyberpunk": "Cyberpunk", "theme.cyberpunkBlue": "Cyberpunk ko'k", "theme.cyberpunkYellow": "Cyberpunk sariq", "theme.custom": "Maxsus",
           "theme.customPick": "O'zingiz rang tanlang",
           "admin.nav": "Administrator burchagi",
-          "admin.activate.label": "Administrator rejimi",
-          "admin.activate.ph": "Maxfiy parolni kiriting",
-          "admin.activate.btn": "Ishga tushirish",
-          "admin.activate.already": "Administrator rejimi ushbu hisobda faol.",
-          "admin.activate.fail": "Parol noto'g'ri yoki xatolik yuz berdi.",
           "admin.eyebrow": "Boshqaruv",
           "admin.title": "Administrator <span>burchagi</span>",
           "admin.sub": "Barcha foydalanuvchilar — ban yoki mut bering, muddatidan avval olib tashlang.",
@@ -319,13 +305,6 @@
           "admin.report.deleteWorkBtn": "Suratni o'chirish",
           "admin.report.deleteConfirm": "Ushbu asarning suratini butunlay o'chirmoqchimisiz? Bu amalni bekor qilib bo'lmaydi.",
           "admin.report.empty": "Hozircha shikoyatlar yo'q.",
-          "admin.badge.fired": "Ishdan bo'shatilgan",
-          "admin.action.fire": "Ishdan bo'shatish",
-          "admin.action.rehire": "Ishga qaytarish",
-          "admin.action.promote": "Admin qilish",
-          "admin.confirm.fire": "@{username} ni ishdan bo'shatmoqchimisiz? U administrator huquqidan mahrum bo'ladi va faqat sizning ruxsatingiz bilan qaytadan administrator bo'la oladi.",
-          "admin.confirm.rehire": "@{username} ga qaytadan administrator parolini kiritish huquqini bermoqchimisiz?",
-          "admin.confirm.promote": "@{username} ni administrator qilmoqchimisiz? U darhol administrator huquqlarini oladi.",
           "follow.subscribeBtn": "Obuna bo'lish",
           "follow.unsubscribeBtn": "Obunani bekor qilish",
           "follow.unfollowConfirm": "Obunani bekor qilmoqchimisiz? Bu foydalanuvchining yangi asarlari haqida endi xabardor bo'lmaysiz.",
@@ -337,15 +316,6 @@
           "share.aria": "Ulashish", "share.linkCopied": "Havola nusxalandi: {url}", "share.copyPrompt": "Havolani nusxalang:",
           "feedThumb.aria": "Rasmni to'liq hajmda ko'rish",
           "notif.someone": "Kimdir",
-          "notif.adminFired": "Boss sizni administrator lavozimidan ozod qildi. Endi oddiy foydalanuvchisiz — qaytadan administrator bo'lish uchun boss ruxsati kerak.",
-          "notif.adminRehired": "Boss sizga qaytadan administrator parolini kiritish huquqini berdi.",
-          "notif.adminPromoted": "Boss sizni administrator qildi. Endi Administrator burchagiga kira olasiz.",
-          "admin.bossNav": "Boss xonasi",
-          "admin.bossTitle": "Boss <span>xonasi</span>",
-          "boss.activate.label": "Boss rejimi",
-          "boss.activate.ph": "Maxfiy kodni kiriting",
-          "boss.activate.already": "Boss rejimi ushbu hisobda faol.",
-          "admin.accessRevokedNotice": "Administrator huquqingiz boss tomonidan bekor qilingan. Faqat boss ruxsati bilan qaytadan faollashtirishingiz mumkin."
       },
         en: {
           _locale: 'en-US', _dir: 'ltr', _name: "English",
@@ -381,6 +351,10 @@
           "cart.loading": "Loading...", "cart.empty.title": "Your cart is empty",
           "cart.empty.desc": "Tap the cart icon on pieces you like to add them here.",
           "cart.addAria": "Add to cart", "cart.increaseAria": "Increase quantity", "cart.decreaseAria": "Decrease quantity",
+          "buyNow.aria": "Buy now",
+          "buyNow.confirm": "Buy {item} right now?",
+          "buyNow.success": "Your order has been placed!",
+          "buyNow.fail": "Something went wrong. Please try again.",
           "cart.removeAria": "Remove from cart", "cart.subtotal": "Subtotal", "cart.checkout": "Place order",
           "cart.checkoutConfirm": "Confirm your order?", "cart.orderPlaced": "Your order has been placed! The seller will contact you soon.",
           "cart.orderFail": "Couldn't place the order",
@@ -420,32 +394,23 @@
           "account.err.passwordTooShort": "New password must be at least 4 characters.",
           "account.err.mismatch": "New passwords don't match.",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
-          "err.adminAccessRevoked": "Your administrator access was revoked by the boss. Only the boss can reactivate it",
           "err.cannotBanAdmin": "You can't ban another administrator",
           "err.cannotMuteAdmin": "You can't mute another administrator",
-          "err.cannotBanBoss": "You can't ban the Boss",
-          "err.cannotFireBoss": "You can't fire the Boss",
-          "err.cannotMuteBoss": "You can't mute the Boss",
-          "err.userAlreadyBoss": "This user is already the Boss",
-          "err.userNotFired": "This user hasn't been fired",
           "err.callBlocked": "This user has restricted video calls",
           "err.commentDeleteForbidden": "You don't have permission to delete this comment",
           "err.userBusy": "This user is currently busy",
           "err.usernameInvalid": "Username must be 3-32 characters, Latin letters/numbers/underscore only",
           "err.loginInvalid": "Incorrect username or password",
           "err.tooManyAttempts": "Too many attempts, please try again shortly",
-          "err.wrongBossCode": "Incorrect secret code",
-          "err.wrongAdminPassword": "Incorrect secret password",
           "err.unknownMessageType": "Unknown message type",
           "err.invalidData": "Invalid data",
           "err.invalidQuantity": "Invalid quantity",
           "err.cannotCartOwnWork": "You can't add your own work to the cart",
+          "err.cannotBuyOwnWork": "You can't buy your own work",
           "err.cannotFollowSelf": "You can't follow yourself",
           "err.cannotCallSelf": "You can't call yourself",
           "err.cannotMessageSelf": "You can't message yourself",
-          "err.cannotPromoteSelf": "You can't make yourself an admin",
           "err.cannotBanSelf": "You can't ban yourself",
-          "err.cannotFireSelf": "You can't fire yourself",
           "err.cannotMuteSelf": "You can't mute yourself",
           "err.passwordTooShort": "Password must be at least 4 characters",
           "err.callAlreadyEnded": "The call has already ended",
@@ -458,14 +423,10 @@
           "err.messageEmpty": "Message text can't be empty",
           "err.workNotFound": "Work not found",
           "err.authRequired": "Please log in first",
-          "err.bossNoReports": "The Boss doesn't handle reports",
           "err.adminRequired": "Administrator access is required for this action",
-          "err.bossRequired": "Boss access is required for this action",
           "err.workNotInCart": "This work isn't in your cart",
           "err.workNotForSale": "This work isn't for sale",
           "err.workOutOfStock": "This work is out of stock",
-          "err.userNotAdmin": "This user isn't an administrator",
-          "err.userAlreadyAdmin": "This user is already an administrator",
           "err.usernameTaken": "This username is already taken",
           "err.onlyCallerCanCancel": "Only the caller can cancel",
           "err.onlyCallerCanOffer": "Only the caller can send an offer",
@@ -574,11 +535,6 @@
           "theme.tungi": "Night", "theme.yorug": "Light", "theme.cyberpunk": "Cyberpunk", "theme.cyberpunkBlue": "Cyberpunk blue", "theme.cyberpunkYellow": "Cyberpunk yellow", "theme.custom": "Custom",
           "theme.customPick": "Pick your own color",
           "admin.nav": "Admin corner",
-          "admin.activate.label": "Administrator mode",
-          "admin.activate.ph": "Enter the secret password",
-          "admin.activate.btn": "Activate",
-          "admin.activate.already": "Administrator mode is active on this account.",
-          "admin.activate.fail": "Wrong password or something went wrong.",
           "admin.eyebrow": "Moderation",
           "admin.title": "Admin <span>corner</span>",
           "admin.sub": "All users — ban or mute them, or lift a restriction early.",
@@ -659,13 +615,6 @@
           "admin.report.deleteWorkBtn": "Delete image",
           "admin.report.deleteConfirm": "Do you want to permanently delete this work's image? This action cannot be undone.",
           "admin.report.empty": "No reports yet.",
-          "admin.badge.fired": "Dismissed",
-          "admin.action.fire": "Dismiss",
-          "admin.action.rehire": "Reinstate",
-          "admin.action.promote": "Make admin",
-          "admin.confirm.fire": "Do you want to dismiss @{username}? They will lose admin privileges and can only become an admin again with your permission.",
-          "admin.confirm.rehire": "Do you want to allow @{username} to enter the admin password again?",
-          "admin.confirm.promote": "Do you want to make @{username} an administrator? They will get admin rights immediately.",
           "follow.subscribeBtn": "Follow",
           "follow.unsubscribeBtn": "Unfollow",
           "follow.unfollowConfirm": "Do you want to unfollow? You will no longer be notified about this user's new works.",
@@ -677,15 +626,6 @@
           "share.aria": "Share", "share.linkCopied": "Link copied: {url}", "share.copyPrompt": "Copy the link:",
           "feedThumb.aria": "View image in full size",
           "notif.someone": "Someone",
-          "notif.adminFired": "The boss has dismissed you from the administrator role. You are now a regular user — you'll need the boss's permission to become an administrator again.",
-          "notif.adminRehired": "The boss has given you permission to enter the administrator password again.",
-          "notif.adminPromoted": "The boss has made you an administrator. You can now access the Administrator corner.",
-          "admin.bossNav": "Boss room",
-          "admin.bossTitle": "Boss <span>room</span>",
-          "boss.activate.label": "Boss mode",
-          "boss.activate.ph": "Enter the secret code",
-          "boss.activate.already": "Boss mode is active on this account.",
-          "admin.accessRevokedNotice": "Your administrator rights have been revoked by the boss. You can only reactivate them with the boss's permission."
       },
         zh: {
           _locale: 'zh-CN', _dir: 'ltr', _name: "中文",
@@ -721,6 +661,10 @@
           "cart.loading": "加载中...", "cart.empty.title": "购物车是空的",
           "cart.empty.desc": "点击喜欢的作品上的购物车图标，将它们添加到这里。",
           "cart.addAria": "加入购物车", "cart.increaseAria": "增加数量", "cart.decreaseAria": "减少数量",
+          "buyNow.aria": "立即购买",
+          "buyNow.confirm": "立即购买 {item} 吗？",
+          "buyNow.success": "您的订单已提交！",
+          "buyNow.fail": "出错了，请重试。",
           "cart.removeAria": "从购物车中移除", "cart.subtotal": "小计", "cart.checkout": "下单",
           "cart.checkoutConfirm": "确认下单吗？", "cart.orderPlaced": "您的订单已提交！卖家会尽快与您联系。",
           "cart.orderFail": "下单失败",
@@ -760,32 +704,23 @@
           "account.err.passwordTooShort": "新密码至少需要4个字符。",
           "account.err.mismatch": "两次输入的新密码不一致。",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
-          "err.adminAccessRevoked": "您的管理员权限已被老板撤销。只有老板才能重新激活",
           "err.cannotBanAdmin": "您不能封禁其他管理员",
           "err.cannotMuteAdmin": "您不能禁言其他管理员",
-          "err.cannotBanBoss": "您不能封禁老板",
-          "err.cannotFireBoss": "您不能解雇老板",
-          "err.cannotMuteBoss": "您不能禁言老板",
-          "err.userAlreadyBoss": "该用户已经是老板",
-          "err.userNotFired": "该用户尚未被解雇",
           "err.callBlocked": "该用户已限制视频通话",
           "err.commentDeleteForbidden": "您无权删除此评论",
           "err.userBusy": "该用户当前忙线中",
           "err.usernameInvalid": "用户名须为3-32个字符，仅限拉丁字母、数字和下划线",
           "err.loginInvalid": "用户名或密码错误",
           "err.tooManyAttempts": "尝试次数过多，请稍后再试",
-          "err.wrongBossCode": "密钥不正确",
-          "err.wrongAdminPassword": "密码不正确",
           "err.unknownMessageType": "未知的消息类型",
           "err.invalidData": "数据无效",
           "err.invalidQuantity": "数量无效",
           "err.cannotCartOwnWork": "您不能将自己的作品加入购物车",
+          "err.cannotBuyOwnWork": "您不能购买自己的作品",
           "err.cannotFollowSelf": "您不能关注自己",
           "err.cannotCallSelf": "您不能给自己打电话",
           "err.cannotMessageSelf": "您不能给自己发消息",
-          "err.cannotPromoteSelf": "您不能将自己设为管理员",
           "err.cannotBanSelf": "您不能封禁自己",
-          "err.cannotFireSelf": "您不能解雇自己",
           "err.cannotMuteSelf": "您不能禁言自己",
           "err.passwordTooShort": "密码至少需要4个字符",
           "err.callAlreadyEnded": "通话已结束",
@@ -798,14 +733,10 @@
           "err.messageEmpty": "消息内容不能为空",
           "err.workNotFound": "未找到该作品",
           "err.authRequired": "请先登录",
-          "err.bossNoReports": "老板不处理举报",
           "err.adminRequired": "此操作需要管理员权限",
-          "err.bossRequired": "此操作需要老板权限",
           "err.workNotInCart": "购物车中未找到该作品",
           "err.workNotForSale": "该作品不出售",
           "err.workOutOfStock": "该作品已售罄",
-          "err.userNotAdmin": "该用户不是管理员",
-          "err.userAlreadyAdmin": "该用户已经是管理员",
           "err.usernameTaken": "该用户名已被占用",
           "err.onlyCallerCanCancel": "只有拨打方可以取消",
           "err.onlyCallerCanOffer": "只有拨打方可以发送邀请",
@@ -894,11 +825,6 @@
           "theme.tungi": "夜间", "theme.yorug": "明亮", "theme.cyberpunk": "赛博朋克", "theme.cyberpunkBlue": "赛博朋克蓝", "theme.cyberpunkYellow": "赛博朋克黄", "theme.custom": "自定义",
           "theme.customPick": "选择您自己的颜色",
           "admin.nav": "管理员角",
-          "admin.activate.label": "管理员模式",
-          "admin.activate.ph": "输入密码",
-          "admin.activate.btn": "激活",
-          "admin.activate.already": "此账户的管理员模式已激活。",
-          "admin.activate.fail": "密码错误或发生了错误。",
           "admin.eyebrow": "管理",
           "admin.title": "管理员<span>角</span>",
           "admin.sub": "所有用户 — 封禁或禁言，或提前解除限制。",
@@ -979,13 +905,6 @@
           "admin.report.deleteWorkBtn": "删除图片",
           "admin.report.deleteConfirm": "您要永久删除该作品的图片吗？此操作无法撤销。",
           "admin.report.empty": "暂无举报。",
-          "admin.badge.fired": "已解职",
-          "admin.action.fire": "解职",
-          "admin.action.rehire": "恢复职务",
-          "admin.action.promote": "设为管理员",
-          "admin.confirm.fire": "您要解除 @{username} 的职务吗？该用户将失去管理员权限，只有在您授权后才能重新成为管理员。",
-          "admin.confirm.rehire": "您要允许 @{username} 重新输入管理员密码吗？",
-          "admin.confirm.promote": "您要将 @{username} 设为管理员吗？该用户将立即获得管理员权限。",
           "follow.subscribeBtn": "关注",
           "follow.unsubscribeBtn": "取消关注",
           "follow.unfollowConfirm": "您要取消关注吗？您将不再收到该用户新作品的通知。",
@@ -1031,15 +950,6 @@
           "profile.edit.callPrivacyAddNotFound": "未找到该用户。",
           "feedThumb.aria": "查看大图",
           "notif.someone": "有人",
-          "notif.adminFired": "老板已解除您的管理员职务。您现在是普通用户——需要老板许可才能再次成为管理员。",
-          "notif.adminRehired": "老板已再次授权您输入管理员密码。",
-          "notif.adminPromoted": "老板已将您设为管理员。您现在可以进入管理员角落。",
-          "admin.bossNav": "老板室",
-          "admin.bossTitle": "老板<span>室</span>",
-          "boss.activate.label": "老板模式",
-          "boss.activate.ph": "请输入密码",
-          "boss.activate.already": "此账户已启用老板模式。",
-          "admin.accessRevokedNotice": "您的管理员权限已被老板撤销。只有获得老板许可才能重新激活。"
       },
         hi: {
           _locale: 'hi-IN', _dir: 'ltr', _name: "हिन्दी",
@@ -1075,6 +985,10 @@
           "cart.loading": "लोड हो रहा है...", "cart.empty.title": "आपकी कार्ट खाली है",
           "cart.empty.desc": "पसंद की गई कृतियों को यहाँ जोड़ने के लिए कार्ट आइकन दबाएँ।",
           "cart.addAria": "कार्ट में जोड़ें", "cart.increaseAria": "मात्रा बढ़ाएं", "cart.decreaseAria": "मात्रा घटाएं",
+          "buyNow.aria": "अभी खरीदें",
+          "buyNow.confirm": "क्या आप {item} अभी इसी कीमत पर खरीदना चाहते हैं?",
+          "buyNow.success": "आपका ऑर्डर दर्ज कर लिया गया है!",
+          "buyNow.fail": "कुछ गड़बड़ हो गई। कृपया फिर से प्रयास करें।",
           "cart.removeAria": "कार्ट से हटाएं", "cart.subtotal": "उप-योग", "cart.checkout": "ऑर्डर करें",
           "cart.checkoutConfirm": "क्या आप ऑर्डर की पुष्टि करते हैं?", "cart.orderPlaced": "आपका ऑर्डर दे दिया गया है! विक्रेता जल्द ही आपसे संपर्क करेगा।",
           "cart.orderFail": "ऑर्डर नहीं दिया जा सका",
@@ -1114,32 +1028,23 @@
           "account.err.passwordTooShort": "नया पासवर्ड कम से कम 4 अक्षर का होना चाहिए।",
           "account.err.mismatch": "नए पासवर्ड मेल नहीं खाते।",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
-          "err.adminAccessRevoked": "आपका प्रशासक अधिकार बॉस द्वारा रद्द कर दिया गया है। इसे केवल बॉस की अनुमति से दोबारा सक्रिय किया जा सकता है",
           "err.cannotBanAdmin": "आप किसी अन्य प्रशासक को बैन नहीं कर सकते",
           "err.cannotMuteAdmin": "आप किसी अन्य प्रशासक को म्यूट नहीं कर सकते",
-          "err.cannotBanBoss": "आप बॉस को बैन नहीं कर सकते",
-          "err.cannotFireBoss": "आप बॉस को नौकरी से नहीं निकाल सकते",
-          "err.cannotMuteBoss": "आप बॉस को म्यूट नहीं कर सकते",
-          "err.userAlreadyBoss": "यह उपयोगकर्ता पहले से ही बॉस है",
-          "err.userNotFired": "इस उपयोगकर्ता को नौकरी से नहीं निकाला गया है",
           "err.callBlocked": "इस उपयोगकर्ता ने वीडियो कॉल प्रतिबंधित कर दी है",
           "err.commentDeleteForbidden": "इस टिप्पणी को हटाने की आपको अनुमति नहीं है",
           "err.userBusy": "यह उपयोगकर्ता अभी व्यस्त है",
           "err.usernameInvalid": "उपयोगकर्ता नाम 3-32 अक्षर का होना चाहिए, केवल लैटिन अक्षर/अंक/अंडरस्कोर की अनुमति है",
           "err.loginInvalid": "उपयोगकर्ता नाम या पासवर्ड गलत है",
           "err.tooManyAttempts": "बहुत अधिक प्रयास किए गए, कृपया थोड़ी देर बाद पुनः प्रयास करें",
-          "err.wrongBossCode": "गुप्त कोड गलत है",
-          "err.wrongAdminPassword": "गुप्त पासवर्ड गलत है",
           "err.unknownMessageType": "अज्ञात संदेश प्रकार",
           "err.invalidData": "अमान्य डेटा",
           "err.invalidQuantity": "अमान्य मात्रा",
           "err.cannotCartOwnWork": "आप अपनी खुद की कृति को कार्ट में नहीं जोड़ सकते",
+          "err.cannotBuyOwnWork": "आप अपनी खुद की कृति नहीं खरीद सकते",
           "err.cannotFollowSelf": "आप खुद को फॉलो नहीं कर सकते",
           "err.cannotCallSelf": "आप खुद को कॉल नहीं कर सकते",
           "err.cannotMessageSelf": "आप खुद को संदेश नहीं भेज सकते",
-          "err.cannotPromoteSelf": "आप खुद को प्रशासक नहीं बना सकते",
           "err.cannotBanSelf": "आप खुद को बैन नहीं कर सकते",
-          "err.cannotFireSelf": "आप खुद को नौकरी से नहीं निकाल सकते",
           "err.cannotMuteSelf": "आप खुद को म्यूट नहीं कर सकते",
           "err.passwordTooShort": "पासवर्ड कम से कम 4 अक्षर का होना चाहिए",
           "err.callAlreadyEnded": "कॉल पहले ही समाप्त हो चुकी है",
@@ -1152,14 +1057,10 @@
           "err.messageEmpty": "संदेश खाली नहीं हो सकता",
           "err.workNotFound": "कृति नहीं मिली",
           "err.authRequired": "कृपया पहले लॉग इन करें",
-          "err.bossNoReports": "बॉस शिकायतों को नहीं संभालता",
           "err.adminRequired": "इस कार्रवाई के लिए प्रशासक अधिकार आवश्यक है",
-          "err.bossRequired": "इस कार्रवाई के लिए बॉस अधिकार आवश्यक है",
           "err.workNotInCart": "यह कृति कार्ट में नहीं मिली",
           "err.workNotForSale": "यह कृति बिक्री के लिए नहीं है",
           "err.workOutOfStock": "यह कृति स्टॉक में नहीं है",
-          "err.userNotAdmin": "यह उपयोगकर्ता प्रशासक नहीं है",
-          "err.userAlreadyAdmin": "यह उपयोगकर्ता पहले से ही प्रशासक है",
           "err.usernameTaken": "यह उपयोगकर्ता नाम पहले से लिया जा चुका है",
           "err.onlyCallerCanCancel": "केवल कॉल करने वाला ही रद्द कर सकता है",
           "err.onlyCallerCanOffer": "केवल कॉल करने वाला ही ऑफर भेज सकता है",
@@ -1248,11 +1149,6 @@
           "theme.tungi": "रात्रि", "theme.yorug": "उजला", "theme.cyberpunk": "साइबरपंक", "theme.cyberpunkBlue": "साइबरपंक नीला", "theme.cyberpunkYellow": "साइबरपंक पीला", "theme.custom": "कस्टम",
           "theme.customPick": "अपना रंग चुनें",
           "admin.nav": "प्रशासक कोना",
-          "admin.activate.label": "प्रशासक मोड",
-          "admin.activate.ph": "गुप्त पासवर्ड डालें",
-          "admin.activate.btn": "सक्रिय करें",
-          "admin.activate.already": "इस खाते पर प्रशासक मोड पहले से सक्रिय है।",
-          "admin.activate.fail": "गलत पासवर्ड या कोई त्रुटि हुई।",
           "admin.eyebrow": "मॉडरेशन",
           "admin.title": "प्रशासक <span>कोना</span>",
           "admin.sub": "सभी उपयोगकर्ता — बैन या म्यूट करें, या प्रतिबंध जल्दी हटाएं।",
@@ -1333,13 +1229,6 @@
           "admin.report.deleteWorkBtn": "छवि हटाएं",
           "admin.report.deleteConfirm": "क्या आप इस कृति की छवि को स्थायी रूप से हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।",
           "admin.report.empty": "अभी तक कोई शिकायत नहीं है।",
-          "admin.badge.fired": "बर्खास्त",
-          "admin.action.fire": "बर्खास्त करें",
-          "admin.action.rehire": "पुनर्बहाल करें",
-          "admin.action.promote": "व्यवस्थापक बनाएं",
-          "admin.confirm.fire": "क्या आप @{username} को बर्खास्त करना चाहते हैं? वे व्यवस्थापक अधिकार खो देंगे और केवल आपकी अनुमति से ही फिर से व्यवस्थापक बन सकेंगे।",
-          "admin.confirm.rehire": "क्या आप @{username} को व्यवस्थापक पासवर्ड फिर से दर्ज करने की अनुमति देना चाहते हैं?",
-          "admin.confirm.promote": "क्या आप @{username} को व्यवस्थापक बनाना चाहते हैं? उसे तुरंत व्यवस्थापक अधिकार मिल जाएंगे।",
           "follow.subscribeBtn": "फ़ॉलो करें",
           "follow.unsubscribeBtn": "अनफ़ॉलो करें",
           "follow.unfollowConfirm": "क्या आप अनफ़ॉलो करना चाहते हैं? अब आपको इस उपयोगकर्ता की नई कृतियों की सूचना नहीं मिलेगी।",
@@ -1385,15 +1274,6 @@
           "profile.edit.callPrivacyAddNotFound": "ऐसा कोई उपयोगकर्ता नहीं मिला।",
           "feedThumb.aria": "छवि को पूर्ण आकार में देखें",
           "notif.someone": "किसी ने",
-          "notif.adminFired": "बॉस ने आपको व्यवस्थापक पद से हटा दिया है। अब आप एक सामान्य उपयोगकर्ता हैं — फिर से व्यवस्थापक बनने के लिए बॉस की अनुमति चाहिए होगी।",
-          "notif.adminRehired": "बॉस ने आपको फिर से व्यवस्थापक पासवर्ड दर्ज करने का अधिकार दिया है।",
-          "notif.adminPromoted": "बॉस ने आपको व्यवस्थापक बना दिया है। अब आप व्यवस्थापक कोने में जा सकते हैं।",
-          "admin.bossNav": "बॉस रूम",
-          "admin.bossTitle": "बॉस <span>रूम</span>",
-          "boss.activate.label": "बॉस मोड",
-          "boss.activate.ph": "गुप्त कोड दर्ज करें",
-          "boss.activate.already": "इस खाते में बॉस मोड सक्रिय है।",
-          "admin.accessRevokedNotice": "आपके व्यवस्थापक अधिकार बॉस द्वारा रद्द कर दिए गए हैं। आप केवल बॉस की अनुमति से ही उन्हें फिर से सक्रिय कर सकते हैं।"
       },
         es: {
           _locale: 'es-ES', _dir: 'ltr', _name: "Español",
@@ -1429,6 +1309,10 @@
           "cart.loading": "Cargando...", "cart.empty.title": "Tu carrito está vacío",
           "cart.empty.desc": "Toca el icono del carrito en las obras que te gusten para añadirlas aquí.",
           "cart.addAria": "Añadir al carrito", "cart.increaseAria": "Aumentar cantidad", "cart.decreaseAria": "Disminuir cantidad",
+          "buyNow.aria": "Comprar ahora",
+          "buyNow.confirm": "¿Comprar {item} ahora mismo?",
+          "buyNow.success": "¡Tu pedido se ha realizado!",
+          "buyNow.fail": "Algo salió mal. Inténtalo de nuevo.",
           "cart.removeAria": "Quitar del carrito", "cart.subtotal": "Subtotal", "cart.checkout": "Hacer pedido",
           "cart.checkoutConfirm": "¿Confirmar tu pedido?", "cart.orderPlaced": "¡Tu pedido ha sido realizado! El vendedor se pondrá en contacto contigo pronto.",
           "cart.orderFail": "No se pudo realizar el pedido",
@@ -1468,32 +1352,23 @@
           "account.err.passwordTooShort": "La nueva contraseña debe tener al menos 4 caracteres.",
           "account.err.mismatch": "Las nuevas contraseñas no coinciden.",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
-          "err.adminAccessRevoked": "Tus permisos de administrador fueron revocados por el jefe. Solo el jefe puede reactivarlos",
           "err.cannotBanAdmin": "No puedes banear a otro administrador",
           "err.cannotMuteAdmin": "No puedes silenciar a otro administrador",
-          "err.cannotBanBoss": "No puedes banear al Jefe",
-          "err.cannotFireBoss": "No puedes despedir al Jefe",
-          "err.cannotMuteBoss": "No puedes silenciar al Jefe",
-          "err.userAlreadyBoss": "Este usuario ya es el Jefe",
-          "err.userNotFired": "Este usuario no ha sido despedido",
           "err.callBlocked": "Este usuario ha restringido las videollamadas",
           "err.commentDeleteForbidden": "No tienes permiso para eliminar este comentario",
           "err.userBusy": "Este usuario está ocupado en este momento",
           "err.usernameInvalid": "El nombre de usuario debe tener 3-32 caracteres: solo letras latinas, números y guion bajo",
           "err.loginInvalid": "Nombre de usuario o contraseña incorrectos",
           "err.tooManyAttempts": "Demasiados intentos, inténtalo de nuevo en un momento",
-          "err.wrongBossCode": "Código secreto incorrecto",
-          "err.wrongAdminPassword": "Contraseña secreta incorrecta",
           "err.unknownMessageType": "Tipo de mensaje desconocido",
           "err.invalidData": "Datos no válidos",
           "err.invalidQuantity": "Cantidad no válida",
           "err.cannotCartOwnWork": "No puedes añadir tu propia obra al carrito",
+          "err.cannotBuyOwnWork": "No puedes comprar tu propia obra",
           "err.cannotFollowSelf": "No puedes seguirte a ti mismo",
           "err.cannotCallSelf": "No puedes llamarte a ti mismo",
           "err.cannotMessageSelf": "No puedes enviarte un mensaje a ti mismo",
-          "err.cannotPromoteSelf": "No puedes convertirte en administrador a ti mismo",
           "err.cannotBanSelf": "No puedes banearte a ti mismo",
-          "err.cannotFireSelf": "No puedes despedirte a ti mismo",
           "err.cannotMuteSelf": "No puedes silenciarte a ti mismo",
           "err.passwordTooShort": "La contraseña debe tener al menos 4 caracteres",
           "err.callAlreadyEnded": "La llamada ya ha terminado",
@@ -1506,14 +1381,10 @@
           "err.messageEmpty": "El texto del mensaje no puede estar vacío",
           "err.workNotFound": "Obra no encontrada",
           "err.authRequired": "Primero inicia sesión",
-          "err.bossNoReports": "El Jefe no gestiona reportes",
           "err.adminRequired": "Esta acción requiere permisos de administrador",
-          "err.bossRequired": "Esta acción requiere permisos de jefe",
           "err.workNotInCart": "Esta obra no está en el carrito",
           "err.workNotForSale": "Esta obra no está en venta",
           "err.workOutOfStock": "Esta obra se ha agotado",
-          "err.userNotAdmin": "Este usuario no es administrador",
-          "err.userAlreadyAdmin": "Este usuario ya es administrador",
           "err.usernameTaken": "Este nombre de usuario ya está en uso",
           "err.onlyCallerCanCancel": "Solo quien llama puede cancelar",
           "err.onlyCallerCanOffer": "Solo quien llama puede enviar la oferta",
@@ -1602,11 +1473,6 @@
           "theme.tungi": "Nocturno", "theme.yorug": "Claro", "theme.cyberpunk": "Cyberpunk", "theme.cyberpunkBlue": "Cyberpunk azul", "theme.cyberpunkYellow": "Cyberpunk amarillo", "theme.custom": "Personalizado",
           "theme.customPick": "Elige tu propio color",
           "admin.nav": "Rincón del administrador",
-          "admin.activate.label": "Modo administrador",
-          "admin.activate.ph": "Introduce la contraseña secreta",
-          "admin.activate.btn": "Activar",
-          "admin.activate.already": "El modo administrador ya está activo en esta cuenta.",
-          "admin.activate.fail": "Contraseña incorrecta o se produjo un error.",
           "admin.eyebrow": "Moderación",
           "admin.title": "Rincón del <span>administrador</span>",
           "admin.sub": "Todos los usuarios — banéalos o siléncialos, o levanta una restricción antes de tiempo.",
@@ -1687,13 +1553,6 @@
           "admin.report.deleteWorkBtn": "Eliminar imagen",
           "admin.report.deleteConfirm": "¿Quieres eliminar permanentemente la imagen de esta obra? Esta acción no se puede deshacer.",
           "admin.report.empty": "Aún no hay denuncias.",
-          "admin.badge.fired": "Destituido",
-          "admin.action.fire": "Destituir",
-          "admin.action.rehire": "Reincorporar",
-          "admin.action.promote": "Hacer administrador",
-          "admin.confirm.fire": "¿Quieres destituir a @{username}? Perderá los privilegios de administrador y solo podrá volver a serlo con tu permiso.",
-          "admin.confirm.rehire": "¿Quieres permitir que @{username} vuelva a introducir la contraseña de administrador?",
-          "admin.confirm.promote": "¿Quieres convertir a @{username} en administrador? Obtendrá privilegios de administrador de inmediato.",
           "follow.subscribeBtn": "Seguir",
           "follow.unsubscribeBtn": "Dejar de seguir",
           "follow.unfollowConfirm": "¿Quieres dejar de seguir? Ya no recibirás notificaciones sobre las nuevas obras de este usuario.",
@@ -1739,15 +1598,6 @@
           "profile.edit.callPrivacyAddNotFound": "No se encontró ese usuario.",
           "feedThumb.aria": "Ver imagen a tamaño completo",
           "notif.someone": "Alguien",
-          "notif.adminFired": "El jefe te ha destituido del cargo de administrador. Ahora eres un usuario normal — necesitarás el permiso del jefe para volver a ser administrador.",
-          "notif.adminRehired": "El jefe te ha dado permiso para introducir de nuevo la contraseña de administrador.",
-          "notif.adminPromoted": "El jefe te ha convertido en administrador. Ya puedes acceder al rincón del administrador.",
-          "admin.bossNav": "Sala del jefe",
-          "admin.bossTitle": "Sala del <span>jefe</span>",
-          "boss.activate.label": "Modo jefe",
-          "boss.activate.ph": "Introduce el código secreto",
-          "boss.activate.already": "El modo jefe está activo en esta cuenta.",
-          "admin.accessRevokedNotice": "Tus derechos de administrador han sido revocados por el jefe. Solo puedes reactivarlos con el permiso del jefe."
       },
         ar: {
           _locale: 'ar-SA', _dir: 'rtl', _name: "العربية",
@@ -1783,6 +1633,10 @@
           "cart.loading": "جارٍ التحميل...", "cart.empty.title": "عربة التسوق فارغة",
           "cart.empty.desc": "اضغط على أيقونة العربة في الأعمال التي تعجبك لإضافتها هنا.",
           "cart.addAria": "أضف إلى العربة", "cart.increaseAria": "زيادة الكمية", "cart.decreaseAria": "تقليل الكمية",
+          "buyNow.aria": "اشترِ الآن",
+          "buyNow.confirm": "هل تريد شراء {item} الآن؟",
+          "buyNow.success": "تم تقديم طلبك!",
+          "buyNow.fail": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
           "cart.removeAria": "إزالة من العربة", "cart.subtotal": "المجموع الفرعي", "cart.checkout": "تقديم الطلب",
           "cart.checkoutConfirm": "هل تريد تأكيد الطلب؟", "cart.orderPlaced": "تم تقديم طلبك! سيتواصل معك البائع قريبًا.",
           "cart.orderFail": "تعذر تقديم الطلب",
@@ -1822,32 +1676,23 @@
           "account.err.passwordTooShort": "يجب أن تتكون كلمة المرور الجديدة من 4 أحرف على الأقل.",
           "account.err.mismatch": "كلمتا المرور الجديدتان غير متطابقتين.",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
-          "err.adminAccessRevoked": "تم إلغاء صلاحيات المشرف الخاصة بك من قبل الرئيس. يمكن للرئيس فقط إعادة تفعيلها",
           "err.cannotBanAdmin": "لا يمكنك حظر مشرف آخر",
           "err.cannotMuteAdmin": "لا يمكنك كتم مشرف آخر",
-          "err.cannotBanBoss": "لا يمكنك حظر الرئيس",
-          "err.cannotFireBoss": "لا يمكنك طرد الرئيس",
-          "err.cannotMuteBoss": "لا يمكنك كتم الرئيس",
-          "err.userAlreadyBoss": "هذا المستخدم هو الرئيس بالفعل",
-          "err.userNotFired": "هذا المستخدم لم يتم طرده",
           "err.callBlocked": "قام هذا المستخدم بتقييد مكالمات الفيديو",
           "err.commentDeleteForbidden": "ليس لديك إذن لحذف هذا التعليق",
           "err.userBusy": "هذا المستخدم مشغول حاليًا",
           "err.usernameInvalid": "يجب أن يتكون اسم المستخدم من 3-32 حرفًا، وأحرف لاتينية/أرقام/شرطة سفلية فقط",
           "err.loginInvalid": "اسم المستخدم أو كلمة المرور غير صحيحة",
           "err.tooManyAttempts": "محاولات كثيرة جدًا، يرجى المحاولة مرة أخرى بعد قليل",
-          "err.wrongBossCode": "الرمز السري غير صحيح",
-          "err.wrongAdminPassword": "كلمة المرور السرية غير صحيحة",
           "err.unknownMessageType": "نوع رسالة غير معروف",
           "err.invalidData": "بيانات غير صالحة",
           "err.invalidQuantity": "كمية غير صالحة",
           "err.cannotCartOwnWork": "لا يمكنك إضافة عملك الخاص إلى السلة",
+          "err.cannotBuyOwnWork": "لا يمكنك شراء عملك الخاص",
           "err.cannotFollowSelf": "لا يمكنك متابعة نفسك",
           "err.cannotCallSelf": "لا يمكنك الاتصال بنفسك",
           "err.cannotMessageSelf": "لا يمكنك مراسلة نفسك",
-          "err.cannotPromoteSelf": "لا يمكنك ترقية نفسك إلى مشرف",
           "err.cannotBanSelf": "لا يمكنك حظر نفسك",
-          "err.cannotFireSelf": "لا يمكنك طرد نفسك",
           "err.cannotMuteSelf": "لا يمكنك كتم نفسك",
           "err.passwordTooShort": "يجب أن تتكون كلمة المرور من 4 أحرف على الأقل",
           "err.callAlreadyEnded": "المكالمة انتهت بالفعل",
@@ -1860,14 +1705,10 @@
           "err.messageEmpty": "لا يمكن أن يكون نص الرسالة فارغًا",
           "err.workNotFound": "العمل غير موجود",
           "err.authRequired": "يرجى تسجيل الدخول أولاً",
-          "err.bossNoReports": "الرئيس لا يتعامل مع البلاغات",
           "err.adminRequired": "هذا الإجراء يتطلب صلاحيات مشرف",
-          "err.bossRequired": "هذا الإجراء يتطلب صلاحيات الرئيس",
           "err.workNotInCart": "هذا العمل غير موجود في السلة",
           "err.workNotForSale": "هذا العمل ليس للبيع",
           "err.workOutOfStock": "نفدت الكمية من هذا العمل",
-          "err.userNotAdmin": "هذا المستخدم ليس مشرفًا",
-          "err.userAlreadyAdmin": "هذا المستخدم مشرف بالفعل",
           "err.usernameTaken": "اسم المستخدم هذا مُستخدم بالفعل",
           "err.onlyCallerCanCancel": "يمكن للمتصل فقط الإلغاء",
           "err.onlyCallerCanOffer": "يمكن للمتصل فقط إرسال العرض",
@@ -1956,11 +1797,6 @@
           "theme.tungi": "ليلي", "theme.yorug": "فاتح", "theme.cyberpunk": "سايبربانك", "theme.cyberpunkBlue": "سايبربانك أزرق", "theme.cyberpunkYellow": "سايبربانك أصفر", "theme.custom": "مخصص",
           "theme.customPick": "اختر لونك الخاص",
           "admin.nav": "زاوية المشرف",
-          "admin.activate.label": "وضع المشرف",
-          "admin.activate.ph": "أدخل كلمة المرور السرية",
-          "admin.activate.btn": "تفعيل",
-          "admin.activate.already": "وضع المشرف مُفعّل بالفعل في هذا الحساب.",
-          "admin.activate.fail": "كلمة مرور خاطئة أو حدث خطأ ما.",
           "admin.eyebrow": "الإشراف",
           "admin.title": "زاوية <span>المشرف</span>",
           "admin.sub": "جميع المستخدمين — احظرهم أو أسكتهم، أو ألغِ قيدًا مبكرًا.",
@@ -2041,13 +1877,6 @@
           "admin.report.deleteWorkBtn": "حذف الصورة",
           "admin.report.deleteConfirm": "هل تريد حذف صورة هذا العمل نهائيًا؟ لا يمكن التراجع عن هذا الإجراء.",
           "admin.report.empty": "لا توجد بلاغات حتى الآن.",
-          "admin.badge.fired": "مفصول",
-          "admin.action.fire": "فصل",
-          "admin.action.rehire": "إعادة تعيين",
-          "admin.action.promote": "تعيين كمشرف",
-          "admin.confirm.fire": "هل تريد فصل @{username}؟ سيفقد صلاحيات المشرف ولن يتمكن من العودة كمشرف إلا بإذنك.",
-          "admin.confirm.rehire": "هل تريد السماح لـ @{username} بإدخال كلمة مرور المشرف مرة أخرى؟",
-          "admin.confirm.promote": "هل تريد تعيين @{username} كمشرف؟ سيحصل على صلاحيات المشرف فورًا.",
           "follow.subscribeBtn": "متابعة",
           "follow.unsubscribeBtn": "إلغاء المتابعة",
           "follow.unfollowConfirm": "هل تريد إلغاء المتابعة؟ لن يتم إعلامك بعد الآن بالأعمال الجديدة لهذا المستخدم.",
@@ -2093,15 +1922,6 @@
           "profile.edit.callPrivacyAddNotFound": "لم يتم العثور على هذا المستخدم.",
           "feedThumb.aria": "عرض الصورة بالحجم الكامل",
           "notif.someone": "شخص ما",
-          "notif.adminFired": "قام الرئيس بإعفائك من منصب المشرف. أنت الآن مستخدم عادي — ستحتاج إلى إذن الرئيس لتصبح مشرفًا مرة أخرى.",
-          "notif.adminRehired": "منحك الرئيس الإذن لإدخال كلمة مرور المشرف مرة أخرى.",
-          "notif.adminPromoted": "قام الرئيس بتعيينك كمشرف. يمكنك الآن الدخول إلى ركن المشرف.",
-          "admin.bossNav": "غرفة الرئيس",
-          "admin.bossTitle": "غرفة <span>الرئيس</span>",
-          "boss.activate.label": "وضع الرئيس",
-          "boss.activate.ph": "أدخل الرمز السري",
-          "boss.activate.already": "وضع الرئيس مفعّل على هذا الحساب.",
-          "admin.accessRevokedNotice": "تم إلغاء صلاحيات المشرف الخاصة بك من قبل الرئيس. يمكنك إعادة تفعيلها فقط بإذن الرئيس."
       },
         ru: {
           _locale: 'ru-RU', _dir: 'ltr', _name: "Русский",
@@ -2137,6 +1957,10 @@
           "cart.loading": "Загрузка...", "cart.empty.title": "Ваша корзина пуста",
           "cart.empty.desc": "Нажмите значок корзины на понравившихся работах, чтобы добавить их сюда.",
           "cart.addAria": "Добавить в корзину", "cart.increaseAria": "Увеличить количество", "cart.decreaseAria": "Уменьшить количество",
+          "buyNow.aria": "Купить сейчас",
+          "buyNow.confirm": "Купить {item} прямо сейчас?",
+          "buyNow.success": "Ваш заказ оформлен!",
+          "buyNow.fail": "Произошла ошибка. Попробуйте ещё раз.",
           "cart.removeAria": "Удалить из корзины", "cart.subtotal": "Промежуточный итог", "cart.checkout": "Оформить заказ",
           "cart.checkoutConfirm": "Подтвердить заказ?", "cart.orderPlaced": "Ваш заказ оформлен! Продавец скоро свяжется с вами.",
           "cart.orderFail": "Не удалось оформить заказ",
@@ -2176,32 +2000,23 @@
           "account.err.passwordTooShort": "Новый пароль должен содержать минимум 4 символа.",
           "account.err.mismatch": "Новые пароли не совпадают.",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
-          "err.adminAccessRevoked": "Ваши права администратора отменены боссом. Заново активировать их может только босс",
           "err.cannotBanAdmin": "Вы не можете забанить другого администратора",
           "err.cannotMuteAdmin": "Вы не можете заглушить другого администратора",
-          "err.cannotBanBoss": "Вы не можете забанить Босса",
-          "err.cannotFireBoss": "Вы не можете уволить Босса",
-          "err.cannotMuteBoss": "Вы не можете заглушить Босса",
-          "err.userAlreadyBoss": "Этот пользователь уже Босс",
-          "err.userNotFired": "Этот пользователь не был уволен",
           "err.callBlocked": "Этот пользователь ограничил видеозвонки",
           "err.commentDeleteForbidden": "У вас нет прав на удаление этого комментария",
           "err.userBusy": "Пользователь сейчас занят",
           "err.usernameInvalid": "Имя пользователя должно содержать 3-32 символа: только латинские буквы, цифры и подчёркивание",
           "err.loginInvalid": "Неверное имя пользователя или пароль",
           "err.tooManyAttempts": "Слишком много попыток, повторите чуть позже",
-          "err.wrongBossCode": "Неверный секретный код",
-          "err.wrongAdminPassword": "Неверный секретный пароль",
           "err.unknownMessageType": "Неизвестный тип сообщения",
           "err.invalidData": "Неверные данные",
           "err.invalidQuantity": "Неверное количество",
           "err.cannotCartOwnWork": "Вы не можете добавить свою работу в корзину",
+          "err.cannotBuyOwnWork": "Вы не можете купить свою собственную работу",
           "err.cannotFollowSelf": "Вы не можете подписаться на самого себя",
           "err.cannotCallSelf": "Вы не можете позвонить самому себе",
           "err.cannotMessageSelf": "Вы не можете отправить сообщение самому себе",
-          "err.cannotPromoteSelf": "Вы не можете назначить себя администратором",
           "err.cannotBanSelf": "Вы не можете забанить самого себя",
-          "err.cannotFireSelf": "Вы не можете уволить самого себя",
           "err.cannotMuteSelf": "Вы не можете заглушить самого себя",
           "err.passwordTooShort": "Пароль должен содержать не менее 4 символов",
           "err.callAlreadyEnded": "Звонок уже завершён",
@@ -2214,14 +2029,10 @@
           "err.messageEmpty": "Текст сообщения не может быть пустым",
           "err.workNotFound": "Работа не найдена",
           "err.authRequired": "Сначала войдите в систему",
-          "err.bossNoReports": "Босс не занимается жалобами",
           "err.adminRequired": "Для этого действия нужны права администратора",
-          "err.bossRequired": "Для этого действия нужны права босса",
           "err.workNotInCart": "Эта работа не найдена в корзине",
           "err.workNotForSale": "Эта работа не продаётся",
           "err.workOutOfStock": "Эта работа закончилась",
-          "err.userNotAdmin": "Этот пользователь не администратор",
-          "err.userAlreadyAdmin": "Этот пользователь уже администратор",
           "err.usernameTaken": "Это имя пользователя уже занято",
           "err.onlyCallerCanCancel": "Отменить может только позвонивший",
           "err.onlyCallerCanOffer": "Отправить предложение может только позвонивший",
@@ -2310,11 +2121,6 @@
           "theme.tungi": "Ночной", "theme.yorug": "Светлый", "theme.cyberpunk": "Киберпанк", "theme.cyberpunkBlue": "Киберпанк синий", "theme.cyberpunkYellow": "Киберпанк жёлтый", "theme.custom": "Свой",
           "theme.customPick": "Выберите свой цвет",
           "admin.nav": "Уголок администратора",
-          "admin.activate.label": "Режим администратора",
-          "admin.activate.ph": "Введите секретный пароль",
-          "admin.activate.btn": "Активировать",
-          "admin.activate.already": "Режим администратора активен на этом аккаунте.",
-          "admin.activate.fail": "Неверный пароль или произошла ошибка.",
           "admin.eyebrow": "Модерация",
           "admin.title": "Уголок <span>администратора</span>",
           "admin.sub": "Все пользователи — выдавайте бан или мут, либо снимайте ограничение досрочно.",
@@ -2395,13 +2201,6 @@
           "admin.report.deleteWorkBtn": "Удалить изображение",
           "admin.report.deleteConfirm": "Вы хотите безвозвратно удалить изображение этой работы? Это действие нельзя отменить.",
           "admin.report.empty": "Пока жалоб нет.",
-          "admin.badge.fired": "Уволен",
-          "admin.action.fire": "Уволить",
-          "admin.action.rehire": "Восстановить",
-          "admin.action.promote": "Сделать админом",
-          "admin.confirm.fire": "Вы хотите уволить @{username}? Он лишится прав администратора и сможет снова стать администратором только с вашего разрешения.",
-          "admin.confirm.rehire": "Вы хотите разрешить @{username} снова ввести пароль администратора?",
-          "admin.confirm.promote": "Вы хотите сделать @{username} администратором? Он сразу получит права администратора.",
           "follow.subscribeBtn": "Подписаться",
           "follow.unsubscribeBtn": "Отписаться",
           "follow.unfollowConfirm": "Вы хотите отписаться? Вы больше не будете получать уведомления о новых работах этого пользователя.",
@@ -2447,15 +2246,6 @@
           "profile.edit.callPrivacyAddNotFound": "Такой пользователь не найден.",
           "feedThumb.aria": "Посмотреть изображение в полном размере",
           "notif.someone": "Кто-то",
-          "notif.adminFired": "Босс освободил вас от должности администратора. Теперь вы обычный пользователь — чтобы снова стать администратором, потребуется разрешение босса.",
-          "notif.adminRehired": "Босс снова дал вам право ввести пароль администратора.",
-          "notif.adminPromoted": "Босс сделал вас администратором. Теперь вы можете зайти в уголок администратора.",
-          "admin.bossNav": "Кабинет босса",
-          "admin.bossTitle": "Кабинет <span>босса</span>",
-          "boss.activate.label": "Режим босса",
-          "boss.activate.ph": "Введите секретный код",
-          "boss.activate.already": "Режим босса активен на этом аккаунте.",
-          "admin.accessRevokedNotice": "Ваши права администратора были отозваны боссом. Вы можете снова активировать их только с разрешения босса."
       }
       };
 
@@ -2887,9 +2677,6 @@
           case 'ban-expired': return t('notif.banExpired');
           case 'mute-expired': return t('notif.muteExpired');
           case 'follow': return t('notif.follow', { name: n.from || t('notif.someone') });
-          case 'admin-fired': return t('notif.adminFired');
-          case 'admin-rehired': return t('notif.adminRehired');
-          case 'admin-promoted': return t('notif.adminPromoted');
           case 'order-received': return t('notif.orderReceived', { name: n.from || t('notif.someone'), count: n.itemsCount || 1 });
           case 'order-placed': return t('notif.orderPlaced');
           default: return n.text || '';
@@ -3151,8 +2938,6 @@
         $$('input[name="callPrivacyMode"]').forEach(r => r.addEventListener('change', updateCallPrivacySelectedVisibility));
         $('#callPrivacyAddBtn').addEventListener('click', addCallPrivacyAllowedUser);
         $('#callPrivacyAddInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCallPrivacyAllowedUser(); } });
-        $('#adminActivateBtn').addEventListener('click', activateAdminMode);
-        $('#bossActivateBtn').addEventListener('click', activateBossMode);
         $('#bannedLogoutBtn').addEventListener('click', async () => {
           try { await api('/api/logout', { method: 'POST' }); } catch (e) { /* ignore */ }
           location.reload();
@@ -3216,7 +3001,7 @@
         if (view === 'admin') {
           loadAdminUsers();
           loadAdminStats();
-          if (!(CURRENT_USER && CURRENT_USER.isBoss)) loadAdminReports();
+          loadAdminReports();
         }
         if (view === 'cart') {
           loadCart();
@@ -3245,12 +3030,10 @@
         }
         list.innerHTML = items.map(u => {
           const badges = [];
-          if (u.isBoss) badges.push(`<span class="admin-badge boss">Boss</span>`);
-          else if (u.isAdmin) badges.push(`<span class="admin-badge admin">${t('admin.badge.admin')}</span>`);
-          if (u.adminAccessRevoked) badges.push(`<span class="admin-badge banned">${t('admin.badge.fired')}</span>`);
+          if (u.isAdmin) badges.push(`<span class="admin-badge admin">${t('admin.badge.admin')}</span>`);
           if (u.bannedUntil) badges.push(`<span class="admin-badge banned">${t('admin.badge.banned')}</span>`);
           if (u.mutedUntil) badges.push(`<span class="admin-badge muted">${t('admin.badge.muted')}</span>`);
-          if (!u.bannedUntil && !u.mutedUntil && !u.isAdmin && !u.isBoss) badges.push(`<span class="admin-badge ok">${t('admin.badge.ok')}</span>`);
+          if (!u.bannedUntil && !u.mutedUntil && !u.isAdmin) badges.push(`<span class="admin-badge ok">${t('admin.badge.ok')}</span>`);
 
           let statusLines = '';
           if (u.bannedUntil) {
@@ -3260,12 +3043,11 @@
             statusLines += `<div class="admin-status-line">${t('admin.status.mutedUntil', { date: new Date(u.mutedUntil).toLocaleString(I18N[currentLang]._locale) })}${u.muteReason ? ' — ' + escapeHtml(u.muteReason) : ''}</div>`;
           }
 
-          const iAmBoss = !!(CURRENT_USER && CURRENT_USER.isBoss);
           const isSelf = u.username === (CURRENT_USER && CURRENT_USER.username);
-          /* Oddiy admin faqat oddiy foydalanuvchilarni moderatsiya qila oladi.
-             Boss esa boshqa administratorlarni ham ban/mut/ishdan bo'shata oladi
-             (lekin boss'ning o'zini yoki o'zini emas). */
-          const canModerate = !isSelf && !u.isBoss && (iAmBoss || !u.isAdmin);
+          /* Sayt bo'yicha faqat bitta administrator bo'ladi, shuning uchun
+             admin o'zini emas, faqat oddiy foydalanuvchilarni moderatsiya
+             qila oladi (boshqa admin bo'lishi mumkin emas). */
+          const canModerate = !isSelf && !u.isAdmin;
           let actions = '';
           if (canModerate) {
             actions += u.bannedUntil
@@ -3274,15 +3056,6 @@
             actions += u.mutedUntil
               ? `<button type="button" class="btn btn-ghost" data-admin-action="unmute" data-username="${u.username}">${t('admin.action.unmute')}</button>`
               : `<button type="button" class="btn btn-ghost" data-admin-action="mute" data-username="${u.username}">${t('admin.action.mute')}</button>`;
-          }
-          if (iAmBoss && !isSelf && !u.isBoss) {
-            if (u.isAdmin) {
-              actions += `<button type="button" class="btn btn-ghost" data-admin-action="fire" data-username="${u.username}">${t('admin.action.fire')}</button>`;
-            } else if (u.adminAccessRevoked) {
-              actions += `<button type="button" class="btn btn-ghost" data-admin-action="rehire" data-username="${u.username}">${t('admin.action.rehire')}</button>`;
-            } else {
-              actions += `<button type="button" class="btn btn-ghost" data-admin-action="promote" data-username="${u.username}">${t('admin.action.promote')}</button>`;
-            }
           }
 
           return `
@@ -3317,33 +3090,6 @@
           if (!confirm(t('admin.confirm.' + action))) return;
           try {
             await api('/api/admin/users/' + encodeURIComponent(username) + '/' + action, { method: 'POST' });
-            loadAdminUsers();
-          } catch (e) {
-            alert(e.message || t('admin.actionFail'));
-          }
-        }
-        if (action === 'fire') {
-          if (!confirm(t('admin.confirm.fire', { username }))) return;
-          try {
-            await api('/api/admin/users/' + encodeURIComponent(username) + '/fire', { method: 'POST' });
-            loadAdminUsers();
-          } catch (e) {
-            alert(e.message || t('admin.actionFail'));
-          }
-        }
-        if (action === 'rehire') {
-          if (!confirm(t('admin.confirm.rehire', { username }))) return;
-          try {
-            await api('/api/admin/users/' + encodeURIComponent(username) + '/rehire', { method: 'POST' });
-            loadAdminUsers();
-          } catch (e) {
-            alert(e.message || t('admin.actionFail'));
-          }
-        }
-        if (action === 'promote') {
-          if (!confirm(t('admin.confirm.promote', { username }))) return;
-          try {
-            await api('/api/admin/users/' + encodeURIComponent(username) + '/promote', { method: 'POST' });
             loadAdminUsers();
           } catch (e) {
             alert(e.message || t('admin.actionFail'));
@@ -3544,7 +3290,7 @@
         } catch (e) { return ''; }
       }
 
-      /* Admin/boss uchun: foydalanuvchi oxirgi marta qachon saytda bo'lganini o'qilishi oson shaklda ko'rsatadi */
+      /* Admin uchun: foydalanuvchi oxirgi marta qachon saytda bo'lganini o'qilishi oson shaklda ko'rsatadi */
       function fmtLastSeen(ts) {
         if (!ts) return t('admin.lastSeen.never');
         const diffSec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
@@ -3625,16 +3371,6 @@
         renderCallPrivacyAllowedList();
         updateCallPrivacySelectedVisibility();
         $('#editAvatarPreview').innerHTML = avatarInner(u.avatar, u.fullname || u.username);
-        $('#adminPasswordInput').value = '';
-        $('#adminActivateMsg').textContent = '';
-        $('#bossCodeInput').value = '';
-        $('#bossActivateMsg').textContent = '';
-        const canShowAdminActivate = !u.isAdmin && !u.adminAccessRevoked;
-        $('#adminActivateBlock').classList.toggle('hidden', !canShowAdminActivate);
-        $('#adminAlreadyOn').classList.toggle('hidden', !u.isAdmin);
-        $('#adminAccessRevokedNotice').classList.toggle('hidden', !u.adminAccessRevoked);
-        $('#bossActivateBlock').classList.toggle('hidden', !(u.isAdmin && !u.isBoss));
-        $('#bossAlreadyOn').classList.toggle('hidden', !u.isBoss);
         $('#editProfileCard').classList.remove('hidden');
       }
 
@@ -3688,50 +3424,13 @@
         }
       }
 
-      async function activateBossMode() {
-        const code = $('#bossCodeInput').value;
-        const msgEl = $('#bossActivateMsg');
-        msgEl.textContent = '';
-        if (!code) return;
-        try {
-          const data = await apiJSON('/api/admin/boss/activate', 'POST', { code });
-          CURRENT_USER = data.user;
-          $('#bossCodeInput').value = '';
-          $('#bossActivateBlock').classList.add('hidden');
-          $('#bossAlreadyOn').classList.remove('hidden');
-          updateAdminNavVisibility();
-        } catch (err) {
-          msgEl.textContent = err.message || t('admin.activate.fail');
-        }
-      }
-
-      async function activateAdminMode() {
-        const pw = $('#adminPasswordInput').value;
-        const msgEl = $('#adminActivateMsg');
-        msgEl.textContent = '';
-        if (!pw) return;
-        try {
-          const data = await apiJSON('/api/admin/activate', 'POST', { password: pw });
-          CURRENT_USER = data.user;
-          $('#adminPasswordInput').value = '';
-          $('#adminActivateBlock').classList.add('hidden');
-          $('#adminAlreadyOn').classList.remove('hidden');
-          updateAdminNavVisibility();
-        } catch (err) {
-          msgEl.textContent = err.message || t('admin.activate.fail');
-        }
-      }
-
       function updateAdminNavVisibility() {
-        const isAdmin = !!(CURRENT_USER && (CURRENT_USER.isAdmin || CURRENT_USER.isBoss));
-        const isBoss = !!(CURRENT_USER && CURRENT_USER.isBoss);
+        const isAdmin = !!(CURRENT_USER && CURRENT_USER.isAdmin);
         $('#navAdminBtn').classList.toggle('hidden', !isAdmin);
         $('#navAdminBtnMobile').classList.toggle('hidden', !isAdmin);
-        const navLabel = isBoss ? t('admin.bossNav') : t('admin.nav');
-        $('#navAdminBtn').textContent = navLabel;
-        $$('#navAdminBtnMobile span').forEach(s => { if (!s.classList.contains('tab-icon')) s.textContent = navLabel; });
-        $('#adminViewTitle').innerHTML = isBoss ? t('admin.bossTitle') : t('admin.title');
-        $('#adminReportsSection').classList.toggle('hidden', isBoss);
+        $('#navAdminBtn').textContent = t('admin.nav');
+        $$('#navAdminBtnMobile span').forEach(s => { if (!s.classList.contains('tab-icon')) s.textContent = t('admin.nav'); });
+        $('#adminViewTitle').innerHTML = t('admin.title');
       }
       async function saveProfile() {
         try {
@@ -4086,7 +3785,11 @@
           <div class="feed-title">${escapeHtml(w.title)}</div>
           <div class="feed-meta">
             <span>${fmtDate(w.createdAt)}</span>
-            ${w.status === 'sale' && w.price ? `<span class="feed-price">${fmtPrice(w.price, w.currency)}</span>` : ''}
+            ${w.status === 'sale' && w.price ? (
+              (!CURRENT_USER || w.username !== CURRENT_USER.username)
+                ? `<button type="button" class="feed-price feed-price-buy" aria-label="${t('buyNow.aria')}">${fmtPrice(w.price, w.currency)}</button>`
+                : `<span class="feed-price">${fmtPrice(w.price, w.currency)}</span>`
+            ) : ''}
             ${w.status === 'sale' ? stockBadgeHTML(w) : ''}
           </div>
           <button class="report-link" data-type="work" data-id="${w.id}" data-title="${escapeHtml(w.title)}">${t('report.action')}</button>
@@ -4160,6 +3863,13 @@
         }
         const cartBtn = card.querySelector('.cart-btn');
         if (cartBtn) cartBtn.addEventListener('click', guarded(() => toggleCart(id)));
+        const buyBtn = card.querySelector('.feed-price-buy');
+        if (buyBtn) {
+          buyBtn.addEventListener('click', guarded((e) => {
+            e.stopPropagation();
+            buyNow(id);
+          }));
+        }
         const shareBtn = card.querySelector('.share-btn');
         if (shareBtn) shareBtn.addEventListener('click', () => shareWork(shareBtn.dataset.id, shareBtn.dataset.title));
         const reportLink = card.querySelector('.report-link');
@@ -4181,6 +3891,21 @@
           refreshCartBadge(data.cartCount);
         } catch (e) {
           alert((e && e.message) || t('common.serverError'));
+        }
+      }
+
+      /* Bosh betdagi lentada narxga bosilganda darhol (savatsiz) sotib olish */
+      async function buyNow(id) {
+        const item = ALL_ITEMS_BY_ID[id];
+        const label = item ? `${item.title} — ${fmtPrice(item.price, item.currency)}` : '';
+        if (!confirm(t('buyNow.confirm', { item: label }))) return;
+        try {
+          await apiJSON('/api/works/' + id + '/buy-now', 'POST');
+          alert(t('buyNow.success'));
+          if (item) item.inCart = false;
+          document.querySelectorAll(`.cart-btn[data-id="${id}"]`).forEach(btn => btn.classList.remove('in-cart'));
+        } catch (e) {
+          alert((e && e.message) || t('buyNow.fail'));
         }
       }
 
@@ -5152,12 +4877,22 @@
          WhatsApp'dagi kabi) — yangisi bosilganda avvalgisi to'xtaydi. */
       let currentPlayingVoiceAudio = null;
 
+      /* SVG elementlarda ".hidden" JS xossasini o'rnatish ba'zi brauzerlarda
+         "hidden" atributiga aks etmaydi (bu faqat oddiy HTML elementlar uchun
+         ishonchli ishlaydi). Play/pauza ikonalari <svg> bo'lgani uchun
+         atributni to'g'ridan-to'g'ri o'zimiz boshqaramiz. */
+      function setSvgHidden(el, hide) {
+        if (!el) return;
+        if (hide) el.setAttribute('hidden', '');
+        else el.removeAttribute('hidden');
+      }
+
       function resetVoiceButton(bubble) {
         if (!bubble) return;
         const btn = bubble.querySelector('[data-voice-toggle]');
         if (!btn) return;
-        btn.querySelector('.i-play').hidden = false;
-        btn.querySelector('.i-pause').hidden = true;
+        setSvgHidden(btn.querySelector('.i-play'), false);
+        setSvgHidden(btn.querySelector('.i-pause'), true);
       }
 
       function bindVoicePlayers(container) {
@@ -5191,12 +4926,12 @@
           });
 
           audio.addEventListener('play', () => {
-            iPlay.hidden = true;
-            iPause.hidden = false;
+            setSvgHidden(iPlay, true);
+            setSvgHidden(iPause, false);
           });
           audio.addEventListener('pause', () => {
-            iPlay.hidden = false;
-            iPause.hidden = true;
+            setSvgHidden(iPlay, false);
+            setSvgHidden(iPause, true);
           });
           audio.addEventListener('timeupdate', () => {
             if (audio.duration) setProgress(audio.currentTime / audio.duration);
@@ -5259,8 +4994,8 @@
           btn.addEventListener('click', toggle);
           video.addEventListener('click', toggle);
 
-          video.addEventListener('play', () => { iPlay.hidden = true; iPause.hidden = false; wrap.classList.add('playing'); });
-          video.addEventListener('pause', () => { iPlay.hidden = false; iPause.hidden = true; wrap.classList.remove('playing'); });
+          video.addEventListener('play', () => { setSvgHidden(iPlay, true); setSvgHidden(iPause, false); wrap.classList.add('playing'); });
+          video.addEventListener('pause', () => { setSvgHidden(iPlay, false); setSvgHidden(iPause, true); wrap.classList.remove('playing'); });
           video.addEventListener('timeupdate', () => {
             if (video.duration) {
               ring.style.strokeDashoffset = String(circumference * (1 - video.currentTime / video.duration));
@@ -5698,7 +5433,7 @@
         uploadMediaItems.forEach(item => { if (item.previewUrl) URL.revokeObjectURL(item.previewUrl); });
         uploadMediaItems = [];
         renderUploadPreview();
-        $('#priceField').classList.add('hidden');
+        $('#priceField').classList.toggle('hidden', $('#workStatus').value !== 'sale');
         $('#workTypeOther').classList.add('hidden');
         $('#workTypeOther').required = false;
         $('#workStockQty').classList.remove('hidden');
