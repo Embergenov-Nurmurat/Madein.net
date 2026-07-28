@@ -340,7 +340,9 @@ let writeQueue = Promise.resolve();
 function saveDB() {
   writeQueue = writeQueue.then(() => new Promise((resolve, reject) => {
     const tmp = DB_FILE + '.tmp';
-    fs.writeFile(tmp, JSON.stringify(db, null, 2), (err) => {
+    // Chiroyli (indent=2) emas, siqilgan JSON — har bir like/viewda butun
+    // faylni qayta yig'ish tezroq bo'lishi uchun
+    fs.writeFile(tmp, JSON.stringify(db), (err) => {
       if (err) return reject(err);
       fs.rename(tmp, DB_FILE, (err2) => err2 ? reject(err2) : resolve());
     });

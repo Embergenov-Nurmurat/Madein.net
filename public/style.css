@@ -163,6 +163,8 @@
       --glow: 0 0 22px rgba(10, 132, 255, 0.35);
       --glass-blur: blur(28px) saturate(190%);
       --glass-hl: inset 0 1px 0 rgba(255, 255, 255, 0.75), inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+      --shadow-light: 0 6px 18px rgba(30, 40, 80, 0.12);
+      --glass-hl-light: inset 0 1px 0 rgba(255, 255, 255, 0.55);
     }
 
     /* floating colour blobs that live behind the frosted panels so the
@@ -224,13 +226,13 @@
     body[data-theme="liquid-glass"] .cart-item,
     body[data-theme="liquid-glass"] .chip,
     body[data-theme="liquid-glass"] .btn-secondary {
-      box-shadow: var(--shadow), var(--glass-hl);
+      box-shadow: var(--shadow-light), var(--glass-hl-light);
       border: 1px solid var(--border);
     }
 
     body[data-theme="liquid-glass"] .btn-primary {
       background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 92%, white 8%), var(--accent-2));
-      box-shadow: var(--glow), var(--glass-hl);
+      box-shadow: var(--glow), var(--glass-hl-light);
       border: 1px solid rgba(255, 255, 255, 0.45);
     }
 
@@ -281,16 +283,22 @@
       padding: 0 28px;
     }
 
-    /* subtle grain / texture overlay for atmosphere */
+    /* subtle grain / texture overlay for atmosphere.
+       NOTE: this used to use mix-blend-mode, which forces the browser to
+       recompute blending against everything scrolling underneath it on
+       every single frame (it sits above the whole page, always). At this
+       opacity the visual difference is negligible, but removing the blend
+       mode turns it into a cheap, GPU-composited static layer instead —
+       noticeably smoother scrolling site-wide, in every theme. */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 2000;
-      opacity: .035;
+      opacity: .05;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      mix-blend-mode: overlay;
+      will-change: transform;
     }
 
     /* ============ LOADING SCREEN ============ */
