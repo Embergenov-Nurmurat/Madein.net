@@ -166,7 +166,9 @@
     }
 
     /* floating colour blobs that live behind the frosted panels so the
-       blur has something soft & colourful to refract */
+       blur has something soft & colourful to refract. Static on purpose —
+       animating `filter` on a fullscreen layer is very expensive and was
+       causing the whole site to lag. */
     body[data-theme="liquid-glass"]::after {
       content: '';
       position: fixed;
@@ -179,67 +181,65 @@
         radial-gradient(40vw 40vw at 25% 92%, rgba(255, 105, 97, 0.4), transparent 60%),
         radial-gradient(36vw 36vw at 95% 88%, rgba(48, 209, 88, 0.35), transparent 60%),
         linear-gradient(160deg, #eef1f8, #dbe1ee 60%, #e7e2ef);
-      animation: glassDrift 24s ease-in-out infinite alternate;
     }
 
-    @keyframes glassDrift {
-      0% { filter: hue-rotate(0deg); transform: scale(1); }
-      100% { filter: hue-rotate(18deg); transform: scale(1.06); }
-    }
-
-    /* every surface that already paints itself with var(--surface) picks up
-       the frosted-glass treatment automatically in this theme */
+    /* HEAVY BLUR TIER — only elements that appear once (or a couple times)
+       on screen at a time. Safe for performance since there's no long
+       repeating list of them to blur simultaneously while scrolling. */
     body[data-theme="liquid-glass"] .navbar,
-    body[data-theme="liquid-glass"] .admin-user-row,
     body[data-theme="liquid-glass"] .gate-modal,
-    body[data-theme="liquid-glass"] .icon-btn,
-    body[data-theme="liquid-glass"] .avatar-btn,
     body[data-theme="liquid-glass"] .dropdown,
-    body[data-theme="liquid-glass"] .privacy-note,
-    body[data-theme="liquid-glass"] .work-card,
-    body[data-theme="liquid-glass"] .feed-card,
-    body[data-theme="liquid-glass"] .feed-search-wrap input,
-    body[data-theme="liquid-glass"] .feed-filter-bar select,
-    body[data-theme="liquid-glass"] .admin-stat-card,
-    body[data-theme="liquid-glass"] .admin-report-card,
-    body[data-theme="liquid-glass"] .conversation-item,
-    body[data-theme="liquid-glass"] .incall-banner,
-    body[data-theme="liquid-glass"] .substat,
-    body[data-theme="liquid-glass"] .profile-edit-card,
     body[data-theme="liquid-glass"] .modal,
     body[data-theme="liquid-glass"] .theme-panel,
-    body[data-theme="liquid-glass"] .cart-item,
+    body[data-theme="liquid-glass"] .theme-fab,
     body[data-theme="liquid-glass"] .cart-summary,
-    body[data-theme="liquid-glass"] .chip,
     body[data-theme="liquid-glass"] .auth-card,
+    body[data-theme="liquid-glass"] .profile-edit-card,
+    body[data-theme="liquid-glass"] .incall-banner,
+    body[data-theme="liquid-glass"] .feed-search-wrap input,
+    body[data-theme="liquid-glass"] .feed-filter-bar select,
     body[data-theme="liquid-glass"] .input-wrap input,
     body[data-theme="liquid-glass"] .input-wrap textarea,
-    body[data-theme="liquid-glass"] .btn-secondary,
-    body[data-theme="liquid-glass"] .theme-fab {
+    body[data-theme="liquid-glass"] .btn-guest {
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       box-shadow: var(--shadow), var(--glass-hl);
       border: 1px solid var(--border);
     }
 
+    /* NO-BLUR TIER — these repeat many times at once in lists/grids
+       (feed, work grid, chat, admin tables). A real-time blur on dozens
+       of these while scrolling is what caused the lag, so they only get
+       a plain translucent background + border, no backdrop-filter. */
+    body[data-theme="liquid-glass"] .admin-user-row,
+    body[data-theme="liquid-glass"] .icon-btn,
+    body[data-theme="liquid-glass"] .avatar-btn,
+    body[data-theme="liquid-glass"] .privacy-note,
+    body[data-theme="liquid-glass"] .work-card,
+    body[data-theme="liquid-glass"] .feed-card,
+    body[data-theme="liquid-glass"] .admin-stat-card,
+    body[data-theme="liquid-glass"] .admin-report-card,
+    body[data-theme="liquid-glass"] .conversation-item,
+    body[data-theme="liquid-glass"] .substat,
+    body[data-theme="liquid-glass"] .cart-item,
+    body[data-theme="liquid-glass"] .chip,
+    body[data-theme="liquid-glass"] .btn-secondary {
+      box-shadow: var(--shadow), var(--glass-hl);
+      border: 1px solid var(--border);
+    }
+
     body[data-theme="liquid-glass"] .btn-primary {
       background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 92%, white 8%), var(--accent-2));
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
       box-shadow: var(--glow), var(--glass-hl);
       border: 1px solid rgba(255, 255, 255, 0.45);
     }
 
     body[data-theme="liquid-glass"] .btn-ghost {
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      background: rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.4);
       border: 1px solid var(--border);
     }
 
     body[data-theme="liquid-glass"] .btn-guest {
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
       background: rgba(255, 255, 255, 0.16);
     }
 
