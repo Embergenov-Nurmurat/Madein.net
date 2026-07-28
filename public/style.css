@@ -146,6 +146,111 @@
       /* --accent and --accent-2 are set inline via JS */
     }
 
+    /* ============ LIQUID GLASS THEME (iOS-style) ============ */
+    body[data-theme="liquid-glass"] {
+      --bg: #e4e8f1;
+      --bg-alt: #dde3ee;
+      --surface: rgba(255, 255, 255, 0.38);
+      --surface-2: rgba(255, 255, 255, 0.52);
+      --text: #14151c;
+      --text-dim: #5b5f70;
+      --accent: #0a84ff;
+      --accent-2: #bf5af2;
+      --border: rgba(255, 255, 255, 0.6);
+      --stamp-ink: var(--accent);
+      --shadow: 0 20px 50px rgba(30, 40, 80, 0.18);
+      --glow: 0 0 22px rgba(10, 132, 255, 0.35);
+      --glass-blur: blur(28px) saturate(190%);
+      --glass-hl: inset 0 1px 0 rgba(255, 255, 255, 0.75), inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+    }
+
+    /* floating colour blobs that live behind the frosted panels so the
+       blur has something soft & colourful to refract */
+    body[data-theme="liquid-glass"]::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(38vw 38vw at 12% 8%, rgba(10, 132, 255, 0.55), transparent 60%),
+        radial-gradient(34vw 34vw at 88% 18%, rgba(191, 90, 242, 0.5), transparent 60%),
+        radial-gradient(40vw 40vw at 25% 92%, rgba(255, 105, 97, 0.4), transparent 60%),
+        radial-gradient(36vw 36vw at 95% 88%, rgba(48, 209, 88, 0.35), transparent 60%),
+        linear-gradient(160deg, #eef1f8, #dbe1ee 60%, #e7e2ef);
+      animation: glassDrift 24s ease-in-out infinite alternate;
+    }
+
+    @keyframes glassDrift {
+      0% { filter: hue-rotate(0deg); transform: scale(1); }
+      100% { filter: hue-rotate(18deg); transform: scale(1.06); }
+    }
+
+    /* every surface that already paints itself with var(--surface) picks up
+       the frosted-glass treatment automatically in this theme */
+    body[data-theme="liquid-glass"] .navbar,
+    body[data-theme="liquid-glass"] .admin-user-row,
+    body[data-theme="liquid-glass"] .gate-modal,
+    body[data-theme="liquid-glass"] .icon-btn,
+    body[data-theme="liquid-glass"] .avatar-btn,
+    body[data-theme="liquid-glass"] .dropdown,
+    body[data-theme="liquid-glass"] .privacy-note,
+    body[data-theme="liquid-glass"] .work-card,
+    body[data-theme="liquid-glass"] .feed-card,
+    body[data-theme="liquid-glass"] .feed-search-wrap input,
+    body[data-theme="liquid-glass"] .feed-filter-bar select,
+    body[data-theme="liquid-glass"] .nav-search-wrap,
+    body[data-theme="liquid-glass"] .admin-stat-card,
+    body[data-theme="liquid-glass"] .admin-report-card,
+    body[data-theme="liquid-glass"] .conversation-item,
+    body[data-theme="liquid-glass"] .incall-banner,
+    body[data-theme="liquid-glass"] .substat,
+    body[data-theme="liquid-glass"] .profile-edit-card,
+    body[data-theme="liquid-glass"] .modal,
+    body[data-theme="liquid-glass"] .theme-panel,
+    body[data-theme="liquid-glass"] .cart-item,
+    body[data-theme="liquid-glass"] .cart-summary,
+    body[data-theme="liquid-glass"] .auth-card,
+    body[data-theme="liquid-glass"] .input-wrap input,
+    body[data-theme="liquid-glass"] .input-wrap textarea,
+    body[data-theme="liquid-glass"] .btn-secondary,
+    body[data-theme="liquid-glass"] .theme-fab {
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      box-shadow: var(--shadow), var(--glass-hl);
+      border: 1px solid var(--border);
+    }
+
+    body[data-theme="liquid-glass"] .btn-primary {
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 92%, white 8%), var(--accent-2));
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      box-shadow: var(--glow), var(--glass-hl);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+    }
+
+    body[data-theme="liquid-glass"] .btn-ghost {
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      background: rgba(255, 255, 255, 0.22);
+      border: 1px solid var(--border);
+    }
+
+    body[data-theme="liquid-glass"] .btn-guest {
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    body[data-theme="liquid-glass"] ::selection {
+      background: rgba(10, 132, 255, 0.28);
+    }
+
+    body[data-theme="liquid-glass"] .auth-blob {
+      filter: blur(60px) saturate(180%);
+      opacity: .6;
+    }
+
     body {
       background: var(--bg);
       color: var(--text);
