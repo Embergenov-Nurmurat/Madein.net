@@ -1541,6 +1541,37 @@ app.delete('/api/works/:id', requireAuth, async (req, res) => {
   res.json({ ok: true });
 });
 
+/* Egasi o'ziga tegishli asarning holatini (Faqat ko'rgazma / Sotuvda) va
+   narxini yuklangandan keyin ham profilidan o'zgartira olishi uchun */
+app.patch('/api/works/:id/status', requireAuth, requireNotMuted, async (req, res) => {
+  const uname = req.session.username;
+  const list = db.works[uname] || [];
+  const work = list.find(w => w.id === req.params.id);
+  if (!work) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
+
+  const { status, price, currency, stockMode: stockModeRaw, stockQty: stockQtyRaw } = req.body || {};
+  if (status !== 'sale' && status !== 'expo') {
+    return res.status(400).json({ error: "Holat noto'g'ri", code: 'invalidStatus' });
+  }
+  const isSale = status === 'sale';
+  const CURRENCIES = ['UZS', 'USD', 'EUR', 'RUB'];
+  const stockMode = isSale && stockModeRaw === 'fixed' ? 'fixed' : (isSale ? 'order' : null);
+  let stockQty = null;
+  if (isSale && stockMode === 'fixed') {
+    const n = Math.floor(Number(stockQtyRaw));
+    stockQty = Number.isFinite(n) && n > 0 ? Math.min(n, 9999) : (typeof work.stockQty === 'number' ? work.stockQty : 1);
+  }
+
+  work.status = isSale ? 'sale' : 'expo';
+  work.price = isSale ? (Number(price) || 0) : 0;
+  work.currency = isSale && CURRENCIES.includes(currency) ? currency : (work.currency || 'UZS');
+  work.stockMode = stockMode;
+  work.stockQty = stockQty;
+
+  await saveDB();
+  res.json({ work });
+});
+
 /* ===================== FEED (barcha foydalanuvchilar) ===================== */
 function findWork(id) {
   for (const uname of Object.keys(db.works)) {

@@ -669,7 +669,24 @@
           <span class="chip hidden" id="lightboxStock">—</span>
         </div>
         <div class="edit-actions" style="margin-top:18px;">
+          <button class="btn btn-ghost btn-sm" id="editStatusBtn" data-i18n="lightbox.editStatus">Holatni o'zgartirish</button>
           <button class="btn btn-ghost btn-sm" id="deleteWorkBtn" data-i18n="lightbox.delete">O'chirish</button>
+        </div>
+        <div class="field lang-field hidden" id="editStatusForm" style="margin-top:14px;">
+          <label for="lightboxStatusSelect" data-i18n="upload.statusLabel">Holati</label>
+          <select id="lightboxStatusSelect" style="margin-bottom:10px;">
+            <option value="expo" data-i18n="upload.status.expo">Faqat ko'rgazma</option>
+            <option value="sale" data-i18n="upload.status.sale">Sotuvda</option>
+          </select>
+          <div class="field" id="lightboxPriceField" style="margin-bottom:0;">
+            <label for="lightboxPriceInput" data-i18n="upload.priceLabel">Narxi</label>
+            <input type="number" id="lightboxPriceInput" min="0" placeholder="masalan: 150000">
+          </div>
+          <div class="field-row" style="margin-top:12px;">
+            <button type="button" class="btn btn-primary btn-sm" id="saveStatusBtn" data-i18n="profile.edit.save">Saqlash</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="cancelStatusBtn" data-i18n="profile.edit.cancel">Bekor qilish</button>
+          </div>
+          <div class="field-hint" id="editStatusMsg"></div>
         </div>
       </div>
     </div>

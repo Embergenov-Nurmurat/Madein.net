@@ -183,6 +183,7 @@
           "upload.errVideoWithImages": "Video bilan birga rasm yuklab bo'lmaydi.",
           "upload.videoNotSupported": "Brauzeringiz videoni tekshira olmadi. Iltimos, boshqa fayl tanlang.",
           "upload.errGeneric": "Saqlashda xatolik yuz berdi. Qayta urinib ko'ring.",
+          "lightbox.editStatus": "Holatni o'zgartirish",
           "lightbox.delete": "O'chirish", "lightbox.noDesc": "Tavsif kiritilmagan.",
           "lightbox.workTagFallback": "Asar",
           "comments.title": "Komentlar", "comments.ph": "Koment yozing...", "comments.send": "Yuborish",
@@ -493,6 +494,7 @@
           "upload.errVideoWithImages": "You can't upload a video together with photos.",
           "upload.videoNotSupported": "Your browser could not check the video. Please choose another file.",
           "upload.errGeneric": "Something went wrong while saving. Please try again.",
+          "lightbox.editStatus": "Change status",
           "lightbox.delete": "Delete", "lightbox.noDesc": "No description provided.",
           "lightbox.workTagFallback": "Work",
           "comments.title": "Comments", "comments.ph": "Write a comment...", "comments.send": "Send",
@@ -803,6 +805,7 @@
           "upload.errVideoWithImages": "不能将视频与照片一起上传。",
           "upload.videoNotSupported": "您的浏览器无法检查该视频，请选择其他文件。",
           "upload.errGeneric": "保存时出错，请重试。",
+          "lightbox.editStatus": "更改状态",
           "lightbox.delete": "删除", "lightbox.noDesc": "未提供描述。",
           "lightbox.workTagFallback": "作品",
           "comments.title": "评论", "comments.ph": "写评论...", "comments.send": "发送",
@@ -1127,6 +1130,7 @@
           "upload.errVideoWithImages": "वीडियो के साथ फ़ोटो अपलोड नहीं की जा सकतीं।",
           "upload.videoNotSupported": "आपका ब्राउज़र वीडियो जाँच नहीं सका। कृपया दूसरी फ़ाइल चुनें।",
           "upload.errGeneric": "सहेजने में त्रुटि हुई। फिर कोशिश करें।",
+          "lightbox.editStatus": "स्थिति बदलें",
           "lightbox.delete": "हटाएं", "lightbox.noDesc": "कोई विवरण नहीं दिया गया।",
           "lightbox.workTagFallback": "कृति",
           "comments.title": "टिप्पणियाँ", "comments.ph": "टिप्पणी लिखें...", "comments.send": "भेजें",
@@ -1451,6 +1455,7 @@
           "upload.errVideoWithImages": "No puedes subir un video junto con fotos.",
           "upload.videoNotSupported": "Tu navegador no pudo comprobar el video. Elige otro archivo.",
           "upload.errGeneric": "Ocurrió un error al guardar. Inténtalo de nuevo.",
+          "lightbox.editStatus": "Cambiar estado",
           "lightbox.delete": "Eliminar", "lightbox.noDesc": "Sin descripción.",
           "lightbox.workTagFallback": "Obra",
           "comments.title": "Comentarios", "comments.ph": "Escribe un comentario...", "comments.send": "Enviar",
@@ -1775,6 +1780,7 @@
           "upload.errVideoWithImages": "لا يمكن رفع فيديو مع صور معًا.",
           "upload.videoNotSupported": "تعذّر على متصفحك التحقق من الفيديو. الرجاء اختيار ملف آخر.",
           "upload.errGeneric": "حدث خطأ أثناء الحفظ. حاول مرة أخرى.",
+          "lightbox.editStatus": "تغيير الحالة",
           "lightbox.delete": "حذف", "lightbox.noDesc": "لا يوجد وصف.",
           "lightbox.workTagFallback": "عمل",
           "comments.title": "التعليقات", "comments.ph": "اكتب تعليقًا...", "comments.send": "إرسال",
@@ -2099,6 +2105,7 @@
           "upload.errVideoWithImages": "Нельзя загрузить видео вместе с фото.",
           "upload.videoNotSupported": "Ваш браузер не смог проверить видео. Выберите другой файл.",
           "upload.errGeneric": "Что-то пошло не так при сохранении. Попробуйте ещё раз.",
+          "lightbox.editStatus": "Изменить статус",
           "lightbox.delete": "Удалить", "lightbox.noDesc": "Описание не указано.",
           "lightbox.workTagFallback": "Работа",
           "comments.title": "Комментарии", "comments.ph": "Написать комментарий...", "comments.send": "Отправить",
@@ -2838,6 +2845,12 @@
         $('#closeLightbox').addEventListener('click', closeLightbox);
         $('#lightbox').addEventListener('click', (e) => { if (e.target === $('#lightbox')) closeLightbox(); });
         $('#deleteWorkBtn').addEventListener('click', handleDeleteWork);
+        $('#editStatusBtn').addEventListener('click', openStatusEditor);
+        $('#cancelStatusBtn').addEventListener('click', closeStatusEditor);
+        $('#lightboxStatusSelect').addEventListener('change', () => {
+          $('#lightboxPriceField').classList.toggle('hidden', $('#lightboxStatusSelect').value !== 'sale');
+        });
+        $('#saveStatusBtn').addEventListener('click', handleSaveStatus);
 
         $('#lightboxImg').addEventListener('click', (e) => {
           const img = e.target.closest('img');
@@ -5628,6 +5641,8 @@
         const isMine = list === WORKS;
         pendingDeleteId = isMine ? id : null;
         $('#deleteWorkBtn').classList.toggle('hidden', !isMine);
+        $('#editStatusBtn').classList.toggle('hidden', !isMine);
+        closeStatusEditor();
         LIGHTBOX_IMAGES = workImages(w);
         $('#lightboxImg').innerHTML = collageHTML(LIGHTBOX_IMAGES, w.title, w.video, w.poster);
         $('#lightboxImg').className = 'lightbox-collage';
@@ -5654,7 +5669,50 @@
           w.views = res.viewsCount;
         }).catch(() => {});
       }
-      function closeLightbox() { $('#lightbox').classList.remove('open'); pendingDeleteId = null; $('#deleteWorkBtn').classList.remove('hidden'); }
+      function closeLightbox() {
+        $('#lightbox').classList.remove('open');
+        pendingDeleteId = null;
+        $('#deleteWorkBtn').classList.remove('hidden');
+        closeStatusEditor();
+      }
+
+      function openStatusEditor() {
+        if (!pendingDeleteId) return;
+        const w = WORKS.find(x => x.id === pendingDeleteId);
+        if (!w) return;
+        $('#lightboxStatusSelect').value = w.status === 'sale' ? 'sale' : 'expo';
+        $('#lightboxPriceInput').value = w.price || '';
+        $('#lightboxPriceField').classList.toggle('hidden', w.status !== 'sale');
+        $('#editStatusMsg').textContent = '';
+        $('#editStatusForm').classList.remove('hidden');
+      }
+
+      function closeStatusEditor() {
+        $('#editStatusForm').classList.add('hidden');
+        $('#editStatusMsg').textContent = '';
+      }
+
+      async function handleSaveStatus() {
+        if (!pendingDeleteId) return;
+        const status = $('#lightboxStatusSelect').value;
+        const price = $('#lightboxPriceInput').value;
+        const msgEl = $('#editStatusMsg');
+        msgEl.textContent = '';
+        try {
+          const data = await apiJSON('/api/works/' + pendingDeleteId + '/status', 'PATCH', { status, price });
+          const updated = data.work;
+          const wIdx = WORKS.findIndex(x => x.id === pendingDeleteId);
+          if (wIdx !== -1) WORKS[wIdx] = { ...WORKS[wIdx], ...updated };
+          const fIdx = FEED.findIndex(x => x.id === pendingDeleteId);
+          if (fIdx !== -1) FEED[fIdx] = { ...FEED[fIdx], ...updated };
+          $('#lightboxStatus').textContent = updated.status === 'sale' ? (updated.price ? fmtPrice(updated.price, updated.currency) : t('feed.sale')) : t('upload.status.expo');
+          closeStatusEditor();
+          renderGrids();
+        } catch (e) {
+          msgEl.textContent = (e && e.message) || t('upload.errGeneric');
+        }
+      }
+
 
       /* ===================== TO'LIQ HAJMDAGI RASM KO'RUVCHI ===================== */
       let IMAGE_VIEWER_IMAGES = [];
