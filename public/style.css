@@ -150,8 +150,9 @@
     body[data-theme="liquid-glass"] {
       --bg: #e4e8f1;
       --bg-alt: #dde3ee;
-      --surface: rgba(255, 255, 255, 0.38);
-      --surface-2: rgba(255, 255, 255, 0.52);
+      --surface: rgba(255, 255, 255, 0.52);
+      --surface-2: rgba(255, 255, 255, 0.68);
+      --surface-read: rgba(255, 255, 255, 0.86);
       --text: #14151c;
       --text-dim: #5b5f70;
       --accent: #0a84ff;
@@ -209,6 +210,7 @@
     body[data-theme="liquid-glass"] .theme-panel,
     body[data-theme="liquid-glass"] .cart-item,
     body[data-theme="liquid-glass"] .cart-summary,
+    body[data-theme="liquid-glass"] .chip,
     body[data-theme="liquid-glass"] .auth-card,
     body[data-theme="liquid-glass"] .input-wrap input,
     body[data-theme="liquid-glass"] .input-wrap textarea,
@@ -239,6 +241,17 @@
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       background: rgba(255, 255, 255, 0.16);
+    }
+
+    /* text/form-heavy panels need a much more opaque backing than the
+       decorative chrome, since they often sit over the dark modal scrim */
+    body[data-theme="liquid-glass"] .modal,
+    body[data-theme="liquid-glass"] .gate-modal,
+    body[data-theme="liquid-glass"] .auth-card,
+    body[data-theme="liquid-glass"] .profile-edit-card,
+    body[data-theme="liquid-glass"] .dropdown,
+    body[data-theme="liquid-glass"] .theme-panel {
+      background: var(--surface-read);
     }
 
     body[data-theme="liquid-glass"] ::selection {
@@ -2306,6 +2319,7 @@
       white-space: nowrap;
       padding: 8px 12px;
       border: 1px solid var(--border);
+      background: var(--surface-2);
       border-radius: 999px;
       transition: border-color .15s ease;
     }
@@ -2317,6 +2331,7 @@
       gap: 6px;
       padding: 3px 10px;
       border: 1px solid var(--border);
+      background: var(--surface-2);
       border-radius: 999px;
     }
     .feed-price-input {
@@ -4431,15 +4446,18 @@
     .chip {
       font-family: var(--font-mono);
       font-size: 11px;
+      font-weight: 600;
       padding: 5px 11px;
       border-radius: 999px;
       border: 1px solid var(--border);
+      background: var(--surface-2);
       color: var(--text-dim);
     }
 
     .chip.accent {
       border-color: var(--accent);
       color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, var(--surface-2));
     }
 
     .call-allowed-chip {
