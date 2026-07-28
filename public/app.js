@@ -32,6 +32,11 @@
           "nav.home": "Bosh sahifa", "nav.profile": "Profil", "nav.messages": "Xabarlar",
           "nav.newWork": "+", "nav.myProfile": "Profilim", "nav.logout": "Chiqish",
           "nav.register": "Ro'yxatdan o'tish",
+          "push.enable": "🔔 Bildirishnomalarni yoqish", "push.disable": "🔕 Bildirishnomalarni o'chirish",
+          "push.unsupported": "Bu brauzer push xabarnomalarni qo'llab-quvvatlamaydi",
+          "push.permissionDenied": "Bildirishnomalarga ruxsat berilmadi. Buni brauzer sozlamalaridan o'zgartirishingiz mumkin.",
+          "push.notConfigured": "Push xabarnomalar hozircha serverda sozlanmagan",
+          "notif.orderStatus": "Buyurtma holati yangilandi: {status}",
           "guest.banner": "Siz saytni <b>mehmon</b> sifatida ko'ryapsiz — asar yuklash, layk va komentariya qoldirish uchun ro'yxatdan o'ting.",
           "guest.registerBtn": "Ro'yxatdan o'tish",
           "home.eyebrow": "Lenta", "home.title": "Barcha <span>ijodkorlar</span>ning asarlari",
@@ -2329,6 +2334,100 @@
         applyI18n();
       }
 
+      /* ===================== SERVICE WORKER (tezlik + push) ===================== */
+      function registerServiceWorker() {
+        if (!('serviceWorker' in navigator)) return;
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      }
+
+      function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+        const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        const rawData = atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+        for (let i = 0; i < rawData.length; i++) outputArray[i] = rawData.charCodeAt(i);
+        return outputArray;
+      }
+
+      function pushSupported() {
+        return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+      }
+
+      async function getPushSubscriptionState() {
+        if (!pushSupported()) return 'unsupported';
+        if (Notification.permission === 'denied') return 'denied';
+        try {
+          const reg = await navigator.serviceWorker.ready;
+          const sub = await reg.pushManager.getSubscription();
+          return sub ? 'subscribed' : 'unsubscribed';
+        } catch (e) {
+          return 'unsubscribed';
+        }
+      }
+
+      /* Foydalanuvchi bildirishnomalarni yoqish tugmasini bosganda chaqiriladi:
+         ruxsat so'raydi, brauzerni push xabarnomalarga obuna qiladi va
+         obunani serverga (shu foydalanuvchi hisobiga) saqlaydi. */
+      async function enablePushNotifications() {
+        if (!pushSupported()) {
+          alert(t('push.unsupported'));
+          return;
+        }
+        try {
+          const permission = await Notification.requestPermission();
+          if (permission !== 'granted') {
+            alert(t('push.permissionDenied'));
+            return;
+          }
+          const { publicKey } = await api('/api/push/vapid-public-key');
+          if (!publicKey) {
+            alert(t('push.notConfigured'));
+            return;
+          }
+          const reg = await navigator.serviceWorker.ready;
+          const subscription = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(publicKey)
+          });
+          await api('/api/push/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ subscription }) });
+          updatePushToggleUI('subscribed');
+        } catch (e) {
+          alert(t('common.serverError'));
+        }
+      }
+
+      async function disablePushNotifications() {
+        try {
+          const reg = await navigator.serviceWorker.ready;
+          const sub = await reg.pushManager.getSubscription();
+          if (sub) {
+            await api('/api/push/unsubscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ endpoint: sub.endpoint }) });
+            await sub.unsubscribe();
+          }
+          updatePushToggleUI('unsubscribed');
+        } catch (e) { /* jim o'tkazamiz */ }
+      }
+
+      function updatePushToggleUI(state) {
+        const btn = $('#pushToggleBtn');
+        if (!btn) return;
+        if (state === 'unsupported') { btn.classList.add('hidden'); return; }
+        btn.classList.remove('hidden');
+        btn.textContent = state === 'subscribed' ? t('push.disable') : t('push.enable');
+        btn.dataset.state = state;
+      }
+
+      async function initPushToggle() {
+        const btn = $('#pushToggleBtn');
+        if (!btn) return;
+        const state = await getPushSubscriptionState();
+        updatePushToggleUI(state);
+        btn.onclick = guarded(() => {
+          if (btn.dataset.state === 'subscribed') disablePushNotifications();
+          else enablePushNotifications();
+        });
+      }
+
       /* ===================== API HELPER =====================
          Talks to the real backend (server.js) instead of window.storage,
          so this works once deployed to any normal web host. */
@@ -2402,6 +2501,7 @@
 
       /* ===================== INIT ===================== */
       async function init() {
+        registerServiceWorker();
         applyI18n();
         try {
           const data = await api('/api/me');
@@ -2648,6 +2748,7 @@
           refreshCartBadge(CURRENT_USER.cartCount || 0);
           startUnreadPolling();
           checkNotifications();
+          initPushToggle();
         } else {
           $$('.msg-badge').forEach(b => b.classList.add('hidden'));
           $$('.cart-badge').forEach(b => b.classList.add('hidden'));
@@ -2693,6 +2794,7 @@
           case 'follow': return t('notif.follow', { name: n.from || t('notif.someone') });
           case 'order-received': return t('notif.orderReceived', { name: n.from || t('notif.someone'), count: n.itemsCount || 1 });
           case 'order-placed': return t('notif.orderPlaced');
+          case 'order-status': return t('notif.orderStatus', { status: n.status || '' });
           default: return n.text || '';
         }
       }

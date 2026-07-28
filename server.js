@@ -26,6 +26,24 @@ const sharp = require('sharp');
 const ffmpegPath = require('ffmpeg-static');
 const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
+const webpush = require('web-push');
+
+/* ===================== PUSH XABARNOMALAR (Web Push) =====================
+   Brauzer/PWA yopiq bo'lsa ham foydalanuvchiga xabar (masalan "Sizga
+   yangi xabar keldi" yoki "Buyurtmangiz holati o'zgardi") yetkazish uchun.
+   VAPID kalitlari muhit o'zgaruvchilaridan olinadi — agar sozlanmagan
+   bo'lsa, push funksiyasi jimgina o'chirilgan holda ishlaydi (sayt
+   o'zi baribir to'liq ishlayveradi, faqat push xabarnomalar borib
+   turmaydi). Kalit generatsiya qilish uchun: `npx web-push generate-vapid-keys` */
+const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || '';
+const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY || '';
+const VAPID_SUBJECT = process.env.VAPID_SUBJECT || 'mailto:admin@madein.net';
+const PUSH_ENABLED = !!(VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY);
+if (PUSH_ENABLED) {
+  webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
+} else {
+  console.warn('DIQQAT: VAPID_PUBLIC_KEY/VAPID_PRIVATE_KEY sozlanmagan — push xabarnomalar o\'chirilgan holda ishga tushdi.');
+}
 
 const STORAGE_DIR = path.join(__dirname, 'storage');
 const DATA_DIR = path.join(STORAGE_DIR, 'data');
@@ -71,6 +89,7 @@ function ensureModerationFields(u) {
   }
   if (!Array.isArray(u.notifications)) u.notifications = [];
   if (!Array.isArray(u.following)) u.following = [];
+  if (!Array.isArray(u.pushSubscriptions)) u.pushSubscriptions = [];
   if (!u.cart || typeof u.cart !== 'object' || Array.isArray(u.cart)) {
     // Eski "saqlanganlar" (savedWorks) ro'yxati bo'lsa, savatga 1 donadan ko'chiriladi
     u.cart = {};
@@ -256,6 +275,77 @@ function addNotification(uname, notif) {
     read: false
   }, notif));
   if (u.notifications.length > 50) u.notifications = u.notifications.slice(-50);
+  // Ilova yopiq/fonda bo'lsa ham yetib borishi uchun push xabarnoma ham yuboramiz
+  const content = pushContentFor(notif);
+  if (content) sendPush(uname, content).catch(() => {});
+}
+
+/* Bildirishnoma turiga qarab push xabarnoma matnini tayyorlaydi (hozircha
+   o'zbek tilida — foydalanuvchining tanlagan sayt tili serverda saqlanmaydi) */
+function pushContentFor(notif) {
+  switch (notif.type) {
+    case 'order-received':
+      return { title: 'Yangi buyurtma', body: `Sizga ${notif.itemsCount || 1} ta mahsulot uchun yangi buyurtma tushdi`, url: '/' };
+    case 'order-placed':
+      return { title: 'Buyurtma qabul qilindi', body: 'Buyurtmangiz muvaffaqiyatli rasmiylashtirildi', url: '/' };
+    case 'order-status':
+      return { title: 'Buyurtma holati yangilandi', body: orderStatusText(notif.status), url: '/' };
+    case 'ban':
+      return { title: 'Hisobingiz bloklandi', body: notif.reason || 'Hisobingiz vaqtincha bloklandi', url: '/' };
+    case 'unban':
+      return { title: 'Hisobingiz tiklandi', body: 'Blok bekor qilindi, endi tizimga kirishingiz mumkin', url: '/' };
+    case 'mute':
+      return { title: 'Vaqtincha cheklov', body: notif.reason || 'Komment/xabar yozish vaqtincha cheklandi', url: '/' };
+    case 'unmute':
+      return { title: 'Cheklov bekor qilindi', body: 'Endi komment/xabar yozishingiz mumkin', url: '/' };
+    case 'follow':
+      return { title: 'Yangi obunachi', body: `${notif.from || 'Foydalanuvchi'} sizga obuna bo'ldi`, url: '/' };
+    default:
+      return null;
+  }
+}
+
+function orderStatusText(status) {
+  switch (status) {
+    case 'confirmed': return 'Sotuvchi buyurtmangizni tasdiqladi';
+    case 'shipped': return 'Buyurtmangiz jo\u2019natildi';
+    case 'completed': return 'Buyurtmangiz yakunlandi';
+    case 'cancelled': return 'Buyurtmangiz bekor qilindi';
+    default: return 'Buyurtmangiz holati yangilandi: ' + status;
+  }
+}
+
+/* Foydalanuvchining barcha ulangan qurilmalariga push xabarnoma yuboradi.
+   Yaroqsiz/eskirgan obunalar (410/404) avtomatik ro'yxatdan o'chiriladi. */
+async function sendPush(uname, content) {
+  if (!PUSH_ENABLED) return;
+  const u = db.users[uname];
+  if (!u || !Array.isArray(u.pushSubscriptions) || !u.pushSubscriptions.length) return;
+
+  const payload = JSON.stringify({
+    title: content.title || 'Madein.net',
+    body: content.body || '',
+    url: content.url || '/'
+  });
+
+  let changed = false;
+  const survivors = [];
+  await Promise.all(u.pushSubscriptions.map(async (sub) => {
+    try {
+      await webpush.sendNotification(sub, payload);
+      survivors.push(sub);
+    } catch (e) {
+      if (e && (e.statusCode === 404 || e.statusCode === 410)) {
+        changed = true; // obuna eskirgan — tashlab yuboramiz
+      } else {
+        survivors.push(sub); // vaqtinchalik xatolik (masalan tarmoq) — obunani saqlab qolamiz
+      }
+    }
+  }));
+  if (changed) {
+    u.pushSubscriptions = survivors;
+    await saveDB();
+  }
 }
 
 
@@ -1363,6 +1453,38 @@ app.post('/api/works/:id/buy-now', requireAuth, async (req, res) => {
   res.json({ ok: true, orderId: order.id, totalsByCurrency: order.totalsByCurrency });
 });
 
+/* Buyurtmalarim — xaridor sifatida bergan va sotuvchi sifatida qabul
+   qilgan buyurtmalarim ro'yxati */
+app.get('/api/orders/mine', requireAuth, (req, res) => {
+  const me = req.session.username;
+  const asBuyer = db.orders.filter(o => o.buyer === me);
+  const asSeller = db.orders.filter(o => Array.isArray(o.items) && o.items.some(it => it.sellerUsername === me));
+  res.json({ asBuyer, asSeller });
+});
+
+const ORDER_STATUSES = ['placed', 'confirmed', 'shipped', 'completed', 'cancelled'];
+
+/* Sotuvchi o'ziga tegishli buyurtma holatini yangilaydi (masalan
+   "jo'natildi" yoki "yakunlandi") — xaridorga shu haqda push
+   xabarnoma boradi (ilova yopiq bo'lsa ham) */
+app.patch('/api/orders/:id/status', requireAuth, async (req, res) => {
+  const order = db.orders.find(o => o.id === req.params.id);
+  if (!order) return res.status(404).json({ error: 'Buyurtma topilmadi', code: 'orderNotFound' });
+  const me = req.session.username;
+  const isSeller = Array.isArray(order.items) && order.items.some(it => it.sellerUsername === me);
+  if (!isSeller) return res.status(403).json({ error: "Bu buyurtmani o'zgartirishga ruxsatingiz yo'q", code: 'orderStatusForbidden' });
+
+  const status = String((req.body && req.body.status) || '').trim();
+  if (!ORDER_STATUSES.includes(status)) {
+    return res.status(400).json({ error: "Noto'g'ri holat", code: 'invalidOrderStatus' });
+  }
+  order.status = status;
+  order.updatedAt = new Date().toISOString();
+  addNotification(order.buyer, { type: 'order-status', orderId: order.id, status });
+  await saveDB();
+  res.json({ ok: true, order });
+});
+
 /* ===================== SHIKOYATLAR (REPORT) ===================== */
 app.post('/api/works/:id/report', requireAuth, rateLimit('report', 15, 10 * 60 * 1000), async (req, res) => {
   const found = findWork(req.params.id);
@@ -1408,6 +1530,37 @@ app.put('/api/theme', requireAuth, async (req, res) => {
   const u = db.users[req.session.username];
   const { mode, custom } = req.body || {};
   u.theme = { mode: String(mode || 'tungi'), custom: String(custom || '#e2543f') };
+  await saveDB();
+  res.json({ ok: true });
+});
+
+/* ===================== PUSH XABARNOMALAR (Web Push) ROUTES ===================== */
+app.get('/api/push/vapid-public-key', (req, res) => {
+  res.json({ publicKey: PUSH_ENABLED ? VAPID_PUBLIC_KEY : null });
+});
+
+app.post('/api/push/subscribe', requireAuth, async (req, res) => {
+  if (!PUSH_ENABLED) return res.status(503).json({ error: 'Push xabarnomalar serverda sozlanmagan', code: 'pushNotConfigured' });
+  const sub = req.body && req.body.subscription;
+  if (!sub || !sub.endpoint || !sub.keys) {
+    return res.status(400).json({ error: "Noto'g'ri obuna ma'lumoti", code: 'invalidSubscription' });
+  }
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  // Bir xil qurilma qayta obuna bo'lsa, eski yozuvni almashtiramiz (endpoint bo'yicha)
+  u.pushSubscriptions = u.pushSubscriptions.filter(s => s.endpoint !== sub.endpoint);
+  u.pushSubscriptions.push(sub);
+  if (u.pushSubscriptions.length > 10) u.pushSubscriptions = u.pushSubscriptions.slice(-10);
+  await saveDB();
+  res.json({ ok: true });
+});
+
+app.post('/api/push/unsubscribe', requireAuth, async (req, res) => {
+  const endpoint = req.body && req.body.endpoint;
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  if (endpoint) u.pushSubscriptions = u.pushSubscriptions.filter(s => s.endpoint !== endpoint);
+  else u.pushSubscriptions = [];
   await saveDB();
   res.json({ ok: true });
 });
@@ -1938,6 +2091,9 @@ app.post('/api/conversations/:username/messages', requireAuth, requireNotMuted, 
   conv.readUpto[me] = message.createdAt;
   await saveDB();
 
+  const senderFullname = (db.users[me] && db.users[me].fullname) || me;
+  sendPush(other, { title: senderFullname, body: text.slice(0, 120), url: '/' }).catch(() => {});
+
   res.json({ message });
 });
 
@@ -2019,6 +2175,10 @@ app.post('/api/conversations/:username/messages/media', requireAuth, requireNotM
       if (!conv.readUpto) conv.readUpto = {};
       conv.readUpto[me] = message.createdAt;
       await saveDB();
+
+      const senderFullname = (db.users[me] && db.users[me].fullname) || me;
+      const mediaLabel = { photo: 'Rasm', video: 'Video', circle: 'Video xabar', voice: 'Ovozli xabar', file: 'Fayl' }[kind] || 'Xabar';
+      sendPush(other, { title: senderFullname, body: mediaLabel, url: '/' }).catch(() => {});
 
       res.json({ message });
     } catch (e) {
