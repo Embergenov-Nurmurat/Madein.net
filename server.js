@@ -14,6 +14,7 @@
  */
 
 const express = require('express');
+const compression = require('compression');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const bcrypt = require('bcryptjs');
@@ -393,6 +394,7 @@ function saveDB() {
 const app = express();
 app.set('trust proxy', 1); // ko'p hosting (Render/Railway/Heroku) proxy orqasida ishlaydi
 
+app.use(compression()); // javoblarni gzip bilan siqib, sahifalarni tezroq yuklaydi
 app.use(express.json({ limit: '1mb' }));
 app.use(session({
   store: new FileStore({ path: SESSIONS_DIR, logFn: () => {} }),
@@ -408,6 +410,20 @@ app.use(session({
 
 app.use('/uploads', express.static(UPLOADS_DIR, { maxAge: '30d' }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+/* Qidiruv tizimlari uchun oddiy sitemap. Sayt SPA (bitta index.html) bo'lgani
+   uchun hozircha faqat bosh sahifani ko'rsatadi. */
+app.get('/sitemap.xml', (req, res) => {
+  const base = req.protocol + '://' + req.get('host');
+  res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${base}/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>`);
+});
 
 /* ===================== ONLAYN HOLATNI KUZATISH ===================== */
 /* Xotirada saqlanadi (diskka yozilmaydi) — har bir so'rovda yangilanadi.
@@ -859,8 +875,12 @@ app.post('/api/register', rateLimit('register', 8, 10 * 60 * 1000), async (req, 
     if (!isValidUsername(uname)) {
       return res.status(400).json({ error: "Foydalanuvchi nomi 3-32 belgi, faqat lotin harflari/raqam/pastki chiziq bo'lishi kerak", code: 'usernameInvalid' });
     }
-    if (!password || password.length < 4) {
-      return res.status(400).json({ error: "Parol kamida 4 belgidan iborat bo'lishi kerak", code: 'passwordTooShort' });
+    if (!password || password.length < 6) {
+      return res.status(400).json({ error: "Parol kamida 6 belgidan iborat bo'lishi kerak", code: 'passwordTooShort' });
+    }
+    const emailStr = String(email || '').trim();
+    if (emailStr && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailStr)) {
+      return res.status(400).json({ error: "Email manzili noto'g'ri formatda", code: 'emailInvalid' });
     }
     if (db.users[uname]) {
       return res.status(409).json({ error: 'Bu foydalanuvchi nomi allaqachon band', code: 'usernameTaken' });
@@ -870,7 +890,7 @@ app.post('/api/register', rateLimit('register', 8, 10 * 60 * 1000), async (req, 
     db.users[uname] = {
       passwordHash,
       fullname: String(fullname || '').slice(0, 100),
-      email: String(email || '').slice(0, 150),
+      email: emailStr.slice(0, 150),
       bio: '',
       avatar: null,
       phone: '',
@@ -1010,8 +1030,8 @@ app.put('/api/profile/credentials', rateLimit('credentials', 10, 10 * 60 * 1000)
   }
 
   if (wantsPasswordChange) {
-    if (String(newPassword).length < 4) {
-      return res.status(400).json({ error: 'Parol kamida 4 belgidan iborat bo\'lishi kerak', code: 'passwordTooShort' });
+    if (String(newPassword).length < 6) {
+      return res.status(400).json({ error: 'Parol kamida 6 belgidan iborat bo\'lishi kerak', code: 'passwordTooShort' });
     }
     db.users[uname].passwordHash = await bcrypt.hash(String(newPassword), 10);
   }

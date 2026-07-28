@@ -18,10 +18,10 @@
           "auth.regFullname": "To'liq ism", "auth.regFullnamePh": "Ism Familiya",
           "auth.regUsername": "Foydalanuvchi nomi", "auth.regUsernamePh": "lotin harflari, bo'shliqsiz",
           "auth.regEmail": "Email",
-          "auth.regPassword": "Parol", "auth.regPasswordPh": "kamida 4 belgi",
+          "auth.regPassword": "Parol", "auth.regPasswordPh": "kamida 6 belgi",
           "auth.regPassword2": "Tasdiqlash", "auth.regPassword2Ph": "qayta kiriting",
           "auth.regBtn": "Akkaunt yaratish",
-          "auth.regErrorShort": "Parol kamida 4 belgidan iborat bo'lishi kerak.",
+          "auth.regErrorShort": "Parol kamida 6 belgidan iborat bo'lishi kerak.",
           "auth.regErrorMismatch": "Parollar mos kelmadi.",
           "auth.pwWeak": "Zaif", "auth.pwMedium": "O'rtacha", "auth.pwStrong": "Kuchli",
           "auth.pwMatch": "Mos keldi", "auth.pwNoMatch": "Mos kelmadi",
@@ -73,7 +73,7 @@
           "account.usernameLabel": "Foydalanuvchi nomi (login)",
           "account.usernameHint": "Boshqalar sizni shu nom orqali topadi, siz ham shu nom bilan kirasiz.",
           "account.currentPassword": "Joriy parol", "account.currentPasswordPh": "o'zgartirish uchun kiriting", "account.currentPasswordHint": "O'zgarishlarni saqlash uchun joriy parolingizni kiriting.",
-          "account.newPassword": "Yangi parol", "account.newPasswordPh": "ixtiyoriy, kamida 4 belgi",
+          "account.newPassword": "Yangi parol", "account.newPasswordPh": "ixtiyoriy, kamida 6 belgi",
           "account.newPassword2": "Yangi parolni tasdiqlash", "account.newPassword2Ph": "qayta kiriting",
           "account.save": "Saqlash", "account.saved": "Saqlandi!",
           "account.err.noChanges": "Hech narsa o'zgartirilmadi.",
@@ -81,7 +81,7 @@
           "account.err.currentPasswordIncorrect": "Joriy parol noto'g'ri.",
           "account.err.usernameInvalid": "Login 3-32 belgi, faqat lotin harflari/raqam/pastki chiziq bo'lishi kerak.",
           "account.err.usernameTaken": "Bu foydalanuvchi nomi allaqachon band.",
-          "account.err.passwordTooShort": "Yangi parol kamida 4 belgidan iborat bo'lishi kerak.",
+          "account.err.passwordTooShort": "Yangi parol kamida 6 belgidan iborat bo'lishi kerak.",
           "account.err.mismatch": "Yangi parollar mos kelmadi.",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
           "err.cannotBanAdmin": "Boshqa administratorni ban qila olmaysiz",
@@ -102,7 +102,8 @@
           "err.cannotMessageSelf": "O'zingizga xabar yubora olmaysiz",
           "err.cannotBanSelf": "O'zingizni ban qila olmaysiz",
           "err.cannotMuteSelf": "O'zingizni mut qila olmaysiz",
-          "err.passwordTooShort": "Parol kamida 4 belgidan iborat bo'lishi kerak",
+          "err.passwordTooShort": "Parol kamida 6 belgidan iborat bo'lishi kerak",
+          "err.emailInvalid": "Email manzili noto'g'ri formatda",
           "err.callAlreadyEnded": "Qo'ng'iroq allaqachon tugagan",
           "err.callNotFound": "Qo'ng'iroq topilmadi",
           "err.registerServerError": "Ro'yxatdan o'tishda server xatoligi",
@@ -329,10 +330,10 @@
           "auth.regFullname": "Full name", "auth.regFullnamePh": "First Last",
           "auth.regUsername": "Username", "auth.regUsernamePh": "Latin letters, no spaces",
           "auth.regEmail": "Email",
-          "auth.regPassword": "Password", "auth.regPasswordPh": "at least 4 characters",
+          "auth.regPassword": "Password", "auth.regPasswordPh": "at least 6 characters",
           "auth.regPassword2": "Confirm", "auth.regPassword2Ph": "type it again",
           "auth.regBtn": "Create account",
-          "auth.regErrorShort": "Password must be at least 4 characters.",
+          "auth.regErrorShort": "Password must be at least 6 characters.",
           "auth.regErrorMismatch": "Passwords don't match.",
           "auth.pwWeak": "Weak", "auth.pwMedium": "Medium", "auth.pwStrong": "Strong",
           "auth.pwMatch": "Matches", "auth.pwNoMatch": "Doesn't match",
@@ -384,7 +385,7 @@
           "account.usernameLabel": "Username (login)",
           "account.usernameHint": "Others find you by this name, and you use it to log in.",
           "account.currentPassword": "Current password", "account.currentPasswordPh": "enter to make changes", "account.currentPasswordHint": "Enter your current password to save changes.",
-          "account.newPassword": "New password", "account.newPasswordPh": "optional, at least 4 characters",
+          "account.newPassword": "New password", "account.newPasswordPh": "optional, at least 6 characters",
           "account.newPassword2": "Confirm new password", "account.newPassword2Ph": "type it again",
           "account.save": "Save", "account.saved": "Saved!",
           "account.err.noChanges": "Nothing was changed.",
@@ -392,7 +393,7 @@
           "account.err.currentPasswordIncorrect": "Current password is incorrect.",
           "account.err.usernameInvalid": "Username must be 3-32 characters, letters/numbers/underscore only.",
           "account.err.usernameTaken": "This username is already taken.",
-          "account.err.passwordTooShort": "New password must be at least 4 characters.",
+          "account.err.passwordTooShort": "New password must be at least 6 characters.",
           "account.err.mismatch": "New passwords don't match.",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
           "err.cannotBanAdmin": "You can't ban another administrator",
@@ -413,7 +414,8 @@
           "err.cannotMessageSelf": "You can't message yourself",
           "err.cannotBanSelf": "You can't ban yourself",
           "err.cannotMuteSelf": "You can't mute yourself",
-          "err.passwordTooShort": "Password must be at least 4 characters",
+          "err.passwordTooShort": "Password must be at least 6 characters",
+          "err.emailInvalid": "The email address format is invalid",
           "err.callAlreadyEnded": "The call has already ended",
           "err.callNotFound": "Call not found",
           "err.registerServerError": "Server error during registration",
@@ -640,10 +642,10 @@
           "auth.regFullname": "全名", "auth.regFullnamePh": "姓名",
           "auth.regUsername": "用户名", "auth.regUsernamePh": "拉丁字母，无空格",
           "auth.regEmail": "邮箱",
-          "auth.regPassword": "密码", "auth.regPasswordPh": "至少4个字符",
+          "auth.regPassword": "密码", "auth.regPasswordPh": "至少6个字符",
           "auth.regPassword2": "确认密码", "auth.regPassword2Ph": "再次输入",
           "auth.regBtn": "创建账户",
-          "auth.regErrorShort": "密码必须至少4个字符。",
+          "auth.regErrorShort": "密码必须至少6个字符。",
           "auth.regErrorMismatch": "两次输入的密码不一致。",
           "auth.pwWeak": "弱", "auth.pwMedium": "中等", "auth.pwStrong": "强",
           "auth.pwMatch": "匹配", "auth.pwNoMatch": "不匹配",
@@ -695,7 +697,7 @@
           "account.usernameLabel": "用户名（登录名）",
           "account.usernameHint": "其他人通过该名称找到您，登录时也使用它。",
           "account.currentPassword": "当前密码", "account.currentPasswordPh": "输入以进行更改", "account.currentPasswordHint": "输入当前密码以保存更改。",
-          "account.newPassword": "新密码", "account.newPasswordPh": "可选，至少4个字符",
+          "account.newPassword": "新密码", "account.newPasswordPh": "可选，至少6个字符",
           "account.newPassword2": "确认新密码", "account.newPassword2Ph": "再次输入",
           "account.save": "保存", "account.saved": "已保存！",
           "account.err.noChanges": "没有任何更改。",
@@ -703,7 +705,7 @@
           "account.err.currentPasswordIncorrect": "当前密码不正确。",
           "account.err.usernameInvalid": "用户名须为3-32个字符，仅限字母、数字和下划线。",
           "account.err.usernameTaken": "该用户名已被占用。",
-          "account.err.passwordTooShort": "新密码至少需要4个字符。",
+          "account.err.passwordTooShort": "新密码至少需要6个字符。",
           "account.err.mismatch": "两次输入的新密码不一致。",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
           "err.cannotBanAdmin": "您不能封禁其他管理员",
@@ -724,7 +726,8 @@
           "err.cannotMessageSelf": "您不能给自己发消息",
           "err.cannotBanSelf": "您不能封禁自己",
           "err.cannotMuteSelf": "您不能禁言自己",
-          "err.passwordTooShort": "密码至少需要4个字符",
+          "err.passwordTooShort": "密码至少需要6个字符",
+          "err.emailInvalid": "邮箱格式不正确",
           "err.callAlreadyEnded": "通话已结束",
           "err.callNotFound": "未找到通话",
           "err.registerServerError": "注册时服务器出错",
@@ -965,10 +968,10 @@
           "auth.regFullname": "पूरा नाम", "auth.regFullnamePh": "नाम उपनाम",
           "auth.regUsername": "उपयोगकर्ता नाम", "auth.regUsernamePh": "लैटिन अक्षर, बिना स्पेस",
           "auth.regEmail": "ईमेल",
-          "auth.regPassword": "पासवर्ड", "auth.regPasswordPh": "कम से कम 4 अक्षर",
+          "auth.regPassword": "पासवर्ड", "auth.regPasswordPh": "कम से कम 6 अक्षर",
           "auth.regPassword2": "पुष्टि करें", "auth.regPassword2Ph": "दोबारा लिखें",
           "auth.regBtn": "खाता बनाएं",
-          "auth.regErrorShort": "पासवर्ड कम से कम 4 अक्षरों का होना चाहिए।",
+          "auth.regErrorShort": "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए।",
           "auth.regErrorMismatch": "पासवर्ड मेल नहीं खाते।",
           "auth.pwWeak": "कमज़ोर", "auth.pwMedium": "औसत", "auth.pwStrong": "मज़बूत",
           "auth.pwMatch": "मेल खाता है", "auth.pwNoMatch": "मेल नहीं खाता",
@@ -1020,7 +1023,7 @@
           "account.usernameLabel": "उपयोगकर्ता नाम (लॉगिन)",
           "account.usernameHint": "दूसरे लोग आपको इसी नाम से खोजते हैं, और आप इसी से लॉगिन करते हैं।",
           "account.currentPassword": "मौजूदा पासवर्ड", "account.currentPasswordPh": "बदलाव के लिए दर्ज करें", "account.currentPasswordHint": "बदलाव सहेजने के लिए अपना मौजूदा पासवर्ड दर्ज करें।",
-          "account.newPassword": "नया पासवर्ड", "account.newPasswordPh": "वैकल्पिक, कम से कम 4 अक्षर",
+          "account.newPassword": "नया पासवर्ड", "account.newPasswordPh": "वैकल्पिक, कम से कम 6 अक्षर",
           "account.newPassword2": "नए पासवर्ड की पुष्टि करें", "account.newPassword2Ph": "दोबारा लिखें",
           "account.save": "सहेजें", "account.saved": "सहेज लिया गया!",
           "account.err.noChanges": "कुछ भी नहीं बदला गया।",
@@ -1028,7 +1031,7 @@
           "account.err.currentPasswordIncorrect": "मौजूदा पासवर्ड गलत है।",
           "account.err.usernameInvalid": "उपयोगकर्ता नाम 3-32 अक्षर का होना चाहिए, केवल अक्षर/अंक/अंडरस्कोर।",
           "account.err.usernameTaken": "यह उपयोगकर्ता नाम पहले से लिया जा चुका है।",
-          "account.err.passwordTooShort": "नया पासवर्ड कम से कम 4 अक्षर का होना चाहिए।",
+          "account.err.passwordTooShort": "नया पासवर्ड कम से कम 6 अक्षर का होना चाहिए।",
           "account.err.mismatch": "नए पासवर्ड मेल नहीं खाते।",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
           "err.cannotBanAdmin": "आप किसी अन्य प्रशासक को बैन नहीं कर सकते",
@@ -1049,7 +1052,8 @@
           "err.cannotMessageSelf": "आप खुद को संदेश नहीं भेज सकते",
           "err.cannotBanSelf": "आप खुद को बैन नहीं कर सकते",
           "err.cannotMuteSelf": "आप खुद को म्यूट नहीं कर सकते",
-          "err.passwordTooShort": "पासवर्ड कम से कम 4 अक्षर का होना चाहिए",
+          "err.passwordTooShort": "पासवर्ड कम से कम 6 अक्षर का होना चाहिए",
+          "err.emailInvalid": "ईमेल पता गलत फॉर्मेट में है",
           "err.callAlreadyEnded": "कॉल पहले ही समाप्त हो चुकी है",
           "err.callNotFound": "कॉल नहीं मिली",
           "err.registerServerError": "पंजीकरण के दौरान सर्वर त्रुटि",
@@ -1293,7 +1297,7 @@
           "auth.regPassword": "Contraseña", "auth.regPasswordPh": "mínimo 4 caracteres",
           "auth.regPassword2": "Confirmar", "auth.regPassword2Ph": "vuelve a escribirla",
           "auth.regBtn": "Crear cuenta",
-          "auth.regErrorShort": "La contraseña debe tener al menos 4 caracteres.",
+          "auth.regErrorShort": "La contraseña debe tener al menos 6 caracteres.",
           "auth.regErrorMismatch": "Las contraseñas no coinciden.",
           "auth.pwWeak": "Débil", "auth.pwMedium": "Media", "auth.pwStrong": "Fuerte",
           "auth.pwMatch": "Coincide", "auth.pwNoMatch": "No coincide",
@@ -1353,7 +1357,7 @@
           "account.err.currentPasswordIncorrect": "La contraseña actual es incorrecta.",
           "account.err.usernameInvalid": "El usuario debe tener 3-32 caracteres, solo letras/números/guion bajo.",
           "account.err.usernameTaken": "Ese nombre de usuario ya está en uso.",
-          "account.err.passwordTooShort": "La nueva contraseña debe tener al menos 4 caracteres.",
+          "account.err.passwordTooShort": "La nueva contraseña debe tener al menos 6 caracteres.",
           "account.err.mismatch": "Las nuevas contraseñas no coinciden.",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
           "err.cannotBanAdmin": "No puedes banear a otro administrador",
@@ -1374,7 +1378,8 @@
           "err.cannotMessageSelf": "No puedes enviarte un mensaje a ti mismo",
           "err.cannotBanSelf": "No puedes banearte a ti mismo",
           "err.cannotMuteSelf": "No puedes silenciarte a ti mismo",
-          "err.passwordTooShort": "La contraseña debe tener al menos 4 caracteres",
+          "err.passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
+          "err.emailInvalid": "El formato del correo electrónico no es válido",
           "err.callAlreadyEnded": "La llamada ya ha terminado",
           "err.callNotFound": "Llamada no encontrada",
           "err.registerServerError": "Error del servidor durante el registro",
@@ -1615,10 +1620,10 @@
           "auth.regFullname": "الاسم الكامل", "auth.regFullnamePh": "الاسم واللقب",
           "auth.regUsername": "اسم المستخدم", "auth.regUsernamePh": "أحرف لاتينية بدون مسافات",
           "auth.regEmail": "البريد الإلكتروني",
-          "auth.regPassword": "كلمة المرور", "auth.regPasswordPh": "4 أحرف على الأقل",
+          "auth.regPassword": "كلمة المرور", "auth.regPasswordPh": "6 أحرف على الأقل",
           "auth.regPassword2": "تأكيد كلمة المرور", "auth.regPassword2Ph": "أعد كتابتها",
           "auth.regBtn": "إنشاء حساب",
-          "auth.regErrorShort": "يجب ألا تقل كلمة المرور عن 4 أحرف.",
+          "auth.regErrorShort": "يجب ألا تقل كلمة المرور عن 6 أحرف.",
           "auth.regErrorMismatch": "كلمتا المرور غير متطابقتين.",
           "auth.pwWeak": "ضعيفة", "auth.pwMedium": "متوسطة", "auth.pwStrong": "قوية",
           "auth.pwMatch": "متطابقة", "auth.pwNoMatch": "غير متطابقة",
@@ -1670,7 +1675,7 @@
           "account.usernameLabel": "اسم المستخدم (تسجيل الدخول)",
           "account.usernameHint": "يجدك الآخرون بهذا الاسم، وتستخدمه أيضًا لتسجيل الدخول.",
           "account.currentPassword": "كلمة المرور الحالية", "account.currentPasswordPh": "أدخلها لإجراء التغييرات", "account.currentPasswordHint": "أدخل كلمة المرور الحالية لحفظ التغييرات.",
-          "account.newPassword": "كلمة مرور جديدة", "account.newPasswordPh": "اختياري، 4 أحرف على الأقل",
+          "account.newPassword": "كلمة مرور جديدة", "account.newPasswordPh": "اختياري، 6 أحرف على الأقل",
           "account.newPassword2": "تأكيد كلمة المرور الجديدة", "account.newPassword2Ph": "أعد كتابتها",
           "account.save": "حفظ", "account.saved": "تم الحفظ!",
           "account.err.noChanges": "لم يتم تغيير أي شيء.",
@@ -1678,7 +1683,7 @@
           "account.err.currentPasswordIncorrect": "كلمة المرور الحالية غير صحيحة.",
           "account.err.usernameInvalid": "يجب أن يتكون اسم المستخدم من 3-32 حرفًا، أحرف/أرقام/شرطة سفلية فقط.",
           "account.err.usernameTaken": "اسم المستخدم هذا مُستخدم بالفعل.",
-          "account.err.passwordTooShort": "يجب أن تتكون كلمة المرور الجديدة من 4 أحرف على الأقل.",
+          "account.err.passwordTooShort": "يجب أن تتكون كلمة المرور الجديدة من 6 أحرف على الأقل.",
           "account.err.mismatch": "كلمتا المرور الجديدتان غير متطابقتين.",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
           "err.cannotBanAdmin": "لا يمكنك حظر مشرف آخر",
@@ -1699,7 +1704,8 @@
           "err.cannotMessageSelf": "لا يمكنك مراسلة نفسك",
           "err.cannotBanSelf": "لا يمكنك حظر نفسك",
           "err.cannotMuteSelf": "لا يمكنك كتم نفسك",
-          "err.passwordTooShort": "يجب أن تتكون كلمة المرور من 4 أحرف على الأقل",
+          "err.passwordTooShort": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+          "err.emailInvalid": "صيغة البريد الإلكتروني غير صحيحة",
           "err.callAlreadyEnded": "المكالمة انتهت بالفعل",
           "err.callNotFound": "المكالمة غير موجودة",
           "err.registerServerError": "خطأ في الخادم أثناء التسجيل",
@@ -1940,10 +1946,10 @@
           "auth.regFullname": "Полное имя", "auth.regFullnamePh": "Имя Фамилия",
           "auth.regUsername": "Имя пользователя", "auth.regUsernamePh": "латинские буквы, без пробелов",
           "auth.regEmail": "Email",
-          "auth.regPassword": "Пароль", "auth.regPasswordPh": "минимум 4 символа",
+          "auth.regPassword": "Пароль", "auth.regPasswordPh": "минимум 6 символов",
           "auth.regPassword2": "Подтверждение", "auth.regPassword2Ph": "введите ещё раз",
           "auth.regBtn": "Создать аккаунт",
-          "auth.regErrorShort": "Пароль должен содержать минимум 4 символа.",
+          "auth.regErrorShort": "Пароль должен содержать минимум 6 символов.",
           "auth.regErrorMismatch": "Пароли не совпадают.",
           "auth.pwWeak": "Слабый", "auth.pwMedium": "Средний", "auth.pwStrong": "Надёжный",
           "auth.pwMatch": "Совпадает", "auth.pwNoMatch": "Не совпадает",
@@ -1995,7 +2001,7 @@
           "account.usernameLabel": "Имя пользователя (логин)",
           "account.usernameHint": "По этому имени вас находят другие, и вы используете его для входа.",
           "account.currentPassword": "Текущий пароль", "account.currentPasswordPh": "введите, чтобы внести изменения", "account.currentPasswordHint": "Введите текущий пароль, чтобы сохранить изменения.",
-          "account.newPassword": "Новый пароль", "account.newPasswordPh": "необязательно, минимум 4 символа",
+          "account.newPassword": "Новый пароль", "account.newPasswordPh": "необязательно, минимум 6 символов",
           "account.newPassword2": "Подтверждение нового пароля", "account.newPassword2Ph": "введите ещё раз",
           "account.save": "Сохранить", "account.saved": "Сохранено!",
           "account.err.noChanges": "Ничего не изменено.",
@@ -2003,7 +2009,7 @@
           "account.err.currentPasswordIncorrect": "Текущий пароль неверен.",
           "account.err.usernameInvalid": "Имя пользователя должно быть 3-32 символа, только латиница/цифры/подчёркивание.",
           "account.err.usernameTaken": "Это имя пользователя уже занято.",
-          "account.err.passwordTooShort": "Новый пароль должен содержать минимум 4 символа.",
+          "account.err.passwordTooShort": "Новый пароль должен содержать минимум 6 символов.",
           "account.err.mismatch": "Новые пароли не совпадают.",
           /* ---- generic API error kodlari (server "code" maydoni orqali) ---- */
           "err.cannotBanAdmin": "Вы не можете забанить другого администратора",
@@ -2024,7 +2030,8 @@
           "err.cannotMessageSelf": "Вы не можете отправить сообщение самому себе",
           "err.cannotBanSelf": "Вы не можете забанить самого себя",
           "err.cannotMuteSelf": "Вы не можете заглушить самого себя",
-          "err.passwordTooShort": "Пароль должен содержать не менее 4 символов",
+          "err.passwordTooShort": "Пароль должен содержать не менее 6 символов",
+          "err.emailInvalid": "Неверный формат email-адреса",
           "err.callAlreadyEnded": "Звонок уже завершён",
           "err.callNotFound": "Звонок не найден",
           "err.registerServerError": "Ошибка сервера при регистрации",
@@ -3676,8 +3683,10 @@
 
       function collageHTML(images, alt, videoSrc, posterSrc) {
         if (videoSrc) {
+          // autoplay yo'q — video faqat ekranda ko'rinib turgan paytda ijro etiladi
+          // (pastdagi videoAutoplayObserver orqali), shu bilan batareya/protsessor tejaladi
           return `<div class="collage n-1 collage-video">
-            <video src="${videoSrc}"${posterSrc ? ` poster="${posterSrc}"` : ''} autoplay muted loop playsinline preload="auto"></video>
+            <video src="${videoSrc}"${posterSrc ? ` poster="${posterSrc}"` : ''} muted loop playsinline preload="metadata" data-autoplay-onview></video>
             <div class="collage-count" aria-hidden="true">${videoIconSVG()}</div>
           </div>`;
         }
@@ -3687,6 +3696,24 @@
           : '';
         return `<div class="collage n-${imgs.length}">${imgs.map(src =>
           `<img src="${src}" alt="${escapeHtml(alt)}" loading="lazy">`).join('')}${badge}</div>`;
+      }
+
+      /* Faqat ekranda ko'rinayotgan videolarni ijro etadi — ko'rinmay qolganda
+         to'xtatadi. Shu tarzda ko'plab video postlar bir vaqtda ishlab,
+         qurilmani sekinlashtirib yubormaydi. */
+      const videoAutoplayObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      }, { threshold: 0.4 });
+
+      function observeAutoplayVideos(root) {
+        root.querySelectorAll('video[data-autoplay-onview]').forEach(v => videoAutoplayObserver.observe(v));
       }
       function multiImageIconSVG() {
         return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="14" height="14" rx="2"></rect><path d="M7 21h11a2 2 0 0 0 2-2V8"></path></svg>`;
@@ -3734,6 +3761,7 @@
         }
         const sorted = [...works].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         el.innerHTML = sorted.map(w => workCardHTML(w)).join('');
+        observeAutoplayVideos(el);
         el.querySelectorAll('.work-card').forEach(card => {
           card.addEventListener('click', () => openLightbox(card.dataset.id, works));
         });
@@ -3847,6 +3875,7 @@
           list.appendChild(card);
           bindFeedCardEvents(card);
           feedRevealObserver.observe(card);
+          observeAutoplayVideos(card);
         });
         if (!list.children.length) {
           list.innerHTML = `
@@ -5457,6 +5486,7 @@
         const card = frag.firstElementChild;
         list.insertBefore(card, list.firstChild);
         bindFeedCardEvents(card);
+        observeAutoplayVideos(card);
         card.classList.add('reveal');
       }
 
@@ -5668,7 +5698,7 @@
         $('#lightboxImg').className = 'lightbox-collage';
         if (w.video) {
           const videoEl = $('#lightboxImg').querySelector('video');
-          if (videoEl) { videoEl.controls = true; videoEl.loop = false; }
+          if (videoEl) { videoEl.controls = true; videoEl.loop = false; videoEl.play().catch(() => {}); }
         }
         $('#lightboxTitle').textContent = w.title;
         $('#lightboxDesc').textContent = w.desc || t('lightbox.noDesc');
