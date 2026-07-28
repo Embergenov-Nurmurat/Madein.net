@@ -1555,11 +1555,31 @@ app.patch('/api/works/:id/status', requireAuth, requireNotMuted, async (req, res
   }
   const isSale = status === 'sale';
   const CURRENCIES = ['UZS', 'USD', 'EUR', 'RUB'];
-  const stockMode = isSale && stockModeRaw === 'fixed' ? 'fixed' : (isSale ? 'order' : null);
+
+  /* Lightboxdagi tezkor "Holatni o'zgartirish" oynachasi zaxira (stock)
+     maydonlarini umuman yubormaydi (u yerda bunday input yo'q) — shu bois
+     stockMode jo'natilmagan holatda oldin "sale"da belgilangan miqdor
+     (masalan "fixed" + 7 dona) har safar jimgina "buyurtmaga ishlanadi"ga
+     tushirib yuborilar edi. Endi stockMode faqat u aniq jo'natilganda
+     o'zgartiriladi, aks holda asarning oldingi zaxira sozlamasi saqlanib
+     qoladi. */
+  const stockModeProvided = stockModeRaw !== undefined;
+  let stockMode = null;
   let stockQty = null;
-  if (isSale && stockMode === 'fixed') {
-    const n = Math.floor(Number(stockQtyRaw));
-    stockQty = Number.isFinite(n) && n > 0 ? Math.min(n, 9999) : (typeof work.stockQty === 'number' ? work.stockQty : 1);
+  if (isSale) {
+    if (stockModeProvided) {
+      stockMode = stockModeRaw === 'fixed' ? 'fixed' : 'order';
+    } else {
+      stockMode = work.status === 'sale' && work.stockMode === 'fixed' ? 'fixed' : (work.status === 'sale' ? (work.stockMode || 'order') : 'order');
+    }
+    if (stockMode === 'fixed') {
+      if (stockModeProvided) {
+        const n = Math.floor(Number(stockQtyRaw));
+        stockQty = Number.isFinite(n) && n > 0 ? Math.min(n, 9999) : (typeof work.stockQty === 'number' ? work.stockQty : 1);
+      } else {
+        stockQty = typeof work.stockQty === 'number' ? work.stockQty : 1;
+      }
+    }
   }
 
   work.status = isSale ? 'sale' : 'expo';
