@@ -179,7 +179,7 @@
           "upload.typeLabel": "Turi", "upload.type.rasm": "Rasm (chizma)", "upload.type.haykal": "Haykal",
           "upload.type.mulaj": "Mulaj", "upload.type.boshqa": "Boshqa", "upload.type.otherPh": "Turini kiriting",
           "upload.statusLabel": "Holati", "upload.status.expo": "Faqat ko'rgazma", "upload.status.sale": "Sotuvda",
-          "upload.priceLabel": "Narx", "upload.currencyLabel": "Valyuta",
+          "upload.priceLabel": "Narx", "upload.currencyLabel": "Valyuta", "upload.pricePh": "masalan: 150000",
           "upload.stockLabel": "Mavjudligi", "upload.stock.fixed": "Belgilangan miqdor", "upload.stock.order": "Buyurtmaga ishlanadi", "upload.stock.qtyPh": "Nechta dona bor?",
           "stock.order": "Buyurtmaga ishlanadi", "stock.out": "Tugadi", "stock.left": "{n} dona qoldi",
           "upload.descLabel": "Tavsif", "upload.descPh": "Asar haqida qisqacha ma'lumot...",
@@ -491,7 +491,12 @@
           "upload.typeLabel": "Type", "upload.type.rasm": "Painting / drawing", "upload.type.haykal": "Sculpture",
           "upload.type.mulaj": "Model", "upload.type.boshqa": "Other", "upload.type.otherPh": "Enter the type",
           "upload.statusLabel": "Status", "upload.status.expo": "Display only", "upload.status.sale": "For sale",
-          "upload.priceLabel": "Price", "upload.currencyLabel": "Currency",
+          "upload.priceLabel": "Price", "upload.currencyLabel": "Currency", "upload.pricePh": "e.g. 150000",
+          "push.enable": "🔔 Enable notifications", "push.disable": "🔕 Disable notifications",
+          "push.unsupported": "This browser doesn't support push notifications",
+          "push.permissionDenied": "Notification permission was denied. You can change this in your browser settings.",
+          "push.notConfigured": "Push notifications aren't configured on the server yet",
+          "notif.orderStatus": "Order status updated: {status}",
           "upload.stockLabel": "Availability", "upload.stock.fixed": "Fixed quantity", "upload.stock.order": "Made to order", "upload.stock.qtyPh": "How many are available?",
           "stock.order": "Made to order", "stock.out": "Sold out", "stock.left": "{n} left",
           "upload.descLabel": "Description", "upload.descPh": "A short description of the piece...",
@@ -803,7 +808,12 @@
           "upload.typeLabel": "类型", "upload.type.rasm": "绘画", "upload.type.haykal": "雕塑",
           "upload.type.mulaj": "模型", "upload.type.boshqa": "其他", "upload.type.otherPh": "请输入类型",
           "upload.statusLabel": "状态", "upload.status.expo": "仅展示", "upload.status.sale": "出售中",
-          "upload.priceLabel": "价格", "upload.currencyLabel": "货币",
+          "upload.priceLabel": "价格", "upload.currencyLabel": "货币", "upload.pricePh": "例如：150000",
+          "push.enable": "🔔 开启通知", "push.disable": "🔕 关闭通知",
+          "push.unsupported": "该浏览器不支持推送通知",
+          "push.permissionDenied": "通知权限被拒绝。您可以在浏览器设置中更改此设置。",
+          "push.notConfigured": "服务器尚未配置推送通知",
+          "notif.orderStatus": "订单状态已更新：{status}",
           "upload.stockLabel": "库存情况", "upload.stock.fixed": "固定数量", "upload.stock.order": "按需定制", "upload.stock.qtyPh": "有多少件？",
           "stock.order": "按需定制", "stock.out": "已售罄", "stock.left": "仅剩 {n} 件",
           "upload.descLabel": "描述", "upload.descPh": "简单描述一下这件作品...",
@@ -1129,7 +1139,12 @@
           "upload.typeLabel": "प्रकार", "upload.type.rasm": "पेंटिंग / चित्र", "upload.type.haykal": "मूर्ति",
           "upload.type.mulaj": "मॉडल", "upload.type.boshqa": "अन्य", "upload.type.otherPh": "प्रकार दर्ज करें",
           "upload.statusLabel": "स्थिति", "upload.status.expo": "केवल प्रदर्शन", "upload.status.sale": "बिक्री के लिए",
-          "upload.priceLabel": "मूल्य", "upload.currencyLabel": "मुद्रा",
+          "upload.priceLabel": "मूल्य", "upload.currencyLabel": "मुद्रा", "upload.pricePh": "उदाहरण: 150000",
+          "push.enable": "🔔 सूचनाएं चालू करें", "push.disable": "🔕 सूचनाएं बंद करें",
+          "push.unsupported": "यह ब्राउज़र पुश सूचनाओं का समर्थन नहीं करता",
+          "push.permissionDenied": "सूचना की अनुमति अस्वीकार कर दी गई। आप इसे ब्राउज़र सेटिंग्स में बदल सकते हैं।",
+          "push.notConfigured": "सर्वर पर पुश सूचनाएं अभी तक कॉन्फ़िगर नहीं की गई हैं",
+          "notif.orderStatus": "ऑर्डर की स्थिति अपडेट हुई: {status}",
           "upload.stockLabel": "उपलब्धता", "upload.stock.fixed": "निश्चित मात्रा", "upload.stock.order": "ऑर्डर पर बनाया जाता है", "upload.stock.qtyPh": "कितनी नग उपलब्ध हैं?",
           "stock.order": "ऑर्डर पर बनाया जाता है", "stock.out": "बिक चुका है", "stock.left": "केवल {n} बचे हैं",
           "upload.descLabel": "विवरण", "upload.descPh": "कृति के बारे में संक्षिप्त जानकारी...",
@@ -1455,7 +1470,12 @@
           "upload.typeLabel": "Tipo", "upload.type.rasm": "Pintura / dibujo", "upload.type.haykal": "Escultura",
           "upload.type.mulaj": "Maqueta", "upload.type.boshqa": "Otro", "upload.type.otherPh": "Escribe el tipo",
           "upload.statusLabel": "Estado", "upload.status.expo": "Solo exhibición", "upload.status.sale": "En venta",
-          "upload.priceLabel": "Precio", "upload.currencyLabel": "Moneda",
+          "upload.priceLabel": "Precio", "upload.currencyLabel": "Moneda", "upload.pricePh": "ej: 150000",
+          "push.enable": "🔔 Activar notificaciones", "push.disable": "🔕 Desactivar notificaciones",
+          "push.unsupported": "Este navegador no admite notificaciones push",
+          "push.permissionDenied": "Se denegó el permiso de notificaciones. Puedes cambiarlo en la configuración del navegador.",
+          "push.notConfigured": "Las notificaciones push aún no están configuradas en el servidor",
+          "notif.orderStatus": "Estado del pedido actualizado: {status}",
           "upload.stockLabel": "Disponibilidad", "upload.stock.fixed": "Cantidad fija", "upload.stock.order": "Se hace por encargo", "upload.stock.qtyPh": "¿Cuántas unidades hay?",
           "stock.order": "Se hace por encargo", "stock.out": "Agotado", "stock.left": "Quedan {n}",
           "upload.descLabel": "Descripción", "upload.descPh": "Una breve descripción de la obra...",
@@ -1781,7 +1801,12 @@
           "upload.typeLabel": "النوع", "upload.type.rasm": "لوحة / رسم", "upload.type.haykal": "منحوتة",
           "upload.type.mulaj": "مجسم", "upload.type.boshqa": "أخرى", "upload.type.otherPh": "أدخل النوع",
           "upload.statusLabel": "الحالة", "upload.status.expo": "للعرض فقط", "upload.status.sale": "للبيع",
-          "upload.priceLabel": "السعر", "upload.currencyLabel": "العملة",
+          "upload.priceLabel": "السعر", "upload.currencyLabel": "العملة", "upload.pricePh": "مثال: 150000",
+          "push.enable": "🔔 تفعيل الإشعارات", "push.disable": "🔕 إيقاف الإشعارات",
+          "push.unsupported": "هذا المتصفح لا يدعم الإشعارات الفورية",
+          "push.permissionDenied": "تم رفض إذن الإشعارات. يمكنك تغيير ذلك من إعدادات المتصفح.",
+          "push.notConfigured": "الإشعارات الفورية غير مُهيّأة على الخادم بعد",
+          "notif.orderStatus": "تم تحديث حالة الطلب: {status}",
           "upload.stockLabel": "التوفر", "upload.stock.fixed": "كمية محددة", "upload.stock.order": "يُصنع حسب الطلب", "upload.stock.qtyPh": "كم عدد القطع المتوفرة؟",
           "stock.order": "يُصنع حسب الطلب", "stock.out": "نفدت الكمية", "stock.left": "تبقّى {n} فقط",
           "upload.descLabel": "الوصف", "upload.descPh": "وصف مختصر للعمل...",
@@ -2107,7 +2132,12 @@
           "upload.typeLabel": "Тип", "upload.type.rasm": "Картина / рисунок", "upload.type.haykal": "Скульптура",
           "upload.type.mulaj": "Макет", "upload.type.boshqa": "Другое", "upload.type.otherPh": "Укажите тип",
           "upload.statusLabel": "Статус", "upload.status.expo": "Только показ", "upload.status.sale": "Продаётся",
-          "upload.priceLabel": "Цена", "upload.currencyLabel": "Валюта",
+          "upload.priceLabel": "Цена", "upload.currencyLabel": "Валюта", "upload.pricePh": "например: 150000",
+          "push.enable": "🔔 Включить уведомления", "push.disable": "🔕 Отключить уведомления",
+          "push.unsupported": "Этот браузер не поддерживает push-уведомления",
+          "push.permissionDenied": "Доступ к уведомлениям запрещён. Вы можете изменить это в настройках браузера.",
+          "push.notConfigured": "Push-уведомления пока не настроены на сервере",
+          "notif.orderStatus": "Статус заказа обновлён: {status}",
           "upload.stockLabel": "Наличие", "upload.stock.fixed": "Точное количество", "upload.stock.order": "Изготавливается на заказ", "upload.stock.qtyPh": "Сколько штук в наличии?",
           "stock.order": "Изготавливается на заказ", "stock.out": "Распродано", "stock.left": "Осталось {n}",
           "upload.descLabel": "Описание", "upload.descPh": "Краткое описание работы...",
@@ -3946,14 +3976,18 @@
         <div class="feed-body">
           <div class="feed-title">${escapeHtml(w.title)}</div>
           <div class="feed-meta">
-            <span>${fmtDate(w.createdAt)}</span>
-            <span class="view-stat" aria-label="${t('feed.viewsAria')}">${eyeIconSVG()}${fmtCount(w.viewsCount || 0)}</span>
-            ${w.status === 'sale' && w.price ? (
-              (!CURRENT_USER || w.username !== CURRENT_USER.username)
-                ? `<button type="button" class="feed-price feed-price-buy" aria-label="${t('buyNow.aria')}">${fmtPrice(w.price, w.currency)}</button>`
-                : `<span class="feed-price">${fmtPrice(w.price, w.currency)}</span>`
-            ) : ''}
-            ${w.status === 'sale' ? stockBadgeHTML(w) : ''}
+            <div class="feed-meta-left">
+              <span>${fmtDate(w.createdAt)}</span>
+              <span class="view-stat" aria-label="${t('feed.viewsAria')}">${eyeIconSVG()}${fmtCount(w.viewsCount || 0)}</span>
+            </div>
+            <div class="feed-meta-right">
+              ${w.status === 'sale' && w.price ? (
+                (!CURRENT_USER || w.username !== CURRENT_USER.username)
+                  ? `<button type="button" class="feed-price feed-price-buy" aria-label="${t('buyNow.aria')}">${fmtPrice(w.price, w.currency)}</button>`
+                  : `<span class="feed-price">${fmtPrice(w.price, w.currency)}</span>`
+              ) : ''}
+              ${w.status === 'sale' ? stockBadgeHTML(w) : ''}
+            </div>
           </div>
           <button class="report-link" data-type="work" data-id="${w.id}" data-title="${escapeHtml(w.title)}">${t('report.action')}</button>
         </div>
@@ -4344,7 +4378,9 @@
       <div class="comment-item" data-id="${c.id}">
         <div class="comment-avatar">${initials(c.fullname || c.username)}</div>
         <div class="comment-body">
-          <div class="comment-line"><b>${escapeHtml(c.fullname || c.username)}</b>${escapeHtml(c.text)}</div>
+          <div class="comment-bubble">
+            <div class="comment-line"><b>${escapeHtml(c.fullname || c.username)}</b>${escapeHtml(c.text)}</div>
+          </div>
           <div class="comment-foot">
             <span class="comment-time">${fmtDate(c.createdAt)}</span>
             ${canDelete ? `<button class="comment-delete" data-id="${c.id}">${t('comments.delete')}</button>` : ''}

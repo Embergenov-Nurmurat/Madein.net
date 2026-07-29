@@ -486,6 +486,31 @@ function saveDB() {
 const app = express();
 app.set('trust proxy', 1); // ko'p hosting (Render/Railway/Heroku) proxy orqasida ishlaydi
 
+/* Xavfsizlik to'ri: ko'plab route'lar (async handler) o'z ichida try/catch'ga ega emas.
+   Express 4 async handlerlardagi rad etilgan promise'larni o'zi ushlamaydi — bu esa
+   xatolik yuz berganda so'rovning javobsiz "osilib qolishiga" olib keladi.
+   Quyidagi wrapper har bir route metodini avtomatik o'raydi: xatolik chiqsa,
+   so'rov osilib qolmaydi, buning o'rniga tozalab 500 javobi qaytariladi. */
+['get', 'post', 'put', 'delete', 'patch'].forEach((method) => {
+  const original = app[method].bind(app);
+  app[method] = (routePath, ...handlers) => {
+    const wrapped = handlers.map((h) => {
+      if (typeof h !== 'function' || h.length > 3) return h; // error-middleware yoki funksiya bo'lmasa, tegilmaydi
+      return (req, res, next) => {
+        try {
+          const result = h(req, res, next);
+          if (result && typeof result.catch === 'function') {
+            result.catch(next);
+          }
+        } catch (err) {
+          next(err);
+        }
+      };
+    });
+    return original(routePath, ...wrapped);
+  };
+});
+
 app.use(compression()); // javoblarni gzip bilan siqib, sahifalarni tezroq yuklaydi
 app.use(express.json({ limit: '1mb' }));
 app.use(session({
@@ -2642,6 +2667,20 @@ app.post('/api/notifications/read', requireAuth, async (req, res) => {
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) return next();
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+/* Global xatolik handleri — yuqoridagi async-wrapper next(err) orqali yuborgan
+   har qanday kutilmagan xatolikni shu yerda ushlaydi, logga yozadi va
+   mijozga toza JSON 500 javobini qaytaradi (so'rov osilib qolmaydi). */
+app.use((err, req, res, next) => {
+  console.error('Kutilmagan server xatoligi:', err);
+  if (res.headersSent) return next(err);
+  const wantsJson = req.path.startsWith('/api/');
+  if (wantsJson) {
+    res.status(500).json({ error: 'Server xatoligi yuz berdi', code: 'internalServerError' });
+  } else {
+    res.status(500).send('Server xatoligi yuz berdi');
+  }
 });
 
 const PORT = process.env.PORT || 3000;
