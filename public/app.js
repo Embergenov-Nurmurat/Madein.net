@@ -2448,6 +2448,13 @@
         currentLang = lang;
         localStorage.setItem('madein_lang', lang);
         applyI18n();
+        // Push xabarnomalar ilova yopiq bo'lganda ham shu tilda kelishi uchun
+        // serverga ham xabar beramiz (mehmon holatida hisob yo'q — o'tkazib yuboriladi)
+        if (typeof CURRENT_USER !== 'undefined' && CURRENT_USER && !IS_GUEST) {
+          apiJSON('/api/language', 'PUT', { lang }).then(() => {
+            CURRENT_USER.lang = lang;
+          }).catch(() => {});
+        }
       }
 
       /* ===================== SERVICE WORKER (tezlik + push) ===================== */
@@ -2730,6 +2737,9 @@
           try {
             const data = await apiJSON('/api/login', 'POST', { username: uname, password: pass });
             CURRENT_USER = data.user;
+            if (!localStorage.getItem('madein_lang') && data.user.lang && I18N[data.user.lang]) {
+              setLanguage(data.user.lang);
+            }
             await enterApp();
           } catch (err) {
             errEl.textContent = err.message || t('auth.loginErrorDefault');
@@ -2778,7 +2788,7 @@
           submitBtn.classList.add('loading');
           submitBtn.disabled = true;
           try {
-            const data = await apiJSON('/api/register', 'POST', { username: uname, password: pass, fullname, email });
+            const data = await apiJSON('/api/register', 'POST', { username: uname, password: pass, fullname, email, lang: currentLang });
             CURRENT_USER = data.user;
             submitBtn.classList.remove('loading');
             submitBtn.classList.add('success');

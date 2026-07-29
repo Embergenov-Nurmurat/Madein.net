@@ -39,6 +39,9 @@ const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || '';
 const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY || '';
 const VAPID_SUBJECT = process.env.VAPID_SUBJECT || 'mailto:admin@madein.net';
 const PUSH_ENABLED = !!(VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY);
+/* Push xabarnomalar matnini foydalanuvchi tanlagan tilda yuborish uchun —
+   saytning frontend I18N'iga mos 7 til */
+const SUPPORTED_LANGS = ['uz', 'en', 'zh', 'hi', 'es', 'ar', 'ru'];
 if (PUSH_ENABLED) {
   webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
 } else {
@@ -112,6 +115,7 @@ function ensureModerationFields(u) {
       if (typeof u.notifPrefs[key] !== 'boolean') u.notifPrefs[key] = notifDefaults[key];
     }
   }
+  if (!SUPPORTED_LANGS.includes(u.lang)) u.lang = 'uz';
 }
 
 /* db.reports ro'yxati mavjudligini ta'minlaydi (eski db.json fayllar uchun) */
@@ -316,48 +320,178 @@ function addNotification(uname, notif) {
     read: false
   }, notif));
   if (u.notifications.length > 50) u.notifications = u.notifications.slice(-50);
-  // Ilova yopiq/fonda bo'lsa ham yetib borishi uchun push xabarnoma ham yuboramiz
-  const content = pushContentFor(notif);
+  // Ilova yopiq/fonda bo'lsa ham yetib borishi uchun push xabarnoma ham yuboramiz —
+  // foydalanuvchi saytda tanlagan tilida (server-side lang, /api/language orqali saqlanadi)
+  const content = pushContentFor(notif, u.lang || 'uz');
   if (content) sendPush(uname, content).catch(() => {});
 }
 
-/* Bildirishnoma turiga qarab push xabarnoma matnini tayyorlaydi (hozircha
-   o'zbek tilida — foydalanuvchining tanlagan sayt tili serverda saqlanmaydi) */
-function pushContentFor(notif) {
+/* Push xabarnomalar uchun 7 tilli matnlar jadvali — frontenddagi I18N
+   lug'atining kichik push-ga tegishli qismi. Bu yerda kerak, chunki push
+   xabarnomalar ilova yopiq bo'lsa ham brauzer/OS orqali yetib borishi
+   kerak — shu payt frontend JS ishlamayotgan bo'ladi, shuning uchun matn
+   SERVERda, foydalanuvchi oxirgi marta tanlagan tilda (u.lang) tayyorlanadi. */
+const PUSH_I18N = {
+  uz: {
+    someone: 'Foydalanuvchi',
+    orderReceivedTitle: 'Yangi buyurtma',
+    orderReceivedBody: (n) => `Sizga ${n.itemsCount || 1} ta mahsulot uchun yangi buyurtma tushdi`,
+    orderPlacedTitle: 'Buyurtma qabul qilindi',
+    orderPlacedBody: 'Buyurtmangiz muvaffaqiyatli rasmiylashtirildi',
+    orderStatusTitle: 'Buyurtma holati yangilandi',
+    orderStatus: { confirmed: 'Sotuvchi buyurtmangizni tasdiqladi', shipped: "Buyurtmangiz jo'natildi", completed: 'Buyurtmangiz yakunlandi', cancelled: 'Buyurtmangiz bekor qilindi', default: (s) => 'Buyurtmangiz holati yangilandi: ' + s },
+    banTitle: 'Hisobingiz bloklandi', banBodyDefault: 'Hisobingiz vaqtincha bloklandi',
+    unbanTitle: 'Hisobingiz tiklandi', unbanBody: 'Blok bekor qilindi, endi tizimga kirishingiz mumkin',
+    muteTitle: 'Vaqtincha cheklov', muteBodyDefault: 'Komment/xabar yozish vaqtincha cheklandi',
+    unmuteTitle: 'Cheklov bekor qilindi', unmuteBody: 'Endi komment/xabar yozishingiz mumkin',
+    followTitle: 'Yangi obunachi', followBody: (n) => `${n} sizga obuna bo'ldi`,
+    likeTitle: 'Yangi like', likeBody: (n, t) => `${n} "${t}" asaringizni yoqtirdi`,
+    commentTitle: 'Yangi komment', commentBody: (n, t) => `${n} "${t}" asaringizga izoh qoldirdi`,
+    mediaLabels: { photo: 'Rasm', video: 'Video', circle: 'Video xabar', voice: 'Ovozli xabar', file: 'Fayl', default: 'Xabar' }
+  },
+  en: {
+    someone: 'Someone',
+    orderReceivedTitle: 'New order',
+    orderReceivedBody: (n) => `You received a new order for ${n.itemsCount || 1} item(s)`,
+    orderPlacedTitle: 'Order placed',
+    orderPlacedBody: 'Your order was placed successfully',
+    orderStatusTitle: 'Order status updated',
+    orderStatus: { confirmed: 'The seller confirmed your order', shipped: 'Your order has shipped', completed: 'Your order is complete', cancelled: 'Your order was cancelled', default: (s) => 'Your order status changed: ' + s },
+    banTitle: 'Your account was banned', banBodyDefault: 'Your account has been temporarily banned',
+    unbanTitle: 'Your account was restored', unbanBody: 'The ban was lifted, you can log in now',
+    muteTitle: 'Temporary restriction', muteBodyDefault: 'Posting comments/messages has been temporarily restricted',
+    unmuteTitle: 'Restriction lifted', unmuteBody: 'You can now post comments/messages again',
+    followTitle: 'New follower', followBody: (n) => `${n} started following you`,
+    likeTitle: 'New like', likeBody: (n, t) => `${n} liked your work "${t}"`,
+    commentTitle: 'New comment', commentBody: (n, t) => `${n} commented on your work "${t}"`,
+    mediaLabels: { photo: 'Photo', video: 'Video', circle: 'Video message', voice: 'Voice message', file: 'File', default: 'Message' }
+  },
+  zh: {
+    someone: '有人',
+    orderReceivedTitle: '新订单',
+    orderReceivedBody: (n) => `您收到了 ${n.itemsCount || 1} 件商品的新订单`,
+    orderPlacedTitle: '订单已提交',
+    orderPlacedBody: '您的订单已成功提交',
+    orderStatusTitle: '订单状态已更新',
+    orderStatus: { confirmed: '卖家已确认您的订单', shipped: '您的订单已发货', completed: '您的订单已完成', cancelled: '您的订单已取消', default: (s) => '您的订单状态已更新：' + s },
+    banTitle: '您的账户已被封禁', banBodyDefault: '您的账户已被暂时封禁',
+    unbanTitle: '您的账户已恢复', unbanBody: '封禁已解除，您现在可以登录',
+    muteTitle: '临时限制', muteBodyDefault: '发表评论/消息的权限已被暂时限制',
+    unmuteTitle: '限制已解除', unmuteBody: '您现在可以发表评论/消息了',
+    followTitle: '新关注者', followBody: (n) => `${n} 关注了您`,
+    likeTitle: '新点赞', likeBody: (n, t) => `${n} 点赞了您的作品《${t}》`,
+    commentTitle: '新评论', commentBody: (n, t) => `${n} 评论了您的作品《${t}》`,
+    mediaLabels: { photo: '照片', video: '视频', circle: '视频消息', voice: '语音消息', file: '文件', default: '消息' }
+  },
+  hi: {
+    someone: 'किसी ने',
+    orderReceivedTitle: 'नया ऑर्डर',
+    orderReceivedBody: (n) => `आपको ${n.itemsCount || 1} वस्तु(ओं) के लिए नया ऑर्डर मिला`,
+    orderPlacedTitle: 'ऑर्डर दिया गया',
+    orderPlacedBody: 'आपका ऑर्डर सफलतापूर्वक दिया गया',
+    orderStatusTitle: 'ऑर्डर की स्थिति अपडेट हुई',
+    orderStatus: { confirmed: 'विक्रेता ने आपके ऑर्डर की पुष्टि की', shipped: 'आपका ऑर्डर भेज दिया गया है', completed: 'आपका ऑर्डर पूरा हो गया', cancelled: 'आपका ऑर्डर रद्द कर दिया गया', default: (s) => 'आपके ऑर्डर की स्थिति बदल गई: ' + s },
+    banTitle: 'आपका खाता प्रतिबंधित कर दिया गया', banBodyDefault: 'आपका खाता अस्थायी रूप से प्रतिबंधित है',
+    unbanTitle: 'आपका खाता बहाल कर दिया गया', unbanBody: 'प्रतिबंध हटा दिया गया, अब आप लॉग इन कर सकते हैं',
+    muteTitle: 'अस्थायी प्रतिबंध', muteBodyDefault: 'टिप्पणी/संदेश लिखना अस्थायी रूप से सीमित कर दिया गया है',
+    unmuteTitle: 'प्रतिबंध हटाया गया', unmuteBody: 'अब आप फिर से टिप्पणी/संदेश लिख सकते हैं',
+    followTitle: 'नया फ़ॉलोअर', followBody: (n) => `${n} ने आपको फ़ॉलो करना शुरू किया`,
+    likeTitle: 'नया लाइक', likeBody: (n, t) => `${n} ने आपकी कृति "${t}" को पसंद किया`,
+    commentTitle: 'नई टिप्पणी', commentBody: (n, t) => `${n} ने आपकी कृति "${t}" पर टिप्पणी की`,
+    mediaLabels: { photo: 'फ़ोटो', video: 'वीडियो', circle: 'वीडियो संदेश', voice: 'ध्वनि संदेश', file: 'फ़ाइल', default: 'संदेश' }
+  },
+  es: {
+    someone: 'Alguien',
+    orderReceivedTitle: 'Nuevo pedido',
+    orderReceivedBody: (n) => `Recibiste un nuevo pedido de ${n.itemsCount || 1} artículo(s)`,
+    orderPlacedTitle: 'Pedido realizado',
+    orderPlacedBody: 'Tu pedido se realizó con éxito',
+    orderStatusTitle: 'Estado del pedido actualizado',
+    orderStatus: { confirmed: 'El vendedor confirmó tu pedido', shipped: 'Tu pedido ha sido enviado', completed: 'Tu pedido se ha completado', cancelled: 'Tu pedido fue cancelado', default: (s) => 'El estado de tu pedido cambió: ' + s },
+    banTitle: 'Tu cuenta fue suspendida', banBodyDefault: 'Tu cuenta ha sido suspendida temporalmente',
+    unbanTitle: 'Tu cuenta fue restaurada', unbanBody: 'Se levantó la suspensión, ya puedes iniciar sesión',
+    muteTitle: 'Restricción temporal', muteBodyDefault: 'Publicar comentarios/mensajes se ha restringido temporalmente',
+    unmuteTitle: 'Restricción levantada', unmuteBody: 'Ya puedes publicar comentarios/mensajes de nuevo',
+    followTitle: 'Nuevo seguidor', followBody: (n) => `${n} empezó a seguirte`,
+    likeTitle: 'Nuevo me gusta', likeBody: (n, t) => `A ${n} le gustó tu obra "${t}"`,
+    commentTitle: 'Nuevo comentario', commentBody: (n, t) => `${n} comentó en tu obra "${t}"`,
+    mediaLabels: { photo: 'Foto', video: 'Video', circle: 'Mensaje de video', voice: 'Mensaje de voz', file: 'Archivo', default: 'Mensaje' }
+  },
+  ar: {
+    someone: 'شخص ما',
+    orderReceivedTitle: 'طلب جديد',
+    orderReceivedBody: (n) => `تلقيت طلبًا جديدًا لـ ${n.itemsCount || 1} من العناصر`,
+    orderPlacedTitle: 'تم تقديم الطلب',
+    orderPlacedBody: 'تم تقديم طلبك بنجاح',
+    orderStatusTitle: 'تم تحديث حالة الطلب',
+    orderStatus: { confirmed: 'أكد البائع طلبك', shipped: 'تم شحن طلبك', completed: 'تم إكمال طلبك', cancelled: 'تم إلغاء طلبك', default: (s) => 'تم تحديث حالة طلبك: ' + s },
+    banTitle: 'تم حظر حسابك', banBodyDefault: 'تم حظر حسابك مؤقتًا',
+    unbanTitle: 'تمت استعادة حسابك', unbanBody: 'تم رفع الحظر، يمكنك الآن تسجيل الدخول',
+    muteTitle: 'قيد مؤقت', muteBodyDefault: 'تم تقييد كتابة التعليقات/الرسائل مؤقتًا',
+    unmuteTitle: 'تم رفع القيد', unmuteBody: 'يمكنك الآن كتابة التعليقات/الرسائل مجددًا',
+    followTitle: 'متابع جديد', followBody: (n) => `بدأ ${n} بمتابعتك`,
+    likeTitle: 'إعجاب جديد', likeBody: (n, t) => `أعجب ${n} بعملك "${t}"`,
+    commentTitle: 'تعليق جديد', commentBody: (n, t) => `علّق ${n} على عملك "${t}"`,
+    mediaLabels: { photo: 'صورة', video: 'فيديو', circle: 'رسالة فيديو', voice: 'رسالة صوتية', file: 'ملف', default: 'رسالة' }
+  },
+  ru: {
+    someone: 'Кто-то',
+    orderReceivedTitle: 'Новый заказ',
+    orderReceivedBody: (n) => `Вам поступил новый заказ на ${n.itemsCount || 1} товар(ов)`,
+    orderPlacedTitle: 'Заказ оформлен',
+    orderPlacedBody: 'Ваш заказ успешно оформлен',
+    orderStatusTitle: 'Статус заказа обновлён',
+    orderStatus: { confirmed: 'Продавец подтвердил ваш заказ', shipped: 'Ваш заказ отправлен', completed: 'Ваш заказ завершён', cancelled: 'Ваш заказ отменён', default: (s) => 'Статус вашего заказа изменён: ' + s },
+    banTitle: 'Ваш аккаунт заблокирован', banBodyDefault: 'Ваш аккаунт временно заблокирован',
+    unbanTitle: 'Ваш аккаунт восстановлен', unbanBody: 'Блокировка снята, теперь вы можете войти',
+    muteTitle: 'Временное ограничение', muteBodyDefault: 'Написание комментариев/сообщений временно ограничено',
+    unmuteTitle: 'Ограничение снято', unmuteBody: 'Теперь вы снова можете писать комментарии/сообщения',
+    followTitle: 'Новый подписчик', followBody: (n) => `${n} подписался(ась) на вас`,
+    likeTitle: 'Новый лайк', likeBody: (n, t) => `${n} понравилась ваша работа «${t}»`,
+    commentTitle: 'Новый комментарий', commentBody: (n, t) => `${n} прокомментировал(а) вашу работу «${t}»`,
+    mediaLabels: { photo: 'Фото', video: 'Видео', circle: 'Видеосообщение', voice: 'Голосовое сообщение', file: 'Файл', default: 'Сообщение' }
+  }
+};
+
+function pushTextFor(lang) {
+  return PUSH_I18N[lang] || PUSH_I18N.uz;
+}
+
+/* Bildirishnoma turiga qarab push xabarnoma matnini FOYDALANUVCHI TANLAGAN
+   TILDA tayyorlaydi (u.lang — /api/language orqali saqlanadi, ro'yxatdan
+   o'tishda ham boshlang'ich qiymat sifatida yuboriladi). */
+function pushContentFor(notif, lang) {
+  const T = pushTextFor(lang);
+  const who = notif.from || T.someone;
   switch (notif.type) {
     case 'order-received':
-      return { title: 'Yangi buyurtma', body: `Sizga ${notif.itemsCount || 1} ta mahsulot uchun yangi buyurtma tushdi`, url: '/' };
+      return { title: T.orderReceivedTitle, body: T.orderReceivedBody(notif), url: '/' };
     case 'order-placed':
-      return { title: 'Buyurtma qabul qilindi', body: 'Buyurtmangiz muvaffaqiyatli rasmiylashtirildi', url: '/' };
+      return { title: T.orderPlacedTitle, body: T.orderPlacedBody, url: '/' };
     case 'order-status':
-      return { title: 'Buyurtma holati yangilandi', body: orderStatusText(notif.status), url: '/' };
+      return { title: T.orderStatusTitle, body: orderStatusText(notif.status, lang), url: '/' };
     case 'ban':
-      return { title: 'Hisobingiz bloklandi', body: notif.reason || 'Hisobingiz vaqtincha bloklandi', url: '/' };
+      return { title: T.banTitle, body: notif.reason || T.banBodyDefault, url: '/' };
     case 'unban':
-      return { title: 'Hisobingiz tiklandi', body: 'Blok bekor qilindi, endi tizimga kirishingiz mumkin', url: '/' };
+      return { title: T.unbanTitle, body: T.unbanBody, url: '/' };
     case 'mute':
-      return { title: 'Vaqtincha cheklov', body: notif.reason || 'Komment/xabar yozish vaqtincha cheklandi', url: '/' };
+      return { title: T.muteTitle, body: notif.reason || T.muteBodyDefault, url: '/' };
     case 'unmute':
-      return { title: 'Cheklov bekor qilindi', body: 'Endi komment/xabar yozishingiz mumkin', url: '/' };
+      return { title: T.unmuteTitle, body: T.unmuteBody, url: '/' };
     case 'follow':
-      return { title: 'Yangi obunachi', body: `${notif.from || 'Foydalanuvchi'} sizga obuna bo'ldi`, url: '/' };
+      return { title: T.followTitle, body: T.followBody(who), url: '/' };
     case 'like':
-      return { title: 'Yangi like', body: `${notif.from || 'Foydalanuvchi'} "${notif.workTitle || ''}" asaringizni yoqtirdi`, url: '/' };
+      return { title: T.likeTitle, body: T.likeBody(who, notif.workTitle || ''), url: '/' };
     case 'comment':
-      return { title: 'Yangi komment', body: `${notif.from || 'Foydalanuvchi'} "${notif.workTitle || ''}" asaringizga izoh qoldirdi`, url: '/' };
+      return { title: T.commentTitle, body: T.commentBody(who, notif.workTitle || ''), url: '/' };
     default:
       return null;
   }
 }
 
-function orderStatusText(status) {
-  switch (status) {
-    case 'confirmed': return 'Sotuvchi buyurtmangizni tasdiqladi';
-    case 'shipped': return 'Buyurtmangiz jo\u2019natildi';
-    case 'completed': return 'Buyurtmangiz yakunlandi';
-    case 'cancelled': return 'Buyurtmangiz bekor qilindi';
-    default: return 'Buyurtmangiz holati yangilandi: ' + status;
-  }
+function orderStatusText(status, lang) {
+  const os = pushTextFor(lang).orderStatus;
+  return os[status] || os.default(status);
 }
 
 /* Foydalanuvchining barcha ulangan qurilmalariga push xabarnoma yuboradi.
@@ -958,6 +1092,7 @@ function publicUser(uname) {
     joined: u.joined,
     theme: u.theme || null,
     notifPrefs: u.notifPrefs,
+    lang: u.lang || 'uz',
     isAdmin: !!u.isAdmin,
     isOnline: isUserOnline(uname),
     followingCount: (u.following || []).length,
@@ -1032,7 +1167,7 @@ function publicProfile(uname, viewerUsername) {
 /* ===================== AUTH ROUTES ===================== */
 app.post('/api/register', rateLimit('register', 8, 10 * 60 * 1000), async (req, res) => {
   try {
-    const { username, password, fullname, email } = req.body || {};
+    const { username, password, fullname, email, lang } = req.body || {};
     const uname = String(username || '').trim().toLowerCase().replace(/\s+/g, '_');
 
     if (!isValidUsername(uname)) {
@@ -1060,6 +1195,7 @@ app.post('/api/register', rateLimit('register', 8, 10 * 60 * 1000), async (req, 
       social: '',
       privacy: { phone: true, social: true, email: false },
       theme: null,
+      lang: SUPPORTED_LANGS.includes(lang) ? lang : 'uz',
       joined: new Date().toISOString(),
       isAdmin: false,
       moderation: { bannedUntil: null, banReason: '', mutedUntil: null, muteReason: '' },
@@ -1625,6 +1761,23 @@ app.put('/api/notification-prefs', requireAuth, async (req, res) => {
   }
   await saveDB();
   res.json({ prefs: u.notifPrefs });
+});
+
+/* Foydalanuvchi saytda tilni almashtirganda chaqiriladi — bu shunchaki
+   interfeys ko'rinishi uchun emas, balki SERVERda push xabarnoma matnini
+   qaysi tilda tayyorlashni bilish uchun ham kerak (masalan "Yangi like"
+   bildirishnomasi ilova yopiq bo'lganda ham foydalanuvchi tanlagan tilda
+   kelishi uchun). */
+app.put('/api/language', requireAuth, async (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  const { lang } = req.body || {};
+  if (!SUPPORTED_LANGS.includes(lang)) {
+    return res.status(400).json({ error: "Noto'g'ri til kodi", code: 'invalidLang' });
+  }
+  u.lang = lang;
+  await saveDB();
+  res.json({ ok: true, lang: u.lang });
 });
 
 /* ===================== PUSH XABARNOMALAR (Web Push) ROUTES ===================== */
@@ -2310,9 +2463,11 @@ app.post('/api/conversations/:username/messages/media', requireAuth, requireNotM
       await saveDB();
 
       const senderFullname = (db.users[me] && db.users[me].fullname) || me;
-      const mediaLabel = { photo: 'Rasm', video: 'Video', circle: 'Video xabar', voice: 'Ovozli xabar', file: 'Fayl' }[kind] || 'Xabar';
       const recipientUser = db.users[other];
       if (recipientUser && isNotifCategoryAllowed(recipientUser, 'messages')) {
+        ensureModerationFields(recipientUser);
+        const labels = pushTextFor(recipientUser.lang).mediaLabels;
+        const mediaLabel = labels[kind] || labels.default;
         sendPush(other, { title: senderFullname, body: mediaLabel, url: '/' }).catch(() => {});
       }
 
