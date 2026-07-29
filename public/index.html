@@ -7,6 +7,10 @@
   <title>Madein.net</title>
   <meta name="description" content="Madein.net — hunarmandlar va ijodkorlarning qo'lda yasalgan asarlarini kashf eting, sotib oling yoki o'z ishlaringizni ulashing.">
   <meta name="theme-color" content="#0a84ff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Madein.net">
 
   <!-- Open Graph (Facebook, Telegram, WhatsApp va h.k.) -->
   <meta property="og:type" content="website">
@@ -38,7 +42,11 @@
 <body data-theme="tungi">
 
   <div id="loadingScreen">
-    <div class="loader-stamp"></div>
+    <div class="loader-brand">
+      <img src="/assets/logo-icon.png" alt="Madein.net" class="loader-logo">
+      <div class="loader-wordmark">Madein<span>.net</span></div>
+      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+    </div>
   </div>
 
   <!-- ============ AUTH SCREEN ============ -->
@@ -135,6 +143,18 @@
             </div>
             <small class="pw-match-label" id="pwMatchLabel"></small>
           </div>
+        </div>
+        <div class="field lang-field">
+          <label for="regLangSelect" data-i18n="profile.language">Sayt tili</label>
+          <select id="regLangSelect">
+            <option value="uz">O'zbekcha</option>
+            <option value="ru">Русский</option>
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="hi">हिन्दी</option>
+            <option value="es">Español</option>
+            <option value="ar">العربية</option>
+          </select>
         </div>
         <div class="form-error" id="registerError"></div>
         <button type="submit" class="btn btn-primary btn-block" id="registerSubmitBtn">
@@ -413,6 +433,17 @@
             <label class="privacy-toggle"><input type="checkbox" id="privacyPhone"> <span data-i18n="profile.edit.privacyPhone">Telefon raqamimni ko'rsatish</span></label>
             <label class="privacy-toggle"><input type="checkbox" id="privacySocial"> <span data-i18n="profile.edit.privacySocial">Ijtimoiy tarmoq havolamni ko'rsatish</span></label>
             <label class="privacy-toggle"><input type="checkbox" id="privacyEmail"> <span data-i18n="profile.edit.privacyEmail">Emailimni ko'rsatish</span></label>
+          </div>
+          <div class="privacy-block" id="notifPrefsBlock">
+            <div class="field-hint" style="margin-bottom:6px;" data-i18n="notifSettings.title">Bildirishnoma sozlamalari</div>
+            <label class="privacy-toggle notif-master-toggle"><input type="checkbox" id="notifPrefEnabled"> <span data-i18n="notifSettings.master">Barcha bildirishnomalar</span></label>
+            <div id="notifPrefSubOptions" class="notif-sub-options">
+              <label class="privacy-toggle"><input type="checkbox" id="notifPrefLikes"> <span data-i18n="notifSettings.likes">Layklar</span></label>
+              <label class="privacy-toggle"><input type="checkbox" id="notifPrefComments"> <span data-i18n="notifSettings.comments">Kommentlar</span></label>
+              <label class="privacy-toggle"><input type="checkbox" id="notifPrefFollows"> <span data-i18n="notifSettings.follows">Yangi obunachilar</span></label>
+              <label class="privacy-toggle"><input type="checkbox" id="notifPrefOrders"> <span data-i18n="notifSettings.orders">Buyurtmalar</span></label>
+              <label class="privacy-toggle"><input type="checkbox" id="notifPrefMessages"> <span data-i18n="notifSettings.messages">Xabarlar</span></label>
+            </div>
           </div>
           <div class="privacy-block" id="callPrivacyBlock">
             <div class="field-hint" style="margin-bottom:6px;" data-i18n="profile.edit.callPrivacyTitle">Video qo'ng'iroqlarni kimlar qila olishini tanlang:</div>

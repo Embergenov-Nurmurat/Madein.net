@@ -318,19 +318,64 @@
       visibility: hidden;
     }
 
-    .loader-stamp {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      border: 3px solid var(--border);
-      border-top-color: var(--accent);
-      animation: spin 0.9s linear infinite;
+    .loader-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+    .loader-logo {
+      width: 84px;
+      height: 84px;
+      border-radius: 22px;
+      object-fit: cover;
+      animation: loaderBreathe 1.8s ease-in-out infinite;
+      box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    }
+
+    .loader-wordmark {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 20px;
+      color: var(--text);
+      letter-spacing: .2px;
+    }
+
+    .loader-wordmark span {
+      color: var(--accent);
+    }
+
+    .loader-bar {
+      width: 120px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--border);
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .loader-bar-fill {
+      width: 40%;
+      height: 100%;
+      border-radius: 999px;
+      background: var(--accent);
+      animation: loaderSlide 1.2s ease-in-out infinite;
+    }
+
+    @keyframes loaderBreathe {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.06); opacity: .88; }
+    }
+
+    @keyframes loaderSlide {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(280%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .loader-logo { animation: none; }
+      .loader-bar-fill { animation: none; width: 100%; }
     }
 
     /* ============ STAMP LOGO ============ */
@@ -1010,7 +1055,14 @@
       font-size: 22px;
       font-weight: 700;
       line-height: 1;
-      padding: 6px 16px;
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
     .btn:disabled {
@@ -2126,24 +2178,28 @@
 
     .comment-form {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
       padding: 14px 18px;
       border-top: 1px solid var(--border);
       flex-shrink: 0;
       background: var(--bg);
+      box-sizing: border-box;
+      width: 100%;
     }
 
     .comment-form input {
-      flex: 1;
+      flex: 1 1 auto;
+      min-width: 0;
       background: var(--bg-alt);
       border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 12px 18px;
+      padding: 12px 16px;
       color: var(--text);
       font-family: inherit;
       font-size: 14.5px;
       transition: border-color .15s ease;
+      box-sizing: border-box;
     }
 
     .comment-form input:focus {
@@ -2159,12 +2215,13 @@
       font-size: 13.5px;
       cursor: pointer;
       font-family: inherit;
-      padding: 11px 20px;
+      padding: 11px 18px;
       border-radius: 999px;
       opacity: .35;
       pointer-events: none;
       transition: opacity .15s ease, transform .1s ease;
-      flex-shrink: 0;
+      flex: 0 0 auto;
+      white-space: nowrap;
     }
 
     .comment-form button.active {
@@ -2178,6 +2235,22 @@
 
     .comment-form button.active:active {
       transform: scale(.96);
+    }
+
+    @media (max-width: 480px) {
+      .comments-modal-content { max-width: 100%; }
+      .comment-form {
+        padding: 12px 14px;
+        gap: 6px;
+      }
+      .comment-form input {
+        padding: 11px 14px;
+        font-size: 14px;
+      }
+      .comment-form button {
+        padding: 10px 14px;
+        font-size: 13px;
+      }
     }
 
     /* ============ CONTACT SELLER BUTTON ============ */
@@ -2491,6 +2564,14 @@
       .nav-search-wrap.search-open .nav-search-close-btn:hover {
         background: color-mix(in srgb, var(--text) 10%, transparent);
         color: var(--text);
+      }
+
+      /* Mobil: "+" (yangi ish qo'shish) tugmasi kichik edi — endi to'liq
+         44x44px teginish nishoniga (touch target) kengaytirildi */
+      .upload-plus-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 26px;
       }
 
       /* Mobil: filtr paneli (tur, saralash, narx, faqat kuzatuvchilar)
@@ -3669,6 +3750,71 @@
       opacity: .7;
     }
 
+    /* ---------- Buyurtma xabari balonchasi ---------- */
+    .chat-order-msg {
+      min-width: 220px;
+      max-width: 300px;
+      padding: 13px 15px;
+    }
+
+    .chat-order-head {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 800;
+      font-size: 13.5px;
+      margin-bottom: 8px;
+    }
+
+    .chat-order-icon {
+      font-size: 15px;
+    }
+
+    .chat-order-items {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 8px 0;
+      border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+      margin-bottom: 8px;
+    }
+
+    .chat-order-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .chat-order-item-qty {
+      opacity: .75;
+      font-family: var(--font-mono);
+      flex-shrink: 0;
+    }
+
+    .chat-order-item-more {
+      opacity: .7;
+      font-style: italic;
+    }
+
+    .chat-order-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-order-total {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .chat-order-foot .chat-bubble-time {
+      margin-top: 0;
+    }
+
     .chat-bubble-uploading {
       display: flex;
       align-items: center;
@@ -3940,6 +4086,24 @@
       font-size: 13px;
       padding: 5px 0;
       cursor: pointer;
+    }
+
+    .notif-master-toggle {
+      font-weight: 700;
+    }
+
+    .notif-sub-options {
+      display: flex;
+      flex-direction: column;
+      margin-top: 2px;
+      padding-left: 26px;
+      border-left: 2px solid var(--border);
+      transition: opacity .15s ease;
+    }
+
+    .notif-sub-options.disabled {
+      opacity: .4;
+      pointer-events: none;
     }
 
     /* ============ CUSTOM CHECKBOXES (chiroyli galochkalar) ============ */

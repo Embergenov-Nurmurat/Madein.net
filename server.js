@@ -104,6 +104,14 @@ function ensureModerationFields(u) {
     if (!['everyone', 'nobody', 'selected'].includes(u.callPrivacy.mode)) u.callPrivacy.mode = 'everyone';
     if (!Array.isArray(u.callPrivacy.allowed)) u.callPrivacy.allowed = [];
   }
+  const notifDefaults = { enabled: true, likes: true, comments: true, follows: true, orders: true, messages: true };
+  if (!u.notifPrefs || typeof u.notifPrefs !== 'object') {
+    u.notifPrefs = Object.assign({}, notifDefaults);
+  } else {
+    for (const key of Object.keys(notifDefaults)) {
+      if (typeof u.notifPrefs[key] !== 'boolean') u.notifPrefs[key] = notifDefaults[key];
+    }
+  }
 }
 
 /* db.reports ro'yxati mavjudligini ta'minlaydi (eski db.json fayllar uchun) */
@@ -265,10 +273,43 @@ function refreshModeration(u, uname) {
   return changed;
 }
 
+/* Bildirishnoma turini granular bildirishnoma sozlamalari (notifPrefs)dagi
+   qaysi kategoriyaga tegishli ekanini aniqlaydi. null qaytsa — bu turdagi
+   bildirishnoma (masalan ban/mute) hech qachon o'chirib bo'lmaydi, chunki
+   u hisob xavfsizligi/holati uchun muhim. */
+function categoryForNotifType(type) {
+  switch (type) {
+    case 'like': return 'likes';
+    case 'comment': return 'comments';
+    case 'follow': return 'follows';
+    case 'order-received':
+    case 'order-placed':
+    case 'order-status':
+      return 'orders';
+    default: return null;
+  }
+}
+
+/* Foydalanuvchi shu KATEGORIYADAGI bildirishnomani olishga rozimi —
+   umumiy yoqilgan/o'chirilgan holat va shu kategoriya bo'yicha alohida
+   sozlamani tekshiradi. category=null bo'lsa (masalan ban/mute kabi
+   hisob xavfsizligi bildirishnomalari) — doim ruxsat etiladi. */
+function isNotifCategoryAllowed(u, category) {
+  ensureModerationFields(u);
+  if (!u.notifPrefs.enabled) return false;
+  if (category && u.notifPrefs[category] === false) return false;
+  return true;
+}
+
+function isNotifAllowed(u, type) {
+  return isNotifCategoryAllowed(u, categoryForNotifType(type));
+}
+
 function addNotification(uname, notif) {
   const u = db.users[uname];
   if (!u) return;
   ensureModerationFields(u);
+  if (!isNotifAllowed(u, notif.type)) return; // foydalanuvchi bu turdagi bildirishnomani o'chirib qo'ygan
   u.notifications.push(Object.assign({
     id: 'n' + Date.now() + crypto.randomBytes(4).toString('hex'),
     createdAt: new Date().toISOString(),
@@ -300,6 +341,10 @@ function pushContentFor(notif) {
       return { title: 'Cheklov bekor qilindi', body: 'Endi komment/xabar yozishingiz mumkin', url: '/' };
     case 'follow':
       return { title: 'Yangi obunachi', body: `${notif.from || 'Foydalanuvchi'} sizga obuna bo'ldi`, url: '/' };
+    case 'like':
+      return { title: 'Yangi like', body: `${notif.from || 'Foydalanuvchi'} "${notif.workTitle || ''}" asaringizni yoqtirdi`, url: '/' };
+    case 'comment':
+      return { title: 'Yangi komment', body: `${notif.from || 'Foydalanuvchi'} "${notif.workTitle || ''}" asaringizga izoh qoldirdi`, url: '/' };
     default:
       return null;
   }
@@ -912,6 +957,7 @@ function publicUser(uname) {
     callPrivacy: Object.assign({ mode: 'everyone', allowed: [] }, u.callPrivacy || {}),
     joined: u.joined,
     theme: u.theme || null,
+    notifPrefs: u.notifPrefs,
     isAdmin: !!u.isAdmin,
     isOnline: isUserOnline(uname),
     followingCount: (u.following || []).length,
@@ -1232,6 +1278,7 @@ app.post('/api/users/:username/follow', requireAuth, async (req, res) => {
   if (idx === -1) {
     u.following.push(target);
     following = true;
+    addNotification(target, { type: 'follow', from: me });
   } else {
     u.following.splice(idx, 1);
     following = false;
@@ -1430,6 +1477,7 @@ app.post('/api/cart/checkout', requireAuth, async (req, res) => {
       orderId: order.id,
       itemsCount: sellerItems.length
     });
+    createOrderChatMessage(me, seller, order, sellerItems);
   }
   addNotification(me, { type: 'order-placed', orderId: order.id });
 
@@ -1473,6 +1521,7 @@ app.post('/api/works/:id/buy-now', requireAuth, async (req, res) => {
 
   addNotification(owner, { type: 'order-received', from: me, orderId: order.id, itemsCount: 1 });
   addNotification(me, { type: 'order-placed', orderId: order.id });
+  createOrderChatMessage(me, owner, order, order.items);
 
   await saveDB();
   res.json({ ok: true, orderId: order.id, totalsByCurrency: order.totalsByCurrency });
@@ -1557,6 +1606,25 @@ app.put('/api/theme', requireAuth, async (req, res) => {
   u.theme = { mode: String(mode || 'tungi'), custom: String(custom || '#e2543f') };
   await saveDB();
   res.json({ ok: true });
+});
+
+/* ===================== BILDIRISHNOMA SOZLAMALARI (granular) ===================== */
+app.get('/api/notification-prefs', requireAuth, (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  res.json({ prefs: u.notifPrefs });
+});
+
+app.put('/api/notification-prefs', requireAuth, async (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  const body = req.body || {};
+  const keys = ['enabled', 'likes', 'comments', 'follows', 'orders', 'messages'];
+  for (const key of keys) {
+    if (typeof body[key] === 'boolean') u.notifPrefs[key] = body[key];
+  }
+  await saveDB();
+  res.json({ prefs: u.notifPrefs });
 });
 
 /* ===================== PUSH XABARNOMALAR (Web Push) ROUTES ===================== */
@@ -1878,13 +1946,19 @@ app.get('/api/feed', (req, res) => {
 app.post('/api/works/:id/like', requireAuth, async (req, res) => {
   const found = findWork(req.params.id);
   if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
-  const { work } = found;
+  const { work, owner } = found;
   if (!Array.isArray(work.likes)) work.likes = [];
 
   const me = req.session.username;
   const idx = work.likes.indexOf(me);
   let liked;
-  if (idx === -1) { work.likes.push(me); liked = true; }
+  if (idx === -1) {
+    work.likes.push(me);
+    liked = true;
+    if (owner !== me) {
+      addNotification(owner, { type: 'like', from: me, workId: work.id, workTitle: work.title });
+    }
+  }
   else { work.likes.splice(idx, 1); liked = false; }
 
   await saveDB();
@@ -1951,9 +2025,12 @@ app.post('/api/works/:id/comments', requireAuth, requireNotMuted, rateLimit('com
     createdAt: new Date().toISOString()
   };
   work.comments.push(comment);
+  const u = db.users[me];
+  if (found.owner !== me) {
+    addNotification(found.owner, { type: 'comment', from: me, workId: work.id, workTitle: work.title, commentId: comment.id });
+  }
   await saveDB();
 
-  const u = db.users[me];
   res.json({
     comment: {
       id: comment.id,
@@ -2007,6 +2084,33 @@ function getOrCreateConversation(a, b) {
   return db.messages[id];
 }
 
+/* Buyurtma berilganda xaridor <-> sotuvchi suhbatiga avtomatik "buyurtma"
+   turidagi xabar qo'shadi — shunda sotuvchi buyurtmani darhol Xabarlar
+   bo'limida ham ko'radi, faqat bildirishnomada emas. Matn tayyor holda
+   emas (masalan "3 ta mahsulot"), balki struktura sifatida saqlanadi —
+   frontend uni har bir foydalanuvchining o'z sayt tilida ko'rsatadi. */
+function createOrderChatMessage(buyer, seller, order, sellerItems) {
+  if (buyer === seller) return; // xavfsizlik uchun: o'ziga xabar yubormaydi
+  const conv = getOrCreateConversation(buyer, seller);
+  const currency = sellerItems[0] ? sellerItems[0].currency : 'UZS';
+  const sellerTotal = sellerItems.reduce((sum, it) => sum + it.price * it.qty, 0);
+  const message = {
+    id: 'm' + Date.now() + crypto.randomBytes(4).toString('hex'),
+    from: buyer,
+    type: 'order',
+    orderId: order.id,
+    items: sellerItems.map(it => ({ workId: it.workId, title: it.title, qty: it.qty })),
+    itemsCount: sellerItems.length,
+    total: sellerTotal,
+    currency,
+    createdAt: order.createdAt
+  };
+  conv.messages.push(message);
+  conv.updatedAt = message.createdAt;
+  if (!conv.readUpto) conv.readUpto = {};
+  conv.readUpto[buyer] = message.createdAt; // xaridor buni o'zi "yuborgani" uchun o'zida o'qilgan deb belgilanadi
+}
+
 function unreadCountFor(conv, me) {
   const readUpto = (conv.readUpto && conv.readUpto[me]) || null;
   return conv.messages.filter(m => m.from !== me && (!readUpto || new Date(m.createdAt) > new Date(readUpto))).length;
@@ -2027,6 +2131,7 @@ function lastMessagePreviewFor(last) {
     case 'circle': return { type: 'circle', text: '' };
     case 'voice': return { type: 'voice', text: '' };
     case 'file': return { type: 'file', text: '', fileName: last.fileName || '' };
+    case 'order': return { type: 'order', text: '' };
     default: return { type: 'text', text: last.text || '' };
   }
 }
@@ -2117,7 +2222,10 @@ app.post('/api/conversations/:username/messages', requireAuth, requireNotMuted, 
   await saveDB();
 
   const senderFullname = (db.users[me] && db.users[me].fullname) || me;
-  sendPush(other, { title: senderFullname, body: text.slice(0, 120), url: '/' }).catch(() => {});
+  const recipient = db.users[other];
+  if (recipient && isNotifCategoryAllowed(recipient, 'messages')) {
+    sendPush(other, { title: senderFullname, body: text.slice(0, 120), url: '/' }).catch(() => {});
+  }
 
   res.json({ message });
 });
@@ -2203,7 +2311,10 @@ app.post('/api/conversations/:username/messages/media', requireAuth, requireNotM
 
       const senderFullname = (db.users[me] && db.users[me].fullname) || me;
       const mediaLabel = { photo: 'Rasm', video: 'Video', circle: 'Video xabar', voice: 'Ovozli xabar', file: 'Fayl' }[kind] || 'Xabar';
-      sendPush(other, { title: senderFullname, body: mediaLabel, url: '/' }).catch(() => {});
+      const recipientUser = db.users[other];
+      if (recipientUser && isNotifCategoryAllowed(recipientUser, 'messages')) {
+        sendPush(other, { title: senderFullname, body: mediaLabel, url: '/' }).catch(() => {});
+      }
 
       res.json({ message });
     } catch (e) {

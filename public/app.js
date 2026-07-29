@@ -159,6 +159,9 @@
           "chat.preview.circle": "⭕ Video xabar",
           "chat.preview.voice": "🎙️ Ovozli xabar",
           "chat.preview.file": "📎 Fayl",
+          "chat.preview.order": "🛒 Yangi buyurtma",
+          "chat.order.title": "Buyurtma berildi",
+          "chat.order.more": "+ yana {n} ta",
           "chat.voiceAria": "Ovozli xabar", "chat.circleAria": "Video xabar",
           "filter.typeAria": "Kategoriya", "filter.sortAria": "Saralash", "chat.emojiAria": "Emoji",
           "messages.eyebrow": "Muloqot", "messages.title": "Sotuvchilar bilan <span>xabarlar</span>",
@@ -319,6 +322,15 @@
           "follow.short": "Obuna",
           "follow.shortAdd": "+ Obuna",
           "notif.follow": "{name} sizga obuna bo'ldi",
+          "notif.like": "{name} \"{title}\" asaringizni yoqtirdi",
+          "notif.comment": "{name} \"{title}\" asaringizga izoh qoldirdi",
+          "notifSettings.title": "Bildirishnoma sozlamalari",
+          "notifSettings.master": "Barcha bildirishnomalar",
+          "notifSettings.likes": "Layklar",
+          "notifSettings.comments": "Kommentlar",
+          "notifSettings.follows": "Yangi obunachilar",
+          "notifSettings.orders": "Buyurtmalar",
+          "notifSettings.messages": "Xabarlar",
           "save.aria": "Saqlash",
           "share.aria": "Ulashish", "share.linkCopied": "Havola nusxalandi: {url}", "share.copyPrompt": "Havolani nusxalang:",
           "feedThumb.aria": "Rasmni to'liq hajmda ko'rish",
@@ -471,6 +483,9 @@
           "chat.preview.circle": "⭕ Video message",
           "chat.preview.voice": "🎙️ Voice message",
           "chat.preview.file": "📎 File",
+          "chat.preview.order": "🛒 New order",
+          "chat.order.title": "Order placed",
+          "chat.order.more": "+ {n} more",
           "chat.voiceAria": "Voice message", "chat.circleAria": "Video message",
           "filter.typeAria": "Category", "filter.sortAria": "Sort", "chat.emojiAria": "Emoji",
           "messages.eyebrow": "Conversations", "messages.title": "Messages with <span>sellers</span>",
@@ -636,6 +651,15 @@
           "follow.short": "Following",
           "follow.shortAdd": "+ Follow",
           "notif.follow": "{name} started following you",
+          "notif.like": "{name} liked your work \"{title}\"",
+          "notif.comment": "{name} commented on your work \"{title}\"",
+          "notifSettings.title": "Notification settings",
+          "notifSettings.master": "All notifications",
+          "notifSettings.likes": "Likes",
+          "notifSettings.comments": "Comments",
+          "notifSettings.follows": "New followers",
+          "notifSettings.orders": "Orders",
+          "notifSettings.messages": "Messages",
           "save.aria": "Save",
           "share.aria": "Share", "share.linkCopied": "Link copied: {url}", "share.copyPrompt": "Copy the link:",
           "feedThumb.aria": "View image in full size",
@@ -788,6 +812,9 @@
           "chat.preview.circle": "⭕ 视频消息",
           "chat.preview.voice": "🎙️ 语音消息",
           "chat.preview.file": "📎 文件",
+          "chat.preview.order": "🛒 新订单",
+          "chat.order.title": "订单已下达",
+          "chat.order.more": "+ 还有 {n} 件",
           "chat.voiceAria": "语音消息", "chat.circleAria": "视频消息",
           "filter.typeAria": "类别", "filter.sortAria": "排序", "chat.emojiAria": "表情符号",
           "messages.eyebrow": "交流", "messages.title": "与<span>卖家</span>的消息",
@@ -933,6 +960,15 @@
           "follow.short": "已关注",
           "follow.shortAdd": "+ 关注",
           "notif.follow": "{name} 关注了您",
+          "notif.like": "{name} 点赞了您的作品《{title}》",
+          "notif.comment": "{name} 评论了您的作品《{title}》",
+          "notifSettings.title": "通知设置",
+          "notifSettings.master": "所有通知",
+          "notifSettings.likes": "点赞",
+          "notifSettings.comments": "评论",
+          "notifSettings.follows": "新关注者",
+          "notifSettings.orders": "订单",
+          "notifSettings.messages": "消息",
           "save.aria": "保存",
           "share.aria": "分享", "share.linkCopied": "链接已复制：{url}", "share.copyPrompt": "复制链接：",
           /* ---- video call feature (previously missing from this language) ---- */
@@ -1119,6 +1155,9 @@
           "chat.preview.circle": "⭕ वीडियो संदेश",
           "chat.preview.voice": "🎙️ वॉइस संदेश",
           "chat.preview.file": "📎 फ़ाइल",
+          "chat.preview.order": "🛒 नया ऑर्डर",
+          "chat.order.title": "ऑर्डर दिया गया",
+          "chat.order.more": "+ {n} और",
           "chat.voiceAria": "वॉइस संदेश", "chat.circleAria": "वीडियो संदेश",
           "filter.typeAria": "श्रेणी", "filter.sortAria": "क्रमबद्ध करें", "chat.emojiAria": "इमोजी",
           "messages.eyebrow": "बातचीत", "messages.title": "<span>विक्रेताओं</span> के साथ संदेश",
@@ -1264,6 +1303,15 @@
           "follow.short": "फ़ॉलो हो रहा है",
           "follow.shortAdd": "+ फ़ॉलो",
           "notif.follow": "{name} ने आपको फ़ॉलो करना शुरू किया",
+          "notif.like": "{name} ने आपकी कृति \"{title}\" को पसंद किया",
+          "notif.comment": "{name} ने आपकी कृति \"{title}\" पर टिप्पणी की",
+          "notifSettings.title": "सूचना सेटिंग्स",
+          "notifSettings.master": "सभी सूचनाएं",
+          "notifSettings.likes": "लाइक्स",
+          "notifSettings.comments": "टिप्पणियाँ",
+          "notifSettings.follows": "नए फ़ॉलोअर्स",
+          "notifSettings.orders": "ऑर्डर",
+          "notifSettings.messages": "संदेश",
           "save.aria": "सहेजें",
           "share.aria": "शेयर करें", "share.linkCopied": "लिंक कॉपी हो गया: {url}", "share.copyPrompt": "लिंक कॉपी करें:",
           /* ---- video call feature (previously missing from this language) ---- */
@@ -1450,6 +1498,9 @@
           "chat.preview.circle": "⭕ Videomensaje",
           "chat.preview.voice": "🎙️ Mensaje de voz",
           "chat.preview.file": "📎 Archivo",
+          "chat.preview.order": "🛒 Nuevo pedido",
+          "chat.order.title": "Pedido realizado",
+          "chat.order.more": "+ {n} más",
           "chat.voiceAria": "Mensaje de voz", "chat.circleAria": "Videomensaje",
           "filter.typeAria": "Categoría", "filter.sortAria": "Ordenar", "chat.emojiAria": "Emoji",
           "messages.eyebrow": "Conversaciones", "messages.title": "Mensajes con <span>vendedores</span>",
@@ -1595,6 +1646,15 @@
           "follow.short": "Siguiendo",
           "follow.shortAdd": "+ Seguir",
           "notif.follow": "{name} empezó a seguirte",
+          "notif.like": "A {name} le gustó tu obra \"{title}\"",
+          "notif.comment": "{name} comentó en tu obra \"{title}\"",
+          "notifSettings.title": "Configuración de notificaciones",
+          "notifSettings.master": "Todas las notificaciones",
+          "notifSettings.likes": "Me gusta",
+          "notifSettings.comments": "Comentarios",
+          "notifSettings.follows": "Nuevos seguidores",
+          "notifSettings.orders": "Pedidos",
+          "notifSettings.messages": "Mensajes",
           "save.aria": "Guardar",
           "share.aria": "Compartir", "share.linkCopied": "Enlace copiado: {url}", "share.copyPrompt": "Copia el enlace:",
           /* ---- video call feature (previously missing from this language) ---- */
@@ -1781,6 +1841,9 @@
           "chat.preview.circle": "⭕ رسالة فيديو",
           "chat.preview.voice": "🎙️ رسالة صوتية",
           "chat.preview.file": "📎 ملف",
+          "chat.preview.order": "🛒 طلب جديد",
+          "chat.order.title": "تم تقديم الطلب",
+          "chat.order.more": "+ {n} أخرى",
           "chat.voiceAria": "رسالة صوتية", "chat.circleAria": "رسالة فيديو",
           "filter.typeAria": "الفئة", "filter.sortAria": "الترتيب", "chat.emojiAria": "الرموز التعبيرية",
           "messages.eyebrow": "المحادثات", "messages.title": "رسائل مع <span>البائعين</span>",
@@ -1926,6 +1989,15 @@
           "follow.short": "متابَع",
           "follow.shortAdd": "+ متابعة",
           "notif.follow": "بدأ {name} بمتابعتك",
+          "notif.like": "أعجب {name} بعملك \"{title}\"",
+          "notif.comment": "علّق {name} على عملك \"{title}\"",
+          "notifSettings.title": "إعدادات الإشعارات",
+          "notifSettings.master": "جميع الإشعارات",
+          "notifSettings.likes": "الإعجابات",
+          "notifSettings.comments": "التعليقات",
+          "notifSettings.follows": "المتابعون الجدد",
+          "notifSettings.orders": "الطلبات",
+          "notifSettings.messages": "الرسائل",
           "save.aria": "حفظ",
           "share.aria": "مشاركة", "share.linkCopied": "تم نسخ الرابط: {url}", "share.copyPrompt": "انسخ الرابط:",
           /* ---- video call feature (previously missing from this language) ---- */
@@ -2112,6 +2184,9 @@
           "chat.preview.circle": "⭕ Видеосообщение",
           "chat.preview.voice": "🎙️ Голосовое сообщение",
           "chat.preview.file": "📎 Файл",
+          "chat.preview.order": "🛒 Новый заказ",
+          "chat.order.title": "Заказ оформлен",
+          "chat.order.more": "+ ещё {n}",
           "chat.voiceAria": "Голосовое сообщение", "chat.circleAria": "Видеосообщение",
           "filter.typeAria": "Категория", "filter.sortAria": "Сортировка", "chat.emojiAria": "Эмодзи",
           "messages.eyebrow": "Переписка", "messages.title": "Сообщения с <span>продавцами</span>",
@@ -2257,6 +2332,15 @@
           "follow.short": "Подписан",
           "follow.shortAdd": "+ Подписаться",
           "notif.follow": "{name} подписался(ась) на вас",
+          "notif.like": "{name} понравилась ваша работа «{title}»",
+          "notif.comment": "{name} прокомментировал(а) вашу работу «{title}»",
+          "notifSettings.title": "Настройки уведомлений",
+          "notifSettings.master": "Все уведомления",
+          "notifSettings.likes": "Лайки",
+          "notifSettings.comments": "Комментарии",
+          "notifSettings.follows": "Новые подписчики",
+          "notifSettings.orders": "Заказы",
+          "notifSettings.messages": "Сообщения",
           "save.aria": "Сохранить",
           "share.aria": "Поделиться", "share.linkCopied": "Ссылка скопирована: {url}", "share.copyPrompt": "Скопируйте ссылку:",
           /* ---- video call feature (previously missing from this language) ---- */
@@ -2334,6 +2418,8 @@
         });
         const langSelect = document.getElementById('langSelect');
         if (langSelect) langSelect.value = currentLang;
+        const regLangSelect = document.getElementById('regLangSelect');
+        if (regLangSelect) regLangSelect.value = currentLang;
         /* re-render any already-built dynamic UI (labels/buttons only —
            the underlying user content in WORKS/FEED is left untouched
            and simply redrawn with the new chrome around it) */
@@ -2822,6 +2908,8 @@
           case 'ban-expired': return t('notif.banExpired');
           case 'mute-expired': return t('notif.muteExpired');
           case 'follow': return t('notif.follow', { name: n.from || t('notif.someone') });
+          case 'like': return t('notif.like', { name: n.from || t('notif.someone'), title: n.workTitle || '' });
+          case 'comment': return t('notif.comment', { name: n.from || t('notif.someone'), title: n.workTitle || '' });
           case 'order-received': return t('notif.orderReceived', { name: n.from || t('notif.someone'), count: n.itemsCount || 1 });
           case 'order-placed': return t('notif.orderPlaced');
           case 'order-status': return t('notif.orderStatus', { status: n.status || '' });
@@ -3090,6 +3178,7 @@
         $('#cancelEditBtn').addEventListener('click', () => $('#editProfileCard').classList.add('hidden'));
         $('#saveProfileBtn').addEventListener('click', saveProfile);
         $('#saveCredentialsBtn').addEventListener('click', saveCredentials);
+        bindNotifPrefEvents();
         $$('input[name="callPrivacyMode"]').forEach(r => r.addEventListener('change', updateCallPrivacySelectedVisibility));
         $('#callPrivacyAddBtn').addEventListener('click', addCallPrivacyAllowedUser);
         $('#callPrivacyAddInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCallPrivacyAllowedUser(); } });
@@ -3108,6 +3197,11 @@
         if (langSelect) {
           langSelect.value = currentLang;
           langSelect.addEventListener('change', (e) => setLanguage(e.target.value));
+        }
+        const regLangSelect = $('#regLangSelect');
+        if (regLangSelect) {
+          regLangSelect.value = currentLang;
+          regLangSelect.addEventListener('change', (e) => setLanguage(e.target.value));
         }
 
         /* theme panel */
@@ -3530,6 +3624,7 @@
         $('#privacyPhone').checked = !!privacy.phone;
         $('#privacySocial').checked = !!privacy.social;
         $('#privacyEmail').checked = !!privacy.email;
+        renderNotifPrefs(u.notifPrefs);
         const callPrivacy = u.callPrivacy || { mode: 'everyone', allowed: [] };
         CALL_PRIVACY_ALLOWED = Array.isArray(callPrivacy.allowed) ? callPrivacy.allowed.slice() : [];
         const modeInput = document.querySelector('input[name="callPrivacyMode"][value="' + (callPrivacy.mode || 'everyone') + '"]');
@@ -3539,6 +3634,47 @@
         updateCallPrivacySelectedVisibility();
         $('#editAvatarPreview').innerHTML = avatarInner(u.avatar, u.fullname || u.username);
         $('#editProfileCard').classList.remove('hidden');
+      }
+
+      const NOTIF_PREF_DEFAULTS = { enabled: true, likes: true, comments: true, follows: true, orders: true, messages: true };
+      const NOTIF_PREF_CHECKBOX_IDS = {
+        enabled: 'notifPrefEnabled',
+        likes: 'notifPrefLikes',
+        comments: 'notifPrefComments',
+        follows: 'notifPrefFollows',
+        orders: 'notifPrefOrders',
+        messages: 'notifPrefMessages'
+      };
+
+      function renderNotifPrefs(prefs) {
+        const p = Object.assign({}, NOTIF_PREF_DEFAULTS, prefs || {});
+        Object.keys(NOTIF_PREF_CHECKBOX_IDS).forEach(key => {
+          const el = $('#' + NOTIF_PREF_CHECKBOX_IDS[key]);
+          if (el) el.checked = !!p[key];
+        });
+        $('#notifPrefSubOptions').classList.toggle('disabled', !p.enabled);
+      }
+
+      /* Har bir bildirishnoma sozlamasi bosilgan zahoti serverga saqlanadi —
+         "Saqlash" tugmasini bosishni kutmaydi, chunki bu alohida sozlamalar
+         paneli sifatida his qilinishi kerak. */
+      function bindNotifPrefEvents() {
+        Object.keys(NOTIF_PREF_CHECKBOX_IDS).forEach(key => {
+          const el = $('#' + NOTIF_PREF_CHECKBOX_IDS[key]);
+          if (!el) return;
+          el.addEventListener('change', async () => {
+            if (key === 'enabled') {
+              $('#notifPrefSubOptions').classList.toggle('disabled', !el.checked);
+            }
+            try {
+              const data = await apiJSON('/api/notification-prefs', 'PUT', { [key]: el.checked });
+              if (CURRENT_USER) CURRENT_USER.notifPrefs = data.prefs;
+            } catch (e) {
+              el.checked = !el.checked; // server rad etsa — tugmani orqaga qaytaramiz
+              if (key === 'enabled') $('#notifPrefSubOptions').classList.toggle('disabled', !el.checked);
+            }
+          });
+        });
       }
 
       let CALL_PRIVACY_ALLOWED = []; // "Faqat tanlanganlar" rejimida ruxsat etilgan foydalanuvchi nomlari
@@ -4903,6 +5039,7 @@
           case 'circle': return t('chat.preview.circle');
           case 'voice': return t('chat.preview.voice');
           case 'file': return '📎 ' + (fileName || t('chat.preview.file'));
+          case 'order': return t('chat.preview.order');
           default: return '';
         }
       }
@@ -4951,6 +5088,7 @@
       function chatBubbleHTML(m) {
         const mine = m.from === (CURRENT_USER && CURRENT_USER.username);
         if (m.type === 'call') return chatCallBubbleHTML(m, mine);
+        if (m.type === 'order') return chatOrderBubbleHTML(m, mine);
         if (m.type === 'photo') return chatMediaBubbleHTML(m, mine, `<img src="${escapeHtml(m.url)}" class="chat-media-img" loading="lazy" alt="">`);
         if (m.type === 'video') return chatMediaBubbleHTML(m, mine, `<video src="${escapeHtml(m.url)}" ${m.poster ? `poster="${escapeHtml(m.poster)}"` : ''} class="chat-media-video" controls playsinline preload="metadata"></video>`);
         if (m.type === 'circle') return chatCircleBubbleHTML(m, mine);
@@ -5235,6 +5373,32 @@
           </div>
           <span class="chat-bubble-time">${fmtChatTime(m.createdAt)}</span>
         </a>
+      </div>`;
+      }
+
+      /* Buyurtma berilganda avtomatik yaratiladigan xabar balonchasi —
+         xarid qilingan mahsulotlar ro'yxati va umumiy summani ko'rsatadi,
+         bosilganda "Buyurtmalarim" bo'limiga o'tkazadi. */
+      function chatOrderBubbleHTML(m, mine) {
+        const items = Array.isArray(m.items) ? m.items : [];
+        const shown = items.slice(0, 3);
+        const extra = items.length - shown.length;
+        return `
+      <div class="chat-bubble-row ${mine ? 'me' : ''}">
+        <div class="chat-bubble chat-order-msg">
+          <div class="chat-order-head">
+            <span class="chat-order-icon">🛒</span>
+            <span class="chat-order-title">${t('chat.order.title')}</span>
+          </div>
+          <div class="chat-order-items">
+            ${shown.map(it => `<div class="chat-order-item">${escapeHtml(it.title)} <span class="chat-order-item-qty">×${it.qty}</span></div>`).join('')}
+            ${extra > 0 ? `<div class="chat-order-item chat-order-item-more">${t('chat.order.more', { n: extra })}</div>` : ''}
+          </div>
+          <div class="chat-order-foot">
+            <span class="chat-order-total">${fmtPrice(m.total, m.currency)}</span>
+            <span class="chat-bubble-time">${fmtChatTime(m.createdAt)}</span>
+          </div>
+        </div>
       </div>`;
       }
 
