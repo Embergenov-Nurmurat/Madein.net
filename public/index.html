@@ -88,6 +88,7 @@
           </div>
         </div>
         <div class="form-error" id="loginError"></div>
+        <button type="button" class="link-btn forgot-pass-link" id="forgotPassLink" data-i18n="auth.forgotPassword">Parolni unutdingizmi?</button>
         <button type="submit" class="btn btn-primary btn-block" data-i18n="auth.loginBtn">Kirish</button>
       </form>
 
@@ -336,6 +337,12 @@
         <div class="view-toolbar">
           <button class="btn btn-ghost btn-sm" id="editProfileBtn" data-i18n="profile.editBtn">Ma'lumotlarni tahrirlash</button>
           <button class="btn btn-primary btn-sm upload-plus-btn" id="openUploadBtn2" data-i18n="nav.newWork">+</button>
+        </div>
+        <div class="view-toolbar profile-quick-links">
+          <button class="btn btn-ghost btn-sm" id="openOrdersBtn" data-i18n="orders.btn">📦 Buyurtmalarim</button>
+          <button class="btn btn-ghost btn-sm" id="openWishlistBtn" data-i18n="wishlist.btn">🤍 Xohishlar</button>
+          <button class="btn btn-ghost btn-sm" id="openSellerStatsBtn" data-i18n="sellerStats.btn">📊 Statistika</button>
+          <button class="btn btn-ghost btn-sm" id="openCollectionsBtn" data-i18n="collections.btn">🗂️ To'plamlar</button>
         </div>
 
         <div class="profile-edit-card hidden" id="editProfileCard">
@@ -698,6 +705,11 @@
           <label data-i18n="upload.descLabel">Tavsif</label>
           <textarea id="workDesc" rows="3" placeholder="Asar haqida qisqacha ma'lumot..." data-i18n-ph="upload.descPh"></textarea>
         </div>
+        <div class="field" style="margin-bottom:18px;">
+          <label data-i18n="upload.tagsLabel">Teglar</label>
+          <input type="text" id="workTags" maxlength="200" placeholder="keramika, sovg'a, devor bezagi" data-i18n-ph="upload.tagsPh">
+          <div class="field-hint" data-i18n="upload.tagsHint">Vergul bilan ajrating — teglar odamlarga asaringizni topishga yordam beradi</div>
+        </div>
         <div class="form-error" id="uploadError"></div>
         <button type="submit" class="btn btn-primary btn-block" data-i18n="upload.save">Saqlash</button>
       </form>
@@ -801,6 +813,131 @@
         <input type="text" id="commentInput" placeholder="Koment yozing..." maxlength="500" autocomplete="off" data-i18n-ph="comments.ph">
         <button type="submit" id="commentSubmitBtn" data-i18n="comments.send">Yuborish</button>
       </form>
+    </div>
+  </div>
+
+  <!-- ============ SHARHLAR / BAHOLASH (Reviews) ============ -->
+  <div class="modal-backdrop" id="reviewsModal">
+    <div class="modal comments-modal-content">
+      <div class="comments-modal-head">
+        <h3 data-i18n="reviews.title">Sharhlar</h3>
+        <button class="modal-close" id="closeReviewsModal">✕</button>
+      </div>
+      <div class="reviews-summary" id="reviewsSummary"></div>
+      <div class="comments-list" id="reviewsList"></div>
+      <form class="review-form hidden" id="reviewForm">
+        <div class="review-form-stars" id="reviewFormStars">
+          <button type="button" class="star-pick" data-val="1">★</button>
+          <button type="button" class="star-pick" data-val="2">★</button>
+          <button type="button" class="star-pick" data-val="3">★</button>
+          <button type="button" class="star-pick" data-val="4">★</button>
+          <button type="button" class="star-pick" data-val="5">★</button>
+        </div>
+        <div class="comment-form">
+          <input type="text" id="reviewInput" maxlength="500" autocomplete="off" data-i18n-ph="reviews.ph" placeholder="Sharhingizni yozing (ixtiyoriy)...">
+          <button type="submit" id="reviewSubmitBtn" data-i18n="comments.send">Yuborish</button>
+        </div>
+        <div class="form-error" id="reviewFormError"></div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ============ BUYURTMALARIM (My Orders) ============ -->
+  <div class="modal-backdrop" id="ordersModal">
+    <div class="modal comments-modal-content">
+      <div class="comments-modal-head">
+        <h3 data-i18n="orders.title">Buyurtmalarim</h3>
+        <button class="modal-close" id="closeOrdersModal">✕</button>
+      </div>
+      <div class="orders-tabs">
+        <button type="button" class="orders-tab active" data-tab="buyer" data-i18n="orders.asBuyer">Xarid qilganlarim</button>
+        <button type="button" class="orders-tab" data-tab="seller" data-i18n="orders.asSeller">Sotganlarim</button>
+      </div>
+      <div class="comments-list" id="ordersList"></div>
+    </div>
+  </div>
+
+  <!-- ============ XOHISHLAR RO'YXATI (Wishlist) ============ -->
+  <div class="modal-backdrop" id="wishlistModal">
+    <div class="modal comments-modal-content">
+      <div class="comments-modal-head">
+        <h3 data-i18n="wishlist.title">Xohishlar ro'yxati</h3>
+        <button class="modal-close" id="closeWishlistModal">✕</button>
+      </div>
+      <div class="comments-list wishlist-grid" id="wishlistList"></div>
+    </div>
+  </div>
+
+  <!-- ============ SOTUVCHI STATISTIKASI (Seller stats) ============ -->
+  <div class="modal-backdrop" id="sellerStatsModal">
+    <div class="modal comments-modal-content">
+      <div class="comments-modal-head">
+        <h3 data-i18n="sellerStats.title">Statistika</h3>
+        <button class="modal-close" id="closeSellerStatsModal">✕</button>
+      </div>
+      <div class="comments-list" id="sellerStatsBody"></div>
+    </div>
+  </div>
+
+  <!-- ============ TO'PLAMLAR (Collections) ============ -->
+  <div class="modal-backdrop" id="collectionsModal">
+    <div class="modal comments-modal-content">
+      <div class="comments-modal-head">
+        <h3 data-i18n="collections.title">To'plamlar</h3>
+        <button class="modal-close" id="closeCollectionsModal">✕</button>
+      </div>
+      <div class="comments-list" id="collectionsList"></div>
+      <form class="comment-form" id="newCollectionForm">
+        <input type="text" id="newCollectionName" maxlength="80" autocomplete="off" data-i18n-ph="collections.namePh" placeholder="To'plam nomi...">
+        <button type="submit" id="newCollectionBtn" data-i18n="collections.create">Yaratish</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ PAROLNI TIKLASH ============ -->
+  <div class="modal-backdrop hidden" id="forgotPassModal">
+    <div class="modal auth-mini-modal">
+      <div class="comments-modal-head">
+        <h3 data-i18n="auth.forgotPassword">Parolni unutdingizmi?</h3>
+        <button class="modal-close" id="closeForgotPassModal">✕</button>
+      </div>
+      <div class="auth-mini-body">
+        <p class="field-hint" data-i18n="auth.forgotPassDesc">Ro'yxatdan o'tgan email manzilingizni kiriting — parolni tiklash havolasini yuboramiz.</p>
+        <form id="forgotPassForm">
+          <div class="field">
+            <label data-i18n="auth.email">Email</label>
+            <div class="input-wrap">
+              <input type="email" id="forgotPassEmail" required placeholder="you@example.com" autocomplete="email">
+            </div>
+          </div>
+          <div class="form-error" id="forgotPassError"></div>
+          <div class="form-success hidden" id="forgotPassSuccess" data-i18n="auth.forgotPassSent">Agar bu email ro'yxatdan o'tgan bo'lsa, tiklash havolasi yuborildi.</div>
+          <button type="submit" class="btn btn-primary btn-block" id="forgotPassSubmitBtn" data-i18n="auth.forgotPassSubmit">Havola yuborish</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ YANGI PAROL O'RNATISH ============ -->
+  <div class="modal-backdrop hidden" id="resetPassModal">
+    <div class="modal auth-mini-modal">
+      <div class="comments-modal-head">
+        <h3 data-i18n="auth.resetPassword">Yangi parol o'rnatish</h3>
+        <button class="modal-close" id="closeResetPassModal">✕</button>
+      </div>
+      <div class="auth-mini-body">
+        <form id="resetPassForm">
+          <div class="field">
+            <label data-i18n="auth.newPassword">Yangi parol</label>
+            <div class="input-wrap">
+              <input type="password" id="resetPassNew" required minlength="6" placeholder="••••••••" autocomplete="new-password">
+            </div>
+          </div>
+          <div class="form-error" id="resetPassError"></div>
+          <button type="submit" class="btn btn-primary btn-block" id="resetPassSubmitBtn" data-i18n="auth.resetPassSubmit">Parolni saqlash</button>
+        </form>
+      </div>
     </div>
   </div>
 

@@ -13,6 +13,7 @@
  *                       (production'da albatta o'zgartiring!)
  */
 
+require('dotenv').config();
 const express = require('express');
 const compression = require('compression');
 const session = require('express-session');
@@ -27,6 +28,7 @@ const ffmpegPath = require('ffmpeg-static');
 const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
 const webpush = require('web-push');
+const nodemailer = require('nodemailer');
 
 /* ===================== PUSH XABARNOMALAR (Web Push) =====================
    Brauzer/PWA yopiq bo'lsa ham foydalanuvchiga xabar (masalan "Sizga
@@ -42,6 +44,38 @@ const PUSH_ENABLED = !!(VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY);
 /* Push xabarnomalar matnini foydalanuvchi tanlagan tilda yuborish uchun —
    saytning frontend I18N'iga mos 7 til */
 const SUPPORTED_LANGS = ['uz', 'en', 'zh', 'hi', 'es', 'ar', 'ru'];
+
+/* Email (SMTP) — parolni tiklash va push yetib bormagan taqdirda zaxira
+   bildirishnomalar uchun. Sozlanmagan bo'lsa sayt ishlayveradi, faqat
+   emailga bog'liq amallar (parolni tiklash so'rovi) aniq xatolik qaytaradi. */
+const SMTP_HOST = process.env.SMTP_HOST || '';
+const SMTP_PORT = Number(process.env.SMTP_PORT) || 587;
+const SMTP_USER = process.env.SMTP_USER || '';
+const SMTP_PASS = process.env.SMTP_PASS || '';
+const SMTP_FROM = process.env.SMTP_FROM || 'Madein.net <no-reply@madein.net>';
+const SITE_URL = (process.env.SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
+const EMAIL_ENABLED = !!(SMTP_HOST && SMTP_USER && SMTP_PASS);
+const mailTransport = EMAIL_ENABLED ? nodemailer.createTransport({
+  host: SMTP_HOST,
+  port: SMTP_PORT,
+  secure: SMTP_PORT === 465,
+  auth: { user: SMTP_USER, pass: SMTP_PASS }
+}) : null;
+if (!EMAIL_ENABLED) {
+  console.log("DIQQAT: SMTP sozlanmagan — parolni tiklash xatlari va email bildirishnomalar o'chirilgan holda ishga tushdi.");
+}
+
+async function sendMail(to, subject, text, html) {
+  if (!EMAIL_ENABLED || !to) return false;
+  try {
+    await mailTransport.sendMail({ from: SMTP_FROM, to, subject, text, html: html || undefined });
+    return true;
+  } catch (e) {
+    console.error('Email yuborishda xatolik:', e.message);
+    return false;
+  }
+}
+
 if (PUSH_ENABLED) {
   webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
 } else {
@@ -116,6 +150,8 @@ function ensureModerationFields(u) {
     }
   }
   if (!SUPPORTED_LANGS.includes(u.lang)) u.lang = 'uz';
+  if (!Array.isArray(u.wishlist)) u.wishlist = [];
+  if (!Array.isArray(u.collections)) u.collections = [];
 }
 
 /* db.reports ro'yxati mavjudligini ta'minlaydi (eski db.json fayllar uchun) */
@@ -285,6 +321,7 @@ function categoryForNotifType(type) {
   switch (type) {
     case 'like': return 'likes';
     case 'comment': return 'comments';
+    case 'review': return 'comments';
     case 'follow': return 'follows';
     case 'order-received':
     case 'order-placed':
@@ -324,6 +361,21 @@ function addNotification(uname, notif) {
   // foydalanuvchi saytda tanlagan tilida (server-side lang, /api/language orqali saqlanadi)
   const content = pushContentFor(notif, u.lang || 'uz');
   if (content) sendPush(uname, content).catch(() => {});
+
+  // Email — faqat MUHIM (tranzaksion) bildirishnomalar uchun, va faqat push
+  // haqiqatan yetib bormaydigan holatda (push umuman sozlanmagan yoki
+  // foydalanuvchining faol push obunasi yo'q) — email "zaxira kanal" bo'lib qoladi,
+  // layk/komment kabi ijtimoiy bildirishnomalar bilan pochta qutisini to'ldirmaydi.
+  if (content && EMAIL_ENABLED && u.email && isEmailWorthyType(notif.type)) {
+    const pushWillReach = PUSH_ENABLED && Array.isArray(u.pushSubscriptions) && u.pushSubscriptions.length > 0;
+    if (!pushWillReach) {
+      sendMail(u.email, content.title, content.body).catch(() => {});
+    }
+  }
+}
+
+function isEmailWorthyType(type) {
+  return ['order-received', 'order-placed', 'order-status', 'ban', 'unban', 'mute', 'unmute'].includes(type);
 }
 
 /* Push xabarnomalar uchun 7 tilli matnlar jadvali — frontenddagi I18N
@@ -347,6 +399,10 @@ const PUSH_I18N = {
     followTitle: 'Yangi obunachi', followBody: (n) => `${n} sizga obuna bo'ldi`,
     likeTitle: 'Yangi like', likeBody: (n, t) => `${n} "${t}" asaringizni yoqtirdi`,
     commentTitle: 'Yangi komment', commentBody: (n, t) => `${n} "${t}" asaringizga izoh qoldirdi`,
+    reviewTitle: 'Yangi sharh', reviewBody: (n, t, r) => `${n} "${t}" asaringizga ${r}★ baho bilan sharh qoldirdi`,
+    resetEmailSubject: 'Parolni tiklash — Madein.net',
+    resetEmailBody: "Parolingizni tiklash uchun so'rov yubordingiz. Yangi parol o'rnatish uchun quyidagi havolani bosing:",
+    resetEmailExpiry: 'Havola 1 soat davomida amal qiladi. Agar bu so\'rovni siz yubormagan bo\'lsangiz, bu xatni e\'tiborsiz qoldiring.',
     mediaLabels: { photo: 'Rasm', video: 'Video', circle: 'Video xabar', voice: 'Ovozli xabar', file: 'Fayl', default: 'Xabar' }
   },
   en: {
@@ -364,6 +420,10 @@ const PUSH_I18N = {
     followTitle: 'New follower', followBody: (n) => `${n} started following you`,
     likeTitle: 'New like', likeBody: (n, t) => `${n} liked your work "${t}"`,
     commentTitle: 'New comment', commentBody: (n, t) => `${n} commented on your work "${t}"`,
+    reviewTitle: 'New review', reviewBody: (n, t, r) => `${n} left a ${r}★ review on your work "${t}"`,
+    resetEmailSubject: 'Password reset — Madein.net',
+    resetEmailBody: 'You requested a password reset. Click the link below to set a new password:',
+    resetEmailExpiry: 'This link is valid for 1 hour. If you did not request this, you can ignore this email.',
     mediaLabels: { photo: 'Photo', video: 'Video', circle: 'Video message', voice: 'Voice message', file: 'File', default: 'Message' }
   },
   zh: {
@@ -381,6 +441,10 @@ const PUSH_I18N = {
     followTitle: '新关注者', followBody: (n) => `${n} 关注了您`,
     likeTitle: '新点赞', likeBody: (n, t) => `${n} 点赞了您的作品《${t}》`,
     commentTitle: '新评论', commentBody: (n, t) => `${n} 评论了您的作品《${t}》`,
+    reviewTitle: '新评价', reviewBody: (n, t, r) => `${n} 给您的作品《${t}》打了 ${r}★ 评价`,
+    resetEmailSubject: '密码重置 — Madein.net',
+    resetEmailBody: '您请求重置密码。请点击下面的链接设置新密码：',
+    resetEmailExpiry: '此链接有效期为1小时。如果这不是您本人的请求，请忽略此邮件。',
     mediaLabels: { photo: '照片', video: '视频', circle: '视频消息', voice: '语音消息', file: '文件', default: '消息' }
   },
   hi: {
@@ -398,6 +462,10 @@ const PUSH_I18N = {
     followTitle: 'नया फ़ॉलोअर', followBody: (n) => `${n} ने आपको फ़ॉलो करना शुरू किया`,
     likeTitle: 'नया लाइक', likeBody: (n, t) => `${n} ने आपकी कृति "${t}" को पसंद किया`,
     commentTitle: 'नई टिप्पणी', commentBody: (n, t) => `${n} ने आपकी कृति "${t}" पर टिप्पणी की`,
+    reviewTitle: 'नई समीक्षा', reviewBody: (n, t, r) => `${n} ने आपकी कृति "${t}" को ${r}★ रेटिंग दी`,
+    resetEmailSubject: 'पासवर्ड रीसेट — Madein.net',
+    resetEmailBody: 'आपने पासवर्ड रीसेट का अनुरोध किया है। नया पासवर्ड सेट करने के लिए नीचे दिए गए लिंक पर क्लिक करें:',
+    resetEmailExpiry: 'यह लिंक 1 घंटे के लिए मान्य है। यदि आपने यह अनुरोध नहीं किया है, तो इस ईमेल को अनदेखा करें।',
     mediaLabels: { photo: 'फ़ोटो', video: 'वीडियो', circle: 'वीडियो संदेश', voice: 'ध्वनि संदेश', file: 'फ़ाइल', default: 'संदेश' }
   },
   es: {
@@ -415,6 +483,10 @@ const PUSH_I18N = {
     followTitle: 'Nuevo seguidor', followBody: (n) => `${n} empezó a seguirte`,
     likeTitle: 'Nuevo me gusta', likeBody: (n, t) => `A ${n} le gustó tu obra "${t}"`,
     commentTitle: 'Nuevo comentario', commentBody: (n, t) => `${n} comentó en tu obra "${t}"`,
+    reviewTitle: 'Nueva reseña', reviewBody: (n, t, r) => `${n} dejó una reseña de ${r}★ en tu obra "${t}"`,
+    resetEmailSubject: 'Restablecer contraseña — Madein.net',
+    resetEmailBody: 'Solicitaste restablecer tu contraseña. Haz clic en el siguiente enlace para establecer una nueva:',
+    resetEmailExpiry: 'Este enlace es válido durante 1 hora. Si no solicitaste esto, puedes ignorar este correo.',
     mediaLabels: { photo: 'Foto', video: 'Video', circle: 'Mensaje de video', voice: 'Mensaje de voz', file: 'Archivo', default: 'Mensaje' }
   },
   ar: {
@@ -432,6 +504,10 @@ const PUSH_I18N = {
     followTitle: 'متابع جديد', followBody: (n) => `بدأ ${n} بمتابعتك`,
     likeTitle: 'إعجاب جديد', likeBody: (n, t) => `أعجب ${n} بعملك "${t}"`,
     commentTitle: 'تعليق جديد', commentBody: (n, t) => `علّق ${n} على عملك "${t}"`,
+    reviewTitle: 'تقييم جديد', reviewBody: (n, t, r) => `ترك ${n} تقييمًا ${r}★ على عملك "${t}"`,
+    resetEmailSubject: 'إعادة تعيين كلمة المرور — Madein.net',
+    resetEmailBody: 'لقد طلبت إعادة تعيين كلمة المرور. انقر على الرابط أدناه لتعيين كلمة مرور جديدة:',
+    resetEmailExpiry: 'هذا الرابط صالح لمدة ساعة واحدة. إذا لم تطلب ذلك، يمكنك تجاهل هذه الرسالة.',
     mediaLabels: { photo: 'صورة', video: 'فيديو', circle: 'رسالة فيديو', voice: 'رسالة صوتية', file: 'ملف', default: 'رسالة' }
   },
   ru: {
@@ -449,6 +525,10 @@ const PUSH_I18N = {
     followTitle: 'Новый подписчик', followBody: (n) => `${n} подписался(ась) на вас`,
     likeTitle: 'Новый лайк', likeBody: (n, t) => `${n} понравилась ваша работа «${t}»`,
     commentTitle: 'Новый комментарий', commentBody: (n, t) => `${n} прокомментировал(а) вашу работу «${t}»`,
+    reviewTitle: 'Новый отзыв', reviewBody: (n, t, r) => `${n} оставил(а) отзыв ${r}★ на вашу работу «${t}»`,
+    resetEmailSubject: 'Сброс пароля — Madein.net',
+    resetEmailBody: 'Вы запросили сброс пароля. Перейдите по ссылке ниже, чтобы задать новый пароль:',
+    resetEmailExpiry: 'Ссылка действительна 1 час. Если вы не запрашивали это, просто проигнорируйте это письмо.',
     mediaLabels: { photo: 'Фото', video: 'Видео', circle: 'Видеосообщение', voice: 'Голосовое сообщение', file: 'Файл', default: 'Сообщение' }
   }
 };
@@ -484,6 +564,8 @@ function pushContentFor(notif, lang) {
       return { title: T.likeTitle, body: T.likeBody(who, notif.workTitle || ''), url: '/' };
     case 'comment':
       return { title: T.commentTitle, body: T.commentBody(who, notif.workTitle || ''), url: '/' };
+    case 'review':
+      return { title: T.reviewTitle, body: T.reviewBody(who, notif.workTitle || '', notif.rating || ''), url: '/' };
     default:
       return null;
   }
@@ -648,6 +730,7 @@ function saveDB() {
       moderation: { bannedUntil: null, banReason: '', mutedUntil: null, muteReason: '' },
       notifications: [],
       following: [],
+      wishlist: [],
       cart: {}
     };
     db.works[FIXED_ADMIN_USERNAME] = db.works[FIXED_ADMIN_USERNAME] || [];
@@ -1122,19 +1205,34 @@ function countFollowers(uname) {
 function userWorkStats(uname) {
   const works = db.works[uname] || [];
   let saleCount = 0, totalLikes = 0, totalViews = 0, totalComments = 0;
+  let ratingSum = 0, ratingCount = 0;
   for (const w of works) {
     if (w.status === 'sale') saleCount++;
     totalLikes += Array.isArray(w.likes) ? w.likes.length : 0;
     totalViews += Number(w.views) || 0;
     totalComments += Array.isArray(w.comments) ? w.comments.length : 0;
+    if (Array.isArray(w.reviews)) {
+      for (const r of w.reviews) { ratingSum += r.rating; ratingCount++; }
+    }
   }
+  const completedOrdersCount = db.orders.filter(o =>
+    o.status === 'completed' && Array.isArray(o.items) && o.items.some(it => it.sellerUsername === uname)
+  ).length;
+  /* "Ishonchli sotuvchi" nishoni — kamida 5 ta yakunlangan buyurtma va
+     o'rtacha baho 4 dan past emas (agar sharhlar mavjud bo'lsa) */
+  const avgRating = ratingCount ? ratingSum / ratingCount : 0;
+  const trustedSeller = completedOrdersCount >= 5 && (ratingCount === 0 || avgRating >= 4);
   return {
     worksCount: works.length,
     saleCount,
     expoCount: works.length - saleCount,
     totalLikes,
     totalViews,
-    totalComments
+    totalComments,
+    completedOrdersCount,
+    avgRating: Math.round(avgRating * 10) / 10,
+    ratingCount,
+    trustedSeller
   };
 }
 
@@ -1201,6 +1299,7 @@ app.post('/api/register', rateLimit('register', 8, 10 * 60 * 1000), async (req, 
       moderation: { bannedUntil: null, banReason: '', mutedUntil: null, muteReason: '' },
       notifications: [],
       following: [],
+      wishlist: [],
       cart: {}
     };
     db.works[uname] = [];
@@ -1245,6 +1344,63 @@ app.post('/api/login', rateLimit('login', 15, 10 * 60 * 1000), async (req, res) 
 
 app.post('/api/logout', (req, res) => {
   req.session.destroy(() => res.json({ ok: true }));
+});
+
+/* ===================== PAROLNI TIKLASH (Password reset) =====================
+   Token xesh (SHA-256) holida saqlanadi — hech qachon xom token bazaga
+   yozilmaydi. 1 soatdan keyin eskiradi. Email topilmasa ham xuddi shu javob
+   qaytariladi — shunda tashqi odam qaysi emaillar ro'yxatdan o'tganini bilib ololmaydi. */
+app.post('/api/forgot-password', rateLimit('forgot-password', 5, 15 * 60 * 1000), async (req, res) => {
+  if (!EMAIL_ENABLED) {
+    return res.status(503).json({ error: "Parolni tiklash hozircha sozlanmagan (SMTP yo'q). Administratorga murojaat qiling.", code: 'emailNotConfigured' });
+  }
+  const email = String((req.body && req.body.email) || '').trim().toLowerCase();
+  const genericResponse = { ok: true, message: "Agar bu email ro'yxatdan o'tgan bo'lsa, tiklash havolasi yuborildi" };
+  if (!email) return res.json(genericResponse);
+
+  const uname = Object.keys(db.users).find(k => (db.users[k].email || '').toLowerCase() === email);
+  if (!uname) return res.json(genericResponse); // email topilmadi — baribir bir xil javob
+
+  const u = db.users[uname];
+  const rawToken = crypto.randomBytes(32).toString('hex');
+  u.resetTokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
+  u.resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 soat
+  await saveDB();
+
+  const resetUrl = `${SITE_URL}/?reset=${rawToken}&u=${encodeURIComponent(uname)}`;
+  const T = pushTextFor(u.lang || 'uz');
+  await sendMail(
+    u.email,
+    T.resetEmailSubject,
+    `${T.resetEmailBody}\n\n${resetUrl}\n\n${T.resetEmailExpiry}`,
+    `<p>${T.resetEmailBody}</p><p><a href="${resetUrl}">${resetUrl}</a></p><p>${T.resetEmailExpiry}</p>`
+  );
+  res.json(genericResponse);
+});
+
+app.post('/api/reset-password', rateLimit('reset-password', 8, 15 * 60 * 1000), async (req, res) => {
+  const { username, token, password } = req.body || {};
+  const uname = String(username || '').trim().toLowerCase();
+  const u = db.users[uname];
+  if (!password || password.length < 6) {
+    return res.status(400).json({ error: "Parol kamida 6 belgidan iborat bo'lishi kerak", code: 'passwordTooShort' });
+  }
+  if (!u || !u.resetTokenHash || !u.resetTokenExpires) {
+    return res.status(400).json({ error: "Tiklash havolasi yaroqsiz yoki eskirgan", code: 'invalidResetToken' });
+  }
+  if (new Date(u.resetTokenExpires) < new Date()) {
+    return res.status(400).json({ error: "Tiklash havolasining muddati tugagan", code: 'resetTokenExpired' });
+  }
+  const tokenHash = crypto.createHash('sha256').update(String(token || '')).digest('hex');
+  if (tokenHash !== u.resetTokenHash) {
+    return res.status(400).json({ error: "Tiklash havolasi yaroqsiz", code: 'invalidResetToken' });
+  }
+
+  u.passwordHash = await bcrypt.hash(password, 10);
+  u.resetTokenHash = null;
+  u.resetTokenExpires = null;
+  await saveDB();
+  res.json({ ok: true });
 });
 
 app.get('/api/me', async (req, res) => {
@@ -1690,6 +1846,9 @@ app.patch('/api/orders/:id/status', requireAuth, async (req, res) => {
   }
   order.status = status;
   order.updatedAt = new Date().toISOString();
+  const { trackingNumber, carrier } = req.body || {};
+  if (typeof trackingNumber === 'string') order.trackingNumber = trackingNumber.trim().slice(0, 80);
+  if (typeof carrier === 'string') order.carrier = carrier.trim().slice(0, 80);
   addNotification(order.buyer, { type: 'order-status', orderId: order.id, status });
   await saveDB();
   res.json({ ok: true, order });
@@ -1821,11 +1980,12 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
     if (err) return res.status(400).json({ error: err.message, code: multerErrCode(err) });
     if (!req.files || !req.files.length) return res.status(400).json({ error: 'Kamida bitta rasm yoki video talab qilinadi', code: 'mediaRequired' });
 
-    const { title, type, status, price, currency, desc, stockMode: stockModeRaw, stockQty: stockQtyRaw, typeCustom: typeCustomRaw } = req.body || {};
+    const { title, type, status, price, currency, desc, stockMode: stockModeRaw, stockQty: stockQtyRaw, typeCustom: typeCustomRaw, tags: tagsRaw } = req.body || {};
     const isSale = status === 'sale';
     const CURRENCIES = ['UZS', 'USD', 'EUR', 'RUB'];
     const workType = ['rasm', 'haykal', 'mulaj', 'boshqa'].includes(type) ? type : 'boshqa';
     const typeCustom = workType === 'boshqa' ? String(typeCustomRaw || '').trim().slice(0, 60) : '';
+    const tags = parseTags(tagsRaw);
     const stockMode = isSale && stockModeRaw === 'fixed' ? 'fixed' : 'order';
     let stockQty = null;
     if (isSale && stockMode === 'fixed') {
@@ -1881,6 +2041,7 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
         stockMode: isSale ? stockMode : null,
         stockQty: isSale ? stockQty : null,
         desc: String(desc || '').slice(0, 2000),
+        tags,
         mediaType: 'video',
         video: '/uploads/' + transcodedFilename,
         poster: '/uploads/' + posterFilename,
@@ -1924,6 +2085,7 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
       stockMode: isSale ? stockMode : null,
       stockQty: isSale ? stockQty : null,
       desc: String(desc || '').slice(0, 2000),
+      tags,
       mediaType: 'image',
       video: null,
       images,
@@ -2023,6 +2185,173 @@ function findWork(id) {
   return null;
 }
 
+/* "keramika, sovg'a, devor bezagi" kabi vergul bilan ajratilgan matndan
+   tozalangan teglar ro'yxatini hosil qiladi — bo'sh, juda uzun yoki
+   takrorlanuvchi teglarni olib tashlaydi, ko'pi bilan 8 tagacha. */
+function parseTags(raw) {
+  if (!raw) return [];
+  const list = String(raw)
+    .split(',')
+    .map(t => t.trim().toLowerCase().slice(0, 24))
+    .filter(Boolean);
+  return [...new Set(list)].slice(0, 8);
+}
+
+/* ===================== TO'PLAMLAR (Collections) =====================
+   Sotuvchi o'z asarlarini nomlangan to'plamlarga guruhlaydi (masalan
+   "Kuz 2026 kolleksiyasi"). Faqat o'z asarlarini qo'sha oladi. */
+app.get('/api/collections/:username', (req, res) => {
+  const uname = String(req.params.username || '').trim().toLowerCase();
+  const u = db.users[uname];
+  if (!u) return res.status(404).json({ error: 'Foydalanuvchi topilmadi', code: 'userNotFound' });
+  ensureModerationFields(u);
+  const works = db.works[uname] || [];
+  const items = u.collections.map(c => ({
+    id: c.id,
+    name: c.name,
+    createdAt: c.createdAt,
+    works: c.workIds
+      .map(id => works.find(w => w.id === id))
+      .filter(Boolean)
+      .map(w => ({ id: w.id, title: w.title, image: w.image || w.poster || null, status: w.status, price: w.price, currency: w.currency }))
+  }));
+  res.json({ items });
+});
+
+app.post('/api/collections', requireAuth, async (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  const name = String((req.body && req.body.name) || '').trim().slice(0, 80);
+  if (!name) return res.status(400).json({ error: "To'plam nomi kerak", code: 'nameRequired' });
+  const collection = { id: 'col' + Date.now() + crypto.randomBytes(4).toString('hex'), name, workIds: [], createdAt: new Date().toISOString() };
+  u.collections.push(collection);
+  await saveDB();
+  res.json({ collection });
+});
+
+app.put('/api/collections/:id', requireAuth, async (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  const col = u.collections.find(c => c.id === req.params.id);
+  if (!col) return res.status(404).json({ error: "To'plam topilmadi", code: 'collectionNotFound' });
+
+  const { name, addWorkId, removeWorkId } = req.body || {};
+  if (typeof name === 'string' && name.trim()) col.name = name.trim().slice(0, 80);
+  const myWorks = db.works[req.session.username] || [];
+  if (addWorkId && myWorks.some(w => w.id === addWorkId) && !col.workIds.includes(addWorkId)) {
+    col.workIds.push(addWorkId);
+  }
+  if (removeWorkId) {
+    col.workIds = col.workIds.filter(id => id !== removeWorkId);
+  }
+  await saveDB();
+  res.json({ collection: col });
+});
+
+app.delete('/api/collections/:id', requireAuth, async (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  const idx = u.collections.findIndex(c => c.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ error: "To'plam topilmadi", code: 'collectionNotFound' });
+  u.collections.splice(idx, 1);
+  await saveDB();
+  res.json({ ok: true });
+});
+
+/* Sotuvchi paneli — mavjud ma'lumotlardan (ko'rishlar, layklar, buyurtmalar)
+   umumiy statistika va eng yaxshi ishlagan asarlar ro'yxatini hisoblaydi. */
+app.get('/api/seller/stats', requireAuth, (req, res) => {
+  const me = req.session.username;
+  const works = db.works[me] || [];
+
+  let totalViews = 0, totalLikes = 0, totalComments = 0;
+  const perWork = works.map(w => {
+    const likes = Array.isArray(w.likes) ? w.likes.length : 0;
+    const comments = Array.isArray(w.comments) ? w.comments.length : 0;
+    const views = Number(w.views) || 0;
+    totalViews += views; totalLikes += likes; totalComments += comments;
+    return { id: w.id, title: w.title, image: w.image || w.poster || null, views, likes, comments, status: w.status };
+  });
+  perWork.sort((a, b) => b.views - a.views);
+
+  const myOrders = db.orders.filter(o => Array.isArray(o.items) && o.items.some(it => it.sellerUsername === me));
+  const revenueByCurrency = {};
+  let completedCount = 0, pendingCount = 0;
+  for (const o of myOrders) {
+    const mine = o.items.filter(it => it.sellerUsername === me);
+    if (o.status === 'completed') {
+      completedCount++;
+      for (const it of mine) {
+        const cur = it.currency || 'UZS';
+        revenueByCurrency[cur] = (revenueByCurrency[cur] || 0) + (it.price * it.qty);
+      }
+    } else if (o.status !== 'cancelled') {
+      pendingCount++;
+    }
+  }
+
+  res.json({
+    totalWorks: works.length,
+    totalViews,
+    totalLikes,
+    totalComments,
+    totalOrders: myOrders.length,
+    completedOrders: completedCount,
+    pendingOrders: pendingCount,
+    revenueByCurrency,
+    topWorks: perWork.slice(0, 10)
+  });
+});
+
+/* O'xshash asarlar — teglar mos kelishi asosiy signal, tur (rasm/haykal/...)
+   mosligi ikkinchi darajali signal. O'ziga o'xshashlarni chiqarmaydi. */
+app.get('/api/works/:id/similar', (req, res) => {
+  const found = findWork(req.params.id);
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
+  const { work: target } = found;
+  const targetTags = new Set(Array.isArray(target.tags) ? target.tags : []);
+  const limit = Math.min(12, Math.max(1, parseInt(req.query.limit, 10) || 6));
+
+  const scored = [];
+  for (const uname of Object.keys(db.works)) {
+    const u = db.users[uname];
+    if (!u) continue;
+    for (const w of db.works[uname] || []) {
+      if (w.id === target.id) continue;
+      const wTags = Array.isArray(w.tags) ? w.tags : [];
+      const overlap = wTags.filter(t => targetTags.has(t)).length;
+      const sameType = w.type === target.type ? 1 : 0;
+      const score = overlap * 3 + sameType;
+      if (score <= 0) continue;
+      scored.push({ w, uname, u, score });
+    }
+  }
+  scored.sort((a, b) => b.score - a.score || new Date(b.w.createdAt) - new Date(a.w.createdAt));
+
+  const items = scored.slice(0, limit).map(({ w, uname, u }) => {
+    const likes = Array.isArray(w.likes) ? w.likes : [];
+    return {
+      id: w.id,
+      title: w.title,
+      type: w.type,
+      price: w.price,
+      currency: w.currency || 'UZS',
+      status: w.status,
+      image: w.image,
+      images: workImages(w),
+      thumbs: workThumbs(w),
+      video: w.video || null,
+      poster: w.poster || null,
+      mediaType: w.mediaType || (w.video ? 'video' : 'image'),
+      username: uname,
+      fullname: u.fullname || uname,
+      avatar: u.avatar || null,
+      likesCount: likes.length
+    };
+  });
+  res.json({ items });
+});
+
 app.get('/api/feed', (req, res) => {
   const offset = Math.max(0, parseInt(req.query.offset, 10) || 0);
   const limit = Math.min(20, Math.max(1, parseInt(req.query.limit, 10) || 8));
@@ -2031,6 +2360,7 @@ app.get('/api/feed', (req, res) => {
 
   const q = String(req.query.q || '').trim().toLowerCase();
   const type = String(req.query.type || '').trim().toLowerCase();
+  const tagFilter = String(req.query.tag || '').trim().toLowerCase();
   const onlyFollowing = req.query.following === '1' || req.query.following === 'true';
   const sort = String(req.query.sort || 'new').trim().toLowerCase(); // 'new' | 'top'
   const minPrice = req.query.minPrice !== undefined && req.query.minPrice !== '' ? Number(req.query.minPrice) : null;
@@ -2040,28 +2370,35 @@ app.get('/api/feed', (req, res) => {
   const followingSet = onlyFollowing ? new Set(meUser.following || []) : null;
 
   const all = [];
+  const trustedCache = {};
   for (const uname of Object.keys(db.works)) {
     const u = db.users[uname];
     if (!u) continue;
     if (onlyFollowing && !followingSet.has(uname)) continue;
     for (const w of db.works[uname] || []) {
       if (type && type !== 'all' && w.type !== type) continue;
+      const workTags = Array.isArray(w.tags) ? w.tags : [];
+      if (tagFilter && !workTags.includes(tagFilter)) continue;
       if ((minPrice !== null || maxPrice !== null)) {
         if (w.status !== 'sale') continue; // narx filtri faqat sotuvdagi asarlarga tegishli
         if (minPrice !== null && !Number.isNaN(minPrice) && (w.price || 0) < minPrice) continue;
         if (maxPrice !== null && !Number.isNaN(maxPrice) && (w.price || 0) > maxPrice) continue;
       }
       if (q) {
-        const hay = (w.title + ' ' + (w.desc || '') + ' ' + (u.fullname || '') + ' ' + uname).toLowerCase();
+        const hay = (w.title + ' ' + (w.desc || '') + ' ' + (u.fullname || '') + ' ' + uname + ' ' + workTags.join(' ')).toLowerCase();
         if (!hay.includes(q)) continue;
       }
       const likes = Array.isArray(w.likes) ? w.likes : [];
       const comments = Array.isArray(w.comments) ? w.comments : [];
+      const reviews = Array.isArray(w.reviews) ? w.reviews : [];
+      const ratingSum = reviews.reduce((s, r) => s + r.rating, 0);
+      if (!(uname in trustedCache)) trustedCache[uname] = userWorkStats(uname).trustedSeller;
       all.push({
         id: w.id,
         title: w.title,
         type: w.type,
         typeCustom: w.typeCustom || null,
+        tags: workTags,
         status: w.status,
         price: w.price,
         currency: w.currency || 'UZS',
@@ -2078,10 +2415,14 @@ app.get('/api/feed', (req, res) => {
         username: uname,
         fullname: u.fullname || uname,
         avatar: u.avatar || null,
+        trustedSeller: trustedCache[uname],
         likesCount: likes.length,
         likedByMe: likes.includes(me),
         inCart: !!(meUser && meUser.cart && Object.prototype.hasOwnProperty.call(meUser.cart, w.id)),
+        savedByMe: !!(meUser && Array.isArray(meUser.wishlist) && meUser.wishlist.includes(w.id)),
         commentsCount: comments.length,
+        avgRating: reviews.length ? Math.round((ratingSum / reviews.length) * 10) / 10 : 0,
+        ratingCount: reviews.length,
         viewsCount: Number(w.views) || 0,
         isFollowing: !!(meUser && Array.isArray(meUser.following) && meUser.following.includes(uname))
       });
@@ -2118,6 +2459,61 @@ app.post('/api/works/:id/like', requireAuth, async (req, res) => {
   res.json({ liked, likesCount: work.likes.length });
 });
 
+/* Xohishlar ro'yxati (Wishlist) — savatdan farqli, xarid qilish niyatisiz
+   "keyinroq ko'raman" uchun. Sotuvchiga bildirishnoma yubormaydi — bu shaxsiy
+   ro'yxat, layk kabi ijtimoiy signal emas. */
+app.post('/api/works/:id/wishlist', requireAuth, async (req, res) => {
+  const found = findWork(req.params.id);
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
+
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  const idx = u.wishlist.indexOf(req.params.id);
+  let saved;
+  if (idx === -1) { u.wishlist.push(req.params.id); saved = true; }
+  else { u.wishlist.splice(idx, 1); saved = false; }
+
+  await saveDB();
+  res.json({ saved });
+});
+
+/* Foydalanuvchining wishlist'idagi barcha asarlarni to'liq ma'lumot bilan qaytaradi */
+app.get('/api/wishlist', requireAuth, (req, res) => {
+  const u = db.users[req.session.username];
+  ensureModerationFields(u);
+  const me = req.session.username;
+  const items = u.wishlist
+    .map(id => findWork(id))
+    .filter(Boolean)
+    .map(({ work: w, owner: uname }) => {
+      const owner = db.users[uname];
+      if (!owner) return null;
+      const likes = Array.isArray(w.likes) ? w.likes : [];
+      return {
+        id: w.id,
+        title: w.title,
+        type: w.type,
+        status: w.status,
+        price: w.price,
+        currency: w.currency || 'UZS',
+        image: w.image,
+        images: workImages(w),
+        thumbs: workThumbs(w),
+        video: w.video || null,
+        poster: w.poster || null,
+        mediaType: w.mediaType || (w.video ? 'video' : 'image'),
+        username: uname,
+        fullname: owner.fullname || uname,
+        avatar: owner.avatar || null,
+        likesCount: likes.length,
+        likedByMe: likes.includes(me),
+        savedByMe: true
+      };
+    })
+    .filter(Boolean);
+  res.json({ items });
+});
+
 /* Asarni to'liq hajmda ochganda chaqiriladi — statistikada ko'rishlar sonini oshiradi.
    Bitta odam bitta asarga kuniga faqat 1 marta prosmotr qo'sha oladi (sessiya orqali kuzatiladi). */
 app.post('/api/works/:id/view', rateLimit('view', 120, 60 * 1000), async (req, res) => {
@@ -2144,6 +2540,71 @@ app.post('/api/works/:id/view', rateLimit('view', 120, 60 * 1000), async (req, r
 });
 
 /* ===================== KOMENTLAR ===================== */
+/* ===================== SHARHLAR / BAHOLASH (Reviews & Ratings) =====================
+   Faqat "completed" holatidagi buyurtmada shu asar bo'lgan xaridor sharh
+   qoldira oladi — bu izohlardan (comments) farqli, chunki haqiqiy xaridni
+   tasdiqlaydi ("verified purchase" tamoyili). Har bir xaridor har bir
+   asarga faqat bitta sharh qoldira oladi. */
+function orderHasCompletedItem(order, buyer, workId) {
+  return order.buyer === buyer && order.status === 'completed' &&
+    Array.isArray(order.items) && order.items.some(it => it.workId === workId);
+}
+
+app.get('/api/works/:id/reviews', (req, res) => {
+  const found = findWork(req.params.id);
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
+  const list = Array.isArray(found.work.reviews) ? found.work.reviews : [];
+  const items = list.map(r => {
+    const u = db.users[r.username];
+    return {
+      id: r.id,
+      rating: r.rating,
+      text: r.text,
+      username: r.username,
+      fullname: (u && u.fullname) || r.username,
+      createdAt: r.createdAt
+    };
+  });
+  const avg = items.length ? items.reduce((s, r) => s + r.rating, 0) / items.length : 0;
+  res.json({ items, avg: Math.round(avg * 10) / 10, count: items.length });
+});
+
+app.post('/api/works/:id/reviews', requireAuth, requireNotMuted, rateLimit('review', 20, 60 * 60 * 1000), async (req, res) => {
+  const found = findWork(req.params.id);
+  if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });
+  const { work, owner } = found;
+  const me = req.session.username;
+  if (owner === me) return res.status(400).json({ error: "O'z asaringizga sharh yoza olmaysiz", code: 'cannotReviewOwn' });
+
+  const hasCompletedOrder = db.orders.some(o => orderHasCompletedItem(o, me, work.id));
+  if (!hasCompletedOrder) {
+    return res.status(403).json({ error: 'Faqat xarid yakunlangandan so\'ng sharh qoldirish mumkin', code: 'purchaseRequired' });
+  }
+
+  if (!Array.isArray(work.reviews)) work.reviews = [];
+  if (work.reviews.some(r => r.username === me)) {
+    return res.status(409).json({ error: 'Siz bu asarga allaqachon sharh qoldirgansiz', code: 'reviewAlreadyExists' });
+  }
+
+  const rating = Math.round(Number((req.body && req.body.rating) || 0));
+  if (!(rating >= 1 && rating <= 5)) {
+    return res.status(400).json({ error: "Baho 1 dan 5 gacha bo'lishi kerak", code: 'invalidRating' });
+  }
+  const text = String((req.body && req.body.text) || '').trim().slice(0, 500);
+
+  const review = {
+    id: 'rv' + Date.now() + crypto.randomBytes(4).toString('hex'),
+    username: me,
+    rating,
+    text,
+    createdAt: new Date().toISOString()
+  };
+  work.reviews.push(review);
+  addNotification(owner, { type: 'review', from: me, workId: work.id, workTitle: work.title, rating });
+  await saveDB();
+  res.json({ review });
+});
+
 app.get('/api/works/:id/comments', (req, res) => {
   const found = findWork(req.params.id);
   if (!found) return res.status(404).json({ error: 'Asar topilmadi', code: 'workNotFound' });

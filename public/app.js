@@ -13,6 +13,17 @@
           "auth.tabLogin": "Kirish", "auth.tabRegister": "Ro'yxatdan o'tish",
           "auth.loginUsername": "Foydalanuvchi nomi", "auth.loginUsernamePh": "masalan: dilnoza_art",
           "auth.loginPassword": "Parol", "auth.loginBtn": "Kirish",
+          "auth.forgotPassword": "Parolni unutdingizmi?",
+          "auth.forgotPassDesc": "Ro'yxatdan o'tgan email manzilingizni kiriting — parolni tiklash havolasini yuboramiz.",
+          "auth.email": "Email",
+          "auth.forgotPassSent": "Agar bu email ro'yxatdan o'tgan bo'lsa, tiklash havolasi yuborildi.",
+          "auth.forgotPassSubmit": "Havola yuborish",
+          "auth.forgotPassNotConfigured": "Parolni tiklash hozircha sozlanmagan. Administratorga murojaat qiling.",
+          "auth.resetPassword": "Yangi parol o'rnatish",
+          "auth.newPassword": "Yangi parol",
+          "auth.resetPassSubmit": "Parolni saqlash",
+          "auth.resetPassSuccess": "Parolingiz yangilandi! Endi tizimga kirishingiz mumkin.",
+          "auth.resetPassInvalid": "Tiklash havolasi yaroqsiz yoki eskirgan. Qaytadan so'rov yuboring.",
           "common.serverError": "Server xatoligi",
           "auth.loginErrorDefault": "Foydalanuvchi nomi yoki parol noto'g'ri.",
           "auth.regFullname": "To'liq ism", "auth.regFullnamePh": "Ism Familiya",
@@ -56,6 +67,7 @@
           "notif.orderReceived": "{name} sizdan {count} ta asar buyurtma qildi.", "notif.orderPlaced": "Buyurtmangiz muvaffaqiyatli qabul qilindi.",
           "profile.empty.desc": "Birinchi asaringizni yuklab, koleksiyangizni boshlang.",
           "feed.likeAria": "Layk", "feed.commentAria": "Komentlar", "feed.viewsAria": "Ko'rishlar soni",
+          "trusted.badge": "Ishonchli sotuvchi", "wishlist.aria": "Xohishlar ro'yxatiga qo'shish",
           "feed.contactAria": "Sotuvchi bilan bog'lanish", "feed.contactLabel": "Bog'lanish",
           "feed.sale": "Sotuvda", "feed.expo": "Ko'rgazma",
           "profile.stat.total": "Jami", "profile.stat.sale": "Sotuvda", "profile.stat.expo": "Ko'rgazmada",
@@ -96,6 +108,10 @@
           "err.userBusy": "Foydalanuvchi hozir band",
           "err.usernameInvalid": "Foydalanuvchi nomi 3-32 belgi, faqat lotin harflari/raqam/pastki chiziq bo'lishi kerak",
           "err.loginInvalid": "Foydalanuvchi nomi yoki parol noto'g'ri",
+          "err.emailNotConfigured": "Parolni tiklash hozircha sozlanmagan. Administratorga murojaat qiling.",
+          "err.passwordTooShort": "Parol kamida 6 belgidan iborat bo'lishi kerak",
+          "err.invalidResetToken": "Tiklash havolasi yaroqsiz yoki eskirgan",
+          "err.resetTokenExpired": "Tiklash havolasining muddati tugagan",
           "err.tooManyAttempts": "Juda ko'p urinish qilindi, birozdan so'ng qayta urinib ko'ring",
           "err.unknownMessageType": "Noma'lum xabar turi",
           "err.invalidData": "Noto'g'ri ma'lumot",
@@ -186,6 +202,8 @@
           "upload.stockLabel": "Mavjudligi", "upload.stock.fixed": "Belgilangan miqdor", "upload.stock.order": "Buyurtmaga ishlanadi", "upload.stock.qtyPh": "Nechta dona bor?",
           "stock.order": "Buyurtmaga ishlanadi", "stock.out": "Tugadi", "stock.left": "{n} dona qoldi",
           "upload.descLabel": "Tavsif", "upload.descPh": "Asar haqida qisqacha ma'lumot...",
+          "upload.tagsLabel": "Teglar", "upload.tagsPh": "keramika, sovg'a, devor bezagi",
+          "upload.tagsHint": "Vergul bilan ajrating — teglar odamlarga asaringizni topishga yordam beradi",
           "upload.save": "Saqlash", "upload.removeAria": "O'chirish",
                     "upload.errNoImage": "Iltimos, kamida bitta rasm tanlang.",
           "upload.errVideoTooLong": "Video 10 soniyadan uzun bo'lmasligi kerak.",
@@ -196,6 +214,13 @@
           "lightbox.delete": "O'chirish", "lightbox.noDesc": "Tavsif kiritilmagan.",
           "lightbox.workTagFallback": "Asar",
           "comments.title": "Komentlar", "comments.ph": "Koment yozing...", "comments.send": "Yuborish",
+          "reviews.title": "Sharhlar", "reviews.empty": "Hali sharhlar yo'q.", "reviews.ph": "Sharhingizni yozing (ixtiyoriy)...",
+          "orders.btn": "📦 Buyurtmalarim", "orders.title": "Buyurtmalarim", "orders.asBuyer": "Xarid qilganlarim", "orders.asSeller": "Sotganlarim", "orders.empty": "Hozircha buyurtmalar yo'q.",
+          "order.status.placed": "Berildi", "order.status.confirmed": "Tasdiqlandi", "order.status.shipped": "Jo'natildi", "order.status.completed": "Yakunlandi", "order.status.cancelled": "Bekor qilindi",
+          "order.tracking": "Kuzatuv raqami", "order.trackingPh": "Kuzatuv raqami", "order.update": "Yangilash",
+          "wishlist.btn": "🤍 Xohishlar", "wishlist.title": "Xohishlar ro'yxati", "wishlist.empty": "Xohishlar ro'yxati bo'sh.", "wishlist.remove": "Olib tashlash",
+          "sellerStats.btn": "📊 Statistika", "sellerStats.title": "Statistika", "sellerStats.works": "Asarlar", "sellerStats.views": "Ko'rishlar", "sellerStats.likes": "Layklar", "sellerStats.completed": "Yakunlangan", "sellerStats.pending": "Kutilmoqda", "sellerStats.revenue": "Daromad", "sellerStats.topWorks": "Eng ko'p ko'rilganlar",
+          "collections.btn": "🗂️ To'plamlar", "collections.title": "To'plamlar", "collections.namePh": "To'plam nomi...", "collections.create": "Yaratish", "collections.empty": "Hali to'plamlar yo'q.", "collections.itemsCount": "ta asar",
           "comments.empty": "Hali komentlar yo'q. Birinchi bo'lib yozing!",
           "comments.loading": "Yuklanmoqda...", "comments.loadFail": "Komentlarni yuklab bo'lmadi.",
           "comments.delete": "O'chirish",
@@ -342,6 +367,17 @@
           "auth.tabLogin": "Log in", "auth.tabRegister": "Sign up",
           "auth.loginUsername": "Username", "auth.loginUsernamePh": "e.g. dilnoza_art",
           "auth.loginPassword": "Password", "auth.loginBtn": "Log in",
+          "auth.forgotPassword": "Forgot password?",
+          "auth.forgotPassDesc": "Enter the email you registered with — we'll send a reset link.",
+          "auth.email": "Email",
+          "auth.forgotPassSent": "If that email is registered, a reset link has been sent.",
+          "auth.forgotPassSubmit": "Send reset link",
+          "auth.forgotPassNotConfigured": "Password reset isn't configured yet. Please contact the administrator.",
+          "auth.resetPassword": "Set new password",
+          "auth.newPassword": "New password",
+          "auth.resetPassSubmit": "Save password",
+          "auth.resetPassSuccess": "Your password has been updated! You can log in now.",
+          "auth.resetPassInvalid": "This reset link is invalid or expired. Please request a new one.",
           "common.serverError": "Server error",
           "auth.loginErrorDefault": "Incorrect username or password.",
           "auth.regFullname": "Full name", "auth.regFullnamePh": "First Last",
@@ -380,6 +416,7 @@
           "notif.orderReceived": "{name} ordered {count} of your works.", "notif.orderPlaced": "Your order was placed successfully.",
           "profile.empty.desc": "Upload your first piece to start your collection.",
           "feed.likeAria": "Like", "feed.commentAria": "Comments", "feed.viewsAria": "View count",
+          "trusted.badge": "Trusted seller", "wishlist.aria": "Add to wishlist",
           "feed.contactAria": "Contact the seller", "feed.contactLabel": "Contact",
           "feed.sale": "For sale", "feed.expo": "On display",
           "profile.stat.total": "Total", "profile.stat.sale": "For sale", "profile.stat.expo": "On display",
@@ -420,6 +457,10 @@
           "err.userBusy": "This user is currently busy",
           "err.usernameInvalid": "Username must be 3-32 characters, Latin letters/numbers/underscore only",
           "err.loginInvalid": "Incorrect username or password",
+          "err.emailNotConfigured": "Password reset isn't configured yet. Please contact the administrator.",
+          "err.passwordTooShort": "Password must be at least 6 characters",
+          "err.invalidResetToken": "This reset link is invalid or expired",
+          "err.resetTokenExpired": "This reset link has expired",
           "err.tooManyAttempts": "Too many attempts, please try again shortly",
           "err.unknownMessageType": "Unknown message type",
           "err.invalidData": "Invalid data",
@@ -515,6 +556,8 @@
           "upload.stockLabel": "Availability", "upload.stock.fixed": "Fixed quantity", "upload.stock.order": "Made to order", "upload.stock.qtyPh": "How many are available?",
           "stock.order": "Made to order", "stock.out": "Sold out", "stock.left": "{n} left",
           "upload.descLabel": "Description", "upload.descPh": "A short description of the piece...",
+          "upload.tagsLabel": "Tags", "upload.tagsPh": "ceramics, gift, wall art",
+          "upload.tagsHint": "Separate with commas — tags help people find your work",
           "upload.save": "Save", "upload.removeAria": "Remove",
                     "upload.errNoImage": "Please choose at least one photo.",
           "upload.errVideoTooLong": "Video must be 10 seconds or shorter.",
@@ -525,6 +568,13 @@
           "lightbox.delete": "Delete", "lightbox.noDesc": "No description provided.",
           "lightbox.workTagFallback": "Work",
           "comments.title": "Comments", "comments.ph": "Write a comment...", "comments.send": "Send",
+          "reviews.title": "Reviews", "reviews.empty": "No reviews yet.", "reviews.ph": "Write a review (optional)...",
+          "orders.btn": "📦 My Orders", "orders.title": "My Orders", "orders.asBuyer": "Purchases", "orders.asSeller": "Sales", "orders.empty": "No orders yet.",
+          "order.status.placed": "Placed", "order.status.confirmed": "Confirmed", "order.status.shipped": "Shipped", "order.status.completed": "Completed", "order.status.cancelled": "Cancelled",
+          "order.tracking": "Tracking number", "order.trackingPh": "Tracking number", "order.update": "Update",
+          "wishlist.btn": "🤍 Wishlist", "wishlist.title": "Wishlist", "wishlist.empty": "Your wishlist is empty.", "wishlist.remove": "Remove",
+          "sellerStats.btn": "📊 Stats", "sellerStats.title": "Stats", "sellerStats.works": "Works", "sellerStats.views": "Views", "sellerStats.likes": "Likes", "sellerStats.completed": "Completed", "sellerStats.pending": "Pending", "sellerStats.revenue": "Revenue", "sellerStats.topWorks": "Top performing",
+          "collections.btn": "🗂️ Collections", "collections.title": "Collections", "collections.namePh": "Collection name...", "collections.create": "Create", "collections.empty": "No collections yet.", "collections.itemsCount": "items",
           "comments.empty": "No comments yet. Be the first to write one!",
           "comments.loading": "Loading...", "comments.loadFail": "Couldn't load comments.",
           "comments.delete": "Delete",
@@ -671,6 +721,17 @@
           "auth.tabLogin": "登录", "auth.tabRegister": "注册",
           "auth.loginUsername": "用户名", "auth.loginUsernamePh": "例如：dilnoza_art",
           "auth.loginPassword": "密码", "auth.loginBtn": "登录",
+          "auth.forgotPassword": "忘记密码？",
+          "auth.forgotPassDesc": "输入您注册时使用的邮箱 — 我们会发送重置链接。",
+          "auth.email": "邮箱",
+          "auth.forgotPassSent": "如果该邮箱已注册，重置链接已发送。",
+          "auth.forgotPassSubmit": "发送重置链接",
+          "auth.forgotPassNotConfigured": "密码重置功能尚未配置，请联系管理员。",
+          "auth.resetPassword": "设置新密码",
+          "auth.newPassword": "新密码",
+          "auth.resetPassSubmit": "保存密码",
+          "auth.resetPassSuccess": "密码已更新！您现在可以登录了。",
+          "auth.resetPassInvalid": "重置链接无效或已过期，请重新申请。",
           "common.serverError": "服务器错误",
           "auth.loginErrorDefault": "用户名或密码不正确。",
           "auth.regFullname": "全名", "auth.regFullnamePh": "姓名",
@@ -709,6 +770,7 @@
           "notif.orderReceived": "{name} 订购了您的 {count} 件作品。", "notif.orderPlaced": "您的订单已成功提交。",
           "profile.empty.desc": "上传您的第一件作品，开始您的收藏吧。",
           "feed.likeAria": "点赞", "feed.commentAria": "评论", "feed.viewsAria": "浏览次数",
+          "trusted.badge": "可信卖家", "wishlist.aria": "加入心愿单",
           "feed.contactAria": "联系卖家", "feed.contactLabel": "联系",
           "feed.sale": "出售中", "feed.expo": "展览中",
           "profile.stat.total": "总数", "profile.stat.sale": "出售中", "profile.stat.expo": "展览中",
@@ -749,6 +811,10 @@
           "err.userBusy": "该用户当前忙线中",
           "err.usernameInvalid": "用户名须为3-32个字符，仅限拉丁字母、数字和下划线",
           "err.loginInvalid": "用户名或密码错误",
+          "err.emailNotConfigured": "密码重置功能尚未配置，请联系管理员。",
+          "err.passwordTooShort": "密码至少需要6个字符",
+          "err.invalidResetToken": "重置链接无效或已过期",
+          "err.resetTokenExpired": "重置链接已过期",
           "err.tooManyAttempts": "尝试次数过多，请稍后再试",
           "err.unknownMessageType": "未知的消息类型",
           "err.invalidData": "数据无效",
@@ -844,6 +910,8 @@
           "upload.stockLabel": "库存情况", "upload.stock.fixed": "固定数量", "upload.stock.order": "按需定制", "upload.stock.qtyPh": "有多少件？",
           "stock.order": "按需定制", "stock.out": "已售罄", "stock.left": "仅剩 {n} 件",
           "upload.descLabel": "描述", "upload.descPh": "简单描述一下这件作品...",
+          "upload.tagsLabel": "标签", "upload.tagsPh": "陶瓷, 礼物, 墙饰",
+          "upload.tagsHint": "用逗号分隔 — 标签能帮助别人找到您的作品",
           "upload.save": "保存", "upload.removeAria": "移除",
                     "upload.errNoImage": "请至少选择一张照片。",
           "upload.errVideoTooLong": "视频时长不能超过10秒。",
@@ -854,6 +922,13 @@
           "lightbox.delete": "删除", "lightbox.noDesc": "未提供描述。",
           "lightbox.workTagFallback": "作品",
           "comments.title": "评论", "comments.ph": "写评论...", "comments.send": "发送",
+          "reviews.title": "评价", "reviews.empty": "暂无评价。", "reviews.ph": "写下您的评价（可选）...",
+          "orders.btn": "📦 我的订单", "orders.title": "我的订单", "orders.asBuyer": "我购买的", "orders.asSeller": "我卖出的", "orders.empty": "暂无订单。",
+          "order.status.placed": "已下单", "order.status.confirmed": "已确认", "order.status.shipped": "已发货", "order.status.completed": "已完成", "order.status.cancelled": "已取消",
+          "order.tracking": "追踪号", "order.trackingPh": "追踪号", "order.update": "更新",
+          "wishlist.btn": "🤍 心愿单", "wishlist.title": "心愿单", "wishlist.empty": "您的心愿单是空的。", "wishlist.remove": "移除",
+          "sellerStats.btn": "📊 统计", "sellerStats.title": "统计", "sellerStats.works": "作品数", "sellerStats.views": "浏览量", "sellerStats.likes": "点赞数", "sellerStats.completed": "已完成", "sellerStats.pending": "待处理", "sellerStats.revenue": "收入", "sellerStats.topWorks": "表现最佳",
+          "collections.btn": "🗂️ 收藏集", "collections.title": "收藏集", "collections.namePh": "收藏集名称...", "collections.create": "创建", "collections.empty": "暂无收藏集。", "collections.itemsCount": "件作品",
           "comments.empty": "还没有评论，快来抢沙发吧！",
           "comments.loading": "加载中...", "comments.loadFail": "评论加载失败。",
           "comments.delete": "删除",
@@ -1014,6 +1089,17 @@
           "auth.tabLogin": "लॉग इन करें", "auth.tabRegister": "साइन अप करें",
           "auth.loginUsername": "उपयोगकर्ता नाम", "auth.loginUsernamePh": "उदाहरण: dilnoza_art",
           "auth.loginPassword": "पासवर्ड", "auth.loginBtn": "लॉग इन करें",
+          "auth.forgotPassword": "पासवर्ड भूल गए?",
+          "auth.forgotPassDesc": "अपना पंजीकृत ईमेल दर्ज करें — हम रीसेट लिंक भेजेंगे।",
+          "auth.email": "ईमेल",
+          "auth.forgotPassSent": "यदि यह ईमेल पंजीकृत है, तो रीसेट लिंक भेज दिया गया है।",
+          "auth.forgotPassSubmit": "रीसेट लिंक भेजें",
+          "auth.forgotPassNotConfigured": "पासवर्ड रीसेट अभी कॉन्फ़िगर नहीं किया गया है। कृपया व्यवस्थापक से संपर्क करें।",
+          "auth.resetPassword": "नया पासवर्ड सेट करें",
+          "auth.newPassword": "नया पासवर्ड",
+          "auth.resetPassSubmit": "पासवर्ड सहेजें",
+          "auth.resetPassSuccess": "आपका पासवर्ड अपडेट हो गया है! अब आप लॉग इन कर सकते हैं।",
+          "auth.resetPassInvalid": "यह रीसेट लिंक अमान्य या समाप्त हो गया है। कृपया फिर से अनुरोध करें।",
           "common.serverError": "सर्वर त्रुटि",
           "auth.loginErrorDefault": "उपयोगकर्ता नाम या पासवर्ड गलत है।",
           "auth.regFullname": "पूरा नाम", "auth.regFullnamePh": "नाम उपनाम",
@@ -1052,6 +1138,7 @@
           "notif.orderReceived": "{name} ने आपकी {count} कृतियों का ऑर्डर दिया।", "notif.orderPlaced": "आपका ऑर्डर सफलतापूर्वक दे दिया गया।",
           "profile.empty.desc": "अपनी पहली कृति अपलोड करके अपना संग्रह शुरू करें।",
           "feed.likeAria": "लाइक", "feed.commentAria": "टिप्पणियाँ", "feed.viewsAria": "व्यूज़ की संख्या",
+          "trusted.badge": "विश्वसनीय विक्रेता", "wishlist.aria": "इच्छा सूची में जोड़ें",
           "feed.contactAria": "विक्रेता से संपर्क करें", "feed.contactLabel": "संपर्क करें",
           "feed.sale": "बिक्री के लिए", "feed.expo": "प्रदर्शन में",
           "profile.stat.total": "कुल", "profile.stat.sale": "बिक्री के लिए", "profile.stat.expo": "प्रदर्शन में",
@@ -1092,6 +1179,10 @@
           "err.userBusy": "यह उपयोगकर्ता अभी व्यस्त है",
           "err.usernameInvalid": "उपयोगकर्ता नाम 3-32 अक्षर का होना चाहिए, केवल लैटिन अक्षर/अंक/अंडरस्कोर की अनुमति है",
           "err.loginInvalid": "उपयोगकर्ता नाम या पासवर्ड गलत है",
+          "err.emailNotConfigured": "पासवर्ड रीसेट अभी कॉन्फ़िगर नहीं किया गया है। कृपया व्यवस्थापक से संपर्क करें।",
+          "err.passwordTooShort": "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए",
+          "err.invalidResetToken": "यह रीसेट लिंक अमान्य या समाप्त हो गया है",
+          "err.resetTokenExpired": "इस रीसेट लिंक की समय सीमा समाप्त हो गई है",
           "err.tooManyAttempts": "बहुत अधिक प्रयास किए गए, कृपया थोड़ी देर बाद पुनः प्रयास करें",
           "err.unknownMessageType": "अज्ञात संदेश प्रकार",
           "err.invalidData": "अमान्य डेटा",
@@ -1187,6 +1278,8 @@
           "upload.stockLabel": "उपलब्धता", "upload.stock.fixed": "निश्चित मात्रा", "upload.stock.order": "ऑर्डर पर बनाया जाता है", "upload.stock.qtyPh": "कितनी नग उपलब्ध हैं?",
           "stock.order": "ऑर्डर पर बनाया जाता है", "stock.out": "बिक चुका है", "stock.left": "केवल {n} बचे हैं",
           "upload.descLabel": "विवरण", "upload.descPh": "कृति के बारे में संक्षिप्त जानकारी...",
+          "upload.tagsLabel": "टैग", "upload.tagsPh": "मिट्टी के बर्तन, उपहार, दीवार सजावट",
+          "upload.tagsHint": "कॉमा से अलग करें — टैग लोगों को आपकी कृति खोजने में मदद करते हैं",
           "upload.save": "सहेजें", "upload.removeAria": "हटाएं",
                     "upload.errNoImage": "कृपया कम से कम एक फ़ोटो चुनें।",
           "upload.errVideoTooLong": "वीडियो 10 सेकंड से लंबा नहीं होना चाहिए।",
@@ -1197,6 +1290,13 @@
           "lightbox.delete": "हटाएं", "lightbox.noDesc": "कोई विवरण नहीं दिया गया।",
           "lightbox.workTagFallback": "कृति",
           "comments.title": "टिप्पणियाँ", "comments.ph": "टिप्पणी लिखें...", "comments.send": "भेजें",
+          "reviews.title": "समीक्षाएं", "reviews.empty": "अभी तक कोई समीक्षा नहीं।", "reviews.ph": "अपनी समीक्षा लिखें (वैकल्पिक)...",
+          "orders.btn": "📦 मेरे ऑर्डर", "orders.title": "मेरे ऑर्डर", "orders.asBuyer": "मेरी खरीदारी", "orders.asSeller": "मेरी बिक्री", "orders.empty": "अभी तक कोई ऑर्डर नहीं।",
+          "order.status.placed": "दिया गया", "order.status.confirmed": "पुष्टि हुई", "order.status.shipped": "भेज दिया गया", "order.status.completed": "पूर्ण", "order.status.cancelled": "रद्द",
+          "order.tracking": "ट्रैकिंग नंबर", "order.trackingPh": "ट्रैकिंग नंबर", "order.update": "अपडेट करें",
+          "wishlist.btn": "🤍 इच्छा सूची", "wishlist.title": "इच्छा सूची", "wishlist.empty": "आपकी इच्छा सूची खाली है।", "wishlist.remove": "हटाएं",
+          "sellerStats.btn": "📊 आंकड़े", "sellerStats.title": "आंकड़े", "sellerStats.works": "कृतियाँ", "sellerStats.views": "व्यूज़", "sellerStats.likes": "लाइक्स", "sellerStats.completed": "पूर्ण", "sellerStats.pending": "लंबित", "sellerStats.revenue": "आय", "sellerStats.topWorks": "सबसे अच्छा प्रदर्शन",
+          "collections.btn": "🗂️ संग्रह", "collections.title": "संग्रह", "collections.namePh": "संग्रह का नाम...", "collections.create": "बनाएं", "collections.empty": "अभी तक कोई संग्रह नहीं।", "collections.itemsCount": "कृतियाँ",
           "comments.empty": "अभी तक कोई टिप्पणी नहीं। पहले आप लिखें!",
           "comments.loading": "लोड हो रहा है...", "comments.loadFail": "टिप्पणियाँ लोड नहीं हो सकीं।",
           "comments.delete": "हटाएं",
@@ -1357,6 +1457,17 @@
           "auth.tabLogin": "Iniciar sesión", "auth.tabRegister": "Registrarse",
           "auth.loginUsername": "Nombre de usuario", "auth.loginUsernamePh": "p. ej.: dilnoza_art",
           "auth.loginPassword": "Contraseña", "auth.loginBtn": "Iniciar sesión",
+          "auth.forgotPassword": "¿Olvidaste tu contraseña?",
+          "auth.forgotPassDesc": "Ingresa el email con el que te registraste — te enviaremos un enlace para restablecerla.",
+          "auth.email": "Email",
+          "auth.forgotPassSent": "Si ese email está registrado, se envió un enlace de restablecimiento.",
+          "auth.forgotPassSubmit": "Enviar enlace",
+          "auth.forgotPassNotConfigured": "El restablecimiento de contraseña aún no está configurado. Contacta al administrador.",
+          "auth.resetPassword": "Establecer nueva contraseña",
+          "auth.newPassword": "Nueva contraseña",
+          "auth.resetPassSubmit": "Guardar contraseña",
+          "auth.resetPassSuccess": "¡Tu contraseña se actualizó! Ya puedes iniciar sesión.",
+          "auth.resetPassInvalid": "Este enlace es inválido o expiró. Solicita uno nuevo.",
           "common.serverError": "Error del servidor",
           "auth.loginErrorDefault": "Nombre de usuario o contraseña incorrectos.",
           "auth.regFullname": "Nombre completo", "auth.regFullnamePh": "Nombre Apellido",
@@ -1395,6 +1506,7 @@
           "notif.orderReceived": "{name} pidió {count} de tus obras.", "notif.orderPlaced": "Tu pedido se realizó con éxito.",
           "profile.empty.desc": "Sube tu primera obra y empieza tu colección.",
           "feed.likeAria": "Me gusta", "feed.commentAria": "Comentarios", "feed.viewsAria": "Número de vistas",
+          "trusted.badge": "Vendedor de confianza", "wishlist.aria": "Añadir a la lista de deseos",
           "feed.contactAria": "Contactar al vendedor", "feed.contactLabel": "Contactar",
           "feed.sale": "En venta", "feed.expo": "En exhibición",
           "profile.stat.total": "Total", "profile.stat.sale": "En venta", "profile.stat.expo": "En exhibición",
@@ -1435,6 +1547,10 @@
           "err.userBusy": "Este usuario está ocupado en este momento",
           "err.usernameInvalid": "El nombre de usuario debe tener 3-32 caracteres: solo letras latinas, números y guion bajo",
           "err.loginInvalid": "Nombre de usuario o contraseña incorrectos",
+          "err.emailNotConfigured": "El restablecimiento de contraseña aún no está configurado. Contacta al administrador.",
+          "err.passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
+          "err.invalidResetToken": "Este enlace de restablecimiento es inválido o expiró",
+          "err.resetTokenExpired": "Este enlace de restablecimiento ha expirado",
           "err.tooManyAttempts": "Demasiados intentos, inténtalo de nuevo en un momento",
           "err.unknownMessageType": "Tipo de mensaje desconocido",
           "err.invalidData": "Datos no válidos",
@@ -1530,6 +1646,8 @@
           "upload.stockLabel": "Disponibilidad", "upload.stock.fixed": "Cantidad fija", "upload.stock.order": "Se hace por encargo", "upload.stock.qtyPh": "¿Cuántas unidades hay?",
           "stock.order": "Se hace por encargo", "stock.out": "Agotado", "stock.left": "Quedan {n}",
           "upload.descLabel": "Descripción", "upload.descPh": "Una breve descripción de la obra...",
+          "upload.tagsLabel": "Etiquetas", "upload.tagsPh": "cerámica, regalo, decoración",
+          "upload.tagsHint": "Separa con comas — las etiquetas ayudan a que encuentren tu obra",
           "upload.save": "Guardar", "upload.removeAria": "Quitar",
                     "upload.errNoImage": "Por favor elige al menos una foto.",
           "upload.errVideoTooLong": "El video no debe durar más de 10 segundos.",
@@ -1540,6 +1658,13 @@
           "lightbox.delete": "Eliminar", "lightbox.noDesc": "Sin descripción.",
           "lightbox.workTagFallback": "Obra",
           "comments.title": "Comentarios", "comments.ph": "Escribe un comentario...", "comments.send": "Enviar",
+          "reviews.title": "Reseñas", "reviews.empty": "Aún no hay reseñas.", "reviews.ph": "Escribe tu reseña (opcional)...",
+          "orders.btn": "📦 Mis pedidos", "orders.title": "Mis pedidos", "orders.asBuyer": "Mis compras", "orders.asSeller": "Mis ventas", "orders.empty": "Aún no hay pedidos.",
+          "order.status.placed": "Realizado", "order.status.confirmed": "Confirmado", "order.status.shipped": "Enviado", "order.status.completed": "Completado", "order.status.cancelled": "Cancelado",
+          "order.tracking": "Número de seguimiento", "order.trackingPh": "Número de seguimiento", "order.update": "Actualizar",
+          "wishlist.btn": "🤍 Lista de deseos", "wishlist.title": "Lista de deseos", "wishlist.empty": "Tu lista de deseos está vacía.", "wishlist.remove": "Quitar",
+          "sellerStats.btn": "📊 Estadísticas", "sellerStats.title": "Estadísticas", "sellerStats.works": "Obras", "sellerStats.views": "Vistas", "sellerStats.likes": "Me gusta", "sellerStats.completed": "Completados", "sellerStats.pending": "Pendientes", "sellerStats.revenue": "Ingresos", "sellerStats.topWorks": "Mejor rendimiento",
+          "collections.btn": "🗂️ Colecciones", "collections.title": "Colecciones", "collections.namePh": "Nombre de la colección...", "collections.create": "Crear", "collections.empty": "Aún no hay colecciones.", "collections.itemsCount": "obras",
           "comments.empty": "Aún no hay comentarios. ¡Sé el primero en escribir uno!",
           "comments.loading": "Cargando...", "comments.loadFail": "No se pudieron cargar los comentarios.",
           "comments.delete": "Eliminar",
@@ -1700,6 +1825,17 @@
           "auth.tabLogin": "تسجيل الدخول", "auth.tabRegister": "إنشاء حساب",
           "auth.loginUsername": "اسم المستخدم", "auth.loginUsernamePh": "مثال: dilnoza_art",
           "auth.loginPassword": "كلمة المرور", "auth.loginBtn": "تسجيل الدخول",
+          "auth.forgotPassword": "نسيت كلمة المرور؟",
+          "auth.forgotPassDesc": "أدخل البريد الإلكتروني الذي سجّلت به — سنرسل رابط إعادة التعيين.",
+          "auth.email": "البريد الإلكتروني",
+          "auth.forgotPassSent": "إذا كان هذا البريد مسجلاً، فقد تم إرسال رابط إعادة التعيين.",
+          "auth.forgotPassSubmit": "إرسال الرابط",
+          "auth.forgotPassNotConfigured": "إعادة تعيين كلمة المرور غير مُهيّأة بعد. يرجى التواصل مع المسؤول.",
+          "auth.resetPassword": "تعيين كلمة مرور جديدة",
+          "auth.newPassword": "كلمة المرور الجديدة",
+          "auth.resetPassSubmit": "حفظ كلمة المرور",
+          "auth.resetPassSuccess": "تم تحديث كلمة المرور! يمكنك الآن تسجيل الدخول.",
+          "auth.resetPassInvalid": "رابط إعادة التعيين غير صالح أو منتهي الصلاحية. يرجى طلب رابط جديد.",
           "common.serverError": "خطأ في الخادم",
           "auth.loginErrorDefault": "اسم المستخدم أو كلمة المرور غير صحيحة.",
           "auth.regFullname": "الاسم الكامل", "auth.regFullnamePh": "الاسم واللقب",
@@ -1738,6 +1874,7 @@
           "notif.orderReceived": "طلب {name} {count} من أعمالك.", "notif.orderPlaced": "تم تقديم طلبك بنجاح.",
           "profile.empty.desc": "ارفع أول عمل لك لتبدأ مجموعتك.",
           "feed.likeAria": "إعجاب", "feed.commentAria": "التعليقات", "feed.viewsAria": "عدد المشاهدات",
+          "trusted.badge": "بائع موثوق", "wishlist.aria": "أضف إلى قائمة الرغبات",
           "feed.contactAria": "التواصل مع البائع", "feed.contactLabel": "تواصل",
           "feed.sale": "للبيع", "feed.expo": "للعرض",
           "profile.stat.total": "الإجمالي", "profile.stat.sale": "للبيع", "profile.stat.expo": "للعرض",
@@ -1778,6 +1915,10 @@
           "err.userBusy": "هذا المستخدم مشغول حاليًا",
           "err.usernameInvalid": "يجب أن يتكون اسم المستخدم من 3-32 حرفًا، وأحرف لاتينية/أرقام/شرطة سفلية فقط",
           "err.loginInvalid": "اسم المستخدم أو كلمة المرور غير صحيحة",
+          "err.emailNotConfigured": "إعادة تعيين كلمة المرور غير مُهيّأة بعد. يرجى التواصل مع المسؤول.",
+          "err.passwordTooShort": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+          "err.invalidResetToken": "رابط إعادة التعيين غير صالح أو منتهي الصلاحية",
+          "err.resetTokenExpired": "انتهت صلاحية رابط إعادة التعيين",
           "err.tooManyAttempts": "محاولات كثيرة جدًا، يرجى المحاولة مرة أخرى بعد قليل",
           "err.unknownMessageType": "نوع رسالة غير معروف",
           "err.invalidData": "بيانات غير صالحة",
@@ -1873,6 +2014,8 @@
           "upload.stockLabel": "التوفر", "upload.stock.fixed": "كمية محددة", "upload.stock.order": "يُصنع حسب الطلب", "upload.stock.qtyPh": "كم عدد القطع المتوفرة؟",
           "stock.order": "يُصنع حسب الطلب", "stock.out": "نفدت الكمية", "stock.left": "تبقّى {n} فقط",
           "upload.descLabel": "الوصف", "upload.descPh": "وصف مختصر للعمل...",
+          "upload.tagsLabel": "الوسوم", "upload.tagsPh": "خزف، هدية، ديكور حائط",
+          "upload.tagsHint": "افصل بفواصل — تساعد الوسوم الأشخاص في العثور على عملك",
           "upload.save": "حفظ", "upload.removeAria": "إزالة",
                     "upload.errNoImage": "الرجاء اختيار صورة واحدة على الأقل.",
           "upload.errVideoTooLong": "يجب ألا تتجاوز مدة الفيديو 10 ثوانٍ.",
@@ -1883,6 +2026,13 @@
           "lightbox.delete": "حذف", "lightbox.noDesc": "لا يوجد وصف.",
           "lightbox.workTagFallback": "عمل",
           "comments.title": "التعليقات", "comments.ph": "اكتب تعليقًا...", "comments.send": "إرسال",
+          "reviews.title": "التقييمات", "reviews.empty": "لا توجد تقييمات بعد.", "reviews.ph": "اكتب تقييمك (اختياري)...",
+          "orders.btn": "📦 طلباتي", "orders.title": "طلباتي", "orders.asBuyer": "مشترياتي", "orders.asSeller": "مبيعاتي", "orders.empty": "لا توجد طلبات بعد.",
+          "order.status.placed": "تم الطلب", "order.status.confirmed": "تم التأكيد", "order.status.shipped": "تم الشحن", "order.status.completed": "مكتمل", "order.status.cancelled": "ملغى",
+          "order.tracking": "رقم التتبع", "order.trackingPh": "رقم التتبع", "order.update": "تحديث",
+          "wishlist.btn": "🤍 قائمة الرغبات", "wishlist.title": "قائمة الرغبات", "wishlist.empty": "قائمة رغباتك فارغة.", "wishlist.remove": "إزالة",
+          "sellerStats.btn": "📊 الإحصائيات", "sellerStats.title": "الإحصائيات", "sellerStats.works": "الأعمال", "sellerStats.views": "المشاهدات", "sellerStats.likes": "الإعجابات", "sellerStats.completed": "مكتملة", "sellerStats.pending": "قيد الانتظار", "sellerStats.revenue": "الإيرادات", "sellerStats.topWorks": "الأفضل أداءً",
+          "collections.btn": "🗂️ المجموعات", "collections.title": "المجموعات", "collections.namePh": "اسم المجموعة...", "collections.create": "إنشاء", "collections.empty": "لا توجد مجموعات بعد.", "collections.itemsCount": "عمل",
           "comments.empty": "لا توجد تعليقات بعد. كن أول من يكتب!",
           "comments.loading": "جارٍ التحميل...", "comments.loadFail": "تعذّر تحميل التعليقات.",
           "comments.delete": "حذف",
@@ -2043,6 +2193,17 @@
           "auth.tabLogin": "Войти", "auth.tabRegister": "Регистрация",
           "auth.loginUsername": "Имя пользователя", "auth.loginUsernamePh": "например: dilnoza_art",
           "auth.loginPassword": "Пароль", "auth.loginBtn": "Войти",
+          "auth.forgotPassword": "Забыли пароль?",
+          "auth.forgotPassDesc": "Введите email, указанный при регистрации — мы отправим ссылку для сброса.",
+          "auth.email": "Email",
+          "auth.forgotPassSent": "Если этот email зарегистрирован, ссылка для сброса отправлена.",
+          "auth.forgotPassSubmit": "Отправить ссылку",
+          "auth.forgotPassNotConfigured": "Сброс пароля пока не настроен. Обратитесь к администратору.",
+          "auth.resetPassword": "Задать новый пароль",
+          "auth.newPassword": "Новый пароль",
+          "auth.resetPassSubmit": "Сохранить пароль",
+          "auth.resetPassSuccess": "Пароль обновлён! Теперь вы можете войти.",
+          "auth.resetPassInvalid": "Ссылка для сброса недействительна или истекла. Запросите новую.",
           "common.serverError": "Ошибка сервера",
           "auth.loginErrorDefault": "Неверное имя пользователя или пароль.",
           "auth.regFullname": "Полное имя", "auth.regFullnamePh": "Имя Фамилия",
@@ -2081,6 +2242,7 @@
           "notif.orderReceived": "{name} заказал(а) {count} ваших работ.", "notif.orderPlaced": "Ваш заказ успешно оформлен.",
           "profile.empty.desc": "Загрузите свою первую работу, чтобы начать коллекцию.",
           "feed.likeAria": "Нравится", "feed.commentAria": "Комментарии", "feed.viewsAria": "Количество просмотров",
+          "trusted.badge": "Проверенный продавец", "wishlist.aria": "Добавить в избранное",
           "feed.contactAria": "Связаться с продавцом", "feed.contactLabel": "Связаться",
           "feed.sale": "Продаётся", "feed.expo": "На выставке",
           "profile.stat.total": "Всего", "profile.stat.sale": "Продаётся", "profile.stat.expo": "На выставке",
@@ -2121,6 +2283,10 @@
           "err.userBusy": "Пользователь сейчас занят",
           "err.usernameInvalid": "Имя пользователя должно содержать 3-32 символа: только латинские буквы, цифры и подчёркивание",
           "err.loginInvalid": "Неверное имя пользователя или пароль",
+          "err.emailNotConfigured": "Сброс пароля пока не настроен. Обратитесь к администратору.",
+          "err.passwordTooShort": "Пароль должен содержать не менее 6 символов",
+          "err.invalidResetToken": "Ссылка для сброса недействительна или истекла",
+          "err.resetTokenExpired": "Срок действия ссылки для сброса истёк",
           "err.tooManyAttempts": "Слишком много попыток, повторите чуть позже",
           "err.unknownMessageType": "Неизвестный тип сообщения",
           "err.invalidData": "Неверные данные",
@@ -2216,6 +2382,8 @@
           "upload.stockLabel": "Наличие", "upload.stock.fixed": "Точное количество", "upload.stock.order": "Изготавливается на заказ", "upload.stock.qtyPh": "Сколько штук в наличии?",
           "stock.order": "Изготавливается на заказ", "stock.out": "Распродано", "stock.left": "Осталось {n}",
           "upload.descLabel": "Описание", "upload.descPh": "Краткое описание работы...",
+          "upload.tagsLabel": "Теги", "upload.tagsPh": "керамика, подарок, декор стен",
+          "upload.tagsHint": "Разделяйте запятыми — теги помогают людям найти вашу работу",
           "upload.save": "Сохранить", "upload.removeAria": "Удалить",
                     "upload.errNoImage": "Выберите хотя бы одно фото.",
           "upload.errVideoTooLong": "Видео не должно быть длиннее 10 секунд.",
@@ -2226,6 +2394,13 @@
           "lightbox.delete": "Удалить", "lightbox.noDesc": "Описание не указано.",
           "lightbox.workTagFallback": "Работа",
           "comments.title": "Комментарии", "comments.ph": "Написать комментарий...", "comments.send": "Отправить",
+          "reviews.title": "Отзывы", "reviews.empty": "Пока нет отзывов.", "reviews.ph": "Напишите отзыв (необязательно)...",
+          "orders.btn": "📦 Мои заказы", "orders.title": "Мои заказы", "orders.asBuyer": "Мои покупки", "orders.asSeller": "Мои продажи", "orders.empty": "Пока нет заказов.",
+          "order.status.placed": "Оформлен", "order.status.confirmed": "Подтверждён", "order.status.shipped": "Отправлен", "order.status.completed": "Завершён", "order.status.cancelled": "Отменён",
+          "order.tracking": "Номер отслеживания", "order.trackingPh": "Номер отслеживания", "order.update": "Обновить",
+          "wishlist.btn": "🤍 Избранное", "wishlist.title": "Избранное", "wishlist.empty": "Список избранного пуст.", "wishlist.remove": "Убрать",
+          "sellerStats.btn": "📊 Статистика", "sellerStats.title": "Статистика", "sellerStats.works": "Работы", "sellerStats.views": "Просмотры", "sellerStats.likes": "Лайки", "sellerStats.completed": "Завершено", "sellerStats.pending": "В ожидании", "sellerStats.revenue": "Доход", "sellerStats.topWorks": "Лучшие работы",
+          "collections.btn": "🗂️ Коллекции", "collections.title": "Коллекции", "collections.namePh": "Название коллекции...", "collections.create": "Создать", "collections.empty": "Пока нет коллекций.", "collections.itemsCount": "работ",
           "comments.empty": "Комментариев пока нет. Будьте первым!",
           "comments.loading": "Загрузка...", "comments.loadFail": "Не удалось загрузить комментарии.",
           "comments.delete": "Удалить",
@@ -2612,7 +2787,7 @@
       let feedOffset = 0;
       let feedHasMore = true;
       let feedLoading = false;
-      let feedQuery = { q: '', type: '', sort: 'new', following: false, minPrice: '', maxPrice: '' };
+      let feedQuery = { q: '', tag: '', type: '', sort: 'new', following: false, minPrice: '', maxPrice: '' };
       let currentTheme = { mode: 'tungi', custom: '#e2543f' };
       let pendingDeleteId = null;
       let uploadMediaItems = []; // { type: 'image'|'video', blob, previewUrl }
@@ -2644,6 +2819,18 @@
         document.getElementById('loadingScreen').classList.add('fade-out');
         bindAuthEvents();
         bindAppEvents();
+        maybeOpenResetPasswordLink();
+      }
+
+      /* Email orqali kelgan ?reset=TOKEN&u=username havolasini aniqlaydi va
+         yangi parol o'rnatish oynasini ochadi. */
+      function maybeOpenResetPasswordLink() {
+        const params = new URLSearchParams(location.search);
+        if (params.get('reset') && params.get('u')) {
+          $('#resetPassError').classList.remove('show');
+          $('#resetPassNew').value = '';
+          $('#resetPassModal').classList.remove('hidden');
+        }
       }
 
       function showBannedScreen(moderation) {
@@ -2655,6 +2842,68 @@
 
       /* ===================== AUTH ===================== */
       function bindAuthEvents() {
+        /* Parolni tiklash — email so'rov modali */
+        $('#forgotPassLink').addEventListener('click', () => {
+          $('#forgotPassError').classList.remove('show');
+          $('#forgotPassSuccess').classList.add('hidden');
+          $('#forgotPassForm').classList.remove('hidden');
+          $('#forgotPassEmail').value = '';
+          $('#forgotPassModal').classList.remove('hidden');
+        });
+        $('#closeForgotPassModal').addEventListener('click', () => $('#forgotPassModal').classList.add('hidden'));
+        $('#forgotPassModal').addEventListener('click', (e) => {
+          if (e.target.id === 'forgotPassModal') $('#forgotPassModal').classList.add('hidden');
+        });
+        $('#forgotPassForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const email = $('#forgotPassEmail').value.trim();
+          const errEl = $('#forgotPassError');
+          errEl.classList.remove('show');
+          const btn = $('#forgotPassSubmitBtn');
+          btn.disabled = true;
+          try {
+            await apiJSON('/api/forgot-password', 'POST', { email });
+            $('#forgotPassForm').classList.add('hidden');
+            $('#forgotPassSuccess').classList.remove('hidden');
+          } catch (err) {
+            errEl.textContent = err.message || t('auth.forgotPassNotConfigured');
+            errEl.classList.add('show');
+          } finally {
+            btn.disabled = false;
+          }
+        });
+
+        /* Yangi parol o'rnatish — email havolasidagi ?reset=TOKEN&u=username orqali ochiladi */
+        $('#closeResetPassModal').addEventListener('click', () => {
+          $('#resetPassModal').classList.add('hidden');
+          history.replaceState(null, '', location.pathname);
+        });
+        $('#resetPassForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const params = new URLSearchParams(location.search);
+          const token = params.get('reset');
+          const username = params.get('u');
+          const password = $('#resetPassNew').value;
+          const errEl = $('#resetPassError');
+          errEl.classList.remove('show');
+          const btn = $('#resetPassSubmitBtn');
+          btn.disabled = true;
+          try {
+            await apiJSON('/api/reset-password', 'POST', { username, token, password });
+            $('#resetPassModal').classList.add('hidden');
+            history.replaceState(null, '', location.pathname);
+            const loginErrEl = $('#loginError');
+            loginErrEl.textContent = t('auth.resetPassSuccess');
+            loginErrEl.classList.add('show');
+            loginErrEl.style.color = '#2e9e5b';
+          } catch (err) {
+            errEl.textContent = err.message || t('auth.resetPassInvalid');
+            errEl.classList.add('show');
+          } finally {
+            btn.disabled = false;
+          }
+        });
+
         $$('#authTabs .tab').forEach(tab => {
           tab.addEventListener('click', () => {
             $$('#authTabs .tab').forEach(t => t.classList.remove('active'));
@@ -3010,6 +3259,7 @@
           clearTimeout(feedSearchTimer);
           feedSearchTimer = setTimeout(() => {
             feedQuery.q = e.target.value.trim();
+            feedQuery.tag = '';
             resetAndReloadFeed();
           }, 350);
         });
@@ -3017,6 +3267,7 @@
           $('#feedSearchInput').value = '';
           $('#feedSearchClear').classList.remove('show');
           feedQuery.q = '';
+          feedQuery.tag = '';
           resetAndReloadFeed();
         });
 
@@ -3114,6 +3365,43 @@
 
         $('#closeCommentsModal').addEventListener('click', closeCommentsModal);
         $('#commentsModal').addEventListener('click', (e) => { if (e.target === $('#commentsModal')) closeCommentsModal(); });
+        $('#closeReviewsModal').addEventListener('click', closeReviewsModal);
+        $('#reviewsModal').addEventListener('click', (e) => { if (e.target === $('#reviewsModal')) closeReviewsModal(); });
+        $('#reviewForm').addEventListener('submit', submitReview);
+        $$('#reviewFormStars .star-pick').forEach(btn => {
+          btn.addEventListener('click', () => {
+            selectedReviewRating = Number(btn.dataset.val);
+            updateStarPickUI();
+          });
+        });
+
+        /* Buyurtmalarim */
+        $('#openOrdersBtn').addEventListener('click', guarded(openOrdersModal));
+        $('#closeOrdersModal').addEventListener('click', closeOrdersModal);
+        $('#ordersModal').addEventListener('click', (e) => { if (e.target === $('#ordersModal')) closeOrdersModal(); });
+        $$('.orders-tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            ordersTab = tab.dataset.tab;
+            $$('.orders-tab').forEach(x => x.classList.toggle('active', x === tab));
+            if (ordersCache) renderOrders(ordersCache);
+          });
+        });
+
+        /* Xohishlar ro'yxati */
+        $('#openWishlistBtn').addEventListener('click', guarded(openWishlistModal));
+        $('#closeWishlistModal').addEventListener('click', closeWishlistModal);
+        $('#wishlistModal').addEventListener('click', (e) => { if (e.target === $('#wishlistModal')) closeWishlistModal(); });
+
+        /* Sotuvchi statistikasi */
+        $('#openSellerStatsBtn').addEventListener('click', guarded(openSellerStatsModal));
+        $('#closeSellerStatsModal').addEventListener('click', closeSellerStatsModal);
+        $('#sellerStatsModal').addEventListener('click', (e) => { if (e.target === $('#sellerStatsModal')) closeSellerStatsModal(); });
+
+        /* To'plamlar */
+        $('#openCollectionsBtn').addEventListener('click', guarded(openCollectionsModal));
+        $('#closeCollectionsModal').addEventListener('click', closeCollectionsModal);
+        $('#collectionsModal').addEventListener('click', (e) => { if (e.target === $('#collectionsModal')) closeCollectionsModal(); });
+        $('#newCollectionForm').addEventListener('submit', createCollection);
 
         $('#backFromChat').addEventListener('click', closeChatModal);
 
@@ -4082,12 +4370,13 @@
       }
 
       function feedCardHTML(w) {
+        const tags = Array.isArray(w.tags) ? w.tags : [];
         return `
       <article class="feed-card" data-id="${w.id}">
         <div class="feed-head" data-username="${escapeHtml(w.username)}" role="button" tabindex="0">
           <div class="feed-avatar">${avatarInner(w.avatar, w.fullname || w.username)}</div>
           <div class="feed-head-text">
-            <div class="feed-fullname">${escapeHtml(w.fullname || w.username)}</div>
+            <div class="feed-fullname">${escapeHtml(w.fullname || w.username)}${w.trustedSeller ? `<span class="trusted-badge" title="${t('trusted.badge')}" aria-label="${t('trusted.badge')}">${trustedBadgeSVG()}</span>` : ''}</div>
             <div class="feed-username">@${escapeHtml(w.username)}</div>
           </div>
           ${CURRENT_USER && w.username !== CURRENT_USER.username ? `
@@ -4113,6 +4402,10 @@
           <button class="share-btn" data-id="${w.id}" data-title="${escapeHtml(w.title)}" aria-label="${t('share.aria')}">
             ${shareIconSVG()}
           </button>
+          ${CURRENT_USER ? `
+          <button class="wishlist-btn ${w.savedByMe ? 'saved' : ''}" data-id="${w.id}" aria-label="${t('wishlist.aria')}">
+            ${wishlistIconSVG()}
+          </button>` : ''}
           ${w.status === 'sale' && (!CURRENT_USER || w.username !== CURRENT_USER.username) ? `
           <button class="contact-seller-btn" data-username="${escapeHtml(w.username)}" data-workid="${w.id}" data-worktitle="${escapeHtml(w.title)}" aria-label="${t('feed.contactAria')}">
             ${messageIconSVG()}
@@ -4121,6 +4414,8 @@
         </div>
         <div class="feed-body">
           <div class="feed-title">${escapeHtml(w.title)}</div>
+          ${w.ratingCount ? `<button type="button" class="feed-rating" data-id="${w.id}" data-title="${escapeHtml(w.title)}">${starsHTML(w.avgRating)}<span class="feed-rating-num">${w.avgRating}</span><span class="feed-rating-count">(${w.ratingCount})</span></button>` : ''}
+          ${tags.length ? `<div class="feed-tags">${tags.map(tag => `<button type="button" class="feed-tag-chip" data-tag="${escapeHtml(tag)}">#${escapeHtml(tag)}</button>`).join('')}</div>` : ''}
           <div class="feed-meta">
             <div class="feed-meta-left">
               <span>${fmtDate(w.createdAt)}</span>
@@ -4138,6 +4433,22 @@
           <button class="report-link" data-type="work" data-id="${w.id}" data-title="${escapeHtml(w.title)}">${t('report.action')}</button>
         </div>
       </article>`;
+      }
+
+      function trustedBadgeSVG() {
+        return `<svg viewBox="0 0 24 24" fill="none" class="trusted-badge-icon"><path d="M12 2.5 14.5 5l3.4-.3.9 3.3 3 1.7-1.4 3.1 1.4 3.1-3 1.7-.9 3.3-3.4-.3L12 22.5 9.5 20l-3.4.3-.9-3.3-3-1.7 1.4-3.1L2.2 9.1l3-1.7.9-3.3L9.5 5 12 2.5Z" fill="currentColor"/><path d="m8.5 12.3 2.4 2.4 4.6-4.9" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      }
+
+      function wishlistIconSVG() {
+        return `<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h11a1 1 0 0 1 1 1V21l-6.5-4-6.5 4V4.5a1 1 0 0 1 1-1Z"/></svg>`;
+      }
+
+      function starsHTML(avg) {
+        let out = '';
+        for (let i = 1; i <= 5; i++) {
+          out += `<span class="star ${i <= Math.round(avg) ? 'filled' : ''}">★</span>`;
+        }
+        return `<span class="stars-row">${out}</span>`;
       }
 
       const feedRevealObserver = new IntersectionObserver((entries) => {
@@ -4218,6 +4529,39 @@
         if (shareBtn) shareBtn.addEventListener('click', () => shareWork(shareBtn.dataset.id, shareBtn.dataset.title));
         const reportLink = card.querySelector('.report-link');
         if (reportLink) reportLink.addEventListener('click', guarded(() => openReportModal('work', reportLink.dataset.id, reportLink.dataset.title)));
+        const wishlistBtn = card.querySelector('.wishlist-btn');
+        if (wishlistBtn) wishlistBtn.addEventListener('click', guarded(() => toggleWishlist(id)));
+        card.querySelectorAll('.feed-tag-chip').forEach(chip => {
+          chip.addEventListener('click', (e) => {
+            e.stopPropagation();
+            applyTagFilter(chip.dataset.tag);
+          });
+        });
+        const ratingBtn = card.querySelector('.feed-rating');
+        if (ratingBtn) ratingBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openReviewsModal(ratingBtn.dataset.id, ratingBtn.dataset.title);
+        });
+      }
+
+      /* Xohishlar ro'yxatiga qo'shish/olib tashlash — savatdan farqli, xarid niyatisiz */
+      async function toggleWishlist(id) {
+        const btns = document.querySelectorAll(`.wishlist-btn[data-id="${id}"]`);
+        try {
+          const data = await apiJSON('/api/works/' + id + '/wishlist', 'POST');
+          btns.forEach(b => b.classList.toggle('saved', data.saved));
+          const item = ALL_ITEMS_BY_ID[id];
+          if (item) item.savedByMe = data.saved;
+        } catch (e) { /* jim */ }
+      }
+
+      /* Teg chipsini bosganda o'sha teg bo'yicha lentani filtrlaydi */
+      function applyTagFilter(tag) {
+        feedQuery.tag = tag;
+        feedQuery.q = '';
+        const searchInput = $('#feedSearchInput');
+        if (searchInput) searchInput.value = '';
+        resetAndReloadFeed();
       }
 
       /* Lenta va korzinka ro'yxatidagi barcha asarlarni id bo'yicha tez topish uchun */
@@ -4415,6 +4759,7 @@
         p.set('offset', feedOffset);
         p.set('limit', 8);
         if (feedQuery.q) p.set('q', feedQuery.q);
+        if (feedQuery.tag) p.set('tag', feedQuery.tag);
         if (feedQuery.type) p.set('type', feedQuery.type);
         if (feedQuery.sort && feedQuery.sort !== 'new') p.set('sort', feedQuery.sort);
         if (feedQuery.following) p.set('following', '1');
@@ -4508,6 +4853,8 @@
 
       /* ===================== KOMENTLAR ===================== */
       let activeCommentsWorkId = null;
+      let activeReviewsWorkId = null;
+      let selectedReviewRating = 0;
 
       function commentCountEls(id) {
         return $$(`.comment-btn[data-id="${id}"] .comment-count`);
@@ -4564,6 +4911,269 @@
       function closeCommentsModal() {
         $('#commentsModal').classList.remove('open');
         activeCommentsWorkId = null;
+      }
+
+      /* Sharhlar (Reviews) — faqat yakunlangan buyurtmasi bo'lgan xaridor
+         yangi sharh qoldirishi mumkin, shuning uchun forma serverning
+         javobiga qarab ko'rsatiladi/yashiriladi (backend allaqachon buni
+         tekshiradi — bu yerda faqat foydalanuvchiga qulay UI beriladi). */
+      function reviewItemHTML(r) {
+        return `
+      <div class="comment-item">
+        <div class="comment-avatar">${initials(r.fullname || r.username)}</div>
+        <div class="comment-body">
+          <div class="comment-bubble">
+            <div class="comment-line"><b>${escapeHtml(r.fullname || r.username)}</b>${starsHTML(r.rating)}${r.text ? escapeHtml(r.text) : ''}</div>
+          </div>
+          <div class="comment-foot">
+            <span class="comment-time">${fmtDate(r.createdAt)}</span>
+          </div>
+        </div>
+      </div>`;
+      }
+
+      function renderReviews(data) {
+        const list = $('#reviewsList');
+        const summary = $('#reviewsSummary');
+        if (!data.items.length) {
+          list.innerHTML = `<div class="comments-empty">${t('reviews.empty')}</div>`;
+          summary.innerHTML = '';
+        } else {
+          list.innerHTML = data.items.map(r => reviewItemHTML(r)).join('');
+          summary.innerHTML = `${starsHTML(data.avg)}<span class="feed-rating-num">${data.avg}</span><span class="feed-rating-count">(${data.count})</span>`;
+        }
+      }
+
+      async function openReviewsModal(workId, title) {
+        activeReviewsWorkId = workId;
+        selectedReviewRating = 0;
+        updateStarPickUI();
+        $('#reviewInput').value = '';
+        $('#reviewFormError').classList.remove('show');
+        $('#reviewsList').innerHTML = `<div class="comments-empty">${t('comments.loading')}</div>`;
+        $('#reviewsSummary').innerHTML = '';
+        $('#reviewsModal').classList.add('open');
+        try {
+          const [reviewsData, mineOrders] = await Promise.all([
+            api('/api/works/' + workId + '/reviews'),
+            CURRENT_USER ? api('/api/orders/mine').catch(() => null) : Promise.resolve(null)
+          ]);
+          renderReviews(reviewsData);
+          const canReview = !!(mineOrders && mineOrders.asBuyer.some(o =>
+            o.status === 'completed' && Array.isArray(o.items) && o.items.some(it => it.workId === workId)
+          ) && !reviewsData.items.some(r => CURRENT_USER && r.username === CURRENT_USER.username));
+          $('#reviewForm').classList.toggle('hidden', !canReview);
+        } catch (e) {
+          $('#reviewsList').innerHTML = `<div class="comments-empty">${t('comments.loadFail')}</div>`;
+        }
+      }
+
+      function closeReviewsModal() {
+        $('#reviewsModal').classList.remove('open');
+        activeReviewsWorkId = null;
+      }
+
+      function updateStarPickUI() {
+        $$('#reviewFormStars .star-pick').forEach(btn => {
+          btn.classList.toggle('picked', Number(btn.dataset.val) <= selectedReviewRating);
+        });
+      }
+
+      async function submitReview(e) {
+        e.preventDefault();
+        if (!activeReviewsWorkId || !selectedReviewRating) return;
+        const errEl = $('#reviewFormError');
+        errEl.classList.remove('show');
+        const text = $('#reviewInput').value.trim();
+        const btn = $('#reviewSubmitBtn');
+        btn.disabled = true;
+        try {
+          await apiJSON('/api/works/' + activeReviewsWorkId + '/reviews', 'POST', { rating: selectedReviewRating, text });
+          const data = await api('/api/works/' + activeReviewsWorkId + '/reviews');
+          renderReviews(data);
+          $('#reviewForm').classList.add('hidden');
+        } catch (err) {
+          errEl.textContent = err.message || t('common.serverError');
+          errEl.classList.add('show');
+        } finally {
+          btn.disabled = false;
+        }
+      }
+
+      /* ===================== BUYURTMALARIM (My Orders) ===================== */
+      let ordersTab = 'buyer';
+      const ORDER_STATUSES_LIST = ['placed', 'confirmed', 'shipped', 'completed', 'cancelled'];
+
+      function orderStatusLabel(status) {
+        return t('order.status.' + status) || status;
+      }
+
+      function orderCardHTML(o, asSeller) {
+        const mine = asSeller ? o.items.filter(it => it.sellerUsername === CURRENT_USER.username) : o.items;
+        const total = mine.reduce((s, it) => s + it.price * it.qty, 0);
+        const currency = mine[0] ? mine[0].currency : 'UZS';
+        const itemsText = mine.map(it => `${escapeHtml(it.title)} ×${it.qty}`).join(', ');
+        const statusOptions = ORDER_STATUSES_LIST.map(s => `<option value="${s}" ${s === o.status ? 'selected' : ''}>${orderStatusLabel(s)}</option>`).join('');
+        return `
+      <div class="order-card" data-id="${o.id}">
+        <div class="order-card-head">
+          <span class="order-card-date">${fmtDate(o.createdAt)}</span>
+          <span class="order-status-badge order-status-${o.status}">${orderStatusLabel(o.status)}</span>
+        </div>
+        <div class="order-card-items">${itemsText}</div>
+        <div class="order-card-foot">
+          <span class="order-card-total">${fmtPrice(total, currency)}</span>
+          ${!asSeller && o.trackingNumber ? `<span class="order-tracking">${t('order.tracking')}: ${escapeHtml(o.trackingNumber)}${o.carrier ? ' (' + escapeHtml(o.carrier) + ')' : ''}</span>` : ''}
+        </div>
+        ${asSeller ? `
+        <div class="order-seller-controls">
+          <select class="order-status-select" data-id="${o.id}">${statusOptions}</select>
+          <input type="text" class="order-tracking-input" data-id="${o.id}" placeholder="${t('order.trackingPh')}" value="${escapeHtml(o.trackingNumber || '')}">
+          <button type="button" class="btn btn-ghost btn-sm order-update-btn" data-id="${o.id}">${t('order.update')}</button>
+        </div>` : ''}
+      </div>`;
+      }
+
+      function renderOrders(data) {
+        const list = $('#ordersList');
+        const items = ordersTab === 'buyer' ? data.asBuyer : data.asSeller;
+        if (!items.length) {
+          list.innerHTML = `<div class="comments-empty">${t('orders.empty')}</div>`;
+          return;
+        }
+        const sorted = items.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        list.innerHTML = sorted.map(o => orderCardHTML(o, ordersTab === 'seller')).join('');
+        list.querySelectorAll('.order-update-btn').forEach(btn => {
+          btn.addEventListener('click', () => updateOrderStatus(btn.dataset.id));
+        });
+      }
+
+      let ordersCache = null;
+      async function openOrdersModal() {
+        $('#ordersList').innerHTML = `<div class="comments-empty">${t('comments.loading')}</div>`;
+        $('#ordersModal').classList.add('open');
+        try {
+          ordersCache = await api('/api/orders/mine');
+          renderOrders(ordersCache);
+        } catch (e) {
+          $('#ordersList').innerHTML = `<div class="comments-empty">${t('comments.loadFail')}</div>`;
+        }
+      }
+      function closeOrdersModal() { $('#ordersModal').classList.remove('open'); }
+
+      async function updateOrderStatus(orderId) {
+        const card = document.querySelector(`.order-card[data-id="${orderId}"]`);
+        const status = card.querySelector('.order-status-select').value;
+        const trackingNumber = card.querySelector('.order-tracking-input').value.trim();
+        try {
+          await apiJSON('/api/orders/' + orderId + '/status', 'PATCH', { status, trackingNumber });
+          ordersCache = await api('/api/orders/mine');
+          renderOrders(ordersCache);
+        } catch (e) { /* jim */ }
+      }
+
+      /* ===================== XOHISHLAR RO'YXATI (Wishlist) ===================== */
+      function wishlistCardHTML(w) {
+        return `
+      <div class="wishlist-card" data-id="${w.id}">
+        <img src="${escapeHtml((w.images && w.images[0]) || w.image || w.poster || '')}" alt="" loading="lazy">
+        <div class="wishlist-card-body">
+          <div class="wishlist-card-title">${escapeHtml(w.title)}</div>
+          ${w.status === 'sale' ? `<div class="feed-price">${fmtPrice(w.price, w.currency)}</div>` : ''}
+          <button type="button" class="wishlist-remove-btn" data-id="${w.id}">${t('wishlist.remove')}</button>
+        </div>
+      </div>`;
+      }
+
+      async function openWishlistModal() {
+        $('#wishlistList').innerHTML = `<div class="comments-empty">${t('comments.loading')}</div>`;
+        $('#wishlistModal').classList.add('open');
+        try {
+          const data = await api('/api/wishlist');
+          if (!data.items.length) {
+            $('#wishlistList').innerHTML = `<div class="comments-empty">${t('wishlist.empty')}</div>`;
+            return;
+          }
+          $('#wishlistList').innerHTML = data.items.map(w => wishlistCardHTML(w)).join('');
+          $$('.wishlist-remove-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+              await toggleWishlist(btn.dataset.id);
+              openWishlistModal();
+            });
+          });
+        } catch (e) {
+          $('#wishlistList').innerHTML = `<div class="comments-empty">${t('comments.loadFail')}</div>`;
+        }
+      }
+      function closeWishlistModal() { $('#wishlistModal').classList.remove('open'); }
+
+      /* ===================== SOTUVCHI STATISTIKASI (Seller stats) ===================== */
+      async function openSellerStatsModal() {
+        $('#sellerStatsBody').innerHTML = `<div class="comments-empty">${t('comments.loading')}</div>`;
+        $('#sellerStatsModal').classList.add('open');
+        try {
+          const s = await api('/api/seller/stats');
+          const revenueLines = Object.entries(s.revenueByCurrency).map(([cur, amt]) => fmtPrice(amt, cur)).join(', ') || '—';
+          const topWorksHTML = s.topWorks.slice(0, 5).map(w => `
+            <div class="stat-row"><span>${escapeHtml(w.title)}</span><span>${t('feed.viewsAria')}: ${w.views} · ♥ ${w.likes}</span></div>
+          `).join('');
+          $('#sellerStatsBody').innerHTML = `
+            <div class="seller-stats-grid">
+              <div class="stat-box"><b>${s.totalWorks}</b><span>${t('sellerStats.works')}</span></div>
+              <div class="stat-box"><b>${s.totalViews}</b><span>${t('sellerStats.views')}</span></div>
+              <div class="stat-box"><b>${s.totalLikes}</b><span>${t('sellerStats.likes')}</span></div>
+              <div class="stat-box"><b>${s.completedOrders}</b><span>${t('sellerStats.completed')}</span></div>
+              <div class="stat-box"><b>${s.pendingOrders}</b><span>${t('sellerStats.pending')}</span></div>
+            </div>
+            <div class="seller-stats-revenue"><b>${t('sellerStats.revenue')}:</b> ${revenueLines}</div>
+            <div class="seller-stats-top"><h4>${t('sellerStats.topWorks')}</h4>${topWorksHTML || `<div class="comments-empty">${t('orders.empty')}</div>`}</div>
+          `;
+        } catch (e) {
+          $('#sellerStatsBody').innerHTML = `<div class="comments-empty">${t('comments.loadFail')}</div>`;
+        }
+      }
+      function closeSellerStatsModal() { $('#sellerStatsModal').classList.remove('open'); }
+
+      /* ===================== TO'PLAMLAR (Collections) ===================== */
+      function collectionCardHTML(c) {
+        const thumbs = c.works.slice(0, 4).map(w => `<img src="${escapeHtml(w.image || '')}" alt="" loading="lazy">`).join('');
+        return `
+      <div class="collection-card">
+        <div class="collection-card-thumbs">${thumbs || `<div class="collection-empty-thumb">🗂️</div>`}</div>
+        <div class="collection-card-body">
+          <div class="collection-card-name">${escapeHtml(c.name)}</div>
+          <div class="collection-card-count">${c.works.length} ${t('collections.itemsCount')}</div>
+        </div>
+      </div>`;
+      }
+
+      async function openCollectionsModal() {
+        if (!CURRENT_USER) return;
+        $('#collectionsList').innerHTML = `<div class="comments-empty">${t('comments.loading')}</div>`;
+        $('#collectionsModal').classList.add('open');
+        try {
+          const data = await api('/api/collections/' + CURRENT_USER.username);
+          if (!data.items.length) {
+            $('#collectionsList').innerHTML = `<div class="comments-empty">${t('collections.empty')}</div>`;
+            return;
+          }
+          $('#collectionsList').innerHTML = data.items.map(c => collectionCardHTML(c)).join('');
+        } catch (e) {
+          $('#collectionsList').innerHTML = `<div class="comments-empty">${t('comments.loadFail')}</div>`;
+        }
+      }
+      function closeCollectionsModal() { $('#collectionsModal').classList.remove('open'); }
+
+      async function createCollection(e) {
+        e.preventDefault();
+        const input = $('#newCollectionName');
+        const name = input.value.trim();
+        if (!name) return;
+        try {
+          await apiJSON('/api/collections', 'POST', { name });
+          input.value = '';
+          openCollectionsModal();
+        } catch (e) { /* jim */ }
       }
 
       async function submitComment(e) {
@@ -5980,6 +6590,7 @@
         fd.append('stockMode', $('#stockModeOrder').checked ? 'order' : 'fixed');
         fd.append('stockQty', $('#workStockQty').value);
         fd.append('desc', $('#workDesc').value.trim());
+        fd.append('tags', $('#workTags').value.trim());
         try {
           const data = await api('/api/works', { method: 'POST', body: fd });
           WORKS.push(data.work);
