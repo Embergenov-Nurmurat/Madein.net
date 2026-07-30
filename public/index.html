@@ -326,14 +326,6 @@
           </div>
         </div>
 
-        <div class="profile-substats" id="profileSubstats">
-          <div class="substat"><b id="statFollowers">0</b><span data-i18n="profile.stat.followers">Obunachi</span></div>
-          <div class="substat"><b id="statFollowing">0</b><span data-i18n="profile.stat.following">Obuna</span></div>
-          <div class="substat"><b id="statLikes">0</b><span data-i18n="profile.stat.likes">Layk</span></div>
-          <div class="substat"><b id="statComments">0</b><span data-i18n="profile.stat.comments">Komment</span></div>
-          <div class="substat"><b id="statViews">0</b><span data-i18n="profile.stat.views">Ko'rishlar</span></div>
-        </div>
-
         <div class="view-toolbar">
           <button class="btn btn-ghost btn-sm" id="editProfileBtn" data-i18n="profile.editBtn">Ma'lumotlarni tahrirlash</button>
           <button class="btn btn-primary btn-sm upload-plus-btn" id="openUploadBtn2" data-i18n="nav.newWork">+</button>
@@ -734,7 +726,15 @@
         </div>
         <div class="edit-actions" style="margin-top:18px;">
           <button class="btn btn-ghost btn-sm" id="editStatusBtn" data-i18n="lightbox.editStatus">Holatni o'zgartirish</button>
+          <button class="btn btn-ghost btn-sm" id="addToCollectionBtn" data-i18n="collections.addBtn">🗂️ To'plamga qo'shish</button>
           <button class="btn btn-ghost btn-sm" id="deleteWorkBtn" data-i18n="lightbox.delete">O'chirish</button>
+        </div>
+        <div class="add-to-collection-panel hidden" id="addToCollectionPanel">
+          <div class="add-to-collection-list" id="addToCollectionList"></div>
+          <form class="comment-form" id="quickNewCollectionForm">
+            <input type="text" id="quickNewCollectionName" maxlength="80" autocomplete="off" data-i18n-ph="collections.namePh" placeholder="To'plam nomi...">
+            <button type="submit" data-i18n="collections.create">Yaratish</button>
+          </form>
         </div>
         <div class="field lang-field hidden" id="editStatusForm" style="margin-top:14px;">
           <label for="lightboxStatusSelect" data-i18n="upload.statusLabel">Holati</label>
@@ -884,14 +884,23 @@
   <div class="modal-backdrop" id="collectionsModal">
     <div class="modal comments-modal-content">
       <div class="comments-modal-head">
-        <h3 data-i18n="collections.title">To'plamlar</h3>
+        <h3 data-i18n="collections.title" id="collectionsModalTitle">To'plamlar</h3>
         <button class="modal-close" id="closeCollectionsModal">✕</button>
       </div>
-      <div class="comments-list" id="collectionsList"></div>
-      <form class="comment-form" id="newCollectionForm">
-        <input type="text" id="newCollectionName" maxlength="80" autocomplete="off" data-i18n-ph="collections.namePh" placeholder="To'plam nomi...">
-        <button type="submit" id="newCollectionBtn" data-i18n="collections.create">Yaratish</button>
-      </form>
+      <div id="collectionsListView">
+        <div class="comments-list" id="collectionsList"></div>
+        <form class="comment-form" id="newCollectionForm">
+          <input type="text" id="newCollectionName" maxlength="80" autocomplete="off" data-i18n-ph="collections.namePh" placeholder="To'plam nomi...">
+          <button type="submit" id="newCollectionBtn" data-i18n="collections.create">Yaratish</button>
+        </form>
+      </div>
+      <div id="collectionDetailView" class="hidden">
+        <div class="view-toolbar collection-detail-toolbar">
+          <button class="btn btn-ghost btn-sm" id="collectionDetailBack" data-i18n="userProfile.back">← Orqaga</button>
+          <button class="btn btn-ghost btn-sm" id="deleteCollectionBtn" data-i18n="lightbox.delete">O'chirish</button>
+        </div>
+        <div class="comments-list wishlist-grid" id="collectionDetailList"></div>
+      </div>
     </div>
   </div>
 

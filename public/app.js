@@ -220,7 +220,7 @@
           "order.tracking": "Kuzatuv raqami", "order.trackingPh": "Kuzatuv raqami", "order.update": "Yangilash",
           "wishlist.btn": "🤍 Xohishlar", "wishlist.title": "Xohishlar ro'yxati", "wishlist.empty": "Xohishlar ro'yxati bo'sh.", "wishlist.remove": "Olib tashlash",
           "sellerStats.btn": "📊 Statistika", "sellerStats.title": "Statistika", "sellerStats.works": "Asarlar", "sellerStats.views": "Ko'rishlar", "sellerStats.likes": "Layklar", "sellerStats.completed": "Yakunlangan", "sellerStats.pending": "Kutilmoqda", "sellerStats.revenue": "Daromad", "sellerStats.topWorks": "Eng ko'p ko'rilganlar",
-          "collections.btn": "🗂️ To'plamlar", "collections.title": "To'plamlar", "collections.namePh": "To'plam nomi...", "collections.create": "Yaratish", "collections.empty": "Hali to'plamlar yo'q.", "collections.itemsCount": "ta asar",
+          "collections.btn": "🗂️ To'plamlar", "collections.title": "To'plamlar", "collections.namePh": "To'plam nomi...", "collections.create": "Yaratish", "collections.empty": "Hali to'plamlar yo'q.", "collections.itemsCount": "ta asar", "collections.addBtn": "🗂️ To'plamga qo'shish", "collections.noItems": "Bu to'plamda hali asar yo'q.",
           "comments.empty": "Hali komentlar yo'q. Birinchi bo'lib yozing!",
           "comments.loading": "Yuklanmoqda...", "comments.loadFail": "Komentlarni yuklab bo'lmadi.",
           "comments.delete": "O'chirish",
@@ -574,7 +574,7 @@
           "order.tracking": "Tracking number", "order.trackingPh": "Tracking number", "order.update": "Update",
           "wishlist.btn": "🤍 Wishlist", "wishlist.title": "Wishlist", "wishlist.empty": "Your wishlist is empty.", "wishlist.remove": "Remove",
           "sellerStats.btn": "📊 Stats", "sellerStats.title": "Stats", "sellerStats.works": "Works", "sellerStats.views": "Views", "sellerStats.likes": "Likes", "sellerStats.completed": "Completed", "sellerStats.pending": "Pending", "sellerStats.revenue": "Revenue", "sellerStats.topWorks": "Top performing",
-          "collections.btn": "🗂️ Collections", "collections.title": "Collections", "collections.namePh": "Collection name...", "collections.create": "Create", "collections.empty": "No collections yet.", "collections.itemsCount": "items",
+          "collections.btn": "🗂️ Collections", "collections.title": "Collections", "collections.namePh": "Collection name...", "collections.create": "Create", "collections.empty": "No collections yet.", "collections.itemsCount": "items", "collections.addBtn": "🗂️ Add to collection", "collections.noItems": "No works in this collection yet.",
           "comments.empty": "No comments yet. Be the first to write one!",
           "comments.loading": "Loading...", "comments.loadFail": "Couldn't load comments.",
           "comments.delete": "Delete",
@@ -928,7 +928,7 @@
           "order.tracking": "追踪号", "order.trackingPh": "追踪号", "order.update": "更新",
           "wishlist.btn": "🤍 心愿单", "wishlist.title": "心愿单", "wishlist.empty": "您的心愿单是空的。", "wishlist.remove": "移除",
           "sellerStats.btn": "📊 统计", "sellerStats.title": "统计", "sellerStats.works": "作品数", "sellerStats.views": "浏览量", "sellerStats.likes": "点赞数", "sellerStats.completed": "已完成", "sellerStats.pending": "待处理", "sellerStats.revenue": "收入", "sellerStats.topWorks": "表现最佳",
-          "collections.btn": "🗂️ 收藏集", "collections.title": "收藏集", "collections.namePh": "收藏集名称...", "collections.create": "创建", "collections.empty": "暂无收藏集。", "collections.itemsCount": "件作品",
+          "collections.btn": "🗂️ 收藏集", "collections.title": "收藏集", "collections.namePh": "收藏集名称...", "collections.create": "创建", "collections.empty": "暂无收藏集。", "collections.itemsCount": "件作品", "collections.addBtn": "🗂️ 添加到收藏集", "collections.noItems": "此收藏集暂无作品。",
           "comments.empty": "还没有评论，快来抢沙发吧！",
           "comments.loading": "加载中...", "comments.loadFail": "评论加载失败。",
           "comments.delete": "删除",
@@ -1296,7 +1296,7 @@
           "order.tracking": "ट्रैकिंग नंबर", "order.trackingPh": "ट्रैकिंग नंबर", "order.update": "अपडेट करें",
           "wishlist.btn": "🤍 इच्छा सूची", "wishlist.title": "इच्छा सूची", "wishlist.empty": "आपकी इच्छा सूची खाली है।", "wishlist.remove": "हटाएं",
           "sellerStats.btn": "📊 आंकड़े", "sellerStats.title": "आंकड़े", "sellerStats.works": "कृतियाँ", "sellerStats.views": "व्यूज़", "sellerStats.likes": "लाइक्स", "sellerStats.completed": "पूर्ण", "sellerStats.pending": "लंबित", "sellerStats.revenue": "आय", "sellerStats.topWorks": "सबसे अच्छा प्रदर्शन",
-          "collections.btn": "🗂️ संग्रह", "collections.title": "संग्रह", "collections.namePh": "संग्रह का नाम...", "collections.create": "बनाएं", "collections.empty": "अभी तक कोई संग्रह नहीं।", "collections.itemsCount": "कृतियाँ",
+          "collections.btn": "🗂️ संग्रह", "collections.title": "संग्रह", "collections.namePh": "संग्रह का नाम...", "collections.create": "बनाएं", "collections.empty": "अभी तक कोई संग्रह नहीं।", "collections.itemsCount": "कृतियाँ", "collections.addBtn": "🗂️ संग्रह में जोड़ें", "collections.noItems": "इस संग्रह में अभी तक कोई कृति नहीं है।",
           "comments.empty": "अभी तक कोई टिप्पणी नहीं। पहले आप लिखें!",
           "comments.loading": "लोड हो रहा है...", "comments.loadFail": "टिप्पणियाँ लोड नहीं हो सकीं।",
           "comments.delete": "हटाएं",
@@ -1664,7 +1664,7 @@
           "order.tracking": "Número de seguimiento", "order.trackingPh": "Número de seguimiento", "order.update": "Actualizar",
           "wishlist.btn": "🤍 Lista de deseos", "wishlist.title": "Lista de deseos", "wishlist.empty": "Tu lista de deseos está vacía.", "wishlist.remove": "Quitar",
           "sellerStats.btn": "📊 Estadísticas", "sellerStats.title": "Estadísticas", "sellerStats.works": "Obras", "sellerStats.views": "Vistas", "sellerStats.likes": "Me gusta", "sellerStats.completed": "Completados", "sellerStats.pending": "Pendientes", "sellerStats.revenue": "Ingresos", "sellerStats.topWorks": "Mejor rendimiento",
-          "collections.btn": "🗂️ Colecciones", "collections.title": "Colecciones", "collections.namePh": "Nombre de la colección...", "collections.create": "Crear", "collections.empty": "Aún no hay colecciones.", "collections.itemsCount": "obras",
+          "collections.btn": "🗂️ Colecciones", "collections.title": "Colecciones", "collections.namePh": "Nombre de la colección...", "collections.create": "Crear", "collections.empty": "Aún no hay colecciones.", "collections.itemsCount": "obras", "collections.addBtn": "🗂️ Añadir a colección", "collections.noItems": "Aún no hay obras en esta colección.",
           "comments.empty": "Aún no hay comentarios. ¡Sé el primero en escribir uno!",
           "comments.loading": "Cargando...", "comments.loadFail": "No se pudieron cargar los comentarios.",
           "comments.delete": "Eliminar",
@@ -2032,7 +2032,7 @@
           "order.tracking": "رقم التتبع", "order.trackingPh": "رقم التتبع", "order.update": "تحديث",
           "wishlist.btn": "🤍 قائمة الرغبات", "wishlist.title": "قائمة الرغبات", "wishlist.empty": "قائمة رغباتك فارغة.", "wishlist.remove": "إزالة",
           "sellerStats.btn": "📊 الإحصائيات", "sellerStats.title": "الإحصائيات", "sellerStats.works": "الأعمال", "sellerStats.views": "المشاهدات", "sellerStats.likes": "الإعجابات", "sellerStats.completed": "مكتملة", "sellerStats.pending": "قيد الانتظار", "sellerStats.revenue": "الإيرادات", "sellerStats.topWorks": "الأفضل أداءً",
-          "collections.btn": "🗂️ المجموعات", "collections.title": "المجموعات", "collections.namePh": "اسم المجموعة...", "collections.create": "إنشاء", "collections.empty": "لا توجد مجموعات بعد.", "collections.itemsCount": "عمل",
+          "collections.btn": "🗂️ المجموعات", "collections.title": "المجموعات", "collections.namePh": "اسم المجموعة...", "collections.create": "إنشاء", "collections.empty": "لا توجد مجموعات بعد.", "collections.itemsCount": "عمل", "collections.addBtn": "🗂️ أضف إلى المجموعة", "collections.noItems": "لا توجد أعمال في هذه المجموعة بعد.",
           "comments.empty": "لا توجد تعليقات بعد. كن أول من يكتب!",
           "comments.loading": "جارٍ التحميل...", "comments.loadFail": "تعذّر تحميل التعليقات.",
           "comments.delete": "حذف",
@@ -2400,7 +2400,7 @@
           "order.tracking": "Номер отслеживания", "order.trackingPh": "Номер отслеживания", "order.update": "Обновить",
           "wishlist.btn": "🤍 Избранное", "wishlist.title": "Избранное", "wishlist.empty": "Список избранного пуст.", "wishlist.remove": "Убрать",
           "sellerStats.btn": "📊 Статистика", "sellerStats.title": "Статистика", "sellerStats.works": "Работы", "sellerStats.views": "Просмотры", "sellerStats.likes": "Лайки", "sellerStats.completed": "Завершено", "sellerStats.pending": "В ожидании", "sellerStats.revenue": "Доход", "sellerStats.topWorks": "Лучшие работы",
-          "collections.btn": "🗂️ Коллекции", "collections.title": "Коллекции", "collections.namePh": "Название коллекции...", "collections.create": "Создать", "collections.empty": "Пока нет коллекций.", "collections.itemsCount": "работ",
+          "collections.btn": "🗂️ Коллекции", "collections.title": "Коллекции", "collections.namePh": "Название коллекции...", "collections.create": "Создать", "collections.empty": "Пока нет коллекций.", "collections.itemsCount": "работ", "collections.addBtn": "🗂️ Добавить в коллекцию", "collections.noItems": "В этой коллекции пока нет работ.",
           "comments.empty": "Комментариев пока нет. Будьте первым!",
           "comments.loading": "Загрузка...", "comments.loadFail": "Не удалось загрузить комментарии.",
           "comments.delete": "Удалить",
@@ -3402,6 +3402,12 @@
         $('#closeCollectionsModal').addEventListener('click', closeCollectionsModal);
         $('#collectionsModal').addEventListener('click', (e) => { if (e.target === $('#collectionsModal')) closeCollectionsModal(); });
         $('#newCollectionForm').addEventListener('submit', createCollection);
+        $('#collectionDetailBack').addEventListener('click', backToCollectionsList);
+        $('#deleteCollectionBtn').addEventListener('click', deleteCurrentCollection);
+
+        /* Asar sahifasidan to'plamga qo'shish */
+        $('#addToCollectionBtn').addEventListener('click', openAddToCollectionPanel);
+        $('#quickNewCollectionForm').addEventListener('submit', quickCreateCollection);
 
         $('#backFromChat').addEventListener('click', closeChatModal);
 
@@ -3898,11 +3904,6 @@
         $('#statTotal').textContent = WORKS.length;
         $('#statSale').textContent = WORKS.filter(w => w.status === 'sale').length;
         $('#statExpo').textContent = WORKS.filter(w => w.status === 'expo').length;
-        $('#statFollowers').textContent = u.followersCount || 0;
-        $('#statFollowing').textContent = u.followingCount || 0;
-        $('#statLikes').textContent = WORKS.reduce((sum, w) => sum + (Array.isArray(w.likes) ? w.likes.length : 0), 0);
-        $('#statComments').textContent = WORKS.reduce((sum, w) => sum + (Array.isArray(w.comments) ? w.comments.length : 0), 0);
-        $('#statViews').textContent = WORKS.reduce((sum, w) => sum + (Number(w.views) || 0), 0);
       }
 
       function openEditProfile() {
@@ -5135,10 +5136,19 @@
       function closeSellerStatsModal() { $('#sellerStatsModal').classList.remove('open'); }
 
       /* ===================== TO'PLAMLAR (Collections) ===================== */
+      let MY_COLLECTIONS = [];       // so'nggi olingan o'z to'plamlarim ro'yxati (works bilan)
+      let currentCollectionDetailId = null;
+
+      async function fetchMyCollections() {
+        const data = await api('/api/collections/' + CURRENT_USER.username);
+        MY_COLLECTIONS = data.items || [];
+        return MY_COLLECTIONS;
+      }
+
       function collectionCardHTML(c) {
         const thumbs = c.works.slice(0, 4).map(w => `<img src="${escapeHtml(w.image || '')}" alt="" loading="lazy">`).join('');
         return `
-      <div class="collection-card">
+      <div class="collection-card" data-id="${c.id}" role="button" tabindex="0">
         <div class="collection-card-thumbs">${thumbs || `<div class="collection-empty-thumb">🗂️</div>`}</div>
         <div class="collection-card-body">
           <div class="collection-card-name">${escapeHtml(c.name)}</div>
@@ -5149,20 +5159,81 @@
 
       async function openCollectionsModal() {
         if (!CURRENT_USER) return;
+        $('#collectionDetailView').classList.add('hidden');
+        $('#collectionsListView').classList.remove('hidden');
         $('#collectionsList').innerHTML = `<div class="comments-empty">${t('comments.loading')}</div>`;
         $('#collectionsModal').classList.add('open');
         try {
-          const data = await api('/api/collections/' + CURRENT_USER.username);
-          if (!data.items.length) {
+          const items = await fetchMyCollections();
+          if (!items.length) {
             $('#collectionsList').innerHTML = `<div class="comments-empty">${t('collections.empty')}</div>`;
             return;
           }
-          $('#collectionsList').innerHTML = data.items.map(c => collectionCardHTML(c)).join('');
+          $('#collectionsList').innerHTML = items.map(c => collectionCardHTML(c)).join('');
+          $('#collectionsList').querySelectorAll('.collection-card').forEach(card => {
+            card.addEventListener('click', () => openCollectionDetail(card.dataset.id));
+          });
         } catch (e) {
           $('#collectionsList').innerHTML = `<div class="comments-empty">${t('comments.loadFail')}</div>`;
         }
       }
       function closeCollectionsModal() { $('#collectionsModal').classList.remove('open'); }
+
+      function collectionDetailItemHTML(w) {
+        return `
+      <div class="wishlist-card" data-id="${w.id}">
+        <img src="${escapeHtml(w.image || '')}" alt="" loading="lazy">
+        <div class="wishlist-card-body">
+          <div class="wishlist-card-title">${escapeHtml(w.title)}</div>
+          ${w.status === 'sale' && w.price ? `<div class="feed-price">${fmtPrice(w.price, w.currency)}</div>` : ''}
+          <button type="button" class="wishlist-remove-btn collection-remove-work-btn" data-id="${w.id}">${t('wishlist.remove')}</button>
+        </div>
+      </div>`;
+      }
+
+      async function openCollectionDetail(id) {
+        currentCollectionDetailId = id;
+        $('#collectionsListView').classList.add('hidden');
+        $('#collectionDetailView').classList.remove('hidden');
+        $('#collectionDetailList').innerHTML = `<div class="comments-empty">${t('comments.loading')}</div>`;
+        try {
+          const items = await fetchMyCollections();
+          const c = items.find(x => x.id === id);
+          if (!c) { closeCollectionsModal(); return; }
+          $('#collectionsModalTitle').textContent = c.name;
+          if (!c.works.length) {
+            $('#collectionDetailList').innerHTML = `<div class="comments-empty">${t('collections.noItems')}</div>`;
+            return;
+          }
+          $('#collectionDetailList').innerHTML = c.works.map(w => collectionDetailItemHTML(w)).join('');
+          $('#collectionDetailList').querySelectorAll('.collection-remove-work-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+              try {
+                await apiJSON('/api/collections/' + id, 'PUT', { removeWorkId: btn.dataset.id });
+                openCollectionDetail(id);
+              } catch (e) { /* jim */ }
+            });
+          });
+        } catch (e) {
+          $('#collectionDetailList').innerHTML = `<div class="comments-empty">${t('comments.loadFail')}</div>`;
+        }
+      }
+
+      function backToCollectionsList() {
+        $('#collectionsModalTitle').textContent = t('collections.title');
+        $('#collectionDetailView').classList.add('hidden');
+        $('#collectionsListView').classList.remove('hidden');
+        openCollectionsModal();
+      }
+
+      async function deleteCurrentCollection() {
+        if (!currentCollectionDetailId) return;
+        try {
+          await api('/api/collections/' + currentCollectionDetailId, { method: 'DELETE' });
+          currentCollectionDetailId = null;
+          backToCollectionsList();
+        } catch (e) { /* jim */ }
+      }
 
       async function createCollection(e) {
         e.preventDefault();
@@ -5173,6 +5244,69 @@
           await apiJSON('/api/collections', 'POST', { name });
           input.value = '';
           openCollectionsModal();
+        } catch (e) { /* jim */ }
+      }
+
+      /* ============ Lightbox'dan to'g'ridan-to'g'ri to'plamga qo'shish ============ */
+      function collectionPickRowHTML(c, workId) {
+        const checked = c.works.some(w => w.id === workId);
+        return `
+      <label class="collection-pick-row">
+        <input type="checkbox" class="collection-pick-checkbox" data-collection-id="${c.id}" ${checked ? 'checked' : ''}>
+        <span>${escapeHtml(c.name)}</span>
+        <span class="collection-card-count">${c.works.length} ${t('collections.itemsCount')}</span>
+      </label>`;
+      }
+
+      async function loadAddToCollectionList() {
+        if (!pendingDeleteId) return;
+        $('#addToCollectionList').innerHTML = `<div class="comments-empty">${t('comments.loading')}</div>`;
+        try {
+          const items = await fetchMyCollections();
+          if (!items.length) {
+            $('#addToCollectionList').innerHTML = `<div class="comments-empty">${t('collections.empty')}</div>`;
+          } else {
+            $('#addToCollectionList').innerHTML = items.map(c => collectionPickRowHTML(c, pendingDeleteId)).join('');
+            $('#addToCollectionList').querySelectorAll('.collection-pick-checkbox').forEach(cb => {
+              cb.addEventListener('change', async () => {
+                const colId = cb.dataset.collectionId;
+                const body = cb.checked ? { addWorkId: pendingDeleteId } : { removeWorkId: pendingDeleteId };
+                try { await apiJSON('/api/collections/' + colId, 'PUT', body); }
+                catch (e) { cb.checked = !cb.checked; }
+              });
+            });
+          }
+        } catch (e) {
+          $('#addToCollectionList').innerHTML = `<div class="comments-empty">${t('comments.loadFail')}</div>`;
+        }
+      }
+
+      function openAddToCollectionPanel() {
+        if (!pendingDeleteId) return;
+        const panel = $('#addToCollectionPanel');
+        const isOpen = panel.classList.contains('open');
+        if (isOpen) { closeAddToCollectionPanel(); return; }
+        panel.classList.add('open');
+        panel.classList.remove('hidden');
+        loadAddToCollectionList();
+      }
+
+      function closeAddToCollectionPanel() {
+        $('#addToCollectionPanel').classList.remove('open');
+        $('#addToCollectionPanel').classList.add('hidden');
+      }
+
+      async function quickCreateCollection(e) {
+        e.preventDefault();
+        if (!pendingDeleteId) return;
+        const input = $('#quickNewCollectionName');
+        const name = input.value.trim();
+        if (!name) return;
+        try {
+          const data = await apiJSON('/api/collections', 'POST', { name });
+          await apiJSON('/api/collections/' + data.collection.id, 'PUT', { addWorkId: pendingDeleteId });
+          input.value = '';
+          loadAddToCollectionList();
         } catch (e) { /* jim */ }
       }
 
@@ -6615,7 +6749,9 @@
         pendingDeleteId = isMine ? id : null;
         $('#deleteWorkBtn').classList.toggle('hidden', !isMine);
         $('#editStatusBtn').classList.toggle('hidden', !isMine);
+        $('#addToCollectionBtn').classList.toggle('hidden', !isMine);
         closeStatusEditor();
+        closeAddToCollectionPanel();
         LIGHTBOX_IMAGES = workImages(w);
         $('#lightboxImg').innerHTML = collageHTML(LIGHTBOX_IMAGES, w.title, w.video, w.poster);
         $('#lightboxImg').className = 'lightbox-collage';
@@ -6647,6 +6783,7 @@
         pendingDeleteId = null;
         $('#deleteWorkBtn').classList.remove('hidden');
         closeStatusEditor();
+        closeAddToCollectionPanel();
       }
 
       function openStatusEditor() {
