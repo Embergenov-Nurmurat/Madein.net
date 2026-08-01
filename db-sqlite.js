@@ -33,19 +33,14 @@ const Database = require('better-sqlite3');
 
 function openDatabase(dataDir) {
   const dbPath = path.join(dataDir, 'madein.db');
-  console.log('DB-CHECKPOINT A: fayl yo\'li =', dbPath);
   const sqlite = new Database(dbPath);
-  console.log('DB-CHECKPOINT B: new Database() muvaffaqiyatli');
-  // MUHIM: WAL rejimi mmap/shared-memory (-shm fayl) talab qiladi. Railway
-  // Volume kabi tarmoq orqali ulangan (network-backed) xotiralarda bu
-  // to'liq qo'llab-quvvatlanmaydi va better-sqlite3'ni "Segmentation fault"
-  // bilan qulatadi. Shu sabab bu yerda WAL emas, oddiy TRUNCATE jurnal
+  // MUHIM: WAL rejimi mmap/shared-memory (-shm fayl) talab qiladi va ba'zi
+  // tarmoq orqali ulangan (network-backed) xotiralarda muammo keltirib
+  // chiqarishi mumkin. Shu sabab bu yerda WAL emas, oddiy TRUNCATE jurnal
   // rejimi ishlatiladi — u mmap talab qilmaydi va istalgan fayl tizimida
   // (jumladan tarmoq volume'larida ham) ishonchli ishlaydi.
   sqlite.pragma('journal_mode = TRUNCATE');
-  console.log('DB-CHECKPOINT C: journal_mode pragma muvaffaqiyatli');
   sqlite.pragma('synchronous = FULL');   // diskka haqiqatan yozilganiga kafolat (durability)
-  console.log('DB-CHECKPOINT D: synchronous pragma muvaffaqiyatli');
 
   sqlite.exec(`
     CREATE TABLE IF NOT EXISTS users (
@@ -73,7 +68,6 @@ function openDatabase(dataDir) {
     CREATE INDEX IF NOT EXISTS idx_orders_buyer ON orders(buyer);
     CREATE INDEX IF NOT EXISTS idx_orders_created ON orders(created_at);
   `);
-  console.log('DB-CHECKPOINT E: CREATE TABLE/INDEX muvaffaqiyatli');
 
   return sqlite;
 }
