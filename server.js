@@ -29,6 +29,9 @@ const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
 const webpush = require('web-push');
 const nodemailer = require('nodemailer');
+const payments = require('./payments');
+const dbSqlite = require('./db-sqlite');
+const twofa = require('./twofa');
 
 /* ===================== PUSH XABARNOMALAR (Web Push) =====================
    Brauzer/PWA yopiq bo'lsa ham foydalanuvchiga xabar (masalan "Sizga
@@ -82,7 +85,7 @@ if (PUSH_ENABLED) {
   console.warn('DIQQAT: VAPID_PUBLIC_KEY/VAPID_PRIVATE_KEY sozlanmagan — push xabarnomalar o\'chirilgan holda ishga tushdi.');
 }
 
-const STORAGE_DIR = path.join(__dirname, 'storage');
+const STORAGE_DIR = process.env.STORAGE_DIR ? path.resolve(process.env.STORAGE_DIR) : path.join(__dirname, 'storage');
 const DATA_DIR = path.join(STORAGE_DIR, 'data');
 const UPLOADS_DIR = path.join(STORAGE_DIR, 'uploads');
 const SESSIONS_DIR = path.join(STORAGE_DIR, 'sessions');
@@ -610,19 +613,20 @@ async function sendPush(uname, content) {
 }
 
 
-/* ===================== JSON FAYL-ASOSLI "BAZA" =====================
-   50 kishi uchun to'liq bemalol yetadi. Yozishlar navbatga qo'yiladi,
-   shunda ikki so'rov bir vaqtda faylni buzib yozib qo'ymaydi. */
+/* ===================== SQLite-ASOSLI "BAZA" =====================
+   Ilgari bitta db.json fayl to'liq xotiraga o'qilib, har bir yozishda
+   qayta butunlay saqlanardi. Endi haqiqiy SQLite bazasi ishlatiladi
+   (storage/data/madein.db): yozishlar tranzaksiya ichida amalga oshadi
+   (server yozish paytida qulasa ham baza buzilmaydi), va agar eski
+   db.json topilsa — birinchi ishga tushganda avtomatik import qilinadi.
+   Batafsil izoh: db-sqlite.js */
+const sqlite = dbSqlite.openDatabase(DATA_DIR);
+dbSqlite.importFromJsonIfNeeded(sqlite, DB_FILE, fs);
+
 function loadDB() {
-  if (!fs.existsSync(DB_FILE)) return { users: {}, works: {}, messages: {} };
-  try {
-    const data = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
-    if (!data.messages) data.messages = {};
-    return data;
-  } catch (e) {
-    console.error('db.json buzilgan, bo\'sh baza bilan boshlanmoqda:', e.message);
-    return { users: {}, works: {}, messages: {} };
-  }
+  const data = dbSqlite.readFullDB(sqlite);
+  if (!data.messages) data.messages = {};
+  return data;
 }
 let db = loadDB();
 if (!Array.isArray(db.reports)) db.reports = [];
@@ -654,6 +658,32 @@ function rateLimit(key, limit, windowMs) {
    limitlaridan, masalan fayl hajmi) barqaror kod bilan javob shakliga
    o'giradi — shunda upload xatoliklari ham frontendda saytning joriy
    tiliga tarjima qilinadi. */
+/* Fayl HAQIQATDA rasmligini uning birinchi baytlaridan ("magic
+   number"/signature) tekshiradi — mijoz yuborgan Content-Type sarlavhasi
+   (mimetype) soxtalashtirilishi mumkin bo'lgani uchun, bu qo'shimcha,
+   soxtalashtirib bo'lmaydigan tekshiruv qatlami hisoblanadi. */
+function detectImageSignature(buf) {
+  if (buf.length >= 3 && buf[0] === 0xFF && buf[1] === 0xD8 && buf[2] === 0xFF) return 'image/jpeg';
+  if (buf.length >= 8 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4E && buf[3] === 0x47) return 'image/png';
+  if (buf.length >= 6 && buf.slice(0, 3).toString('ascii') === 'GIF' && (buf.slice(3, 6).toString('ascii') === '87a' || buf.slice(3, 6).toString('ascii') === '89a')) return 'image/gif';
+  if (buf.length >= 12 && buf.slice(0, 4).toString('ascii') === 'RIFF' && buf.slice(8, 12).toString('ascii') === 'WEBP') return 'image/webp';
+  return null;
+}
+function verifyImageFileOrDelete(filepath, declaredMime) {
+  let fd;
+  try {
+    fd = fs.openSync(filepath, 'r');
+    const buf = Buffer.alloc(16);
+    fs.readSync(fd, buf, 0, 16, 0);
+    const actual = detectImageSignature(buf);
+    return actual !== null; // fayl ichidan haqiqatan ham tanilgan rasm signaturasi topildimi
+  } catch (e) {
+    return false;
+  } finally {
+    if (fd !== undefined) try { fs.closeSync(fd); } catch (e) {}
+  }
+}
+
 function multerErrCode(err) {
   if (err && err.code === 'LIMIT_FILE_SIZE') return 'fileTooLarge';
   if (err && (err.code === 'LIMIT_FILE_COUNT' || err.code === 'LIMIT_UNEXPECTED_FILE')) return 'tooManyFiles';
@@ -689,15 +719,9 @@ for (const uname of Object.keys(db.users || {})) {
 
 let writeQueue = Promise.resolve();
 function saveDB() {
-  writeQueue = writeQueue.then(() => new Promise((resolve, reject) => {
-    const tmp = DB_FILE + '.tmp';
-    // Chiroyli (indent=2) emas, siqilgan JSON — har bir like/viewda butun
-    // faylni qayta yig'ish tezroq bo'lishi uchun
-    fs.writeFile(tmp, JSON.stringify(db), (err) => {
-      if (err) return reject(err);
-      fs.rename(tmp, DB_FILE, (err2) => err2 ? reject(err2) : resolve());
-    });
-  }));
+  writeQueue = writeQueue.then(() => {
+    dbSqlite.writeFullDB(sqlite, db);
+  });
   return writeQueue;
 }
 
@@ -775,6 +799,7 @@ app.set('trust proxy', 1); // ko'p hosting (Render/Railway/Heroku) proxy orqasid
 
 app.use(compression()); // javoblarni gzip bilan siqib, sahifalarni tezroq yuklaydi
 app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: false, limit: '1mb' })); // Click webhooklari form-urlencoded yuboradi
 app.use(session({
   store: new FileStore({ path: SESSIONS_DIR, logFn: () => {} }),
   secret: process.env.SESSION_SECRET || 'iltimos-buni-production-da-ozgartiring',
@@ -787,21 +812,116 @@ app.use(session({
   }
 }));
 
-app.use('/uploads', express.static(UPLOADS_DIR, { maxAge: '30d' }));
+/* Yuklangan fayllarni xizmat qilish — XSS'dan himoya:
+   - X-Content-Type-Options: nosniff — brauzer faylni "aslida HTML" deb
+     hidsanab, uni bajarib yubormasligi uchun (hatto extension noto'g'ri
+     bo'lsa ham).
+   - .html/.htm/.svg/.xhtml kabi skript ishga tushirishi mumkin bo'lgan
+     kengaytmalar to'g'ridan-to'g'ri ochilganda "attachment" sifatida
+     yuklab olinadi (brauzerda bajarilmaydi) — chat orqali ixtiyoriy
+     fayl yuborish funksiyasi mavjud bo'lgani uchun zarur ehtiyot chorasi. */
+const RENDER_UNSAFE_UPLOAD_EXT = ['.html', '.htm', '.xhtml', '.svg', '.shtml'];
+app.use('/uploads', (req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  const ext = path.extname(req.path).toLowerCase();
+  if (RENDER_UNSAFE_UPLOAD_EXT.includes(ext)) {
+    res.setHeader('Content-Disposition', 'attachment');
+  }
+  next();
+}, express.static(UPLOADS_DIR, { maxAge: '30d' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-/* Qidiruv tizimlari uchun oddiy sitemap. Sayt SPA (bitta index.html) bo'lgani
-   uchun hozircha faqat bosh sahifani ko'rsatadi. */
+/* ===================== SEO: sahifaga xos META TEGLAR =====================
+   Sayt SPA (bitta index.html) bo'lsa-da, /w/:id va /u/:username manzillari
+   uchun index.html'ning <head> qismidagi standart meta teglarini shu
+   asar/profilga xos <title>/description/OG/Twitter qiymatlari bilan
+   almashtirib beradi — shunda ijtimoiy tarmoqlarda ulashilganda (Telegram,
+   WhatsApp, Facebook) to'g'ri sarlavha/rasm ko'rinadi, va qidiruv
+   tizimlari har bir asar/profilni alohida sahifa sifatida indekslay oladi. */
+const DEFAULT_META_DESC = "Madein.net — hunarmandlar va ijodkorlarning qo'lda yasalgan asarlarini kashf eting, sotib oling yoki o'z ishlaringizni ulashing.";
+function escapeHtmlAttr(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function renderIndexWithMeta(res, { title, description, image, url }) {
+  let html;
+  try {
+    html = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8');
+  } catch (e) {
+    return res.status(500).send('Server error');
+  }
+  const safeTitle = escapeHtmlAttr(title || 'Madein.net');
+  const safeDesc = escapeHtmlAttr((description || DEFAULT_META_DESC).slice(0, 300));
+  const safeImage = escapeHtmlAttr(image || '/favicon-512.png');
+  const safeUrl = escapeHtmlAttr(url || '');
+  html = html
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${safeTitle}</title>`)
+    .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${safeDesc}">`)
+    .replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${safeTitle}">`)
+    .replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${safeDesc}">`)
+    .replace(/<meta property="og:image" content="[^"]*">/, `<meta property="og:image" content="${safeImage}">`)
+    .replace(/<meta name="twitter:title" content="[^"]*">/, `<meta name="twitter:title" content="${safeTitle}">`)
+    .replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${safeDesc}">`)
+    .replace(/<meta name="twitter:image" content="[^"]*">/, `<meta name="twitter:image" content="${safeImage}">`)
+    .replace('</head>', `  <meta property="og:url" content="${safeUrl}">\n  <link rel="canonical" href="${safeUrl}">\n</head>`);
+  res.set('Cache-Control', 'no-cache'); // ma'lumot (narx/nom) o'zgarishi mumkin — eskirgan kesh ko'rsatilmasin
+  res.send(html);
+}
+function absoluteUrl(req, relPath) {
+  return req.protocol + '://' + req.get('host') + relPath;
+}
+
+/* Bitta asar sahifasi — Telegram/WhatsApp/Facebook'da ulashilganda asar
+   nomi, tavsifi va rasmi bilan chiroyli preview ko'rsatish uchun. */
+app.get('/w/:id', (req, res) => {
+  const id = req.params.id;
+  let work = null;
+  for (const uname of Object.keys(db.works)) {
+    const found = (db.works[uname] || []).find(w => w.id === id);
+    if (found) { work = found; break; }
+  }
+  if (!work) {
+    return renderIndexWithMeta(res, { url: absoluteUrl(req, req.originalUrl) });
+  }
+  renderIndexWithMeta(res, {
+    title: `${work.title} — Madein.net`,
+    description: work.desc || DEFAULT_META_DESC,
+    image: work.images && work.images[0] ? absoluteUrl(req, work.images[0]) : undefined,
+    url: absoluteUrl(req, '/w/' + encodeURIComponent(id))
+  });
+});
+
+/* Foydalanuvchi profili sahifasi — xuddi shu maqsadda. */
+app.get('/u/:username', (req, res) => {
+  const uname = String(req.params.username || '').trim().toLowerCase();
+  const u = db.users[uname];
+  if (!u) {
+    return renderIndexWithMeta(res, { url: absoluteUrl(req, req.originalUrl) });
+  }
+  renderIndexWithMeta(res, {
+    title: `${u.fullname || uname} (@${uname}) — Madein.net`,
+    description: u.bio || DEFAULT_META_DESC,
+    image: u.avatar ? absoluteUrl(req, u.avatar) : undefined,
+    url: absoluteUrl(req, '/u/' + encodeURIComponent(uname))
+  });
+});
+
 app.get('/sitemap.xml', (req, res) => {
   const base = req.protocol + '://' + req.get('host');
-  res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${base}/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-</urlset>`);
+  const urls = [`  <url>\n    <loc>${base}/</loc>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>`];
+
+  const now = Date.now();
+  for (const uname of Object.keys(db.users)) {
+    const u = db.users[uname];
+    if (u.moderation && u.moderation.bannedUntil && new Date(u.moderation.bannedUntil).getTime() > now) continue;
+    urls.push(`  <url>\n    <loc>${base}/u/${encodeURIComponent(uname)}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>`);
+  }
+  for (const uname of Object.keys(db.works)) {
+    for (const w of (db.works[uname] || [])) {
+      urls.push(`  <url>\n    <loc>${base}/w/${encodeURIComponent(w.id)}</loc>\n    <lastmod>${new Date(w.createdAt || now).toISOString().slice(0, 10)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>`);
+    }
+  }
+
+  res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>`);
 });
 
 /* ===================== ONLAYN HOLATNI KUZATISH ===================== */
@@ -827,12 +947,23 @@ function getLastSeen(uname) {
 /* lastSeenAt vaqti-vaqti bilan diskka yoziladi — har so'rovda emas */
 setInterval(() => { saveDB().catch(() => {}); }, 5 * 60 * 1000).unref();
 
+/* Fayl kengaytmasini HECH QACHON mijoz yuborgan originalname'dan
+   olmaymiz (masalan "rasm.jpg.exe" deb nomlab, mimetype'ni
+   "image/jpeg" deb yolg'on ko'rsatish mumkin) — buning o'rniga faqat
+   serverda TASDIQLANGAN mimetype asosida xavfsiz kengaytma tanlaymiz. */
+const SAFE_EXT_BY_MIME = {
+  'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp', 'image/gif': '.gif',
+  'video/mp4': '.mp4', 'video/quicktime': '.mov', 'video/x-m4v': '.m4v'
+};
+function safeExtFor(mimetype) {
+  return SAFE_EXT_BY_MIME[mimetype] || '.bin';
+}
+
 /* rasm/video yuklash (multer) */
 const storage = multer.diskStorage({
   destination: UPLOADS_DIR,
   filename: (req, file, cb) => {
-    const ext = (path.extname(file.originalname) || '.jpg').toLowerCase();
-    cb(null, crypto.randomBytes(14).toString('hex') + ext);
+    cb(null, crypto.randomBytes(14).toString('hex') + safeExtFor(file.mimetype));
   }
 });
 
@@ -886,13 +1017,16 @@ function extractVideoPoster(inputPath, outputDir, filename) {
   });
 }
 
+const ALLOWED_IMAGE_MIMES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 const upload = multer({
   storage,
   limits: { fileSize: 30 * 1024 * 1024 }, // 30MB (qisqa videolarni ham sig'diradi)
   fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) return cb(null, true);
+    // SVG ataylab rad etiladi — u ichida <script> bo'lishi mumkin va
+    // to'g'ridan-to'g'ri brauzerda ochilsa bajarilib ketishi mumkin (XSS).
+    if (ALLOWED_IMAGE_MIMES.includes(file.mimetype)) return cb(null, true);
     if (ALLOWED_VIDEO_MIMES.includes(file.mimetype)) return cb(null, true);
-    const err = new Error('Faqat rasm yoki video (mp4/mov, 10 soniyagacha) fayllari qabul qilinadi');
+    const err = new Error('Faqat rasm (jpg/png/webp/gif) yoki video (mp4/mov, 10 soniyagacha) fayllari qabul qilinadi');
     err.code = 'invalidWorkMediaType';
     return cb(err);
   }
@@ -902,7 +1036,20 @@ const upload = multer({
    "krujok" — Telegramdagi kabi doiraviy video xabar, va istalgan fayl) ===================== */
 const ALLOWED_CHAT_VIDEO_MIMES = ALLOWED_VIDEO_MIMES.concat(['video/webm']);
 const ALLOWED_AUDIO_MIMES = ['audio/webm', 'audio/ogg', 'audio/mpeg', 'audio/mp4', 'audio/aac', 'audio/wav', 'audio/x-wav', 'audio/x-m4a'];
-const DANGEROUS_FILE_EXT = ['.exe', '.bat', '.cmd', '.sh', '.msi', '.com', '.scr', '.ps1', '.vbs', '.js', '.jar', '.app', '.apk'];
+const DANGEROUS_FILE_EXT = [
+  // bajariladigan/skript fayllar
+  '.exe', '.bat', '.cmd', '.sh', '.msi', '.com', '.scr', '.ps1', '.ps1xml', '.psc1', '.vb', '.vbs', '.vbe',
+  '.js', '.jse', '.jar', '.app', '.apk', '.ipa', '.dmg', '.pkg', '.deb', '.rpm', '.gadget', '.msp', '.mst',
+  '.cpl', '.msc', '.hta', '.reg', '.lnk', '.ws', '.wsf', '.wsc', '.wsh', '.job', '.paf', '.application',
+  '.dll', '.sys', '.drv', '.pif', '.action', '.workflow', '.command',
+  // server-tarafida bajariladigan skriptlar (agar noto'g'ri sozlangan
+  // veb-server /uploads'ni statik emas, dinamik deb xato tushunsa)
+  '.php', '.php3', '.php4', '.php5', '.php7', '.phtml', '.phar', '.cgi', '.pl', '.py', '.rb',
+  '.asp', '.aspx', '.ashx', '.asmx', '.jsp', '.jspx', '.cfm', '.cfc', '.do', '.action',
+  // brauzerda to'g'ridan-to'g'ri ochilganda skript bajarishi mumkin bo'lgan
+  // fayllar (stored XSS xavfi — /uploads to'g'ridan-to'g'ri ochilishi mumkin)
+  '.html', '.htm', '.xhtml', '.shtml', '.svg', '.xml', '.xsl', '.swf'
+];
 const MAX_CHAT_VIDEO_SECONDS = 120;   // oddiy video xabar
 const MAX_CHAT_CIRCLE_SECONDS = 60;   // "krujok" video xabar
 const MAX_CHAT_VOICE_SECONDS = 300;   // ovozli xabar
@@ -933,7 +1080,7 @@ const chatUpload = multer({
       return cb(null, true);
     }
     if (kind === 'photo') {
-      if (file.mimetype.startsWith('image/')) return cb(null, true);
+      if (file.mimetype.startsWith('image/') && file.mimetype !== 'image/svg+xml') return cb(null, true);
       const err = new Error('Faqat rasm fayllari qabul qilinadi');
       err.code = 'onlyImagesAllowed';
       return cb(err);
@@ -1334,12 +1481,106 @@ app.post('/api/login', rateLimit('login', 15, 10 * 60 * 1000), async (req, res) 
       });
     }
 
+    // Agar 2FA yoqilgan bo'lsa, sessiyani hali TO'LIQ ochmaymiz — avval
+    // 6 xonali kodni tasdiqlash kerak. Vaqtinchalik "pending2fa" belgisini
+    // sessiyaga qo'yamiz (bu bosqichda foydalanuvchi hali autentifikatsiyadan
+    // o'tmagan hisoblanadi — requireAuth uni tan olmaydi).
+    if (u.twoFactor && u.twoFactor.enabled) {
+      req.session.pending2faUsername = uname;
+      return res.json({ twoFactorRequired: true });
+    }
+
     req.session.username = uname;
     res.json({ user: publicUser(uname) });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: 'Kirishda server xatoligi', code: 'loginServerError' });
   }
+});
+
+/* 2FA kodi (autentifikator ilova) yoki zaxira kod bilan kirishni yakunlaydi. */
+app.post('/api/login/2fa-verify', rateLimit('2fa-verify', 10, 10 * 60 * 1000), async (req, res) => {
+  const uname = req.session.pending2faUsername;
+  if (!uname || !db.users[uname]) {
+    return res.status(400).json({ error: "Avval login va parolni yuboring", code: 'no2faPending' });
+  }
+  const u = db.users[uname];
+  const { code } = req.body || {};
+  const cleanCode = String(code || '').trim();
+
+  let ok = twofa.verifyTotp(u.twoFactor.secret, cleanCode);
+  let usedBackupCode = null;
+  if (!ok && Array.isArray(u.twoFactor.backupCodeHashes)) {
+    const hash = twofa.hashBackupCode(cleanCode.toLowerCase().replace(/\s/g, ''));
+    if (u.twoFactor.backupCodeHashes.includes(hash)) {
+      ok = true;
+      usedBackupCode = hash;
+    }
+  }
+  if (!ok) {
+    return res.status(401).json({ error: "Kod noto'g'ri yoki muddati o'tgan", code: 'invalid2faCode' });
+  }
+  if (usedBackupCode) {
+    u.twoFactor.backupCodeHashes = u.twoFactor.backupCodeHashes.filter(h => h !== usedBackupCode);
+    await saveDB();
+  }
+  delete req.session.pending2faUsername;
+  req.session.username = uname;
+  res.json({ user: publicUser(uname), usedBackupCode: !!usedBackupCode });
+});
+
+/* ===================== 2FA BOSHQARUVI (profil sozlamalaridan) ===================== */
+
+app.get('/api/2fa/status', requireAuth, (req, res) => {
+  const u = db.users[req.session.username];
+  res.json({ enabled: !!(u.twoFactor && u.twoFactor.enabled) });
+});
+
+/* 1-qadam: yangi maxfiy kalit generatsiya qilib, otpauth:// havolasini
+   qaytaradi (frontend buni QR-kodga aylantiradi). Hali YOQILMAYDI —
+   faqat foydalanuvchi kodni to'g'ri kiritganda /confirm orqali yoqiladi,
+   shunda autentifikatorni noto'g'ri sozlab qulflanib qolish xavfi yo'q. */
+app.post('/api/2fa/setup', requireAuth, rateLimit('2fa-setup', 10, 10 * 60 * 1000), (req, res) => {
+  const uname = req.session.username;
+  const secret = twofa.generateSecret();
+  req.session.pending2faSecret = secret;
+  res.json({ secret, otpauthUri: twofa.otpauthUri(secret, uname) });
+});
+
+/* 2-qadam: foydalanuvchi autentifikator ilovasidan ko'rgan 6 xonali
+   kodni yuboradi — to'g'ri bo'lsa 2FA yoqiladi va bir martalik zaxira
+   kodlar (faqat shu safar, ochiq matnda) qaytariladi. */
+app.post('/api/2fa/confirm', requireAuth, rateLimit('2fa-setup', 10, 10 * 60 * 1000), async (req, res) => {
+  const uname = req.session.username;
+  const secret = req.session.pending2faSecret;
+  if (!secret) return res.status(400).json({ error: "Avval /2fa/setup chaqiring", code: 'no2faSetupPending' });
+  const { code } = req.body || {};
+  if (!twofa.verifyTotp(secret, code)) {
+    return res.status(401).json({ error: "Kod noto'g'ri — autentifikator ilovangizdagi kodni qayta tekshiring", code: 'invalid2faCode' });
+  }
+  const backupCodes = twofa.generateBackupCodes(8);
+  db.users[uname].twoFactor = {
+    enabled: true,
+    secret,
+    backupCodeHashes: backupCodes.map(c => twofa.hashBackupCode(c)),
+    enabledAt: new Date().toISOString()
+  };
+  delete req.session.pending2faSecret;
+  await saveDB();
+  res.json({ ok: true, backupCodes });
+});
+
+/* 2FA'ni o'chirish — joriy parol qayta so'raladi (agar sessiya o'g'irlangan
+   bo'lsa ham, hujumchi 2FA'ni shunchaki o'chirib qo'ya olmasligi uchun). */
+app.post('/api/2fa/disable', requireAuth, rateLimit('2fa-setup', 10, 10 * 60 * 1000), async (req, res) => {
+  const uname = req.session.username;
+  const u = db.users[uname];
+  const { password } = req.body || {};
+  const ok = await bcrypt.compare(String(password || ''), u.passwordHash);
+  if (!ok) return res.status(401).json({ error: "Parol noto'g'ri", code: 'wrongPassword' });
+  u.twoFactor = { enabled: false };
+  await saveDB();
+  res.json({ ok: true });
 });
 
 app.post('/api/logout', (req, res) => {
@@ -1750,13 +1991,16 @@ app.post('/api/cart/checkout', requireAuth, async (req, res) => {
     totalsByCurrency[it.currency] = (totalsByCurrency[it.currency] || 0) + it.price * it.qty;
   }
 
+  const requestedMethod = String((req.body && req.body.paymentMethod) || 'manual').trim();
+  const orderId = 'ord' + Date.now() + crypto.randomBytes(4).toString('hex');
   const order = {
-    id: 'ord' + Date.now() + crypto.randomBytes(4).toString('hex'),
+    id: orderId,
     buyer: me,
     items: orderItems,
     totalsByCurrency,
     status: 'placed',
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
+    ...initialPaymentFields(requestedMethod, totalsByCurrency, orderId)
   };
   db.orders.push(order);
 
@@ -1775,7 +2019,7 @@ app.post('/api/cart/checkout', requireAuth, async (req, res) => {
 
   u.cart = {};
   await saveDB();
-  res.json({ ok: true, orderId: order.id, totalsByCurrency });
+  res.json({ ok: true, orderId: order.id, totalsByCurrency, paymentMethod: order.paymentMethod, paymentStatus: order.paymentStatus, checkoutUrl: order.checkoutUrl || null });
 });
 
 /* Bitta asarni darhol (savatga qo'shmasdan) sotib olish — bosh betdagi
@@ -1796,13 +2040,17 @@ app.post('/api/works/:id/buy-now', requireAuth, async (req, res) => {
   const qty = 1;
   const price = Number(work.price) || 0;
   const currency = work.currency || 'UZS';
+  const totalsByCurrency = { [currency]: price * qty };
+  const requestedMethod = String((req.body && req.body.paymentMethod) || 'manual').trim();
+  const orderId = 'ord' + Date.now() + crypto.randomBytes(4).toString('hex');
   const order = {
-    id: 'ord' + Date.now() + crypto.randomBytes(4).toString('hex'),
+    id: orderId,
     buyer: me,
     items: [{ workId: work.id, title: work.title, qty, price, currency, sellerUsername: owner }],
-    totalsByCurrency: { [currency]: price * qty },
+    totalsByCurrency,
     status: 'placed',
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
+    ...initialPaymentFields(requestedMethod, totalsByCurrency, orderId)
   };
   db.orders.push(order);
 
@@ -1816,7 +2064,7 @@ app.post('/api/works/:id/buy-now', requireAuth, async (req, res) => {
   createOrderChatMessage(me, owner, order, order.items);
 
   await saveDB();
-  res.json({ ok: true, orderId: order.id, totalsByCurrency: order.totalsByCurrency });
+  res.json({ ok: true, orderId: order.id, totalsByCurrency: order.totalsByCurrency, paymentMethod: order.paymentMethod, paymentStatus: order.paymentStatus, checkoutUrl: order.checkoutUrl || null });
 });
 
 /* Buyurtmalarim — xaridor sifatida bergan va sotuvchi sifatida qabul
@@ -1829,6 +2077,31 @@ app.get('/api/orders/mine', requireAuth, (req, res) => {
 });
 
 const ORDER_STATUSES = ['placed', 'confirmed', 'shipped', 'completed', 'cancelled'];
+const PAYMENT_METHODS = ['payme', 'click', 'manual'];
+
+/* Buyurtma yaratilganda to'lov usuliga qarab boshlang'ich to'lov
+   maydonlarini (paymentMethod/paymentStatus/checkoutUrl) hisoblaydi.
+   - payme/click tanlansa va provider sozlangan bo'lsa hamda buyurtma
+     to'liq UZS'da bo'lsa — checkoutUrl beriladi, paymentStatus='unpaid'
+     (foydalanuvchi hali gateway'ga o'tmagan).
+   - Aks holda (provider sozlanmagan, valyuta mos kelmasa yoki 'manual'
+     tanlansa) — 'manual' usulga tushadi: to'lov offline (naqd/pul
+     o'tkazma) kelishiladi, sotuvchi buyurtma holatini qo'lda yangilaydi. */
+function initialPaymentFields(requestedMethod, totalsByCurrency, orderId) {
+  const method = PAYMENT_METHODS.includes(requestedMethod) ? requestedMethod : 'manual';
+  const uzsOnly = isUZSOnlyTotals(totalsByCurrency);
+  if (method === 'payme' && payments.PAYME_ENABLED && uzsOnly) {
+    return { paymentMethod: 'payme', paymentStatus: 'unpaid', checkoutUrl: payments.paymeCheckoutUrl({ id: orderId, totalsByCurrency }) };
+  }
+  if (method === 'click' && payments.CLICK_ENABLED && uzsOnly) {
+    return { paymentMethod: 'click', paymentStatus: 'unpaid', checkoutUrl: payments.clickCheckoutUrl({ id: orderId, totalsByCurrency }) };
+  }
+  return { paymentMethod: 'manual', paymentStatus: 'unpaid', checkoutUrl: null };
+}
+function isUZSOnlyTotals(totalsByCurrency) {
+  const currencies = Object.keys(totalsByCurrency || {});
+  return currencies.length === 1 && currencies[0] === 'UZS';
+}
 
 /* Sotuvchi o'ziga tegishli buyurtma holatini yangilaydi (masalan
    "jo'natildi" yoki "yakunlandi") — xaridorga shu haqda push
@@ -1853,6 +2126,84 @@ app.patch('/api/orders/:id/status', requireAuth, async (req, res) => {
   await saveDB();
   res.json({ ok: true, order });
 });
+
+/* ===================== TO'LOV TIZIMLARI (PAYME / CLICK) ===================== */
+
+/* Frontend checkout oynasida qaysi to'lov usullari mavjudligini so'raydi
+   (provider sozlangan/sozlanmaganiga qarab payme/click ko'rsatilmasligi
+   mumkin — bu holda faqat "manual" qoladi). */
+app.get('/api/payments/gateways', (req, res) => {
+  res.json({ gateways: payments.availableGateways() });
+});
+
+/* Allaqachon yaratilgan buyurtma uchun to'lov havolasini qayta olish —
+   masalan foydalanuvchi checkout sahifasidan tasodifan chiqib ketsa. */
+app.get('/api/payments/:orderId/status', requireAuth, (req, res) => {
+  const order = db.orders.find(o => o.id === req.params.orderId);
+  if (!order) return res.status(404).json({ error: 'Buyurtma topilmadi', code: 'orderNotFound' });
+  const me = req.session.username;
+  const isBuyer = order.buyer === me;
+  const isSeller = Array.isArray(order.items) && order.items.some(it => it.sellerUsername === me);
+  if (!isBuyer && !isSeller) return res.status(403).json({ error: 'Ruxsat yo\'q', code: 'forbidden' });
+  res.json({
+    orderId: order.id,
+    paymentMethod: order.paymentMethod || 'manual',
+    paymentStatus: order.paymentStatus || 'unpaid',
+    checkoutUrl: order.checkoutUrl || null,
+    status: order.status
+  });
+});
+
+/* Payme Merchant API — checkout.paycom.uz to'lov muvaffaqiyatli/muvaffaqiyatsiz
+   bo'lganda shu endpointga JSON-RPC so'rov yuboradi. Basic Auth bilan
+   himoyalangan (login: Paycom, parol: PAYME_SECRET_KEY), shuning uchun
+   requireAuth (sessiya) talab qilinmaydi. */
+app.post('/api/payments/payme', async (req, res) => {
+  if (!payments.PAYME_ENABLED) return res.status(503).json({ error: { code: -32601, message: 'Payme is not configured' } });
+  if (!payments.verifyPaymeAuth(req)) {
+    return res.status(200).json({ jsonrpc: '2.0', id: (req.body && req.body.id) || null, error: { code: -32504, message: 'Insufficient privilege' } });
+  }
+  const ctx = {
+    findOrder: (orderId) => db.orders.find(o => o.id === orderId),
+    findOrderByTransaction: (provider, txId) => db.orders.find(o => o[provider] && o[provider].transactions && o[provider].transactions[txId]),
+    saveOrder: async () => { await saveDB(); },
+    listOrdersInRange: (from, to) => db.orders.filter(o => {
+      const t = new Date(o.createdAt).getTime();
+      return o.paymentMethod === 'payme' && t >= from && t <= to;
+    }),
+    onPaid: async (order) => {
+      addNotification(order.buyer, { type: 'order-status', orderId: order.id, status: 'paid' });
+      const sellers = [...new Set(order.items.map(it => it.sellerUsername))];
+      for (const seller of sellers) addNotification(seller, { type: 'order-paid', orderId: order.id, from: order.buyer });
+    }
+  };
+  const result = await payments.handlePaymeRequest(req.body, ctx);
+  res.json(result);
+});
+
+/* Click Merchant API — ikkita alohida endpoint: Prepare (action=0) va
+   Complete (action=1). To'liq hujjat: docs.click.uz */
+app.post('/api/payments/click/prepare', async (req, res) => {
+  if (!payments.CLICK_ENABLED) return res.status(503).json({ error: -1, error_note: 'Click is not configured' });
+  const result = await payments.handleClickRequest(req.body, 0, clickCtx());
+  res.json(result);
+});
+app.post('/api/payments/click/complete', async (req, res) => {
+  if (!payments.CLICK_ENABLED) return res.status(503).json({ error: -1, error_note: 'Click is not configured' });
+  const result = await payments.handleClickRequest(req.body, 1, clickCtx());
+  res.json(result);
+});
+function clickCtx() {
+  return {
+    findOrder: (orderId) => db.orders.find(o => o.id === orderId),
+    saveOrder: async () => { await saveDB(); },
+    onPaid: async (order) => {
+      addNotification(order.buyer, { type: 'order-status', orderId: order.id, status: 'paid' });
+      const sellers = [...new Set(order.items.map(it => it.sellerUsername))];
+      for (const seller of sellers) addNotification(seller, { type: 'order-paid', orderId: order.id, from: order.buyer });
+    }
+  };
+}
 
 /* ===================== SHIKOYATLAR (REPORT) ===================== */
 app.post('/api/works/:id/report', requireAuth, rateLimit('report', 15, 10 * 60 * 1000), async (req, res) => {
@@ -1981,6 +2332,11 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
     if (!req.files || !req.files.length) return res.status(400).json({ error: 'Kamida bitta rasm yoki video talab qilinadi', code: 'mediaRequired' });
 
     const { title, type, status, price, currency, desc, stockMode: stockModeRaw, stockQty: stockQtyRaw, typeCustom: typeCustomRaw, tags: tagsRaw } = req.body || {};
+    const cleanTitle = String(title || '').trim();
+    if (!cleanTitle) {
+      req.files.forEach(f => fs.unlink(f.path, () => {}));
+      return res.status(400).json({ error: 'Asar nomi kiritilishi shart', code: 'titleRequired' });
+    }
     const isSale = status === 'sale';
     const CURRENCIES = ['UZS', 'USD', 'EUR', 'RUB'];
     const workType = ['rasm', 'haykal', 'mulaj', 'boshqa'].includes(type) ? type : 'boshqa';
@@ -2000,6 +2356,12 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
     function rejectWithCleanup(status, message, code) {
       req.files.forEach(f => fs.unlink(f.path, () => {}));
       return res.status(status).json({ error: message, code });
+    }
+
+    for (const f of imageFiles) {
+      if (!verifyImageFileOrDelete(f.path)) {
+        return rejectWithCleanup(400, "Fayl ichidagi ma'lumot haqiqiy rasm formatiga mos kelmadi", 'invalidImageContent');
+      }
     }
 
     if (videoFile) {
@@ -2032,7 +2394,7 @@ app.post('/api/works', requireAuth, requireNotMuted, (req, res) => {
 
       const work = {
         id: 'w' + Date.now() + crypto.randomBytes(4).toString('hex'),
-        title: String(title || '').slice(0, 200),
+        title: cleanTitle.slice(0, 200),
         type: workType,
         typeCustom: typeCustom || undefined,
         status: isSale ? 'sale' : 'expo',
@@ -2360,6 +2722,7 @@ app.get('/api/feed', (req, res) => {
 
   const q = String(req.query.q || '').trim().toLowerCase();
   const type = String(req.query.type || '').trim().toLowerCase();
+  const statusFilter = String(req.query.status || '').trim().toLowerCase();
   const tagFilter = String(req.query.tag || '').trim().toLowerCase();
   const onlyFollowing = req.query.following === '1' || req.query.following === 'true';
   const sort = String(req.query.sort || 'new').trim().toLowerCase(); // 'new' | 'top'
@@ -2377,6 +2740,7 @@ app.get('/api/feed', (req, res) => {
     if (onlyFollowing && !followingSet.has(uname)) continue;
     for (const w of db.works[uname] || []) {
       if (type && type !== 'all' && w.type !== type) continue;
+      if (statusFilter && statusFilter !== 'all' && w.status !== statusFilter) continue;
       const workTags = Array.isArray(w.tags) ? w.tags : [];
       if (tagFilter && !workTags.includes(tagFilter)) continue;
       if ((minPrice !== null || maxPrice !== null)) {
@@ -3317,7 +3681,101 @@ app.get('/api/admin/stats', requireAuth, requireAdmin, (req, res) => {
   });
 });
 
-/* Shikoyatlar ro'yxati (Administrator burchagi uchun) */
+/* ===================== ADMIN ANALITIKA PANELI =====================
+   Kunlik faol foydalanuvchilar, valyuta bo'yicha savdo hajmi, eng ko'p
+   sotuvchilar va oxirgi 14 kunlik o'sish dinamikasi. Barchasi mavjud
+   ma'lumotlardan (users.lastSeenAt, orders, works.createdAt) hisoblanadi —
+   alohida "analytics event log" tizimi kerak emas. */
+app.get('/api/admin/analytics', requireAuth, requireAdmin, (req, res) => {
+  const now = Date.now();
+  const DAY = 24 * 60 * 60 * 1000;
+  const usernames = Object.keys(db.users);
+
+  // ---- Faol foydalanuvchilar (oxirgi ko'rilgan vaqt asosida) ----
+  let dau = 0, wau = 0, mau = 0;
+  for (const uname of usernames) {
+    const seen = getLastSeen(uname);
+    if (!seen) continue;
+    const age = now - seen;
+    if (age <= DAY) dau++;
+    if (age <= 7 * DAY) wau++;
+    if (age <= 30 * DAY) mau++;
+  }
+
+  // ---- Savdo hajmi (valyuta bo'yicha) ----
+  const salesByCurrency = {}; // { UZS: { paidTotal, paidCount, allTotal, allCount } }
+  const sellerRevenue = {}; // { username: { revenueByCurrency: {...}, ordersCount, paidOrdersCount } }
+  for (const order of db.orders) {
+    const isPaid = order.paymentStatus === 'paid' || (!order.paymentMethod || order.paymentMethod === 'manual') && order.status !== 'cancelled';
+    for (const currency of Object.keys(order.totalsByCurrency || {})) {
+      const amount = order.totalsByCurrency[currency] || 0;
+      if (!salesByCurrency[currency]) salesByCurrency[currency] = { paidTotal: 0, paidCount: 0, allTotal: 0, allCount: 0 };
+      salesByCurrency[currency].allTotal += amount;
+      salesByCurrency[currency].allCount += 1;
+      if (isPaid) {
+        salesByCurrency[currency].paidTotal += amount;
+        salesByCurrency[currency].paidCount += 1;
+      }
+    }
+    // sotuvchilar bo'yicha (buyurtma bir nechta sotuvchining mahsulotini o'z ichiga olishi mumkin)
+    const sellersInOrder = [...new Set((order.items || []).map(it => it.sellerUsername))];
+    for (const seller of sellersInOrder) {
+      if (!sellerRevenue[seller]) sellerRevenue[seller] = { revenueByCurrency: {}, ordersCount: 0, paidOrdersCount: 0 };
+      sellerRevenue[seller].ordersCount += 1;
+      if (isPaid) sellerRevenue[seller].paidOrdersCount += 1;
+      for (const item of (order.items || [])) {
+        if (item.sellerUsername !== seller) continue;
+        const cur = item.currency || 'UZS';
+        const amt = (Number(item.price) || 0) * (Number(item.qty) || 1);
+        sellerRevenue[seller].revenueByCurrency[cur] = (sellerRevenue[seller].revenueByCurrency[cur] || 0) + amt;
+      }
+    }
+  }
+  const topSellers = Object.keys(sellerRevenue)
+    .map(uname => ({ username: uname, ...sellerRevenue[uname] }))
+    .sort((a, b) => {
+      const aMax = Math.max(0, ...Object.values(a.revenueByCurrency));
+      const bMax = Math.max(0, ...Object.values(b.revenueByCurrency));
+      return bMax - aMax;
+    })
+    .slice(0, 10);
+
+  // ---- Oxirgi 14 kunlik o'sish dinamikasi ----
+  const days = 14;
+  const growth = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const dayStart = new Date(now - i * DAY); dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(dayStart.getTime() + DAY);
+    const dateStr = dayStart.toISOString().slice(0, 10);
+
+    let newUsers = 0;
+    for (const uname of usernames) {
+      const joined = new Date(db.users[uname].joined).getTime();
+      if (joined >= dayStart.getTime() && joined < dayEnd.getTime()) newUsers++;
+    }
+    let newWorks = 0;
+    for (const uname of Object.keys(db.works)) {
+      for (const w of (db.works[uname] || [])) {
+        const created = new Date(w.createdAt).getTime();
+        if (created >= dayStart.getTime() && created < dayEnd.getTime()) newWorks++;
+      }
+    }
+    let ordersCount = 0;
+    let revenueUZS = 0;
+    for (const order of db.orders) {
+      const created = new Date(order.createdAt).getTime();
+      if (created >= dayStart.getTime() && created < dayEnd.getTime()) {
+        ordersCount++;
+        revenueUZS += (order.totalsByCurrency && order.totalsByCurrency.UZS) || 0;
+      }
+    }
+    growth.push({ date: dateStr, newUsers, newWorks, ordersCount, revenueUZS });
+  }
+
+  res.json({ dau, wau, mau, salesByCurrency, topSellers, growth, totalUsers: usernames.length, totalOrders: db.orders.length });
+});
+
+
 app.get('/api/admin/reports', requireAuth, requireAdmin, async (req, res) => {
   ensureReportsArray();
   if (purgeResolvedReports()) await saveDB();

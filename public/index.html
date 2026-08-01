@@ -92,6 +92,17 @@
         <button type="submit" class="btn btn-primary btn-block" data-i18n="auth.loginBtn">Kirish</button>
       </form>
 
+      <form id="twoFactorLoginForm" class="auth-form hidden">
+        <div class="field">
+          <label data-i18n="twofa.loginPrompt">Autentifikator ilovangizdagi 6 xonali kodni (yoki zaxira kodni) kiriting</label>
+          <div class="input-wrap">
+            <input type="text" id="twoFactorLoginCode" autocomplete="one-time-code" required maxlength="10" placeholder="000000">
+          </div>
+        </div>
+        <div class="form-error" id="twoFactorLoginError"></div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="twofa.confirm">Tasdiqlash</button>
+      </form>
+
       <form id="registerForm" class="auth-form hidden">
         <div class="field">
           <label data-i18n="auth.regFullname">To'liq ism</label>
@@ -276,6 +287,11 @@
               <option value="mulaj" data-i18n="upload.type.mulaj">Mulaj</option>
               <option value="boshqa" data-i18n="upload.type.boshqa">Boshqa</option>
             </select>
+            <select id="feedStatusSelect" aria-label="Holati" data-i18n-aria="filter.statusAria">
+              <option value="" data-i18n="filter.status.all">Barcha holatlar</option>
+              <option value="sale" data-i18n="filter.status.sale">Sotuvda</option>
+              <option value="expo" data-i18n="filter.status.expo">Ko'rgazma</option>
+            </select>
             <select id="feedSortSelect" aria-label="Saralash" data-i18n-aria="filter.sortAria">
               <option value="new" data-i18n="filter.sort.new">Eng yangi</option>
               <option value="top" data-i18n="filter.sort.top">Eng ko'p yoqtirilgan</option>
@@ -289,6 +305,7 @@
               <input type="checkbox" id="feedFollowingToggle">
               <span data-i18n="filter.onlyFollowing">Faqat kuzatuvchilarim</span>
             </label>
+            <button type="button" class="btn btn-ghost btn-sm" id="feedClearFiltersBtn" data-i18n="filter.clear">Tozalash</button>
           </div>
         </div>
         <div id="feedList" class="feed-list"></div>
@@ -425,6 +442,30 @@
             <div class="field-row" style="align-items:center;">
               <button type="button" class="btn btn-ghost btn-sm" id="saveCredentialsBtn" data-i18n="account.save">Saqlash</button>
               <div class="field-hint" id="credentialsMsg"></div>
+            </div>
+          </div>
+          <div class="privacy-block" id="twoFactorBlock">
+            <div class="field-hint" style="margin-bottom:6px;" data-i18n="twofa.title">Ikki bosqichli tasdiqlash (2FA)</div>
+            <div class="field-hint" data-i18n="twofa.desc">Hisobingizni parolga qo'shimcha, autentifikator ilova (Google Authenticator, Authy va h.k.) orqali himoyalang.</div>
+            <div id="twoFactorOff" class="hidden">
+              <button type="button" class="btn btn-ghost btn-sm" id="twoFactorEnableBtn" data-i18n="twofa.enable">Yoqish</button>
+            </div>
+            <div id="twoFactorOn" class="hidden">
+              <span class="order-payment-badge order-payment-paid" data-i18n="twofa.enabled">Yoqilgan</span>
+              <button type="button" class="btn btn-ghost btn-sm" id="twoFactorDisableBtn" data-i18n="twofa.disable">O'chirish</button>
+            </div>
+            <div id="twoFactorSetupBox" class="hidden" style="margin-top:10px;">
+              <div class="field-hint" data-i18n="twofa.scanHint">Autentifikator ilovangizda quyidagi kalitni qo'lda kiriting (yoki QR-kod skaner ilovasi bilan otpauth havolasini oching):</div>
+              <div class="field-hint" id="twoFactorSecretText" style="font-family:monospace; user-select:all; margin:6px 0;"></div>
+              <div class="field"><label data-i18n="twofa.codeLabel">Ilovadagi 6 xonali kod</label>
+                <input type="text" id="twoFactorSetupCode" maxlength="6" inputmode="numeric" placeholder="000000">
+              </div>
+              <button type="button" class="btn btn-primary btn-sm" id="twoFactorConfirmBtn" data-i18n="twofa.confirm">Tasdiqlash</button>
+              <div class="form-error hidden" id="twoFactorSetupError"></div>
+            </div>
+            <div id="twoFactorBackupBox" class="hidden" style="margin-top:10px;">
+              <div class="field-hint" data-i18n="twofa.backupHint">Zaxira kodlar (autentifikator yo'qolsa ishlatiladi) — ularni xavfsiz joyda saqlang, bu ro'yxat qayta ko'rsatilmaydi:</div>
+              <div id="twoFactorBackupList" style="font-family:monospace; line-height:1.8;"></div>
             </div>
           </div>
           <div class="privacy-block">
@@ -572,6 +613,24 @@
           <p class="view-sub" data-i18n="admin.sub">Barcha foydalanuvchilar — ban yoki mut bering, muddatidan avval olib tashlang.</p>
         </div>
         <div id="adminStatsGrid" class="admin-stats-grid"></div>
+
+        <div class="section-label" data-i18n="admin.analytics.label">Statistika paneli</div>
+        <div id="adminAnalyticsGrid" class="admin-stats-grid"></div>
+        <div class="admin-analytics-row">
+          <div class="admin-analytics-card">
+            <div class="admin-analytics-card-title" data-i18n="admin.analytics.salesTitle">Savdo hajmi (valyuta bo'yicha)</div>
+            <div id="adminSalesTable"></div>
+          </div>
+          <div class="admin-analytics-card">
+            <div class="admin-analytics-card-title" data-i18n="admin.analytics.topSellersTitle">Eng ko'p sotuvchilar</div>
+            <div id="adminTopSellersTable"></div>
+          </div>
+        </div>
+        <div class="admin-analytics-card">
+          <div class="admin-analytics-card-title" data-i18n="admin.analytics.growthTitle">Oxirgi 14 kunlik o'sish</div>
+          <div id="adminGrowthChart" class="admin-growth-chart"></div>
+        </div>
+
         <div id="adminReportsSection">
           <div class="section-label" data-i18n="admin.reportsLabel">Shikoyatlar</div>
           <div id="adminReportsList"></div>
@@ -620,6 +679,22 @@
         <div class="form-error" id="reportModalError"></div>
         <button type="submit" class="btn btn-primary btn-block" data-i18n="report.submitBtn">Yuborish</button>
       </form>
+    </div>
+  </div>
+
+  <!-- ============ TO'LOV USULI MODAL ============ -->
+  <div class="modal-backdrop" id="paymentModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 data-i18n="payment.chooseTitle">To'lov usulini tanlang</h3>
+        <button class="modal-close" id="closePaymentModal">✕</button>
+      </div>
+      <div class="admin-mod-form">
+        <div class="field-hint" id="paymentModalTotal" style="margin-bottom:10px;"></div>
+        <div class="payment-methods" id="paymentMethodsList"></div>
+        <div class="form-error hidden" id="paymentModalError"></div>
+        <button type="button" class="btn btn-primary btn-block" id="paymentConfirmBtn" data-i18n="payment.confirmBtn">Davom etish</button>
+      </div>
     </div>
   </div>
 

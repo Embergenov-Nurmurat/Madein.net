@@ -305,6 +305,16 @@
           "notif.muteExpired": "Mut muddatingiz tugadi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin.",
           "nav.cart": "Korzinka",
           "search.placeholder": "Qidirish...", "filter.type.all": "Barcha turlar", "filter.sort.new": "Eng yangi", "filter.sort.top": "Eng ko'p yoqtirilgan", "filter.price.min": "Narx, dan", "filter.price.max": "Narx, gacha", "filter.onlyFollowing": "Faqat kuzatuvchilarim",
+          "filter.statusAria": "Holati", "filter.status.all": "Barcha holatlar", "filter.status.sale": "Sotuvda", "filter.status.expo": "Ko'rgazma", "filter.clear": "Tozalash",
+          "payment.chooseTitle": "To'lov usulini tanlang", "payment.confirmBtn": "Davom etish", "payment.redirecting": "To'lov sahifasiga o'tkazilyapsiz...", "payment.payNow": "To'lash",
+          "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "Qo'lda / offline to'lov",
+          "payment.methodDesc.payme": "Payme orqali onlayn to'lash", "payment.methodDesc.click": "Click orqali onlayn to'lash", "payment.methodDesc.manual": "Naqd yoki pul o'tkazma — sotuvchi bilan chatda kelishiladi",
+          "payment.status.unpaid": "To'lanmagan", "payment.status.pending": "Tekshirilmoqda", "payment.status.paid": "To'langan", "payment.status.failed": "To'lov bekor qilindi",
+          "twofa.title": "Ikki bosqichli tasdiqlash (2FA)", "twofa.desc": "Hisobingizni parolga qo'shimcha, autentifikator ilova (Google Authenticator, Authy va h.k.) orqali himoyalang.",
+          "twofa.enable": "Yoqish", "twofa.disable": "O'chirish", "twofa.enabled": "Yoqilgan", "twofa.confirm": "Tasdiqlash",
+          "twofa.scanHint": "Autentifikator ilovangizda quyidagi kalitni qo'lda kiriting (yoki QR-kod skaner ilovasi bilan otpauth havolasini oching):",
+          "twofa.codeLabel": "Ilovadagi 6 xonali kod", "twofa.backupHint": "Zaxira kodlar (autentifikator yo'qolsa ishlatiladi) — ularni xavfsiz joyda saqlang, bu ro'yxat qayta ko'rsatilmaydi:",
+          "twofa.loginPrompt": "Autentifikator ilovangizdagi 6 xonali kodni (yoki zaxira kodni) kiriting", "twofa.disablePrompt": "2FA'ni o'chirish uchun joriy parolingizni kiriting:",
           "search.clearAria": "Tozalash",
           "search.closeAria": "Yopish",
           "cart.eyebrow": "Xarid",
@@ -328,6 +338,7 @@
           "admin.stat.comments": "Kommentlar",
           "admin.stat.openReports": "Ochiq shikoyatlar",
           "admin.stat.banMute": "Ban/Mut",
+          "admin.analytics.label": "Statistika paneli", "admin.analytics.salesTitle": "Savdo hajmi (valyuta bo'yicha)", "admin.analytics.topSellersTitle": "Eng ko'p sotuvchilar", "admin.analytics.growthTitle": "Oxirgi 14 kunlik o'sish", "admin.analytics.dau": "Kunlik faol (24s)", "admin.analytics.wau": "Haftalik faol (7 kun)", "admin.analytics.mau": "Oylik faol (30 kun)", "admin.analytics.totalOrders": "Jami buyurtmalar", "admin.analytics.currency": "Valyuta", "admin.analytics.paidTotal": "To'langan", "admin.analytics.paidCount": "Soni", "admin.analytics.allTotal": "Jami (barcha)", "admin.analytics.seller": "Sotuvchi", "admin.analytics.revenue": "Daromad", "admin.analytics.orders": "To'langan/Jami", "admin.analytics.noData": "Hozircha ma'lumot yo'q", "admin.analytics.usersShort": "foydalanuvchi", "admin.analytics.worksShort": "asar", "admin.analytics.ordersShort": "buyurtma",
           "admin.report.typeWork": "Asar",
           "admin.report.typeUser": "Foydalanuvchi",
           "admin.report.subjectWork": "Asar: \"{title}\"",
@@ -659,6 +670,16 @@
           "notif.muteExpired": "Your mute has expired. You can comment, message, and upload new work again.",
           "nav.cart": "Cart",
           "search.placeholder": "Search...", "filter.type.all": "All types", "filter.sort.new": "Newest", "filter.sort.top": "Most liked", "filter.price.min": "Price from", "filter.price.max": "Price to", "filter.onlyFollowing": "Only who I follow",
+          "filter.statusAria": "Status", "filter.status.all": "All statuses", "filter.status.sale": "For sale", "filter.status.expo": "Exhibition", "filter.clear": "Clear",
+          "payment.chooseTitle": "Choose a payment method", "payment.confirmBtn": "Continue", "payment.redirecting": "Redirecting to the payment page...", "payment.payNow": "Pay now",
+          "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "Manual / offline payment",
+          "payment.methodDesc.payme": "Pay online via Payme", "payment.methodDesc.click": "Pay online via Click", "payment.methodDesc.manual": "Cash or bank transfer — arrange with the seller in chat",
+          "payment.status.unpaid": "Unpaid", "payment.status.pending": "Verifying", "payment.status.paid": "Paid", "payment.status.failed": "Payment cancelled",
+          "twofa.title": "Two-factor authentication (2FA)", "twofa.desc": "Protect your account with an authenticator app (Google Authenticator, Authy, etc.) in addition to your password.",
+          "twofa.enable": "Enable", "twofa.disable": "Disable", "twofa.enabled": "Enabled", "twofa.confirm": "Confirm",
+          "twofa.scanHint": "Enter this key manually in your authenticator app (or scan the otpauth link with a QR scanner):",
+          "twofa.codeLabel": "6-digit code from the app", "twofa.backupHint": "Backup codes (used if you lose your authenticator) — save these somewhere safe, this list won't be shown again:",
+          "twofa.loginPrompt": "Enter the 6-digit code from your authenticator app (or a backup code)", "twofa.disablePrompt": "Enter your current password to disable 2FA:",
           "search.clearAria": "Clear",
           "search.closeAria": "Close",
           "cart.eyebrow": "Shopping",
@@ -682,6 +703,7 @@
           "admin.stat.comments": "Comments",
           "admin.stat.openReports": "Open reports",
           "admin.stat.banMute": "Ban/Mute",
+          "admin.analytics.label": "Analytics dashboard", "admin.analytics.salesTitle": "Sales volume (by currency)", "admin.analytics.topSellersTitle": "Top sellers", "admin.analytics.growthTitle": "Last 14 days growth", "admin.analytics.dau": "Daily active (24h)", "admin.analytics.wau": "Weekly active (7d)", "admin.analytics.mau": "Monthly active (30d)", "admin.analytics.totalOrders": "Total orders", "admin.analytics.currency": "Currency", "admin.analytics.paidTotal": "Paid", "admin.analytics.paidCount": "Count", "admin.analytics.allTotal": "Total (all)", "admin.analytics.seller": "Seller", "admin.analytics.revenue": "Revenue", "admin.analytics.orders": "Paid/Total", "admin.analytics.noData": "No data yet", "admin.analytics.usersShort": "users", "admin.analytics.worksShort": "works", "admin.analytics.ordersShort": "orders",
           "admin.report.typeWork": "Work",
           "admin.report.typeUser": "User",
           "admin.report.subjectWork": "Work: \"{title}\"",
@@ -993,6 +1015,16 @@
           "notif.muteExpired": "您的禁言期已结束。您可以再次评论、发消息和上传作品。",
           "nav.cart": "购物车",
           "search.placeholder": "搜索...", "filter.type.all": "所有类型", "filter.sort.new": "最新", "filter.sort.top": "最多点赞", "filter.price.min": "价格从", "filter.price.max": "价格到", "filter.onlyFollowing": "仅我关注的人",
+          "filter.statusAria": "状态", "filter.status.all": "所有状态", "filter.status.sale": "在售", "filter.status.expo": "展览", "filter.clear": "清除筛选",
+          "payment.chooseTitle": "选择支付方式", "payment.confirmBtn": "继续", "payment.redirecting": "正在跳转到支付页面...", "payment.payNow": "立即支付",
+          "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "人工/线下支付",
+          "payment.methodDesc.payme": "通过 Payme 在线支付", "payment.methodDesc.click": "通过 Click 在线支付", "payment.methodDesc.manual": "现金或银行转账 — 与卖家在聊天中协商",
+          "payment.status.unpaid": "未支付", "payment.status.pending": "审核中", "payment.status.paid": "已支付", "payment.status.failed": "支付已取消",
+          "twofa.title": "两步验证 (2FA)", "twofa.desc": "除密码外，使用身份验证器应用（如 Google Authenticator、Authy 等）保护您的账户。",
+          "twofa.enable": "启用", "twofa.disable": "禁用", "twofa.enabled": "已启用", "twofa.confirm": "确认",
+          "twofa.scanHint": "在您的身份验证器应用中手动输入以下密钥（或用二维码扫描器打开 otpauth 链接）：",
+          "twofa.codeLabel": "应用中的6位验证码", "twofa.backupHint": "备用代码（在身份验证器丢失时使用）——请妥善保存，此列表不会再次显示：",
+          "twofa.loginPrompt": "请输入身份验证器应用中的6位验证码（或备用代码）", "twofa.disablePrompt": "输入当前密码以禁用两步验证：",
           "search.clearAria": "清除",
           "search.closeAria": "关闭",
           "cart.eyebrow": "购物",
@@ -1016,6 +1048,7 @@
           "admin.stat.comments": "评论",
           "admin.stat.openReports": "待处理举报",
           "admin.stat.banMute": "封禁/禁言",
+          "admin.analytics.label": "统计仪表盘", "admin.analytics.salesTitle": "销售额（按货币）", "admin.analytics.topSellersTitle": "顶级卖家", "admin.analytics.growthTitle": "近14天增长", "admin.analytics.dau": "日活跃(24小时)", "admin.analytics.wau": "周活跃(7天)", "admin.analytics.mau": "月活跃(30天)", "admin.analytics.totalOrders": "订单总数", "admin.analytics.currency": "货币", "admin.analytics.paidTotal": "已支付", "admin.analytics.paidCount": "数量", "admin.analytics.allTotal": "总计(全部)", "admin.analytics.seller": "卖家", "admin.analytics.revenue": "收入", "admin.analytics.orders": "已付/总数", "admin.analytics.noData": "暂无数据", "admin.analytics.usersShort": "用户", "admin.analytics.worksShort": "作品", "admin.analytics.ordersShort": "订单",
           "admin.report.typeWork": "作品",
           "admin.report.typeUser": "用户",
           "admin.report.subjectWork": "作品：《{title}》",
@@ -1361,6 +1394,16 @@
           "notif.muteExpired": "आपका म्यूट समाप्त हो गया है। अब आप फिर से टिप्पणी, संदेश और कृति अपलोड कर सकते हैं।",
           "nav.cart": "कार्ट",
           "search.placeholder": "खोजें...", "filter.type.all": "सभी प्रकार", "filter.sort.new": "सबसे नया", "filter.sort.top": "सबसे ज़्यादा पसंद किया गया", "filter.price.min": "कीमत से", "filter.price.max": "कीमत तक", "filter.onlyFollowing": "केवल जिन्हें मैं फॉलो करता हूँ",
+          "filter.statusAria": "स्थिति", "filter.status.all": "सभी स्थितियाँ", "filter.status.sale": "बिक्री के लिए", "filter.status.expo": "प्रदर्शनी", "filter.clear": "फ़िल्टर हटाएं",
+          "payment.chooseTitle": "भुगतान का तरीका चुनें", "payment.confirmBtn": "जारी रखें", "payment.redirecting": "भुगतान पृष्ठ पर ले जाया जा रहा है...", "payment.payNow": "अभी भुगतान करें",
+          "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "मैनुअल / ऑफ़लाइन भुगतान",
+          "payment.methodDesc.payme": "Payme से ऑनलाइन भुगतान करें", "payment.methodDesc.click": "Click से ऑनलाइन भुगतान करें", "payment.methodDesc.manual": "नकद या बैंक ट्रांसफर — विक्रेता से चैट में तय करें",
+          "payment.status.unpaid": "भुगतान नहीं हुआ", "payment.status.pending": "सत्यापित हो रहा है", "payment.status.paid": "भुगतान हो गया", "payment.status.failed": "भुगतान रद्द",
+          "twofa.title": "दो-चरणीय सत्यापन (2FA)", "twofa.desc": "पासवर्ड के अलावा एक ऑथेंटिकेटर ऐप (Google Authenticator, Authy आदि) से अपने खाते को सुरक्षित करें।",
+          "twofa.enable": "चालू करें", "twofa.disable": "बंद करें", "twofa.enabled": "चालू है", "twofa.confirm": "पुष्टि करें",
+          "twofa.scanHint": "इस कुंजी को अपने ऑथेंटिकेटर ऐप में मैन्युअल रूप से दर्ज करें (या QR स्कैनर से otpauth लिंक खोलें):",
+          "twofa.codeLabel": "ऐप से 6-अंकीय कोड", "twofa.backupHint": "बैकअप कोड (ऑथेंटिकेटर खो जाने पर उपयोग करें) — इन्हें सुरक्षित रखें, यह सूची फिर से नहीं दिखेगी:",
+          "twofa.loginPrompt": "अपने ऑथेंटिकेटर ऐप का 6-अंकीय कोड (या बैकअप कोड) दर्ज करें", "twofa.disablePrompt": "2FA बंद करने के लिए अपना वर्तमान पासवर्ड दर्ज करें:",
           "search.clearAria": "साफ़ करें",
           "search.closeAria": "बंद करें",
           "cart.eyebrow": "खरीदारी",
@@ -1384,6 +1427,7 @@
           "admin.stat.comments": "टिप्पणियाँ",
           "admin.stat.openReports": "खुली शिकायतें",
           "admin.stat.banMute": "बैन/म्यूट",
+          "admin.analytics.label": "एनालिटिक्स डैशबोर्ड", "admin.analytics.salesTitle": "बिक्री मात्रा (मुद्रा अनुसार)", "admin.analytics.topSellersTitle": "शीर्ष विक्रेता", "admin.analytics.growthTitle": "पिछले 14 दिनों की वृद्धि", "admin.analytics.dau": "दैनिक सक्रिय (24घं)", "admin.analytics.wau": "साप्ताहिक सक्रिय (7 दिन)", "admin.analytics.mau": "मासिक सक्रिय (30 दिन)", "admin.analytics.totalOrders": "कुल ऑर्डर", "admin.analytics.currency": "मुद्रा", "admin.analytics.paidTotal": "भुगतान किया गया", "admin.analytics.paidCount": "संख्या", "admin.analytics.allTotal": "कुल (सभी)", "admin.analytics.seller": "विक्रेता", "admin.analytics.revenue": "आय", "admin.analytics.orders": "भुगतान/कुल", "admin.analytics.noData": "अभी तक डेटा नहीं है", "admin.analytics.usersShort": "उपयोगकर्ता", "admin.analytics.worksShort": "कृतियाँ", "admin.analytics.ordersShort": "ऑर्डर",
           "admin.report.typeWork": "कृति",
           "admin.report.typeUser": "उपयोगकर्ता",
           "admin.report.subjectWork": "कृति: \"{title}\"",
@@ -1729,6 +1773,16 @@
           "notif.muteExpired": "Tu silencio ha terminado. Ya puedes comentar, enviar mensajes y subir obras de nuevo.",
           "nav.cart": "Carrito",
           "search.placeholder": "Buscar...", "filter.type.all": "Todos los tipos", "filter.sort.new": "Más reciente", "filter.sort.top": "Más gustados", "filter.price.min": "Precio desde", "filter.price.max": "Precio hasta", "filter.onlyFollowing": "Solo a quienes sigo",
+          "filter.statusAria": "Estado", "filter.status.all": "Todos los estados", "filter.status.sale": "En venta", "filter.status.expo": "Exposición", "filter.clear": "Borrar filtros",
+          "payment.chooseTitle": "Elige un método de pago", "payment.confirmBtn": "Continuar", "payment.redirecting": "Redirigiendo a la página de pago...", "payment.payNow": "Pagar ahora",
+          "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "Pago manual / fuera de línea",
+          "payment.methodDesc.payme": "Pagar en línea con Payme", "payment.methodDesc.click": "Pagar en línea con Click", "payment.methodDesc.manual": "Efectivo o transferencia — acordar con el vendedor por chat",
+          "payment.status.unpaid": "Sin pagar", "payment.status.pending": "Verificando", "payment.status.paid": "Pagado", "payment.status.failed": "Pago cancelado",
+          "twofa.title": "Autenticación en dos pasos (2FA)", "twofa.desc": "Protege tu cuenta con una app de autenticación (Google Authenticator, Authy, etc.) además de tu contraseña.",
+          "twofa.enable": "Activar", "twofa.disable": "Desactivar", "twofa.enabled": "Activado", "twofa.confirm": "Confirmar",
+          "twofa.scanHint": "Introduce esta clave manualmente en tu app de autenticación (o escanea el enlace otpauth con un lector QR):",
+          "twofa.codeLabel": "Código de 6 dígitos de la app", "twofa.backupHint": "Códigos de respaldo (para usar si pierdes tu autenticador) — guárdalos en un lugar seguro, esta lista no se mostrará de nuevo:",
+          "twofa.loginPrompt": "Introduce el código de 6 dígitos de tu app de autenticación (o un código de respaldo)", "twofa.disablePrompt": "Introduce tu contraseña actual para desactivar el 2FA:",
           "search.clearAria": "Borrar",
           "search.closeAria": "Cerrar",
           "cart.eyebrow": "Compras",
@@ -1752,6 +1806,7 @@
           "admin.stat.comments": "Comentarios",
           "admin.stat.openReports": "Denuncias abiertas",
           "admin.stat.banMute": "Ban/Mute",
+          "admin.analytics.label": "Panel de analíticas", "admin.analytics.salesTitle": "Volumen de ventas (por moneda)", "admin.analytics.topSellersTitle": "Mejores vendedores", "admin.analytics.growthTitle": "Crecimiento de los últimos 14 días", "admin.analytics.dau": "Activos diarios (24h)", "admin.analytics.wau": "Activos semanales (7d)", "admin.analytics.mau": "Activos mensuales (30d)", "admin.analytics.totalOrders": "Pedidos totales", "admin.analytics.currency": "Moneda", "admin.analytics.paidTotal": "Pagado", "admin.analytics.paidCount": "Cantidad", "admin.analytics.allTotal": "Total (todo)", "admin.analytics.seller": "Vendedor", "admin.analytics.revenue": "Ingresos", "admin.analytics.orders": "Pagados/Total", "admin.analytics.noData": "Aún no hay datos", "admin.analytics.usersShort": "usuarios", "admin.analytics.worksShort": "obras", "admin.analytics.ordersShort": "pedidos",
           "admin.report.typeWork": "Obra",
           "admin.report.typeUser": "Usuario",
           "admin.report.subjectWork": "Obra: \"{title}\"",
@@ -2097,6 +2152,16 @@
           "notif.muteExpired": "انتهت مدة كتمك. يمكنك التعليق والمراسلة ورفع الأعمال مجددًا.",
           "nav.cart": "عربة التسوق",
           "search.placeholder": "بحث...", "filter.type.all": "جميع الأنواع", "filter.sort.new": "الأحدث", "filter.sort.top": "الأكثر إعجابًا", "filter.price.min": "السعر من", "filter.price.max": "السعر إلى", "filter.onlyFollowing": "من أتابعهم فقط",
+          "filter.statusAria": "الحالة", "filter.status.all": "كل الحالات", "filter.status.sale": "للبيع", "filter.status.expo": "معرض", "filter.clear": "مسح الفلاتر",
+          "payment.chooseTitle": "اختر طريقة الدفع", "payment.confirmBtn": "متابعة", "payment.redirecting": "جارٍ التحويل إلى صفحة الدفع...", "payment.payNow": "ادفع الآن",
+          "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "دفع يدوي / غير متصل",
+          "payment.methodDesc.payme": "ادفع عبر الإنترنت باستخدام Payme", "payment.methodDesc.click": "ادفع عبر الإنترنت باستخدام Click", "payment.methodDesc.manual": "نقدًا أو تحويل بنكي — يُتفق عليه مع البائع في المحادثة",
+          "payment.status.unpaid": "غير مدفوع", "payment.status.pending": "قيد التحقق", "payment.status.paid": "مدفوع", "payment.status.failed": "تم إلغاء الدفع",
+          "twofa.title": "التحقق بخطوتين (2FA)", "twofa.desc": "احمِ حسابك بتطبيق مصادقة (مثل Google Authenticator أو Authy) بالإضافة إلى كلمة المرور.",
+          "twofa.enable": "تفعيل", "twofa.disable": "إيقاف", "twofa.enabled": "مُفعّل", "twofa.confirm": "تأكيد",
+          "twofa.scanHint": "أدخل هذا المفتاح يدويًا في تطبيق المصادقة الخاص بك (أو امسح رابط otpauth بواسطة ماسح QR):",
+          "twofa.codeLabel": "الرمز المكوّن من 6 أرقام من التطبيق", "twofa.backupHint": "رموز احتياطية (تُستخدم عند فقدان تطبيق المصادقة) — احتفظ بها في مكان آمن، لن تُعرض هذه القائمة مرة أخرى:",
+          "twofa.loginPrompt": "أدخل الرمز المكوّن من 6 أرقام من تطبيق المصادقة (أو رمزًا احتياطيًا)", "twofa.disablePrompt": "أدخل كلمة المرور الحالية لإيقاف التحقق بخطوتين:",
           "search.clearAria": "مسح",
           "search.closeAria": "إغلاق",
           "cart.eyebrow": "التسوق",
@@ -2120,6 +2185,7 @@
           "admin.stat.comments": "التعليقات",
           "admin.stat.openReports": "بلاغات مفتوحة",
           "admin.stat.banMute": "حظر/كتم",
+          "admin.analytics.label": "لوحة التحليلات", "admin.analytics.salesTitle": "حجم المبيعات (حسب العملة)", "admin.analytics.topSellersTitle": "أفضل البائعين", "admin.analytics.growthTitle": "نمو آخر 14 يومًا", "admin.analytics.dau": "نشط يوميًا (24س)", "admin.analytics.wau": "نشط أسبوعيًا (7 أيام)", "admin.analytics.mau": "نشط شهريًا (30 يومًا)", "admin.analytics.totalOrders": "إجمالي الطلبات", "admin.analytics.currency": "العملة", "admin.analytics.paidTotal": "مدفوع", "admin.analytics.paidCount": "العدد", "admin.analytics.allTotal": "الإجمالي (الكل)", "admin.analytics.seller": "البائع", "admin.analytics.revenue": "الإيرادات", "admin.analytics.orders": "مدفوع/الإجمالي", "admin.analytics.noData": "لا توجد بيانات بعد", "admin.analytics.usersShort": "مستخدمين", "admin.analytics.worksShort": "أعمال", "admin.analytics.ordersShort": "طلبات",
           "admin.report.typeWork": "عمل",
           "admin.report.typeUser": "مستخدم",
           "admin.report.subjectWork": "العمل: \"{title}\"",
@@ -2465,6 +2531,16 @@
           "notif.muteExpired": "Срок вашего мута истёк. Вы снова можете комментировать, писать сообщения и загружать работы.",
           "nav.cart": "Корзина",
           "search.placeholder": "Поиск...", "filter.type.all": "Все типы", "filter.sort.new": "Новые", "filter.sort.top": "Популярные", "filter.price.min": "Цена от", "filter.price.max": "Цена до", "filter.onlyFollowing": "Только те, на кого я подписан",
+          "filter.statusAria": "Статус", "filter.status.all": "Все статусы", "filter.status.sale": "В продаже", "filter.status.expo": "Выставка", "filter.clear": "Сбросить фильтры",
+          "payment.chooseTitle": "Выберите способ оплаты", "payment.confirmBtn": "Продолжить", "payment.redirecting": "Переход на страницу оплаты...", "payment.payNow": "Оплатить",
+          "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "Оплата вручную / офлайн",
+          "payment.methodDesc.payme": "Оплатить онлайн через Payme", "payment.methodDesc.click": "Оплатить онлайн через Click", "payment.methodDesc.manual": "Наличные или перевод — договоритесь с продавцом в чате",
+          "payment.status.unpaid": "Не оплачено", "payment.status.pending": "Проверяется", "payment.status.paid": "Оплачено", "payment.status.failed": "Оплата отменена",
+          "twofa.title": "Двухфакторная аутентификация (2FA)", "twofa.desc": "Защитите аккаунт с помощью приложения-аутентификатора (Google Authenticator, Authy и т.п.) в дополнение к паролю.",
+          "twofa.enable": "Включить", "twofa.disable": "Отключить", "twofa.enabled": "Включено", "twofa.confirm": "Подтвердить",
+          "twofa.scanHint": "Введите этот ключ вручную в приложении-аутентификаторе (или отсканируйте ссылку otpauth сканером QR-кодов):",
+          "twofa.codeLabel": "6-значный код из приложения", "twofa.backupHint": "Резервные коды (на случай утери аутентификатора) — сохраните их в надёжном месте, этот список больше не покажется:",
+          "twofa.loginPrompt": "Введите 6-значный код из приложения-аутентификатора (или резервный код)", "twofa.disablePrompt": "Введите текущий пароль, чтобы отключить 2FA:",
           "search.clearAria": "Очистить",
           "search.closeAria": "Закрыть",
           "cart.eyebrow": "Покупки",
@@ -2488,6 +2564,7 @@
           "admin.stat.comments": "Комментарии",
           "admin.stat.openReports": "Открытые жалобы",
           "admin.stat.banMute": "Бан/Мут",
+          "admin.analytics.label": "Панель аналитики", "admin.analytics.salesTitle": "Объём продаж (по валюте)", "admin.analytics.topSellersTitle": "Топ продавцов", "admin.analytics.growthTitle": "Рост за последние 14 дней", "admin.analytics.dau": "Активны за сутки (24ч)", "admin.analytics.wau": "Активны за неделю (7д)", "admin.analytics.mau": "Активны за месяц (30д)", "admin.analytics.totalOrders": "Всего заказов", "admin.analytics.currency": "Валюта", "admin.analytics.paidTotal": "Оплачено", "admin.analytics.paidCount": "Кол-во", "admin.analytics.allTotal": "Всего (все)", "admin.analytics.seller": "Продавец", "admin.analytics.revenue": "Выручка", "admin.analytics.orders": "Оплачено/Всего", "admin.analytics.noData": "Пока нет данных", "admin.analytics.usersShort": "пользователей", "admin.analytics.worksShort": "работ", "admin.analytics.ordersShort": "заказов",
           "admin.report.typeWork": "Работа",
           "admin.report.typeUser": "Пользователь",
           "admin.report.subjectWork": "Работа: «{title}»",
@@ -2787,7 +2864,7 @@
       let feedOffset = 0;
       let feedHasMore = true;
       let feedLoading = false;
-      let feedQuery = { q: '', tag: '', type: '', sort: 'new', following: false, minPrice: '', maxPrice: '' };
+      let feedQuery = { q: '', tag: '', type: '', status: '', sort: 'new', following: false, minPrice: '', maxPrice: '' };
       let currentTheme = { mode: 'tungi', custom: '#e2543f' };
       let pendingDeleteId = null;
       let uploadMediaItems = []; // { type: 'image'|'video', blob, previewUrl }
@@ -2821,6 +2898,30 @@
         bindAppEvents();
         maybeOpenResetPasswordLink();
       }
+
+      /* Havola orqali to'g'ridan-to'g'ri /w/ID yoki /u/username manziliga
+         kirilganda tegishli oynani ochadi — ijtimoiy tarmoqlardan yoki
+         qidiruv natijalaridan kelgan foydalanuvchilar to'g'ri joyga tushishi
+         uchun (server tomonida shu manzillar uchun mos meta teglar ham
+         qo'yiladi, ko'ring: server.js /w/:id va /u/:username). */
+      function handleDeepLinkFromURL() {
+        const path = window.location.pathname;
+        let m;
+        if ((m = path.match(/^\/w\/([^/]+)\/?$/))) {
+          openCommentsModal(decodeURIComponent(m[1]));
+        } else if ((m = path.match(/^\/u\/([^/]+)\/?$/))) {
+          openUserProfile(decodeURIComponent(m[1]));
+        }
+      }
+      window.addEventListener('popstate', () => {
+        const path = window.location.pathname;
+        if (path === '/' || path === '') {
+          closeCommentsModal();
+          if ($('#userProfileView') && $('#userProfileView').classList.contains('active')) switchView('home');
+          return;
+        }
+        handleDeepLinkFromURL();
+      });
 
       /* Email orqali kelgan ?reset=TOKEN&u=username havolasini aniqlaydi va
          yangi parol o'rnatish oynasini ochadi. */
@@ -2915,6 +3016,8 @@
             $('#loginForm').classList.toggle('hidden', isReg);
             $('#registerForm').classList.toggle('active', isReg);
             $('#registerForm').classList.toggle('hidden', !isReg);
+            $('#twoFactorLoginForm').classList.add('hidden');
+            $('#twoFactorLoginForm').classList.remove('active');
           });
         });
 
@@ -2985,6 +3088,15 @@
           errEl.classList.remove('show');
           try {
             const data = await apiJSON('/api/login', 'POST', { username: uname, password: pass });
+            if (data.twoFactorRequired) {
+              $('#loginForm').classList.remove('active');
+              $('#loginForm').classList.add('hidden');
+              $('#twoFactorLoginForm').classList.remove('hidden');
+              $('#twoFactorLoginForm').classList.add('active');
+              $('#twoFactorLoginCode').value = '';
+              setTimeout(() => $('#twoFactorLoginCode').focus(), 50);
+              return;
+            }
             CURRENT_USER = data.user;
             if (!localStorage.getItem('madein_lang') && data.user.lang && I18N[data.user.lang]) {
               setLanguage(data.user.lang);
@@ -2995,6 +3107,21 @@
             errEl.classList.add('show');
             $('#authCard').classList.add('shake');
             setTimeout(() => $('#authCard').classList.remove('shake'), 400);
+          }
+        });
+
+        $('#twoFactorLoginForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const code = $('#twoFactorLoginCode').value.trim();
+          const errEl = $('#twoFactorLoginError');
+          errEl.classList.remove('show');
+          try {
+            const data = await apiJSON('/api/login/2fa-verify', 'POST', { code });
+            CURRENT_USER = data.user;
+            await enterApp();
+          } catch (err) {
+            errEl.textContent = err.message || t('auth.loginErrorDefault');
+            errEl.classList.add('show');
           }
         });
 
@@ -3117,6 +3244,7 @@
         setupFeedObserver();
         loadFeedPage();
         maybeOpenSharedWork();
+        handleDeepLinkFromURL();
 
         if (!IS_GUEST) {
           refreshUnreadBadge();
@@ -3218,7 +3346,7 @@
           FEED = [];
           feedOffset = 0;
           feedHasMore = true;
-          feedQuery = { q: '', type: '', sort: 'new', following: false, minPrice: '', maxPrice: '' };
+          feedQuery = { q: '', type: '', status: '', sort: 'new', following: false, minPrice: '', maxPrice: '' };
           Object.keys(ALL_ITEMS_BY_ID).forEach(k => delete ALL_ITEMS_BY_ID[k]);
           $('#feedList').innerHTML = '';
           $('#feedSearchInput').value = '';
@@ -3275,6 +3403,22 @@
           feedQuery.type = e.target.value;
           resetAndReloadFeed();
         });
+        $('#feedStatusSelect').addEventListener('change', (e) => {
+          feedQuery.status = e.target.value;
+          resetAndReloadFeed();
+        });
+        $('#feedClearFiltersBtn').addEventListener('click', () => {
+          feedQuery = { q: '', tag: '', type: '', status: '', sort: 'new', following: false, minPrice: '', maxPrice: '' };
+          $('#feedTypeSelect').value = '';
+          $('#feedStatusSelect').value = '';
+          $('#feedSortSelect').value = 'new';
+          $('#feedMinPrice').value = '';
+          $('#feedMaxPrice').value = '';
+          $('#feedFollowingToggle').checked = false;
+          $('#feedSearchInput').value = '';
+          $('#feedSearchClear').classList.remove('show');
+          resetAndReloadFeed();
+        });
         $('#feedSortSelect').addEventListener('change', (e) => {
           feedQuery.sort = e.target.value;
           resetAndReloadFeed();
@@ -3314,6 +3458,9 @@
         /* Shikoyat modali */
         $('#closeReportModal').addEventListener('click', closeReportModal);
         $('#reportModal').addEventListener('click', (e) => { if (e.target === $('#reportModal')) closeReportModal(); });
+        $('#closePaymentModal').addEventListener('click', closePaymentModal);
+        $('#paymentModal').addEventListener('click', (e) => { if (e.target === $('#paymentModal')) closePaymentModal(); });
+        $('#paymentConfirmBtn').addEventListener('click', confirmPaymentModal);
         $('#reportForm').addEventListener('submit', submitReportForm);
 
         $('#uploadFile').addEventListener('change', handleFileSelect);
@@ -3482,6 +3629,9 @@
         $('#cancelEditBtn').addEventListener('click', () => $('#editProfileCard').classList.add('hidden'));
         $('#saveProfileBtn').addEventListener('click', saveProfile);
         $('#saveCredentialsBtn').addEventListener('click', saveCredentials);
+        $('#twoFactorEnableBtn').addEventListener('click', startTwoFactorSetup);
+        $('#twoFactorConfirmBtn').addEventListener('click', confirmTwoFactorSetup);
+        $('#twoFactorDisableBtn').addEventListener('click', disableTwoFactor);
         bindNotifPrefEvents();
         $$('input[name="callPrivacyMode"]').forEach(r => r.addEventListener('change', updateCallPrivacySelectedVisibility));
         $('#callPrivacyAddBtn').addEventListener('click', addCallPrivacyAllowedUser);
@@ -3492,7 +3642,10 @@
         });
         $('#changeAvatarBtn').addEventListener('click', () => $('#avatarFileInput').click());
         $('#avatarFileInput').addEventListener('change', handleAvatarFileSelect);
-        $('#backFromUserProfile').addEventListener('click', () => switchView('home'));
+        $('#backFromUserProfile').addEventListener('click', () => {
+          switchView('home');
+          if (location.pathname.startsWith('/u/')) history.pushState({}, '', '/');
+        });
 
         /* language selector — changes only the site's own interface text;
            everyone else's names, bios, work titles/descriptions and
@@ -3709,6 +3862,56 @@
         </div>`).join('');
         } catch (e) {
           grid.innerHTML = `<p class="view-sub">${t('common.serverError')}</p>`;
+        }
+        loadAdminAnalytics();
+      }
+
+      async function loadAdminAnalytics() {
+        try {
+          const a = await api('/api/admin/analytics');
+
+          $('#adminAnalyticsGrid').innerHTML = [
+            [t('admin.analytics.dau'), a.dau],
+            [t('admin.analytics.wau'), a.wau],
+            [t('admin.analytics.mau'), a.mau],
+            [t('admin.analytics.totalOrders'), a.totalOrders]
+          ].map(([label, value]) => `
+        <div class="admin-stat-card">
+          <div class="admin-stat-value">${value}</div>
+          <div class="admin-stat-label">${label}</div>
+        </div>`).join('');
+
+          const currencies = Object.keys(a.salesByCurrency);
+          $('#adminSalesTable').innerHTML = currencies.length ? `
+        <table class="admin-mini-table">
+          <thead><tr><th>${t('admin.analytics.currency')}</th><th class="num">${t('admin.analytics.paidTotal')}</th><th class="num">${t('admin.analytics.paidCount')}</th><th class="num">${t('admin.analytics.allTotal')}</th></tr></thead>
+          <tbody>${currencies.map(c => {
+            const s = a.salesByCurrency[c];
+            return `<tr><td>${c}</td><td class="num">${fmtPrice(s.paidTotal, c)}</td><td class="num">${s.paidCount}</td><td class="num">${fmtPrice(s.allTotal, c)}</td></tr>`;
+          }).join('')}</tbody>
+        </table>` : `<p class="view-sub">${t('admin.analytics.noData')}</p>`;
+
+          $('#adminTopSellersTable').innerHTML = a.topSellers.length ? `
+        <table class="admin-mini-table">
+          <thead><tr><th>${t('admin.analytics.seller')}</th><th class="num">${t('admin.analytics.revenue')}</th><th class="num">${t('admin.analytics.orders')}</th></tr></thead>
+          <tbody>${a.topSellers.map(s => {
+            const revStr = Object.keys(s.revenueByCurrency).map(c => fmtPrice(s.revenueByCurrency[c], c)).join(' + ') || '—';
+            return `<tr><td>@${escapeHtml(s.username)}</td><td class="num">${revStr}</td><td class="num">${s.paidOrdersCount}/${s.ordersCount}</td></tr>`;
+          }).join('')}</tbody>
+        </table>` : `<p class="view-sub">${t('admin.analytics.noData')}</p>`;
+
+          const maxVal = Math.max(1, ...a.growth.map(g => g.newUsers + g.newWorks));
+          $('#adminGrowthChart').innerHTML = a.growth.map(g => {
+            const total = g.newUsers + g.newWorks;
+            const heightPct = Math.max(3, Math.round((total / maxVal) * 100));
+            const label = g.date.slice(5); // MM-DD
+            return `<div class="admin-growth-bar-wrap" title="${label}: +${g.newUsers} ${t('admin.analytics.usersShort')}, +${g.newWorks} ${t('admin.analytics.worksShort')}, ${g.ordersCount} ${t('admin.analytics.ordersShort')}">
+          <div class="admin-growth-bar" style="height:${heightPct}%"></div>
+          <div class="admin-growth-bar-label">${label}</div>
+        </div>`;
+          }).join('');
+        } catch (e) {
+          $('#adminAnalyticsGrid').innerHTML = `<p class="view-sub">${t('common.serverError')}</p>`;
         }
       }
 
@@ -3933,6 +4136,53 @@
         updateCallPrivacySelectedVisibility();
         $('#editAvatarPreview').innerHTML = avatarInner(u.avatar, u.fullname || u.username);
         $('#editProfileCard').classList.remove('hidden');
+        loadTwoFactorStatus();
+      }
+
+      /* ===================== 2FA (PROFIL SOZLAMALARI) ===================== */
+      async function loadTwoFactorStatus() {
+        $('#twoFactorSetupBox').classList.add('hidden');
+        $('#twoFactorBackupBox').classList.add('hidden');
+        try {
+          const data = await api('/api/2fa/status');
+          $('#twoFactorOn').classList.toggle('hidden', !data.enabled);
+          $('#twoFactorOff').classList.toggle('hidden', !!data.enabled);
+        } catch (e) { /* jim tur */ }
+      }
+      async function startTwoFactorSetup() {
+        try {
+          const data = await apiJSON('/api/2fa/setup', 'POST');
+          $('#twoFactorSecretText').textContent = data.secret;
+          $('#twoFactorSetupCode').value = '';
+          $('#twoFactorSetupError').classList.add('hidden');
+          $('#twoFactorSetupBox').classList.remove('hidden');
+        } catch (e) {
+          alert((e && e.message) || t('common.serverError'));
+        }
+      }
+      async function confirmTwoFactorSetup() {
+        const code = $('#twoFactorSetupCode').value.trim();
+        const errEl = $('#twoFactorSetupError');
+        try {
+          const data = await apiJSON('/api/2fa/confirm', 'POST', { code });
+          $('#twoFactorSetupBox').classList.add('hidden');
+          $('#twoFactorBackupList').innerHTML = data.backupCodes.map(c => `<div>${c}</div>`).join('');
+          $('#twoFactorBackupBox').classList.remove('hidden');
+          loadTwoFactorStatus();
+        } catch (e) {
+          errEl.textContent = (e && e.message) || t('common.serverError');
+          errEl.classList.remove('hidden');
+        }
+      }
+      async function disableTwoFactor() {
+        const password = prompt(t('twofa.disablePrompt'));
+        if (password === null) return;
+        try {
+          await apiJSON('/api/2fa/disable', 'POST', { password });
+          loadTwoFactorStatus();
+        } catch (e) {
+          alert((e && e.message) || t('common.serverError'));
+        }
       }
 
       const NOTIF_PREF_DEFAULTS = { enabled: true, likes: true, comments: true, follows: true, orders: true, messages: true };
@@ -4130,6 +4380,9 @@
         if (!username) return;
         if (CURRENT_USER && username === CURRENT_USER.username) { switchView('profile'); return; }
         UP_USERNAME = username;
+        if (!location.pathname.startsWith('/u/' + username)) {
+          history.pushState({ view: 'userProfile', username }, '', '/u/' + encodeURIComponent(username));
+        }
         switchView('userProfile');
         $('#upFullname').textContent = username;
         $('#upUsernameTag').textContent = '@' + username;
@@ -4588,14 +4841,22 @@
         const item = ALL_ITEMS_BY_ID[id];
         const label = item ? `${item.title} — ${fmtPrice(item.price, item.currency)}` : '';
         if (!confirm(t('buyNow.confirm', { item: label }))) return;
-        try {
-          await apiJSON('/api/works/' + id + '/buy-now', 'POST');
-          alert(t('buyNow.success'));
-          if (item) item.inCart = false;
-          document.querySelectorAll(`.cart-btn[data-id="${id}"]`).forEach(btn => btn.classList.remove('in-cart'));
-        } catch (e) {
-          alert((e && e.message) || t('buyNow.fail'));
-        }
+        const totals = item ? { [item.currency || 'UZS']: item.price } : { UZS: 0 };
+        openPaymentModal(totals, async (method) => {
+          try {
+            const data = await apiJSON('/api/works/' + id + '/buy-now', 'POST', { paymentMethod: method });
+            if (item) item.inCart = false;
+            document.querySelectorAll(`.cart-btn[data-id="${id}"]`).forEach(btn => btn.classList.remove('in-cart'));
+            if (data.checkoutUrl) {
+              alert(t('payment.redirecting'));
+              location.href = data.checkoutUrl;
+            } else {
+              alert(t('buyNow.success'));
+            }
+          } catch (e) {
+            alert((e && e.message) || t('buyNow.fail'));
+          }
+        });
       }
 
       /* Asar havolasini ulashish (mavjud bo'lsa tizim ulashish oynasi, aks holda nusxalash) */
@@ -4636,6 +4897,69 @@
         } catch (e2) {
           $('#reportModalError').textContent = (e2 && e2.message) || t('common.serverError');
         }
+      }
+
+      /* ===================== TO'LOV USULINI TANLASH MODALI ===================== */
+      let paymentModalMethod = 'manual';
+      let paymentModalOnConfirm = null;
+      let paymentGatewaysCache = null;
+
+      async function getAvailableGateways() {
+        if (paymentGatewaysCache) return paymentGatewaysCache;
+        try {
+          const data = await api('/api/payments/gateways');
+          paymentGatewaysCache = data.gateways || ['manual'];
+        } catch (e) {
+          paymentGatewaysCache = ['manual'];
+        }
+        return paymentGatewaysCache;
+      }
+
+      function paymentMethodMeta(method) {
+        return {
+          label: t('payment.method.' + method),
+          desc: t('payment.methodDesc.' + method)
+        };
+      }
+
+      /* totalsByCurrency — buyurtma summasi; onConfirm(method) — foydalanuvchi
+         tanlagan usul bilan chaqiriladi ("payme" | "click" | "manual") */
+      async function openPaymentModal(totalsByCurrency, onConfirm) {
+        paymentModalOnConfirm = onConfirm;
+        const currencies = Object.keys(totalsByCurrency || {});
+        $('#paymentModalTotal').textContent = currencies.map(c => fmtPrice(totalsByCurrency[c], c)).join(' + ');
+        $('#paymentModalError').classList.add('hidden');
+        const gateways = await getAvailableGateways();
+        // Payme/Click faqat sof UZS buyurtmalarda ishlaydi
+        const uzsOnly = currencies.length === 1 && currencies[0] === 'UZS';
+        const options = gateways.filter(g => g === 'manual' || uzsOnly);
+        paymentModalMethod = options[0] || 'manual';
+        $('#paymentMethodsList').innerHTML = options.map(g => {
+          const meta = paymentMethodMeta(g);
+          return `
+        <label class="payment-method-option ${g === paymentModalMethod ? 'selected' : ''}" data-method="${g}">
+          <input type="radio" name="paymentMethod" value="${g}" ${g === paymentModalMethod ? 'checked' : ''}>
+          <span>
+            <div class="payment-method-label">${meta.label}</div>
+            <div class="payment-method-desc">${meta.desc}</div>
+          </span>
+        </label>`;
+        }).join('');
+        $$('#paymentMethodsList .payment-method-option').forEach(opt => {
+          opt.addEventListener('click', () => {
+            paymentModalMethod = opt.dataset.method;
+            $$('#paymentMethodsList .payment-method-option').forEach(o => o.classList.toggle('selected', o === opt));
+            opt.querySelector('input').checked = true;
+          });
+        });
+        $('#paymentModal').classList.add('open');
+      }
+      function closePaymentModal() { $('#paymentModal').classList.remove('open'); paymentModalOnConfirm = null; }
+      async function confirmPaymentModal() {
+        const cb = paymentModalOnConfirm;
+        const method = paymentModalMethod;
+        closePaymentModal();
+        if (cb) await cb(method);
       }
 
       /* ===================== SAQLANGAN ASARLAR RO'YXATI ===================== */
@@ -4700,6 +5024,7 @@
             return;
           }
           list.innerHTML = items.map(w => cartItemHTML(w)).join('');
+          lastCartTotals = data.totalsByCurrency || {};
           summaryWrap.innerHTML = renderCartSummary(data.totalsByCurrency);
           $$('#cartList .cart-item').forEach(bindCartItemEvents);
           const checkoutBtn = $('#cartCheckoutBtn');
@@ -4736,15 +5061,23 @@
         } catch (e) { /* jim tarzda o'tkazib yuboriladi */ }
       }
 
+      let lastCartTotals = {};
       async function checkoutCart() {
         if (!confirm(t('cart.checkoutConfirm'))) return;
-        try {
-          await apiJSON('/api/cart/checkout', 'POST');
-          alert(t('cart.orderPlaced'));
-          loadCart();
-        } catch (e) {
-          alert((e && e.message) || t('cart.orderFail'));
-        }
+        openPaymentModal(lastCartTotals, async (method) => {
+          try {
+            const data = await apiJSON('/api/cart/checkout', 'POST', { paymentMethod: method });
+            if (data.checkoutUrl) {
+              alert(t('payment.redirecting'));
+              location.href = data.checkoutUrl;
+            } else {
+              alert(t('cart.orderPlaced'));
+              loadCart();
+            }
+          } catch (e) {
+            alert((e && e.message) || t('cart.orderFail'));
+          }
+        });
       }
 
       /* Navbar/tabbardagi korzinka belgisini (nechta mahsulot borligini) yangilaydi */
@@ -4762,6 +5095,7 @@
         if (feedQuery.q) p.set('q', feedQuery.q);
         if (feedQuery.tag) p.set('tag', feedQuery.tag);
         if (feedQuery.type) p.set('type', feedQuery.type);
+        if (feedQuery.status) p.set('status', feedQuery.status);
         if (feedQuery.sort && feedQuery.sort !== 'new') p.set('sort', feedQuery.sort);
         if (feedQuery.following) p.set('following', '1');
         if (feedQuery.minPrice !== '') p.set('minPrice', feedQuery.minPrice);
@@ -4897,6 +5231,9 @@
 
       async function openCommentsModal(workId) {
         activeCommentsWorkId = workId;
+        if (!location.pathname.startsWith('/w/' + workId)) {
+          history.pushState({ view: 'work', id: workId }, '', '/w/' + encodeURIComponent(workId));
+        }
         $('#commentInput').value = '';
         $('#commentSubmitBtn').classList.remove('active');
         $('#commentsList').innerHTML = `<div class="comments-empty">${t('comments.loading')}</div>`;
@@ -4912,6 +5249,7 @@
       function closeCommentsModal() {
         $('#commentsModal').classList.remove('open');
         activeCommentsWorkId = null;
+        if (location.pathname.startsWith('/w/')) history.pushState({}, '', '/');
       }
 
       /* Sharhlar (Reviews) — faqat yakunlangan buyurtmasi bo'lgan xaridor
@@ -5015,11 +5353,18 @@
         const currency = mine[0] ? mine[0].currency : 'UZS';
         const itemsText = mine.map(it => `${escapeHtml(it.title)} ×${it.qty}`).join(', ');
         const statusOptions = ORDER_STATUSES_LIST.map(s => `<option value="${s}" ${s === o.status ? 'selected' : ''}>${orderStatusLabel(s)}</option>`).join('');
+        const payStatus = o.paymentStatus || 'unpaid';
+        const payMethod = o.paymentMethod || 'manual';
         return `
       <div class="order-card" data-id="${o.id}">
         <div class="order-card-head">
           <span class="order-card-date">${fmtDate(o.createdAt)}</span>
           <span class="order-status-badge order-status-${o.status}">${orderStatusLabel(o.status)}</span>
+        </div>
+        <div class="order-card-payment">
+          <span class="order-payment-badge order-payment-${payStatus}">${t('payment.status.' + payStatus)}</span>
+          <span class="order-payment-method">${t('payment.method.' + payMethod)}</span>
+          ${(!asSeller && payStatus === 'unpaid' && o.checkoutUrl) ? `<a class="btn btn-ghost btn-sm order-pay-link" href="${o.checkoutUrl}" target="_blank" rel="noopener">${t('payment.payNow')}</a>` : ''}
         </div>
         <div class="order-card-items">${itemsText}</div>
         <div class="order-card-foot">
