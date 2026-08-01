@@ -34,7 +34,13 @@ const Database = require('better-sqlite3');
 function openDatabase(dataDir) {
   const dbPath = path.join(dataDir, 'madein.db');
   const sqlite = new Database(dbPath);
-  sqlite.pragma('journal_mode = WAL');   // yozish paytida ham o'qish bloklanmaydi
+  // MUHIM: WAL rejimi mmap/shared-memory (-shm fayl) talab qiladi. Railway
+  // Volume kabi tarmoq orqali ulangan (network-backed) xotiralarda bu
+  // to'liq qo'llab-quvvatlanmaydi va better-sqlite3'ni "Segmentation fault"
+  // bilan qulatadi. Shu sabab bu yerda WAL emas, oddiy TRUNCATE jurnal
+  // rejimi ishlatiladi — u mmap talab qilmaydi va istalgan fayl tizimida
+  // (jumladan tarmoq volume'larida ham) ishonchli ishlaydi.
+  sqlite.pragma('journal_mode = TRUNCATE');
   sqlite.pragma('synchronous = FULL');   // diskka haqiqatan yozilganiga kafolat (durability)
 
   sqlite.exec(`
