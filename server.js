@@ -620,8 +620,11 @@ async function sendPush(uname, content) {
    (server yozish paytida qulasa ham baza buzilmaydi), va agar eski
    db.json topilsa — birinchi ishga tushganda avtomatik import qilinadi.
    Batafsil izoh: db-sqlite.js */
+console.log('CHECKPOINT 1: DATA_DIR =', DATA_DIR);
 const sqlite = dbSqlite.openDatabase(DATA_DIR);
+console.log('CHECKPOINT 2: DB ochildi, pragma va CREATE TABLE muvaffaqiyatli o\'tdi');
 dbSqlite.importFromJsonIfNeeded(sqlite, DB_FILE, fs);
+console.log('CHECKPOINT 3: importFromJsonIfNeeded tugadi');
 
 function loadDB() {
   const data = dbSqlite.readFullDB(sqlite);
