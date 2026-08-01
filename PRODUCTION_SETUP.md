@@ -111,3 +111,38 @@ varianti ko'rsatiladi — sayt baribir to'liq ishlaydi.
       sinovdan o'tkazilgan
 - [ ] `storage/` katalogi (SQLite baza va yuklangan fayllar) muntazam
       zaxira nusxalanadi (backup)
+
+## 6. Railway (yoki boshqa PaaS)'ga joylashtirish — muhim eslatma
+
+**"Segmentation fault" bilan qulab tushish** — bu deyarli har doim
+`better-sqlite3` kabi **native (C++) modul** noto'g'ri platforma uchun
+build qilinganida yuz beradi. Sabablari va yechimlari:
+
+1. **`node_modules`ni HECH QACHON git'ga commit qilmang.** Agar u
+   mahalliy kompyuteringizda (masalan macOS yoki boshqa arxitektura)
+   build qilingan bo'lsa-yu, keyin git orqali Railway'ga (Linux x64/arm)
+   ko'chirilsa — `better-sqlite3`ning native binary fayli mos kelmay,
+   server ishga tushgan zahoti (yoki birinchi SQLite so'rovida) darhol
+   qulab tushadi. Loyihada `.gitignore` allaqachon `node_modules/`ni
+   chiqarib tashlaydi — Railway `npm install`ni **o'zining** build
+   muhitida qaytadan bajarishi kerak (build loglarida buni ko'rasiz).
+2. Deploy qilishdan oldin repo'da eski `node_modules/` yoki
+   `storage/data/*.db` fayllari qolib ketmaganini tekshiring:
+   ```bash
+   git rm -r --cached node_modules storage/data 2>/dev/null
+   git commit -m "node_modules va local data'ni repo'dan chiqarish"
+   ```
+3. **"Build Logs"** bo'limida `better-sqlite3` o'rnatilayotgan qatorni
+   toping — u yerda `node-gyp rebuild` yoki prebuilt binary yuklab
+   olinishi haqida xabar bo'lishi kerak. Xato bo'lsa (masalan tarmoq
+   403/404), demak build muvaffaqiyatsiz tugagan va eski/mos kelmaydigan
+   binary ishlatilgan bo'lishi mumkin.
+4. Agar muammo davom etsa, Railway'da **Volume**'ni (agar u eski,
+   boshqa build bilan yaratilgan `madein.db` faylini saqlab qolgan
+   bo'lsa) tozalab, qaytadan deploy qiling — versiyasi mos kelmaydigan
+   SQLite fayli ham xuddi shunday segfault berishi mumkin.
+5. Node versiyasini `package.json`dagi `engines.node` bilan mos
+   ushlab turing (`>=18`), va agar Railway'da Nixpacks boshqa Node
+   versiyasini tanlasa, `NIXPACKS_NODE_VERSION` muhit o'zgaruvchisi
+   orqali aniq versiyani belgilang.
+

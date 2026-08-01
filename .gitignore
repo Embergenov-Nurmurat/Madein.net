@@ -1,0 +1,29 @@
+# HECH QACHON commit qilmang — native modullar (masalan better-sqlite3)
+# mahalliy kompyuteringiz arxitekturasi uchun build qilinadi. Agar bu
+# papka boshqa platformaga (masalan Railway'ning serveriga) shu holicha
+# ko'chirilsa, "Segmentation fault" bilan darhol qulab tushadi. Har doim
+# deploy muhitida `npm install`ni QAYTADAN ishga tushirish kerak.
+node_modules/
+
+# Mahalliy ma'lumotlar (foydalanuvchilar, asarlar, yuklangan fayllar,
+# SQLite baza) — production'da bu Railway Volume orqali saqlanadi,
+# repo ichida emas.
+storage/data/*
+storage/uploads/*
+storage/sessions/*
+!storage/data/.gitkeep
+!storage/uploads/.gitkeep
+!storage/sessions/.gitkeep
+
+# Maxfiy kalitlar — hech qachon repo'ga tushmasligi kerak
+.env
+.env.local
+.env.*.local
+
+# Node/npm log fayllari
+npm-debug.log*
+*.log
+
+# OS fayllari
+.DS_Store
+Thumbs.db
