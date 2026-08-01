@@ -2866,6 +2866,7 @@
       let feedLoading = false;
       let feedQuery = { q: '', tag: '', type: '', status: '', sort: 'new', following: false, minPrice: '', maxPrice: '' };
       let currentTheme = { mode: 'tungi', custom: '#e2543f' };
+      let IS_TELEGRAM = false;   // true bo'lsa, sayt Telegram Mini App ichida ochilgan
       let pendingDeleteId = null;
       let uploadMediaItems = []; // { type: 'image'|'video', blob, previewUrl }
       const MAX_UPLOAD_IMAGES = 3;
@@ -2875,7 +2876,53 @@
       const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
       /* ===================== INIT ===================== */
+      /* ===================== TELEGRAM MINI APP ===================== */
+      /* Sayt Telegram ichida (Mini App sifatida) ochilganda ishga tushadi.
+         Oddiy brauzerda window.Telegram mavjud bo'lmagani uchun bu funksiya
+         hech narsa qilmay chiqib ketadi — saytning boshqa qismiga ta'sir yo'q. */
+      function initTelegramWebApp() {
+        const tg = window.Telegram && window.Telegram.WebApp;
+        if (!tg) return;
+        IS_TELEGRAM = true;
+
+        tg.ready();
+        tg.expand(); // ilovani to'liq ekran balandligida ochish
+
+        document.documentElement.classList.add('tg-app');
+
+        try { tg.setHeaderColor('#0a84ff'); } catch (e) { /* eski Telegram versiyasida bo'lmasligi mumkin */ }
+        try { tg.setBackgroundColor('#0a0a0a'); } catch (e) { }
+
+        // Pastga/yon tomonga tortib ilovani tasodifan yopib qo'yishning oldini olish
+        // (galereyani skroll qilishda qo'l tegib ketishi mumkin)
+        try { tg.disableVerticalSwipes(); } catch (e) { }
+
+        // Telegram'ning o'z "Orqaga" tugmasini sayt ichidagi navigatsiyaga ulaymiz.
+        // Sayt allaqachon brauzerning orqaga tugmasi uchun popstate'ni ishlatadi
+        // (handleDeepLinkFromURL / userProfileView / lightbox va h.k.), shuning
+        // uchun bu yerda shunchaki history.back() chaqirish yetarli.
+        tg.BackButton.onClick(() => window.history.back());
+
+        const updateTelegramBackButton = () => {
+          const path = window.location.pathname;
+          const modalOpen = document.querySelector('.modal-backdrop.open, .image-viewer-overlay.open');
+          const profileOpen = $('#userProfileView') && $('#userProfileView').classList.contains('active');
+          if (path !== '/' || modalOpen || profileOpen) {
+            tg.BackButton.show();
+          } else {
+            tg.BackButton.hide();
+          }
+        };
+        window.addEventListener('popstate', updateTelegramBackButton);
+        // Ilova ichidagi barcha oyna/modal ochilish-yopilishlarini kuzatib boradi
+        // (har bir funksiyaga alohida qo'l bilan chaqiruv qo'shmasdan).
+        new MutationObserver(updateTelegramBackButton)
+          .observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
+        updateTelegramBackButton();
+      }
+
       async function init() {
+        initTelegramWebApp();
         registerServiceWorker();
         applyI18n();
         try {

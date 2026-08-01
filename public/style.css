@@ -5532,9 +5532,11 @@
         gap: 6px;
       }
 
-      .nav-right #openUploadBtn {
-        padding: 7px 12px;
-        font-size: 11px;
+      .nav-right #openUploadBtn.upload-plus-btn {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        font-size: 26px;
         white-space: nowrap;
       }
 
@@ -5739,3 +5741,12 @@
     .stock-badge.low { color: #d98a1f; border-color: #d98a1f; }
     .stock-badge.out { color: #e0554f; border-color: #e0554f; }
     .stock-badge.order { color: var(--accent); border-color: var(--accent); }
+
+    /* ===================== TELEGRAM MINI APP ===================== */
+    /* Telegram ilova ichida ochilganda, uning tepasidagi tizim maydoni
+       (soat, ... menyu) bilan saytning o'z kontenti bir-biriga yopishib
+       qolmasligi uchun kichik yuqori bo'shliq. Oddiy brauzerda .tg-app
+       klassi qo'shilmagani uchun bu qoida umuman ishlamaydi. */
+    .tg-app {
+      padding-top: calc(env(safe-area-inset-top, 0px) + 6px);
+    }
