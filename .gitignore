@@ -3,7 +3,7 @@
 # papka boshqa platformaga (masalan Railway'ning serveriga) shu holicha
 # ko'chirilsa, "Segmentation fault" bilan darhol qulab tushadi. Har doim
 # deploy muhitida `npm install`ni QAYTADAN ishga tushirish kerak.
-
+node_modules/
 
 # Mahalliy ma'lumotlar (foydalanuvchilar, asarlar, yuklangan fayllar,
 # SQLite baza) — production'da bu Railway Volume orqali saqlanadi,
