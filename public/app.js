@@ -256,6 +256,9 @@
           "gate.title": "Ro'yxatdan o'ting",
           "gate.desc": "Siz hozircha mehmon sifatida ko'ryapsiz. Bu amal uchun akkaunt kerak — istasangiz hoziroq, istasangiz keyinroq ro'yxatdan o'ting.",
           "gate.later": "Keyinroq", "gate.register": "Ro'yxatdan o'tish",
+          "gate.desc.cart": "Savatga mahsulot qo'shish va buyurtma berish uchun ro'yxatdan o'ting.",
+          "gate.desc.messages": "Sotuvchilarga to'g'ridan-to'g'ri xabar yozish uchun ro'yxatdan o'ting.",
+          "gate.desc.profile": "O'z profilingiz va asarlaringizni boshqarish uchun ro'yxatdan o'ting.",
           "theme.fabTitle": "Stilni o'zgartirish", "theme.title": "Sayt stili",
           "theme.tungi": "Tungi", "theme.yorug": "Yorug'", "theme.cyberpunk": "Cyberpunk", "theme.cyberpunkBlue": "Cyberpunk ko'k", "theme.cyberpunkYellow": "Cyberpunk sariq", "theme.liquidGlass": "Liquid Glass (shisha)", "theme.custom": "Maxsus",
           "theme.customPick": "O'zingiz rang tanlang",
@@ -621,6 +624,9 @@
           "gate.title": "Please sign up",
           "gate.desc": "You're currently browsing as a guest. This action needs an account — you can sign up now or later.",
           "gate.later": "Later", "gate.register": "Sign up",
+          "gate.desc.cart": "Sign up to save items to your cart and check out.",
+          "gate.desc.messages": "Sign up to message sellers directly.",
+          "gate.desc.profile": "Sign up to manage your own profile and works.",
           "theme.fabTitle": "Change style", "theme.title": "Site style",
           "theme.tungi": "Night", "theme.yorug": "Light", "theme.cyberpunk": "Cyberpunk", "theme.cyberpunkBlue": "Cyberpunk blue", "theme.cyberpunkYellow": "Cyberpunk yellow", "theme.liquidGlass": "Liquid Glass", "theme.custom": "Custom",
           "theme.customPick": "Pick your own color",
@@ -966,6 +972,9 @@
           "gate.title": "请注册",
           "gate.desc": "您目前以访客身份浏览。此操作需要账户 — 您可以现在注册，也可以稍后再说。",
           "gate.later": "稍后", "gate.register": "注册",
+          "gate.desc.cart": "注册后即可将商品加入购物车并结账。",
+          "gate.desc.messages": "注册后即可直接给卖家发消息。",
+          "gate.desc.profile": "注册后即可管理您自己的主页和作品。",
           "theme.fabTitle": "更改样式", "theme.title": "网站样式",
           "theme.tungi": "夜间", "theme.yorug": "明亮", "theme.cyberpunk": "赛博朋克", "theme.cyberpunkBlue": "赛博朋克蓝", "theme.cyberpunkYellow": "赛博朋克黄", "theme.liquidGlass": "液态玻璃", "theme.custom": "自定义",
           "theme.customPick": "选择您自己的颜色",
@@ -1345,6 +1354,9 @@
           "gate.title": "कृपया साइन अप करें",
           "gate.desc": "आप अभी अतिथि के रूप में देख रहे हैं। इस कार्य के लिए खाता चाहिए — अभी या बाद में साइन अप करें।",
           "gate.later": "बाद में", "gate.register": "साइन अप करें",
+          "gate.desc.cart": "कार्ट में आइटम सहेजने और चेकआउट करने के लिए साइन अप करें।",
+          "gate.desc.messages": "विक्रेताओं को सीधे संदेश भेजने के लिए साइन अप करें।",
+          "gate.desc.profile": "अपनी प्रोफ़ाइल और कार्यों को प्रबंधित करने के लिए साइन अप करें।",
           "theme.fabTitle": "शैली बदलें", "theme.title": "साइट शैली",
           "theme.tungi": "रात्रि", "theme.yorug": "उजला", "theme.cyberpunk": "साइबरपंक", "theme.cyberpunkBlue": "साइबरपंक नीला", "theme.cyberpunkYellow": "साइबरपंक पीला", "theme.liquidGlass": "लिक्विड ग्लास", "theme.custom": "कस्टम",
           "theme.customPick": "अपना रंग चुनें",
@@ -1724,6 +1736,9 @@
           "gate.title": "Regístrate",
           "gate.desc": "Por ahora estás navegando como invitado. Esta acción requiere una cuenta — puedes registrarte ahora o más tarde.",
           "gate.later": "Más tarde", "gate.register": "Registrarse",
+          "gate.desc.cart": "Regístrate para guardar artículos en tu carrito y pagar.",
+          "gate.desc.messages": "Regístrate para enviar mensajes directamente a los vendedores.",
+          "gate.desc.profile": "Regístrate para gestionar tu propio perfil y tus obras.",
           "theme.fabTitle": "Cambiar estilo", "theme.title": "Estilo del sitio",
           "theme.tungi": "Nocturno", "theme.yorug": "Claro", "theme.cyberpunk": "Cyberpunk", "theme.cyberpunkBlue": "Cyberpunk azul", "theme.cyberpunkYellow": "Cyberpunk amarillo", "theme.liquidGlass": "Vidrio líquido", "theme.custom": "Personalizado",
           "theme.customPick": "Elige tu propio color",
@@ -2103,6 +2118,9 @@
           "gate.title": "الرجاء إنشاء حساب",
           "gate.desc": "أنت تتصفح حاليًا كضيف. تتطلب هذه العملية حسابًا — يمكنك التسجيل الآن أو لاحقًا.",
           "gate.later": "لاحقًا", "gate.register": "إنشاء حساب",
+          "gate.desc.cart": "سجّل للاحتفاظ بالعناصر في سلتك وإتمام الشراء.",
+          "gate.desc.messages": "سجّل لمراسلة البائعين مباشرة.",
+          "gate.desc.profile": "سجّل لإدارة ملفك الشخصي وأعمالك.",
           "theme.fabTitle": "تغيير النمط", "theme.title": "نمط الموقع",
           "theme.tungi": "ليلي", "theme.yorug": "فاتح", "theme.cyberpunk": "سايبربانك", "theme.cyberpunkBlue": "سايبربانك أزرق", "theme.cyberpunkYellow": "سايبربانك أصفر", "theme.liquidGlass": "الزجاج السائل", "theme.custom": "مخصص",
           "theme.customPick": "اختر لونك الخاص",
@@ -2482,6 +2500,9 @@
           "gate.title": "Пожалуйста, зарегистрируйтесь",
           "gate.desc": "Сейчас вы просматриваете сайт как гость. Для этого действия нужен аккаунт — можно зарегистрироваться сейчас или позже.",
           "gate.later": "Позже", "gate.register": "Регистрация",
+          "gate.desc.cart": "Зарегистрируйтесь, чтобы добавлять товары в корзину и оформлять заказ.",
+          "gate.desc.messages": "Зарегистрируйтесь, чтобы писать продавцам напрямую.",
+          "gate.desc.profile": "Зарегистрируйтесь, чтобы управлять своим профилем и работами.",
           "theme.fabTitle": "Изменить стиль", "theme.title": "Стиль сайта",
           "theme.tungi": "Ночной", "theme.yorug": "Светлый", "theme.cyberpunk": "Киберпанк", "theme.cyberpunkBlue": "Киберпанк синий", "theme.cyberpunkYellow": "Киберпанк жёлтый", "theme.liquidGlass": "Жидкое стекло", "theme.custom": "Свой",
           "theme.customPick": "Выберите свой цвет",
@@ -2654,7 +2675,9 @@
         document.documentElement.lang = currentLang;
         document.documentElement.dir = I18N[currentLang]._dir || 'ltr';
         document.querySelectorAll('[data-i18n]').forEach(el => {
-          el.textContent = t(el.getAttribute('data-i18n'));
+          const ctx = el.dataset.i18nContext;
+          const key = (ctx && ctx !== 'default') ? `gate.desc.${ctx}` : el.getAttribute('data-i18n');
+          el.textContent = t(key);
         });
         document.querySelectorAll('[data-i18n-html]').forEach(el => {
           el.innerHTML = t(el.getAttribute('data-i18n-html'));
@@ -3251,14 +3274,19 @@
       }
 
       /* Gate modal — shown when a guest attempts something that needs an account. */
-      function openGateModal() { $('#gateModal').classList.remove('hidden'); }
-      function closeGateModal() { $('#gateModal').classList.add('hidden'); }
-      function guarded(fn) {
-        return (...args) => {
-          if (IS_GUEST) { openGateModal(); return; }
-          return fn(...args);
-        };
+      function openGateModal(context = 'default') {
+        const desc = $('#gateModal').querySelector('[data-i18n="gate.desc"]');
+        if (desc) {
+          const key = context && context !== 'default' ? `gate.desc.${context}` : 'gate.desc';
+          desc.textContent = t(key);
+          // shu elementga i18n tizimi qayta tegmasin (til almashtirilganda ham
+          // joriy context matni to'g'ri tilda qolishi uchun context'ni saqlab qo'yamiz)
+          desc.dataset.i18nContext = context;
+        }
+        $('#gateModal').classList.remove('hidden');
       }
+      function closeGateModal() { $('#gateModal').classList.add('hidden'); }
+      function guarded(fn, context = 'profile') { return (...args) => { if (IS_GUEST) { openGateModal(context); return; } return fn(...args); }; }
 
       async function enterApp() {
         $('#authScreen').classList.add('hidden');
@@ -3420,6 +3448,9 @@
         $('#openUploadBtn2').addEventListener('click', guarded(openUploadModal));
         $('#closeUploadModal').addEventListener('click', closeUploadModal);
         $('#uploadModal').addEventListener('click', (e) => { if (e.target === $('#uploadModal')) closeUploadModal(); });
+        $('#workTags').addEventListener('input', updateTagSuggestions);
+        $('#workTags').addEventListener('focus', updateTagSuggestions);
+        document.addEventListener('click', (e) => { if (!e.target.closest('.tag-input-wrap')) $('#tagSuggestions').hidden = true; });
 
         /* Lenta: qidiruv, kategoriya, saralash, faqat kuzatuvchilarim.
            Qidiruv endi navbar'da joylashgan, shuning uchun boshqa
@@ -4478,7 +4509,7 @@
         }
         $('#upContact').innerHTML = contactBits.join('');
         const msgBtn = $('#upContactSellerBtn');
-        if (msgBtn) msgBtn.addEventListener('click', guarded(() => openChat(profile.username)));
+        if (msgBtn) msgBtn.addEventListener('click', guarded(() => openChat(profile.username), 'messages'));
         const followBtn = $('#upFollowBtn');
         if (followBtn) followBtn.addEventListener('click', guarded(() => toggleFollow(profile.username, profile.isFollowing)));
         const reportBtn = $('#upReportBtn');
@@ -4818,7 +4849,7 @@
           });
         }
         const cartBtn = card.querySelector('.cart-btn');
-        if (cartBtn) cartBtn.addEventListener('click', guarded(() => toggleCart(id)));
+        if (cartBtn) cartBtn.addEventListener('click', guarded(() => toggleCart(id), 'cart'));
         const buyBtn = card.querySelector('.feed-price-buy');
         if (buyBtn) {
           buyBtn.addEventListener('click', guarded((e) => {
@@ -5075,7 +5106,7 @@
           summaryWrap.innerHTML = renderCartSummary(data.totalsByCurrency);
           $$('#cartList .cart-item').forEach(bindCartItemEvents);
           const checkoutBtn = $('#cartCheckoutBtn');
-          if (checkoutBtn) checkoutBtn.addEventListener('click', guarded(checkoutCart));
+          if (checkoutBtn) checkoutBtn.addEventListener('click', guarded(checkoutCart, 'cart'));
         } catch (e) {
           list.innerHTML = `<p class="view-sub">${t('common.serverError')}</p>`;
         }
@@ -5161,18 +5192,22 @@
         $('#feedFilterBar').classList.remove('mobile-open');
       }
 
+      function showFeedSkeleton() { const list = $('#feedList'); if (!list || list.children.length) return; list.innerHTML = `<div class="feed-skeleton-wrap" aria-label="Loading"><article class="feed-skeleton-card"><div class="skeleton-block skeleton-image"></div><div class="skeleton-block skeleton-line"></div><div class="skeleton-block skeleton-line short"></div></article><article class="feed-skeleton-card"><div class="skeleton-block skeleton-image"></div><div class="skeleton-block skeleton-line"></div><div class="skeleton-block skeleton-line short"></div></article><article class="feed-skeleton-card"><div class="skeleton-block skeleton-image"></div><div class="skeleton-block skeleton-line"></div><div class="skeleton-block skeleton-line short"></div></article></div>`; }
+
       function resetAndReloadFeed() {
         FEED = [];
         feedOffset = 0;
         feedHasMore = true;
         $('#feedList').innerHTML = '';
         $('#feedEnd').classList.add('hidden');
+        showFeedSkeleton();
         loadFeedPage();
       }
 
       async function loadFeedPage() {
         if (feedLoading || !feedHasMore) return;
         feedLoading = true;
+        if (!FEED.length) showFeedSkeleton();
         $('#feedSentinel').classList.remove('hidden');
         try {
           const data = await api('/api/feed?' + feedQueryString());
@@ -5181,6 +5216,7 @@
           indexItems(items);
           feedOffset += items.length;
           feedHasMore = !!data.hasMore;
+          if (items.length && $('#feedList').querySelector('.feed-skeleton-wrap')) $('#feedList').innerHTML = '';
           appendFeedItems(items);
         } catch (e) { /* keep hasMore as-is, allow retry on next scroll */ }
         feedLoading = false;
@@ -6937,6 +6973,9 @@
         observeAutoplayVideos(card);
         card.classList.add('reveal');
       }
+
+      let tagSuggestTimer = null;
+      async function updateTagSuggestions() { const input=$('#workTags'), box=$('#tagSuggestions'); if(!input||!box)return; const parts=input.value.split(','); const query=(parts[parts.length-1]||'').trim().toLowerCase(); if(query.length<2){box.hidden=true;box.innerHTML='';return;} clearTimeout(tagSuggestTimer); tagSuggestTimer=setTimeout(async()=>{ let tags=[]; try{const data=await api('/api/tags?q='+encodeURIComponent(query));tags=data.tags||[];}catch(e){} if(!tags.length){const all=[];[...(FEED||[]),...(WORKS||[])].forEach(w=>(w.tags||[]).forEach(t=>all.push(String(t))));tags=[...new Set(all)].filter(t=>t.toLowerCase().includes(query)).slice(0,8);} box.innerHTML=tags.map(tag=>`<button type="button" role="option" data-tag="${escapeHtml(tag)}">#${escapeHtml(tag)}</button>`).join(''); box.hidden=!tags.length; box.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{const next=input.value.split(',');next[next.length-1]=` ${btn.dataset.tag}`;input.value=next.map(v=>v.trim()).join(', ')+', ';box.hidden=true;input.focus();})); },120); }
 
       /* ===================== UPLOAD ===================== */
       function openUploadModal() {
