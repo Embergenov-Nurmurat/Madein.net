@@ -155,6 +155,24 @@ function ensureModerationFields(u) {
   if (!SUPPORTED_LANGS.includes(u.lang)) u.lang = 'uz';
   if (!Array.isArray(u.wishlist)) u.wishlist = [];
   if (!Array.isArray(u.collections)) u.collections = [];
+
+ // 2FA maydonlari: eski foydalanuvchilar uchun ham xavfsiz defaultlar
+ if (!u.twoFactor || typeof u.twoFactor !== 'object') {
+  u.twoFactor = {
+   enabled: false,
+   secret: null,
+   backupCodeHashes: [],
+   enabledAt: null,
+   totpLastCounter: 0,
+   totpLock: { fails: 0, lockedUntil: 0 }
+  };
+ } else {
+  if (!Array.isArray(u.twoFactor.backupCodeHashes)) u.twoFactor.backupCodeHashes = [];
+  if (!Number.isInteger(u.twoFactor.totpLastCounter)) u.twoFactor.totpLastCounter = 0;
+  if (!u.twoFactor.totpLock || typeof u.twoFactor.totpLock !== 'object') {
+   u.twoFactor.totpLock = { fails: 0, lockedUntil: 0 };
+  }
+ }
 }
 
 /* db.reports ro'yxati mavjudligini ta'minlaydi (eski db.json fayllar uchun) */
@@ -1500,33 +1518,57 @@ app.post('/api/login', rateLimit('login', 15, 10 * 60 * 1000), async (req, res) 
 
 /* 2FA kodi (autentifikator ilova) yoki zaxira kod bilan kirishni yakunlaydi. */
 app.post('/api/login/2fa-verify', rateLimit('2fa-verify', 10, 10 * 60 * 1000), async (req, res) => {
-  const uname = req.session.pending2faUsername;
-  if (!uname || !db.users[uname]) {
-    return res.status(400).json({ error: "Avval login va parolni yuboring", code: 'no2faPending' });
-  }
-  const u = db.users[uname];
-  const { code } = req.body || {};
-  const cleanCode = String(code || '').trim();
+ const uname = req.session.pending2faUsername;
+ if (!uname || !db.users[uname]) {
+  return res.status(400).json({ error: "Avval login va parolni yuboring", code: 'no2faPending' });
+ }
+ const u = db.users[uname];
+ ensureModerationFields(u);
+ const cleanCode = String((req.body && req.body.code) || '').replace(/\s/g, '');
 
-  let ok = twofa.verifyTotp(u.twoFactor.secret, cleanCode);
-  let usedBackupCode = null;
-  if (!ok && Array.isArray(u.twoFactor.backupCodeHashes)) {
-    const hash = twofa.hashBackupCode(cleanCode.toLowerCase().replace(/\s/g, ''));
-    if (u.twoFactor.backupCodeHashes.includes(hash)) {
-      ok = true;
-      usedBackupCode = hash;
-    }
+ const lock = twofa.checkLock(u.twoFactor.totpLock);
+ if (lock.locked) {
+  return res.status(429).json({
+   error: `Juda ko'p urinish. ${lock.retryAfterSec} soniyadan keyin qayta urinib ko'ring.`,
+   code: 'tooMany2faAttempts',
+   retryAfterSec: lock.retryAfterSec
+  });
+ }
+
+ const totpResult = twofa.verifyTotp(u.twoFactor.secret, cleanCode, {
+  lastCounter: u.twoFactor.totpLastCounter
+ });
+
+ let usedBackupCode = false;
+ let backupCodesRemaining = null;
+ if (!totpResult.valid && totpResult.reason !== 'replay') {
+  const backupResult = twofa.consumeBackupCode(u.twoFactor.backupCodeHashes, cleanCode);
+  if (backupResult.valid) {
+   usedBackupCode = true;
+   backupCodesRemaining = backupResult.remaining;
   }
-  if (!ok) {
-    return res.status(401).json({ error: "Kod noto'g'ri yoki muddati o'tgan", code: 'invalid2faCode' });
+ }
+
+ if (!totpResult.valid && !usedBackupCode) {
+  u.twoFactor.totpLock = twofa.registerFailure(u.twoFactor.totpLock);
+  await saveDB();
+  if (totpResult.reason === 'replay') {
+   return res.status(401).json({
+    error: "Bu kod allaqachon ishlatilgan. Autentifikator ilovasidagi yangi kodni kiriting.",
+    code: 'used2faCode'
+   });
   }
-  if (usedBackupCode) {
-    u.twoFactor.backupCodeHashes = u.twoFactor.backupCodeHashes.filter(h => h !== usedBackupCode);
-    await saveDB();
-  }
-  delete req.session.pending2faUsername;
-  req.session.username = uname;
-  res.json({ user: publicUser(uname), usedBackupCode: !!usedBackupCode });
+  return res.status(401).json({ error: "Kod noto'g'ri yoki muddati o'tgan", code: 'invalid2faCode' });
+ }
+
+ if (totpResult.valid) u.twoFactor.totpLastCounter = totpResult.counter;
+ if (usedBackupCode) u.twoFactor.backupCodeHashes = backupCodesRemaining;
+ u.twoFactor.totpLock = twofa.resetFailures();
+ await saveDB();
+
+ delete req.session.pending2faUsername;
+ req.session.username = uname;
+ res.json({ user: publicUser(uname), usedBackupCode });
 });
 
 /* ===================== 2FA BOSHQARUVI (profil sozlamalaridan) ===================== */
@@ -1551,23 +1593,46 @@ app.post('/api/2fa/setup', requireAuth, rateLimit('2fa-setup', 10, 10 * 60 * 100
    kodni yuboradi — to'g'ri bo'lsa 2FA yoqiladi va bir martalik zaxira
    kodlar (faqat shu safar, ochiq matnda) qaytariladi. */
 app.post('/api/2fa/confirm', requireAuth, rateLimit('2fa-setup', 10, 10 * 60 * 1000), async (req, res) => {
-  const uname = req.session.username;
-  const secret = req.session.pending2faSecret;
-  if (!secret) return res.status(400).json({ error: "Avval /2fa/setup chaqiring", code: 'no2faSetupPending' });
-  const { code } = req.body || {};
-  if (!twofa.verifyTotp(secret, code)) {
-    return res.status(401).json({ error: "Kod noto'g'ri — autentifikator ilovangizdagi kodni qayta tekshiring", code: 'invalid2faCode' });
-  }
-  const backupCodes = twofa.generateBackupCodes(8);
-  db.users[uname].twoFactor = {
-    enabled: true,
-    secret,
-    backupCodeHashes: backupCodes.map(c => twofa.hashBackupCode(c)),
-    enabledAt: new Date().toISOString()
-  };
-  delete req.session.pending2faSecret;
+ const uname = req.session.username;
+ const u = db.users[uname];
+ const secret = req.session.pending2faSecret;
+ if (!secret) return res.status(400).json({ error: "Avval /2fa/setup chaqiring", code: 'no2faSetupPending' });
+ ensureModerationFields(u);
+ const cleanCode = String((req.body && req.body.code) || '').replace(/\s/g, '');
+
+ const lock = twofa.checkLock(u.twoFactor.totpLock);
+ if (lock.locked) {
+  return res.status(429).json({
+   error: `Juda ko'p urinish. ${lock.retryAfterSec} soniyadan keyin qayta urinib ko'ring.`,
+   code: 'tooMany2faAttempts',
+   retryAfterSec: lock.retryAfterSec
+  });
+ }
+
+ const totpResult = twofa.verifyTotp(secret, cleanCode, { lastCounter: 0 });
+ if (!totpResult.valid) {
+  u.twoFactor.totpLock = twofa.registerFailure(u.twoFactor.totpLock);
   await saveDB();
-  res.json({ ok: true, backupCodes });
+  return res.status(401).json({
+   error: totpResult.reason === 'replay'
+    ? "Bu kod allaqachon ishlatilgan. Yangi autentifikator kodini kiriting."
+    : "Kod noto'g'ri — autentifikator ilovangizdagi kodni qayta tekshiring",
+   code: totpResult.reason === 'replay' ? 'used2faCode' : 'invalid2faCode'
+  });
+ }
+
+ const backupCodes = twofa.generateBackupCodes(8);
+ u.twoFactor = {
+  enabled: true,
+  secret,
+  backupCodeHashes: backupCodes.map(c => twofa.hashBackupCode(c)),
+  enabledAt: new Date().toISOString(),
+  totpLastCounter: totpResult.counter,
+  totpLock: twofa.resetFailures()
+ };
+ delete req.session.pending2faSecret;
+ await saveDB();
+ res.json({ ok: true, backupCodes });
 });
 
 /* 2FA'ni o'chirish — joriy parol qayta so'raladi (agar sessiya o'g'irlangan
