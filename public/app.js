@@ -4579,21 +4579,69 @@
         return workImages(w);
       }
 
-      function collageHTML(images, alt, videoSrc, posterSrc) {
+      /* Profil to'ri (kichik kvadrat kartochkalar) uchun — faqat muqova surat +
+         bir nechta rasm bo'lsa burchakda belgi. Instagram profil to'ri ham xuddi
+         shunday: kartochka ichida surish (svayp) yo'q, faqat bitta muqova. */
+      function coverHTML(images, alt, videoSrc, posterSrc) {
         if (videoSrc) {
-          // autoplay yo'q — video faqat ekranda ko'rinib turgan paytda ijro etiladi
-          // (pastdagi videoAutoplayObserver orqali), shu bilan batareya/protsessor tejaladi
-          return `<div class="collage n-1 collage-video">
+          return `<div class="collage collage-video">
             <video src="${videoSrc}"${posterSrc ? ` poster="${posterSrc}"` : ''} muted loop playsinline preload="metadata" data-autoplay-onview></video>
             <div class="collage-count" aria-hidden="true">${videoIconSVG()}</div>
           </div>`;
         }
-        const imgs = images && images.length ? images.slice(0, 3) : [];
+        const imgs = images && images.length ? images : [];
         const badge = imgs.length > 1
           ? `<div class="collage-count" aria-hidden="true">${multiImageIconSVG()} ${imgs.length}</div>`
           : '';
-        return `<div class="collage n-${imgs.length}">${imgs.map(src =>
-          `<img src="${src}" alt="${escapeHtml(alt)}" loading="lazy">`).join('')}${badge}</div>`;
+        return `<div class="collage"><img src="${imgs[0] || ''}" alt="${escapeHtml(alt)}" loading="lazy">${badge}</div>`;
+      }
+
+      /* Lenta va lightbox uchun — Instagramdagidek bitta rasm ko'rsatiladi,
+         bir nechtasi bo'lsa barmoq bilan suriladi (svayp), pastda nuqtachalar
+         joriy suratni ko'rsatib turadi. Hammasi bir vaqtda mozaika qilib
+         ko'rsatilmaydi. */
+      function collageHTML(images, alt, videoSrc, posterSrc) {
+        if (videoSrc) {
+          // autoplay yo'q — video faqat ekranda ko'rinib turgan paytda ijro etiladi
+          // (pastdagi videoAutoplayObserver orqali), shu bilan batareya/protsessor tejaladi
+          return `<div class="collage collage-video">
+            <video src="${videoSrc}"${posterSrc ? ` poster="${posterSrc}"` : ''} muted loop playsinline preload="metadata" data-autoplay-onview></video>
+            <div class="collage-count" aria-hidden="true">${videoIconSVG()}</div>
+          </div>`;
+        }
+        const imgs = images && images.length ? images : [];
+        if (imgs.length <= 1) {
+          return `<div class="collage"><img src="${imgs[0] || ''}" alt="${escapeHtml(alt)}" loading="lazy"></div>`;
+        }
+        return `<div class="collage ig-carousel" data-index="0">
+          <div class="ig-carousel-track">${imgs.map(src =>
+            `<div class="ig-carousel-slide"><img src="${src}" alt="${escapeHtml(alt)}" loading="lazy"></div>`).join('')}</div>
+          <div class="ig-carousel-dots">${imgs.map((_, i) =>
+            `<span class="ig-dot${i === 0 ? ' active' : ''}"></span>`).join('')}</div>
+        </div>`;
+      }
+
+      /* .ig-carousel elementlarini svayp holatini kuzatib, nuqtachalarni va
+         data-index'ni yangilab turadi. root — yangi qo'shilgan kartochka yoki
+         lightbox konteyneri. */
+      function initCarousels(root) {
+        root.querySelectorAll('.ig-carousel').forEach(car => {
+          const track = car.querySelector('.ig-carousel-track');
+          const dots = car.querySelectorAll('.ig-dot');
+          if (!track || !dots.length) return;
+          let ticking = false;
+          track.addEventListener('scroll', () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+              const idx = Math.round(track.scrollLeft / track.clientWidth);
+              const clamped = Math.max(0, Math.min(idx, dots.length - 1));
+              car.dataset.index = String(clamped);
+              dots.forEach((d, i) => d.classList.toggle('active', i === clamped));
+              ticking = false;
+            });
+          }, { passive: true });
+        });
       }
 
       /* Faqat ekranda ko'rinayotgan videolarni ijro etadi — ko'rinmay qolganda
@@ -4624,7 +4672,7 @@
         return `
       <div class="work-card" data-id="${w.id}">
         <div class="work-thumb">
-          ${collageHTML(workThumbs(w), w.title, w.video, w.poster)}
+          ${coverHTML(workThumbs(w), w.title, w.video, w.poster)}
           <div class="work-tag">${typeLabel(w)}</div>
           <div class="work-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
         </div>
@@ -4801,6 +4849,7 @@
           bindFeedCardEvents(card);
           feedRevealObserver.observe(card);
           observeAutoplayVideos(card);
+          initCarousels(card);
         });
         if (!list.children.length) {
           list.innerHTML = `
@@ -4841,7 +4890,9 @@
               openVideoViewer(src.video, src.poster, src);
             } else {
               const images = src ? workImages(src) : Array.from(thumb.querySelectorAll('img')).map(i => i.src);
-              openImageViewer(images, 0);
+              const carousel = thumb.querySelector('.ig-carousel');
+              const startIndex = carousel ? Number(carousel.dataset.index || 0) : 0;
+              openImageViewer(images, startIndex);
             }
             api('/api/works/' + id + '/view', { method: 'POST' }).then(res => {
               if (src) src.viewsCount = res.viewsCount;
@@ -6971,6 +7022,7 @@
         list.insertBefore(card, list.firstChild);
         bindFeedCardEvents(card);
         observeAutoplayVideos(card);
+        initCarousels(card);
         card.classList.add('reveal');
       }
 
@@ -7186,6 +7238,7 @@
         LIGHTBOX_IMAGES = workImages(w);
         $('#lightboxImg').innerHTML = collageHTML(LIGHTBOX_IMAGES, w.title, w.video, w.poster);
         $('#lightboxImg').className = 'lightbox-collage';
+        initCarousels($('#lightboxImg'));
         if (w.video) {
           const videoEl = $('#lightboxImg').querySelector('video');
           if (videoEl) { videoEl.controls = true; videoEl.loop = false; videoEl.play().catch(() => {}); }
