@@ -1751,53 +1751,14 @@
       display: block;
       background: #000;
     }
-    /* ===== Instagram uslubidagi karusel (bir nechta rasm — bittadan suriladi) ===== */
-    .ig-carousel { display: block; }
-    .ig-carousel-track {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+    .collage.n-1 { grid-template-columns: 1fr; }
+    .collage.n-2 { grid-template-columns: 1fr 1fr; }
+    .collage.n-3 {
+      grid-template-columns: 1.3fr 1fr;
+      grid-template-rows: 1fr 1fr;
     }
-    .ig-carousel-track::-webkit-scrollbar { display: none; }
-    .ig-carousel-slide {
-      flex: 0 0 100%;
-      width: 100%;
-      height: 100%;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
-    }
-    .ig-carousel-slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .ig-carousel-dots {
-      position: absolute;
-      left: 50%;
-      bottom: 10px;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      z-index: 2;
-      pointer-events: none;
-    }
-    .ig-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, .55);
-      transition: background .15s ease, width .15s ease;
-    }
-    .ig-dot.active {
-      background: #fff;
-      width: 14px;
-      border-radius: 3px;
+    .collage.n-3 img:nth-child(1) {
+      grid-row: 1 / span 2;
     }
     .collage-count {
       position: absolute;
@@ -5792,11 +5753,10 @@
 
 
 /* ============ MADEIN UI REFRESH ============ */
-/* Instagram uslubidagi bitta ustunli cheksiz lenta — do'kon kartochka to'ri emas */
-.feed-list{width:100%;max-width:560px;margin:0 auto;padding:0 20px 28px;display:flex;flex-direction:column;gap:28px}
+.feed-list{width:min(100%,1280px);max-width:none;margin:0 auto;padding:0 28px 28px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;align-items:start}
 .feed-card{min-width:0}.feed-head{padding:10px 12px}.feed-thumb{aspect-ratio:4/3}.feed-body{padding:10px 12px 12px}.feed-actions{padding:8px 12px 0;gap:4px}.feed-title{font-size:15px}.feed-meta{margin-top:8px}.feed-price{font-size:16px;font-weight:800}.feed-meta-right{gap:10px}
 .feed-skeleton-wrap{display:contents}.feed-skeleton-card{border-radius:var(--radius-md);overflow:hidden;background:var(--surface);border:1px solid var(--border)}.skeleton-block{background:linear-gradient(90deg,var(--bg-alt),color-mix(in srgb,var(--surface-2) 70%,var(--bg-alt)),var(--bg-alt));background-size:220% 100%;animation:skeletonPulse 1.25s ease-in-out infinite}.feed-skeleton-card .skeleton-image{aspect-ratio:4/3}.feed-skeleton-card .skeleton-line{height:11px;border-radius:999px;margin:12px}.feed-skeleton-card .skeleton-line.short{width:52%;margin-top:0}@keyframes skeletonPulse{0%,100%{background-position:180% 0;opacity:.72}50%{background-position:-20% 0;opacity:1}}
 .bottom-tabbar button .tab-icon{display:inline-flex;width:21px;height:21px;font-size:0}.bottom-tabbar button .tab-icon svg{width:100%;height:100%;display:block}
 .upload-modal{max-height:min(88vh,760px);display:flex;flex-direction:column}.upload-modal #uploadForm{min-height:0;overflow-y:auto;padding:0 2px 76px}.upload-modal #uploadForm>button[type="submit"]{position:sticky;bottom:0;z-index:3;margin:12px -2px -64px;padding:14px 16px;border-top:1px solid var(--border);box-shadow:0 -12px 22px color-mix(in srgb,var(--surface) 92%,transparent)}
 .tag-input-wrap{position:relative}.tag-suggestions{position:absolute;z-index:500;left:0;right:0;top:calc(100% + 5px);max-height:180px;overflow:auto;padding:5px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface-2);box-shadow:var(--shadow)}.tag-suggestions button{display:block;width:100%;padding:9px 10px;border:0;border-radius:5px;background:transparent;color:var(--text);text-align:left}.tag-suggestions button:hover,.tag-suggestions button:focus-visible{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);outline:none}
-@media (max-width:639px){.feed-list{padding:0 16px 22px;gap:16px}.auth-card{padding-top:52px;padding-bottom:48px}.upload-modal{max-height:92vh}}@media (prefers-reduced-motion:reduce){.skeleton-block{animation:none}}
+@media (max-width:1024px){.feed-list{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:639px){.feed-list{grid-template-columns:1fr;padding:0 16px 22px;gap:16px}.auth-card{padding-top:52px;padding-bottom:48px}.upload-modal{max-height:92vh}}@media (prefers-reduced-motion:reduce){.skeleton-block{animation:none}}

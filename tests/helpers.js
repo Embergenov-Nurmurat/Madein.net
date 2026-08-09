@@ -34,11 +34,19 @@ async function waitForServer(baseUrl, timeoutMs = 8000) {
 }
 
 /* Yangi izolyatsiyalangan server nusxasini ishga tushiradi.
-   Qaytaradi: { baseUrl, stop() } */
-async function startTestServer() {
+   `opts.preSeed(storageDir)` berilsa — server ishga tushishidan OLDIN
+   chaqiriladi (masalan: administrator parolini oldindan MA'LUM qilib
+   qo'yish uchun — chunki productiondagi FIXED_ADMIN_PASSWORD_HASH
+   testlarga noma'lum bo'lgan qat'iy hash).
+   Qaytaradi: { baseUrl, stop(), storageDir } */
+async function startTestServer(opts = {}) {
   const port = randomPort();
   const storageDir = fs.mkdtempSync(path.join(os.tmpdir(), 'madein-test-'));
   const baseUrl = `http://127.0.0.1:${port}`;
+
+  if (typeof opts.preSeed === 'function') {
+    await opts.preSeed(storageDir);
+  }
 
   const child = spawn(process.execPath, [SERVER_PATH], {
     env: {
@@ -48,8 +56,11 @@ async function startTestServer() {
       NODE_ENV: 'development', // HTTP ustida cookie'lar ishlashi uchun (secure:false)
       SESSION_SECRET: 'test-secret-not-for-production',
       // Tashqi provayderlar sozlanmagan — testlar ularsiz ham to'liq
-      // o'tishi kerak (real loyihada ular ixtiyoriy bo'lgani kabi)
-      SMTP_HOST: '', PAYME_MERCHANT_ID: '', CLICK_SERVICE_ID: ''
+      // o'tishi kerak (real loyihada ular ixtiyoriy bo'lgani kabi).
+      // `opts.env` orqali bitta test fayli buni bekor qilib, masalan
+      // Payme/Click'ni sinov kalitlari bilan yoqishi mumkin.
+      SMTP_HOST: '', PAYME_MERCHANT_ID: '', CLICK_SERVICE_ID: '',
+      ...(opts.env || {})
     },
     stdio: ['ignore', 'pipe', 'pipe']
   });
@@ -69,7 +80,7 @@ async function startTestServer() {
     try { fs.rmSync(storageDir, { recursive: true, force: true }); } catch (e) { /* muhim emas */ }
   }
 
-  return { baseUrl, stop, port };
+  return { baseUrl, stop, port, storageDir };
 }
 
 /* Cookie-jar bilan yengil HTTP klient — bitta "brauzer sessiyasi"ni

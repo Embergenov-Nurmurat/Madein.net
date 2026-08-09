@@ -41,7 +41,7 @@
           "auth.guestBtn": "Hozircha shunchaki ko'rib chiqish",
           "auth.guestBtnSmall": "Ro'yxatdan o'tishni keyinroq amalga oshirasiz",
           "nav.home": "Bosh sahifa", "nav.profile": "Profil", "nav.messages": "Xabarlar",
-          "nav.newWork": "+", "nav.myProfile": "Profilim", "nav.logout": "Chiqish",
+          "nav.newWork": "+", "nav.newWorkAria": "Yangi ish qo'shish", "nav.myProfile": "Profilim", "nav.logout": "Chiqish",
           "nav.register": "Ro'yxatdan o'tish",
           "push.enable": "🔔 Bildirishnomalarni yoqish", "push.disable": "🔕 Bildirishnomalarni o'chirish",
           "push.unsupported": "Bu brauzer push xabarnomalarni qo'llab-quvvatlamaydi",
@@ -320,6 +320,7 @@
           "twofa.loginPrompt": "Autentifikator ilovangizdagi 6 xonali kodni (yoki zaxira kodni) kiriting", "twofa.disablePrompt": "2FA'ni o'chirish uchun joriy parolingizni kiriting:",
           "search.clearAria": "Tozalash",
           "search.closeAria": "Yopish",
+          "common.close": "Yopish",
           "cart.eyebrow": "Xarid",
           "cart.title": "Sizning <span>korzinkangiz</span>",
           "cart.sub": "Savatga qo'shgan asarlaringiz shu yerda — miqdorini o'zgartiring va buyurtma bering.",
@@ -409,7 +410,7 @@
           "auth.guestBtn": "Just browse for now",
           "auth.guestBtnSmall": "You can register later",
           "nav.home": "Home", "nav.profile": "Profile", "nav.messages": "Messages",
-          "nav.newWork": "+", "nav.myProfile": "My profile", "nav.logout": "Log out",
+          "nav.newWork": "+", "nav.newWorkAria": "Add new work", "nav.myProfile": "My profile", "nav.logout": "Log out",
           "nav.register": "Sign up",
           "guest.banner": "You're browsing as a <b>guest</b> — sign up to upload work, like, and comment.",
           "guest.registerBtn": "Sign up",
@@ -688,6 +689,7 @@
           "twofa.loginPrompt": "Enter the 6-digit code from your authenticator app (or a backup code)", "twofa.disablePrompt": "Enter your current password to disable 2FA:",
           "search.clearAria": "Clear",
           "search.closeAria": "Close",
+          "common.close": "Close",
           "cart.eyebrow": "Shopping",
           "cart.title": "Your <span>cart</span>",
           "cart.sub": "Works you've added to your cart are here — adjust quantities and place your order.",
@@ -777,7 +779,7 @@
           "auth.guestBtn": "先随便看看",
           "auth.guestBtnSmall": "您可以稍后注册",
           "nav.home": "首页", "nav.profile": "个人资料", "nav.messages": "消息",
-          "nav.newWork": "+", "nav.myProfile": "我的主页", "nav.logout": "退出登录",
+          "nav.newWork": "+", "nav.newWorkAria": "添加新作品", "nav.myProfile": "我的主页", "nav.logout": "退出登录",
           "nav.register": "注册",
           "guest.banner": "您正以<b>访客</b>身份浏览 — 注册后即可上传作品、点赞和评论。",
           "guest.registerBtn": "注册",
@@ -1036,6 +1038,7 @@
           "twofa.loginPrompt": "请输入身份验证器应用中的6位验证码（或备用代码）", "twofa.disablePrompt": "输入当前密码以禁用两步验证：",
           "search.clearAria": "清除",
           "search.closeAria": "关闭",
+          "common.close": "关闭",
           "cart.eyebrow": "购物",
           "cart.title": "您的<span>购物车</span>",
           "cart.sub": "您添加到购物车的作品都在这里——调整数量并下单。",
@@ -1159,7 +1162,7 @@
           "auth.guestBtn": "अभी सिर्फ़ देखें",
           "auth.guestBtnSmall": "आप बाद में साइन अप कर सकते हैं",
           "nav.home": "होम", "nav.profile": "प्रोफ़ाइल", "nav.messages": "संदेश",
-          "nav.newWork": "+", "nav.myProfile": "मेरी प्रोफ़ाइल", "nav.logout": "लॉग आउट",
+          "nav.newWork": "+", "nav.newWorkAria": "नया काम जोड़ें", "nav.myProfile": "मेरी प्रोफ़ाइल", "nav.logout": "लॉग आउट",
           "nav.register": "साइन अप करें",
           "guest.banner": "आप <b>अतिथि</b> के रूप में देख रहे हैं — अपलोड, लाइक और कमेंट के लिए साइन अप करें।",
           "guest.registerBtn": "साइन अप करें",
@@ -1418,6 +1421,7 @@
           "twofa.loginPrompt": "अपने ऑथेंटिकेटर ऐप का 6-अंकीय कोड (या बैकअप कोड) दर्ज करें", "twofa.disablePrompt": "2FA बंद करने के लिए अपना वर्तमान पासवर्ड दर्ज करें:",
           "search.clearAria": "साफ़ करें",
           "search.closeAria": "बंद करें",
+          "common.close": "बंद करें",
           "cart.eyebrow": "खरीदारी",
           "cart.title": "आपकी <span>कार्ट</span>",
           "cart.sub": "आपने कार्ट में जोड़ी गई कृतियाँ यहाँ हैं — मात्रा बदलें और ऑर्डर करें।",
@@ -1541,7 +1545,7 @@
           "auth.guestBtn": "Solo quiero explorar por ahora",
           "auth.guestBtnSmall": "Puedes registrarte más tarde",
           "nav.home": "Inicio", "nav.profile": "Perfil", "nav.messages": "Mensajes",
-          "nav.newWork": "+", "nav.myProfile": "Mi perfil", "nav.logout": "Cerrar sesión",
+          "nav.newWork": "+", "nav.newWorkAria": "Añadir nueva obra", "nav.myProfile": "Mi perfil", "nav.logout": "Cerrar sesión",
           "nav.register": "Registrarse",
           "guest.banner": "Estás navegando como <b>invitado</b> — regístrate para subir obras, dar like y comentar.",
           "guest.registerBtn": "Registrarse",
@@ -1800,6 +1804,7 @@
           "twofa.loginPrompt": "Introduce el código de 6 dígitos de tu app de autenticación (o un código de respaldo)", "twofa.disablePrompt": "Introduce tu contraseña actual para desactivar el 2FA:",
           "search.clearAria": "Borrar",
           "search.closeAria": "Cerrar",
+          "common.close": "Cerrar",
           "cart.eyebrow": "Compras",
           "cart.title": "Tu <span>carrito</span>",
           "cart.sub": "Las obras que agregaste al carrito están aquí — ajusta las cantidades y haz tu pedido.",
@@ -1923,7 +1928,7 @@
           "auth.guestBtn": "تصفّح فقط الآن",
           "auth.guestBtnSmall": "يمكنك التسجيل لاحقًا",
           "nav.home": "الرئيسية", "nav.profile": "الملف الشخصي", "nav.messages": "الرسائل",
-          "nav.newWork": "+", "nav.myProfile": "ملفي الشخصي", "nav.logout": "تسجيل الخروج",
+          "nav.newWork": "+", "nav.newWorkAria": "إضافة عمل جديد", "nav.myProfile": "ملفي الشخصي", "nav.logout": "تسجيل الخروج",
           "nav.register": "إنشاء حساب",
           "guest.banner": "أنت تتصفح كـ<b>ضيف</b> — سجّل للتمكن من رفع الأعمال والإعجاب والتعليق.",
           "guest.registerBtn": "إنشاء حساب",
@@ -2182,6 +2187,7 @@
           "twofa.loginPrompt": "أدخل الرمز المكوّن من 6 أرقام من تطبيق المصادقة (أو رمزًا احتياطيًا)", "twofa.disablePrompt": "أدخل كلمة المرور الحالية لإيقاف التحقق بخطوتين:",
           "search.clearAria": "مسح",
           "search.closeAria": "إغلاق",
+          "common.close": "إغلاق",
           "cart.eyebrow": "التسوق",
           "cart.title": "عربة <span>تسوقك</span>",
           "cart.sub": "الأعمال التي أضفتها إلى عربة التسوق موجودة هنا — عدّل الكميات وقدّم طلبك.",
@@ -2305,7 +2311,7 @@
           "auth.guestBtn": "Просто посмотреть",
           "auth.guestBtnSmall": "Зарегистрироваться можно позже",
           "nav.home": "Главная", "nav.profile": "Профиль", "nav.messages": "Сообщения",
-          "nav.newWork": "+", "nav.myProfile": "Мой профиль", "nav.logout": "Выйти",
+          "nav.newWork": "+", "nav.newWorkAria": "Добавить новую работу", "nav.myProfile": "Мой профиль", "nav.logout": "Выйти",
           "nav.register": "Регистрация",
           "guest.banner": "Вы просматриваете сайт как <b>гость</b> — зарегистрируйтесь, чтобы загружать работы, ставить лайки и комментировать.",
           "guest.registerBtn": "Регистрация",
@@ -2564,6 +2570,7 @@
           "twofa.loginPrompt": "Введите 6-значный код из приложения-аутентификатора (или резервный код)", "twofa.disablePrompt": "Введите текущий пароль, чтобы отключить 2FA:",
           "search.clearAria": "Очистить",
           "search.closeAria": "Закрыть",
+          "common.close": "Закрыть",
           "cart.eyebrow": "Покупки",
           "cart.title": "Ваша <span>корзина</span>",
           "cart.sub": "Работы, которые вы добавили в корзину, находятся здесь — измените количество и оформите заказ.",
@@ -4579,69 +4586,21 @@
         return workImages(w);
       }
 
-      /* Profil to'ri (kichik kvadrat kartochkalar) uchun — faqat muqova surat +
-         bir nechta rasm bo'lsa burchakda belgi. Instagram profil to'ri ham xuddi
-         shunday: kartochka ichida surish (svayp) yo'q, faqat bitta muqova. */
-      function coverHTML(images, alt, videoSrc, posterSrc) {
-        if (videoSrc) {
-          return `<div class="collage collage-video">
-            <video src="${videoSrc}"${posterSrc ? ` poster="${posterSrc}"` : ''} muted loop playsinline preload="metadata" data-autoplay-onview></video>
-            <div class="collage-count" aria-hidden="true">${videoIconSVG()}</div>
-          </div>`;
-        }
-        const imgs = images && images.length ? images : [];
-        const badge = imgs.length > 1
-          ? `<div class="collage-count" aria-hidden="true">${multiImageIconSVG()} ${imgs.length}</div>`
-          : '';
-        return `<div class="collage"><img src="${imgs[0] || ''}" alt="${escapeHtml(alt)}" loading="lazy">${badge}</div>`;
-      }
-
-      /* Lenta va lightbox uchun — Instagramdagidek bitta rasm ko'rsatiladi,
-         bir nechtasi bo'lsa barmoq bilan suriladi (svayp), pastda nuqtachalar
-         joriy suratni ko'rsatib turadi. Hammasi bir vaqtda mozaika qilib
-         ko'rsatilmaydi. */
       function collageHTML(images, alt, videoSrc, posterSrc) {
         if (videoSrc) {
           // autoplay yo'q — video faqat ekranda ko'rinib turgan paytda ijro etiladi
           // (pastdagi videoAutoplayObserver orqali), shu bilan batareya/protsessor tejaladi
-          return `<div class="collage collage-video">
+          return `<div class="collage n-1 collage-video">
             <video src="${videoSrc}"${posterSrc ? ` poster="${posterSrc}"` : ''} muted loop playsinline preload="metadata" data-autoplay-onview></video>
             <div class="collage-count" aria-hidden="true">${videoIconSVG()}</div>
           </div>`;
         }
-        const imgs = images && images.length ? images : [];
-        if (imgs.length <= 1) {
-          return `<div class="collage"><img src="${imgs[0] || ''}" alt="${escapeHtml(alt)}" loading="lazy"></div>`;
-        }
-        return `<div class="collage ig-carousel" data-index="0">
-          <div class="ig-carousel-track">${imgs.map(src =>
-            `<div class="ig-carousel-slide"><img src="${src}" alt="${escapeHtml(alt)}" loading="lazy"></div>`).join('')}</div>
-          <div class="ig-carousel-dots">${imgs.map((_, i) =>
-            `<span class="ig-dot${i === 0 ? ' active' : ''}"></span>`).join('')}</div>
-        </div>`;
-      }
-
-      /* .ig-carousel elementlarini svayp holatini kuzatib, nuqtachalarni va
-         data-index'ni yangilab turadi. root — yangi qo'shilgan kartochka yoki
-         lightbox konteyneri. */
-      function initCarousels(root) {
-        root.querySelectorAll('.ig-carousel').forEach(car => {
-          const track = car.querySelector('.ig-carousel-track');
-          const dots = car.querySelectorAll('.ig-dot');
-          if (!track || !dots.length) return;
-          let ticking = false;
-          track.addEventListener('scroll', () => {
-            if (ticking) return;
-            ticking = true;
-            requestAnimationFrame(() => {
-              const idx = Math.round(track.scrollLeft / track.clientWidth);
-              const clamped = Math.max(0, Math.min(idx, dots.length - 1));
-              car.dataset.index = String(clamped);
-              dots.forEach((d, i) => d.classList.toggle('active', i === clamped));
-              ticking = false;
-            });
-          }, { passive: true });
-        });
+        const imgs = images && images.length ? images.slice(0, 3) : [];
+        const badge = imgs.length > 1
+          ? `<div class="collage-count" aria-hidden="true">${multiImageIconSVG()} ${imgs.length}</div>`
+          : '';
+        return `<div class="collage n-${imgs.length}">${imgs.map(src =>
+          `<img src="${src}" alt="${escapeHtml(alt)}" loading="lazy">`).join('')}${badge}</div>`;
       }
 
       /* Faqat ekranda ko'rinayotgan videolarni ijro etadi — ko'rinmay qolganda
@@ -4672,7 +4631,7 @@
         return `
       <div class="work-card" data-id="${w.id}">
         <div class="work-thumb">
-          ${coverHTML(workThumbs(w), w.title, w.video, w.poster)}
+          ${collageHTML(workThumbs(w), w.title, w.video, w.poster)}
           <div class="work-tag">${typeLabel(w)}</div>
           <div class="work-status ${w.status}">${w.status === 'sale' ? t('feed.sale') : t('feed.expo')}</div>
         </div>
@@ -4849,7 +4808,6 @@
           bindFeedCardEvents(card);
           feedRevealObserver.observe(card);
           observeAutoplayVideos(card);
-          initCarousels(card);
         });
         if (!list.children.length) {
           list.innerHTML = `
@@ -4890,9 +4848,7 @@
               openVideoViewer(src.video, src.poster, src);
             } else {
               const images = src ? workImages(src) : Array.from(thumb.querySelectorAll('img')).map(i => i.src);
-              const carousel = thumb.querySelector('.ig-carousel');
-              const startIndex = carousel ? Number(carousel.dataset.index || 0) : 0;
-              openImageViewer(images, startIndex);
+              openImageViewer(images, 0);
             }
             api('/api/works/' + id + '/view', { method: 'POST' }).then(res => {
               if (src) src.viewsCount = res.viewsCount;
@@ -7022,7 +6978,6 @@
         list.insertBefore(card, list.firstChild);
         bindFeedCardEvents(card);
         observeAutoplayVideos(card);
-        initCarousels(card);
         card.classList.add('reveal');
       }
 
@@ -7238,7 +7193,6 @@
         LIGHTBOX_IMAGES = workImages(w);
         $('#lightboxImg').innerHTML = collageHTML(LIGHTBOX_IMAGES, w.title, w.video, w.poster);
         $('#lightboxImg').className = 'lightbox-collage';
-        initCarousels($('#lightboxImg'));
         if (w.video) {
           const videoEl = $('#lightboxImg').querySelector('video');
           if (videoEl) { videoEl.controls = true; videoEl.loop = false; videoEl.play().catch(() => {}); }

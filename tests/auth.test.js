@@ -1,5 +1,7 @@
 const { test, describe, before, after } = require('node:test');
 const assert = require('node:assert/strict');
+const path = require('path');
+const Database = require('better-sqlite3');
 const { startTestServer, Client, registerAndLogin } = require('./helpers');
 
 describe("Ro'yxatdan o'tish va kirish (auth)", () => {
@@ -46,5 +48,35 @@ describe("Ro'yxatdan o'tish va kirish (auth)", () => {
     const client = new Client(server.baseUrl);
     const res = await client.get('/api/orders/mine');
     assert.equal(res.status, 401);
+  });
+
+  test("ro'yxatdan o'tish yangi relyatsion bazaga ham dublikat yoziladi (migratsiya, bosqich 1)", async () => {
+    const client = new Client(server.baseUrl);
+    const res = await client.post('/api/register', { username: 'relmirror1', password: 'Password123!', fullname: 'Rel Mirror', email: 'relmirror1@example.com' });
+    assert.equal(res.status, 200);
+
+    const relPath = path.join(server.storageDir, 'data', 'madein-relational.db');
+    const relDb = new Database(relPath, { readonly: true });
+    try {
+      const row = relDb.prepare('SELECT username, fullname, email, is_admin FROM users WHERE username = ?').get('relmirror1');
+      assert.ok(row, "foydalanuvchi relyatsion bazada topilishi kerak");
+      assert.equal(row.fullname, 'Rel Mirror');
+      assert.equal(row.email, 'relmirror1@example.com');
+      assert.equal(row.is_admin, 0);
+    } finally {
+      relDb.close();
+    }
+  });
+
+  test("yagona admin akkaunti relyatsion bazada ham is_admin=1 bilan mavjud", async () => {
+    const relPath = path.join(server.storageDir, 'data', 'madein-relational.db');
+    const relDb = new Database(relPath, { readonly: true });
+    try {
+      const row = relDb.prepare('SELECT is_admin FROM users WHERE username = ?').get('madein_admin');
+      assert.ok(row, "admin akkaunti relyatsion bazada bo'lishi kerak");
+      assert.equal(row.is_admin, 1);
+    } finally {
+      relDb.close();
+    }
   });
 });

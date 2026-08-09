@@ -18,6 +18,8 @@
   <meta property="og:title" content="Madein.net — qo'lda yasalgan asarlar galereyasi">
   <meta property="og:description" content="Hunarmandlar va ijodkorlarning qo'lda yasalgan asarlarini kashf eting, sotib oling yoki o'z ishlaringizni ulashing.">
   <meta property="og:image" content="/favicon-512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
@@ -25,6 +27,12 @@
   <meta name="twitter:description" content="Hunarmandlar va ijodkorlarning qo'lda yasalgan asarlarini kashf eting, sotib oling yoki o'z ishlaringizni ulashing.">
   <meta name="twitter:image" content="/favicon-512.png">
 
+  <!-- TODO: og:image hozircha kvadrat ikonka (512x512). Ijtimoiy tarmoqlarda
+       chiroyli katta karta ko'rinishi uchun 1200x630 banner surat yaratib,
+       shu yerga qo'ying (masalan /assets/og-banner.jpg) va og:image:width/height'ni
+       1200/630'ga o'zgartiring. -->
+
+  <link rel="canonical" href="/">
   <link rel="manifest" href="/manifest.json">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -224,7 +232,7 @@
           <button type="button" class="feed-search-clear" id="feedSearchClear" aria-label="Tozalash" data-i18n-aria="search.clearAria">&times;</button>
           <button type="button" class="nav-search-close-btn" id="navSearchCloseBtn" aria-label="Yopish" data-i18n-aria="search.closeAria">&times;</button>
         </div>
-        <button class="btn btn-primary btn-sm upload-plus-btn" id="openUploadBtn" data-i18n="nav.newWork">+</button>
+        <button class="btn btn-primary btn-sm upload-plus-btn" id="openUploadBtn" data-i18n="nav.newWork" data-i18n-aria="nav.newWorkAria" aria-label="Yangi ish qo'shish">+</button>
         <div class="avatar-menu" id="avatarMenu">
           <button class="avatar-btn" id="avatarBtn">
             <div class="avatar-circle" id="avatarInitials">?</div>
@@ -349,7 +357,7 @@
 
         <div class="view-toolbar">
           <button class="btn btn-ghost btn-sm" id="editProfileBtn" data-i18n="profile.editBtn">Ma'lumotlarni tahrirlash</button>
-          <button class="btn btn-primary btn-sm upload-plus-btn" id="openUploadBtn2" data-i18n="nav.newWork">+</button>
+          <button class="btn btn-primary btn-sm upload-plus-btn" id="openUploadBtn2" data-i18n="nav.newWork" data-i18n-aria="nav.newWorkAria" aria-label="Yangi ish qo'shish">+</button>
         </div>
         <div class="view-toolbar profile-quick-links">
           <button class="btn btn-ghost btn-sm" id="openOrdersBtn" data-i18n="orders.btn">📦 Buyurtmalarim</button>
@@ -646,11 +654,11 @@
   </div>
 
   <!-- ============ ADMIN MODERATION MODAL (ban / mute) ============ -->
-  <div class="modal-backdrop" id="adminModModal">
+  <div class="modal-backdrop" id="adminModModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal upload-modal">
       <div class="modal-head">
         <h3 id="adminModModalTitle" data-i18n="admin.mod.title">Foydalanuvchiga cheklov qo'yish</h3>
-        <button class="modal-close" id="closeAdminModModal">✕</button>
+        <button class="modal-close" id="closeAdminModModal" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
       </div>
       <form id="adminModForm" class="admin-mod-form">
         <div class="field">
@@ -668,11 +676,11 @@
   </div>
 
   <!-- ============ SHIKOYAT (REPORT) MODAL ============ -->
-  <div class="modal-backdrop" id="reportModal">
+  <div class="modal-backdrop" id="reportModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal">
       <div class="modal-head">
         <h3 data-i18n="report.action">Shikoyat qilish</h3>
-        <button class="modal-close" id="closeReportModal">✕</button>
+        <button class="modal-close" id="closeReportModal" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
       </div>
       <form id="reportForm" class="admin-mod-form">
         <div class="field-hint" id="reportModalSubject" style="margin-bottom:10px;"></div>
@@ -687,11 +695,11 @@
   </div>
 
   <!-- ============ TO'LOV USULI MODAL ============ -->
-  <div class="modal-backdrop" id="paymentModal">
+  <div class="modal-backdrop" id="paymentModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal">
       <div class="modal-head">
         <h3 data-i18n="payment.chooseTitle">To'lov usulini tanlang</h3>
-        <button class="modal-close" id="closePaymentModal">✕</button>
+        <button class="modal-close" id="closePaymentModal" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
       </div>
       <div class="admin-mod-form">
         <div class="field-hint" id="paymentModalTotal" style="margin-bottom:10px;"></div>
@@ -703,11 +711,11 @@
   </div>
 
   <!-- ============ UPLOAD MODAL ============ -->
-  <div class="modal-backdrop" id="uploadModal">
+  <div class="modal-backdrop" id="uploadModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal">
       <div class="modal-head">
         <h3 data-i18n="upload.title">Yangi asar yuklash</h3>
-        <button class="modal-close" id="closeUploadModal">✕</button>
+        <button class="modal-close" id="closeUploadModal" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
       </div>
       <form id="uploadForm">
         <div class="field" style="margin-bottom:14px;">
@@ -788,13 +796,13 @@
   </div>
 
   <!-- ============ LIGHTBOX MODAL ============ -->
-  <div class="modal-backdrop" id="lightbox">
+  <div class="modal-backdrop" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal lightbox-content">
       <div class="lightbox-collage" id="lightboxImg"></div>
       <div class="lightbox-body">
         <div class="modal-head" style="margin-bottom:6px;">
           <h3 id="lightboxTitle">—</h3>
-          <button class="modal-close" id="closeLightbox">✕</button>
+          <button class="modal-close" id="closeLightbox" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
         </div>
         <p id="lightboxDesc">—</p>
         <div class="lightbox-tags">
@@ -881,11 +889,11 @@
   </div>
 
   <!-- ============ COMMENTS MODAL ============ -->
-  <div class="modal-backdrop" id="commentsModal">
+  <div class="modal-backdrop" id="commentsModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal comments-modal-content">
       <div class="comments-modal-head">
         <h3 data-i18n="comments.title">Komentlar</h3>
-        <button class="modal-close" id="closeCommentsModal">✕</button>
+        <button class="modal-close" id="closeCommentsModal" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
       </div>
       <div class="comments-list" id="commentsList"></div>
       <form class="comment-form" id="commentForm">
@@ -896,11 +904,11 @@
   </div>
 
   <!-- ============ SHARHLAR / BAHOLASH (Reviews) ============ -->
-  <div class="modal-backdrop" id="reviewsModal">
+  <div class="modal-backdrop" id="reviewsModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal comments-modal-content">
       <div class="comments-modal-head">
         <h3 data-i18n="reviews.title">Sharhlar</h3>
-        <button class="modal-close" id="closeReviewsModal">✕</button>
+        <button class="modal-close" id="closeReviewsModal" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
       </div>
       <div class="reviews-summary" id="reviewsSummary"></div>
       <div class="comments-list" id="reviewsList"></div>
@@ -923,11 +931,11 @@
 
 
   <!-- ============ BUYURTMALARIM (My Orders) ============ -->
-  <div class="modal-backdrop" id="ordersModal">
+  <div class="modal-backdrop" id="ordersModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal comments-modal-content">
       <div class="comments-modal-head">
         <h3 data-i18n="orders.title">Buyurtmalarim</h3>
-        <button class="modal-close" id="closeOrdersModal">✕</button>
+        <button class="modal-close" id="closeOrdersModal" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
       </div>
       <div class="orders-tabs">
         <button type="button" class="orders-tab active" data-tab="buyer" data-i18n="orders.asBuyer">Xarid qilganlarim</button>
@@ -938,33 +946,33 @@
   </div>
 
   <!-- ============ XOHISHLAR RO'YXATI (Wishlist) ============ -->
-  <div class="modal-backdrop" id="wishlistModal">
+  <div class="modal-backdrop" id="wishlistModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal comments-modal-content">
       <div class="comments-modal-head">
         <h3 data-i18n="wishlist.title">Xohishlar ro'yxati</h3>
-        <button class="modal-close" id="closeWishlistModal">✕</button>
+        <button class="modal-close" id="closeWishlistModal" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
       </div>
       <div class="comments-list wishlist-grid" id="wishlistList"></div>
     </div>
   </div>
 
   <!-- ============ SOTUVCHI STATISTIKASI (Seller stats) ============ -->
-  <div class="modal-backdrop" id="sellerStatsModal">
+  <div class="modal-backdrop" id="sellerStatsModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal comments-modal-content">
       <div class="comments-modal-head">
         <h3 data-i18n="sellerStats.title">Statistika</h3>
-        <button class="modal-close" id="closeSellerStatsModal">✕</button>
+        <button class="modal-close" id="closeSellerStatsModal" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
       </div>
       <div class="comments-list" id="sellerStatsBody"></div>
     </div>
   </div>
 
   <!-- ============ TO'PLAMLAR (Collections) ============ -->
-  <div class="modal-backdrop" id="collectionsModal">
+  <div class="modal-backdrop" id="collectionsModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal comments-modal-content">
       <div class="comments-modal-head">
         <h3 data-i18n="collections.title" id="collectionsModalTitle">To'plamlar</h3>
-        <button class="modal-close" id="closeCollectionsModal">✕</button>
+        <button class="modal-close" id="closeCollectionsModal" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
       </div>
       <div id="collectionsListView">
         <div class="comments-list" id="collectionsList"></div>
@@ -988,7 +996,7 @@
     <div class="modal auth-mini-modal">
       <div class="comments-modal-head">
         <h3 data-i18n="auth.forgotPassword">Parolni unutdingizmi?</h3>
-        <button class="modal-close" id="closeForgotPassModal">✕</button>
+        <button class="modal-close" id="closeForgotPassModal" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
       </div>
       <div class="auth-mini-body">
         <p class="field-hint" data-i18n="auth.forgotPassDesc">Ro'yxatdan o'tgan email manzilingizni kiriting — parolni tiklash havolasini yuboramiz.</p>
@@ -1012,7 +1020,7 @@
     <div class="modal auth-mini-modal">
       <div class="comments-modal-head">
         <h3 data-i18n="auth.resetPassword">Yangi parol o'rnatish</h3>
-        <button class="modal-close" id="closeResetPassModal">✕</button>
+        <button class="modal-close" id="closeResetPassModal" aria-label="Yopish" data-i18n-aria="common.close">✕</button>
       </div>
       <div class="auth-mini-body">
         <form id="resetPassForm">
