@@ -71,8 +71,8 @@
           "feed.contactAria": "Sotuvchi bilan bog'lanish", "feed.contactLabel": "Bog'lanish",
           "feed.sale": "Sotuvda", "feed.expo": "Ko'rgazma",
           "profile.stat.total": "Jami", "profile.stat.sale": "Sotuvda", "profile.stat.expo": "Ko'rgazmada",
-          "profile.editBtn": "Ma'lumotlarni tahrirlash",
-          "profile.edit.title": "Profil ma'lumotlari", "profile.edit.changeAvatar": "Rasm tanlash",
+          "profile.editBtn": "Sozlamalar",
+          "profile.edit.title": "Profil ma'lumotlari", "settings.viewModeTitle": "Bosh sahifa ko'rinishi:", "profile.edit.changeAvatar": "Rasm tanlash",
           "profile.edit.avatarHint": "JPG yoki PNG, 8MB gacha",
           "profile.edit.fullname": "To'liq ism", "profile.edit.email": "Email",
           "profile.edit.bio": "Bio", "profile.edit.bioPh": "O'zingiz haqingizda qisqacha...",
@@ -307,7 +307,7 @@
           "notif.banExpired": "Ban muddatingiz tugadi. Hisobingizdan yana foydalanishingiz mumkin.",
           "notif.muteExpired": "Mut muddatingiz tugadi. Endi komment/xabar yozishingiz va asar yuklashingiz mumkin.",
           "nav.cart": "Korzinka",
-          "search.placeholder": "Qidirish...", "filter.type.all": "Barcha turlar", "filter.sort.new": "Eng yangi", "filter.sort.top": "Eng ko'p yoqtirilgan", "filter.price.min": "Narx, dan", "filter.price.max": "Narx, gacha", "filter.onlyFollowing": "Faqat kuzatuvchilarim",
+          "search.placeholder": "Qidirish...", "filter.view.landing": "Lenta", "filter.view.shop": "Do'kon", "filter.type.all": "Barcha turlar", "filter.sort.new": "Eng yangi", "filter.sort.top": "Eng ko'p yoqtirilgan", "filter.price.min": "Narx, dan", "filter.price.max": "Narx, gacha", "filter.onlyFollowing": "Faqat kuzatuvchilarim",
           "filter.statusAria": "Holati", "filter.status.all": "Barcha holatlar", "filter.status.sale": "Sotuvda", "filter.status.expo": "Ko'rgazma", "filter.clear": "Tozalash",
           "payment.chooseTitle": "To'lov usulini tanlang", "payment.confirmBtn": "Davom etish", "payment.redirecting": "To'lov sahifasiga o'tkazilyapsiz...", "payment.payNow": "To'lash",
           "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "Qo'lda / offline to'lov",
@@ -435,8 +435,8 @@
           "feed.contactAria": "Contact the seller", "feed.contactLabel": "Contact",
           "feed.sale": "For sale", "feed.expo": "On display",
           "profile.stat.total": "Total", "profile.stat.sale": "For sale", "profile.stat.expo": "On display",
-          "profile.editBtn": "Edit details",
-          "profile.edit.title": "Profile details", "profile.edit.changeAvatar": "Choose photo",
+          "profile.editBtn": "Settings",
+          "profile.edit.title": "Profile details", "settings.viewModeTitle": "Home page view:", "profile.edit.changeAvatar": "Choose photo",
           "profile.edit.avatarHint": "JPG or PNG, up to 8MB",
           "profile.edit.fullname": "Full name", "profile.edit.email": "Email",
           "profile.edit.bio": "Bio", "profile.edit.bioPh": "A short line about yourself...",
@@ -676,7 +676,7 @@
           "notif.banExpired": "Your ban has expired. You can use your account again.",
           "notif.muteExpired": "Your mute has expired. You can comment, message, and upload new work again.",
           "nav.cart": "Cart",
-          "search.placeholder": "Search...", "filter.type.all": "All types", "filter.sort.new": "Newest", "filter.sort.top": "Most liked", "filter.price.min": "Price from", "filter.price.max": "Price to", "filter.onlyFollowing": "Only who I follow",
+          "search.placeholder": "Search...", "filter.view.landing": "Feed", "filter.view.shop": "Shop", "filter.type.all": "All types", "filter.sort.new": "Newest", "filter.sort.top": "Most liked", "filter.price.min": "Price from", "filter.price.max": "Price to", "filter.onlyFollowing": "Only who I follow",
           "filter.statusAria": "Status", "filter.status.all": "All statuses", "filter.status.sale": "For sale", "filter.status.expo": "Exhibition", "filter.clear": "Clear",
           "payment.chooseTitle": "Choose a payment method", "payment.confirmBtn": "Continue", "payment.redirecting": "Redirecting to the payment page...", "payment.payNow": "Pay now",
           "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "Manual / offline payment",
@@ -804,8 +804,8 @@
           "feed.contactAria": "联系卖家", "feed.contactLabel": "联系",
           "feed.sale": "出售中", "feed.expo": "展览中",
           "profile.stat.total": "总数", "profile.stat.sale": "出售中", "profile.stat.expo": "展览中",
-          "profile.editBtn": "编辑资料",
-          "profile.edit.title": "个人资料信息", "profile.edit.changeAvatar": "选择照片",
+          "profile.editBtn": "设置",
+          "profile.edit.title": "个人资料信息", "settings.viewModeTitle": "首页显示方式：", "profile.edit.changeAvatar": "选择照片",
           "profile.edit.avatarHint": "JPG 或 PNG，最大 8MB",
           "profile.edit.fullname": "全名", "profile.edit.email": "邮箱",
           "profile.edit.bio": "简介", "profile.edit.bioPh": "简单介绍一下自己...",
@@ -1025,7 +1025,7 @@
           "notif.banExpired": "您的封禁期已结束。您可以再次使用账户。",
           "notif.muteExpired": "您的禁言期已结束。您可以再次评论、发消息和上传作品。",
           "nav.cart": "购物车",
-          "search.placeholder": "搜索...", "filter.type.all": "所有类型", "filter.sort.new": "最新", "filter.sort.top": "最多点赞", "filter.price.min": "价格从", "filter.price.max": "价格到", "filter.onlyFollowing": "仅我关注的人",
+          "search.placeholder": "搜索...", "filter.view.landing": "动态", "filter.view.shop": "商店", "filter.type.all": "所有类型", "filter.sort.new": "最新", "filter.sort.top": "最多点赞", "filter.price.min": "价格从", "filter.price.max": "价格到", "filter.onlyFollowing": "仅我关注的人",
           "filter.statusAria": "状态", "filter.status.all": "所有状态", "filter.status.sale": "在售", "filter.status.expo": "展览", "filter.clear": "清除筛选",
           "payment.chooseTitle": "选择支付方式", "payment.confirmBtn": "继续", "payment.redirecting": "正在跳转到支付页面...", "payment.payNow": "立即支付",
           "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "人工/线下支付",
@@ -1187,8 +1187,8 @@
           "feed.contactAria": "विक्रेता से संपर्क करें", "feed.contactLabel": "संपर्क करें",
           "feed.sale": "बिक्री के लिए", "feed.expo": "प्रदर्शन में",
           "profile.stat.total": "कुल", "profile.stat.sale": "बिक्री के लिए", "profile.stat.expo": "प्रदर्शन में",
-          "profile.editBtn": "जानकारी संपादित करें",
-          "profile.edit.title": "प्रोफ़ाइल जानकारी", "profile.edit.changeAvatar": "फ़ोटो चुनें",
+          "profile.editBtn": "सेटिंग्स",
+          "profile.edit.title": "प्रोफ़ाइल जानकारी", "settings.viewModeTitle": "होम पेज दृश्य:", "profile.edit.changeAvatar": "फ़ोटो चुनें",
           "profile.edit.avatarHint": "JPG या PNG, 8MB तक",
           "profile.edit.fullname": "पूरा नाम", "profile.edit.email": "ईमेल",
           "profile.edit.bio": "बायो", "profile.edit.bioPh": "अपने बारे में संक्षेप में लिखें...",
@@ -1408,7 +1408,7 @@
           "notif.banExpired": "आपका बैन समाप्त हो गया है। अब आप अपने खाते का उपयोग फिर से कर सकते हैं।",
           "notif.muteExpired": "आपका म्यूट समाप्त हो गया है। अब आप फिर से टिप्पणी, संदेश और कृति अपलोड कर सकते हैं।",
           "nav.cart": "कार्ट",
-          "search.placeholder": "खोजें...", "filter.type.all": "सभी प्रकार", "filter.sort.new": "सबसे नया", "filter.sort.top": "सबसे ज़्यादा पसंद किया गया", "filter.price.min": "कीमत से", "filter.price.max": "कीमत तक", "filter.onlyFollowing": "केवल जिन्हें मैं फॉलो करता हूँ",
+          "search.placeholder": "खोजें...", "filter.view.landing": "फ़ीड", "filter.view.shop": "दुकान", "filter.type.all": "सभी प्रकार", "filter.sort.new": "सबसे नया", "filter.sort.top": "सबसे ज़्यादा पसंद किया गया", "filter.price.min": "कीमत से", "filter.price.max": "कीमत तक", "filter.onlyFollowing": "केवल जिन्हें मैं फॉलो करता हूँ",
           "filter.statusAria": "स्थिति", "filter.status.all": "सभी स्थितियाँ", "filter.status.sale": "बिक्री के लिए", "filter.status.expo": "प्रदर्शनी", "filter.clear": "फ़िल्टर हटाएं",
           "payment.chooseTitle": "भुगतान का तरीका चुनें", "payment.confirmBtn": "जारी रखें", "payment.redirecting": "भुगतान पृष्ठ पर ले जाया जा रहा है...", "payment.payNow": "अभी भुगतान करें",
           "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "मैनुअल / ऑफ़लाइन भुगतान",
@@ -1570,8 +1570,8 @@
           "feed.contactAria": "Contactar al vendedor", "feed.contactLabel": "Contactar",
           "feed.sale": "En venta", "feed.expo": "En exhibición",
           "profile.stat.total": "Total", "profile.stat.sale": "En venta", "profile.stat.expo": "En exhibición",
-          "profile.editBtn": "Editar datos",
-          "profile.edit.title": "Datos del perfil", "profile.edit.changeAvatar": "Elegir foto",
+          "profile.editBtn": "Ajustes",
+          "profile.edit.title": "Datos del perfil", "settings.viewModeTitle": "Vista de la página principal:", "profile.edit.changeAvatar": "Elegir foto",
           "profile.edit.avatarHint": "JPG o PNG, hasta 8MB",
           "profile.edit.fullname": "Nombre completo", "profile.edit.email": "Correo electrónico",
           "profile.edit.bio": "Biografía", "profile.edit.bioPh": "Cuéntanos algo breve sobre ti...",
@@ -1791,7 +1791,7 @@
           "notif.banExpired": "Tu baneo ha terminado. Ya puedes volver a usar tu cuenta.",
           "notif.muteExpired": "Tu silencio ha terminado. Ya puedes comentar, enviar mensajes y subir obras de nuevo.",
           "nav.cart": "Carrito",
-          "search.placeholder": "Buscar...", "filter.type.all": "Todos los tipos", "filter.sort.new": "Más reciente", "filter.sort.top": "Más gustados", "filter.price.min": "Precio desde", "filter.price.max": "Precio hasta", "filter.onlyFollowing": "Solo a quienes sigo",
+          "search.placeholder": "Buscar...", "filter.view.landing": "Feed", "filter.view.shop": "Tienda", "filter.type.all": "Todos los tipos", "filter.sort.new": "Más reciente", "filter.sort.top": "Más gustados", "filter.price.min": "Precio desde", "filter.price.max": "Precio hasta", "filter.onlyFollowing": "Solo a quienes sigo",
           "filter.statusAria": "Estado", "filter.status.all": "Todos los estados", "filter.status.sale": "En venta", "filter.status.expo": "Exposición", "filter.clear": "Borrar filtros",
           "payment.chooseTitle": "Elige un método de pago", "payment.confirmBtn": "Continuar", "payment.redirecting": "Redirigiendo a la página de pago...", "payment.payNow": "Pagar ahora",
           "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "Pago manual / fuera de línea",
@@ -1953,8 +1953,8 @@
           "feed.contactAria": "التواصل مع البائع", "feed.contactLabel": "تواصل",
           "feed.sale": "للبيع", "feed.expo": "للعرض",
           "profile.stat.total": "الإجمالي", "profile.stat.sale": "للبيع", "profile.stat.expo": "للعرض",
-          "profile.editBtn": "تعديل البيانات",
-          "profile.edit.title": "بيانات الملف الشخصي", "profile.edit.changeAvatar": "اختيار صورة",
+          "profile.editBtn": "الإعدادات",
+          "profile.edit.title": "بيانات الملف الشخصي", "settings.viewModeTitle": "طريقة عرض الصفحة الرئيسية:", "profile.edit.changeAvatar": "اختيار صورة",
           "profile.edit.avatarHint": "JPG أو PNG، حتى 8 ميغابايت",
           "profile.edit.fullname": "الاسم الكامل", "profile.edit.email": "البريد الإلكتروني",
           "profile.edit.bio": "نبذة", "profile.edit.bioPh": "اكتب نبذة قصيرة عن نفسك...",
@@ -2174,7 +2174,7 @@
           "notif.banExpired": "انتهت مدة حظرك. يمكنك استخدام حسابك مجددًا.",
           "notif.muteExpired": "انتهت مدة كتمك. يمكنك التعليق والمراسلة ورفع الأعمال مجددًا.",
           "nav.cart": "عربة التسوق",
-          "search.placeholder": "بحث...", "filter.type.all": "جميع الأنواع", "filter.sort.new": "الأحدث", "filter.sort.top": "الأكثر إعجابًا", "filter.price.min": "السعر من", "filter.price.max": "السعر إلى", "filter.onlyFollowing": "من أتابعهم فقط",
+          "search.placeholder": "بحث...", "filter.view.landing": "التغذية", "filter.view.shop": "المتجر", "filter.type.all": "جميع الأنواع", "filter.sort.new": "الأحدث", "filter.sort.top": "الأكثر إعجابًا", "filter.price.min": "السعر من", "filter.price.max": "السعر إلى", "filter.onlyFollowing": "من أتابعهم فقط",
           "filter.statusAria": "الحالة", "filter.status.all": "كل الحالات", "filter.status.sale": "للبيع", "filter.status.expo": "معرض", "filter.clear": "مسح الفلاتر",
           "payment.chooseTitle": "اختر طريقة الدفع", "payment.confirmBtn": "متابعة", "payment.redirecting": "جارٍ التحويل إلى صفحة الدفع...", "payment.payNow": "ادفع الآن",
           "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "دفع يدوي / غير متصل",
@@ -2336,8 +2336,8 @@
           "feed.contactAria": "Связаться с продавцом", "feed.contactLabel": "Связаться",
           "feed.sale": "Продаётся", "feed.expo": "На выставке",
           "profile.stat.total": "Всего", "profile.stat.sale": "Продаётся", "profile.stat.expo": "На выставке",
-          "profile.editBtn": "Редактировать данные",
-          "profile.edit.title": "Данные профиля", "profile.edit.changeAvatar": "Выбрать фото",
+          "profile.editBtn": "Настройки",
+          "profile.edit.title": "Данные профиля", "settings.viewModeTitle": "Вид главной страницы:", "profile.edit.changeAvatar": "Выбрать фото",
           "profile.edit.avatarHint": "JPG или PNG, до 8 МБ",
           "profile.edit.fullname": "Полное имя", "profile.edit.email": "Email",
           "profile.edit.bio": "О себе", "profile.edit.bioPh": "Короткая строка о себе...",
@@ -2557,7 +2557,7 @@
           "notif.banExpired": "Срок вашего бана истёк. Вы снова можете пользоваться аккаунтом.",
           "notif.muteExpired": "Срок вашего мута истёк. Вы снова можете комментировать, писать сообщения и загружать работы.",
           "nav.cart": "Корзина",
-          "search.placeholder": "Поиск...", "filter.type.all": "Все типы", "filter.sort.new": "Новые", "filter.sort.top": "Популярные", "filter.price.min": "Цена от", "filter.price.max": "Цена до", "filter.onlyFollowing": "Только те, на кого я подписан",
+          "search.placeholder": "Поиск...", "filter.view.landing": "Лента", "filter.view.shop": "Магазин", "filter.type.all": "Все типы", "filter.sort.new": "Новые", "filter.sort.top": "Популярные", "filter.price.min": "Цена от", "filter.price.max": "Цена до", "filter.onlyFollowing": "Только те, на кого я подписан",
           "filter.statusAria": "Статус", "filter.status.all": "Все статусы", "filter.status.sale": "В продаже", "filter.status.expo": "Выставка", "filter.clear": "Сбросить фильтры",
           "payment.chooseTitle": "Выберите способ оплаты", "payment.confirmBtn": "Продолжить", "payment.redirecting": "Переход на страницу оплаты...", "payment.payNow": "Оплатить",
           "payment.method.payme": "Payme", "payment.method.click": "Click", "payment.method.manual": "Оплата вручную / офлайн",
@@ -3483,6 +3483,22 @@
           feedQuery.tag = '';
           resetAndReloadFeed();
         });
+
+        /* Lenta / Do'kon ko'rinishi — standart har doim "Lenta"
+           (Instagram-uslubi, bitta ustun). Foydalanuvchi "Do'kon"ni
+           tanlasa, keyingi tashrifgacha (shu brauzerda) eslab qolinadi;
+           lekin YANGI foydalanuvchi/qurilma uchun standart har doim
+           "Lenta" bo'lib qoladi — buni hech qachon o'zgartirmang. */
+        function applyFeedViewMode(mode) {
+          const isShop = mode === 'shop';
+          $('#feedList').classList.toggle('shop-mode', isShop);
+          $$('.feed-view-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === mode));
+          localStorage.setItem('madein_feed_view', mode);
+        }
+        $$('.feed-view-btn').forEach(btn => {
+          btn.addEventListener('click', () => applyFeedViewMode(btn.dataset.view));
+        });
+        applyFeedViewMode(localStorage.getItem('madein_feed_view') === 'shop' ? 'shop' : 'landing');
 
         $('#feedTypeSelect').addEventListener('change', (e) => {
           feedQuery.type = e.target.value;

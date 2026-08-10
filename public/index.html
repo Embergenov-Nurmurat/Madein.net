@@ -356,7 +356,7 @@
         </div>
 
         <div class="view-toolbar">
-          <button class="btn btn-ghost btn-sm" id="editProfileBtn" data-i18n="profile.editBtn">Ma'lumotlarni tahrirlash</button>
+          <button class="btn btn-ghost btn-sm" id="editProfileBtn" data-i18n="profile.editBtn">Sozlamalar</button>
           <button class="btn btn-primary btn-sm upload-plus-btn" id="openUploadBtn2" data-i18n="nav.newWork" data-i18n-aria="nav.newWorkAria" aria-label="Yangi ish qo'shish">+</button>
         </div>
         <div class="view-toolbar profile-quick-links">
@@ -368,6 +368,14 @@
 
         <div class="profile-edit-card hidden" id="editProfileCard">
           <h4 data-i18n="profile.edit.title">Profil ma'lumotlari</h4>
+
+          <div class="settings-block">
+            <div class="field-hint" style="margin-bottom:6px;" data-i18n="settings.viewModeTitle">Bosh sahifa ko'rinishi:</div>
+            <div class="feed-view-toggle" id="feedViewToggle" role="group" aria-label="Ko'rinish turi">
+              <button type="button" class="feed-view-btn active" data-view="landing" data-i18n="filter.view.landing">Lenta</button>
+              <button type="button" class="feed-view-btn" data-view="shop" data-i18n="filter.view.shop">Do'kon</button>
+            </div>
+          </div>
 
           <div class="theme-inline-block">
             <button class="theme-fab theme-fab-inline" id="themeFab" title="Stilni o'zgartirish" data-i18n-title="theme.fabTitle">🎨</button>
