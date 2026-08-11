@@ -1712,10 +1712,11 @@
 
     .work-thumb {
       width: 100%;
-      aspect-ratio: 4/3;
+      aspect-ratio: 4/5; /* rasm yuklanmaguncha standart nisbat — JS orqali (fitMediaCard) tabiiy o'lchamga moslashadi */
       overflow: hidden;
       background: var(--bg-alt);
       position: relative;
+      transition: aspect-ratio .25s ease;
     }
 
     .work-thumb img {
@@ -1729,7 +1730,11 @@
       transform: scale(1.08);
     }
 
-    /* ===== Kollaj (bir nechta rasm bitta kartada) ===== */
+    /* ===== Karta medias (Instagram uslubi: bitta muqova rasm/video) =====
+       Bir nechta rasm bo'lsa ham, kartada faqat birinchisi (muqova)
+       ko'rsatiladi — pastdagi .collage-count hisoblagichi qolganini
+       bildiradi. Qolganlarini ko'rish uchun ustiga bosiladi (to'liq
+       ekranli ko'ruvchida strelkalar/svayp bilan o'tiladi). */
     .collage {
       position: relative;
       display: grid;
@@ -1950,10 +1955,11 @@
 
     .feed-thumb {
       width: 100%;
-      aspect-ratio: 4/3;
+      aspect-ratio: 4/5; /* rasm yuklanmaguncha standart nisbat — JS orqali (fitMediaCard) tabiiy o'lchamga moslashadi */
       background: var(--bg-alt);
       position: relative;
       overflow: hidden;
+      transition: aspect-ratio .25s ease;
     }
 
     .feed-thumb img {
@@ -5785,6 +5791,12 @@
        klassi qo'shilmagani uchun bu qoida umuman ishlamaydi. */
     .tg-app {
       padding-top: calc(env(safe-area-inset-top, 0px) + 6px);
+      /* requestFullscreen() bilan Telegram butun oynani beradi — saytning
+         o'zi ham shu butun balandlikni egallashi kerak (ba'zi Desktop
+         klientlarida bo'lmasa, kontent markazdagi kichik bo'sh oynada
+         "cho'kib" qolib ko'rinishi mumkin edi). */
+      min-height: 100vh;
+      min-height: 100dvh;
     }
 
 

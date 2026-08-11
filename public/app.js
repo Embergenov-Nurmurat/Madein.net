@@ -193,7 +193,7 @@
           "upload.imagesLabel": "Rasmlar yoki video (1-3 rasm, yoki 10 soniyagacha bitta video)",
           "upload.dropDefault": "Rasm yoki video tanlash uchun bosing yoki shu yerga tashlang — 3 tagacha rasm, yoki 10 soniyagacha bitta video",
           "upload.dropChosen": "{n}/{max} rasm tanlandi — yana qo'shish uchun bosing",
-          "upload.dropFull": "3 ta rasm tanlandi — kollaj bo'lib ko'rinadi",
+          "upload.dropFull": "3 ta rasm tanlandi — birinchisi muqova bo'ladi, qolganlari bosib ko'riladi",
           "upload.titleLabel": "Sarlavha", "upload.titlePh": "Masalan: «Kuz manzarasi»",
           "upload.typeLabel": "Turi", "upload.type.rasm": "Rasm (chizma)", "upload.type.haykal": "Haykal",
           "upload.type.mulaj": "Mulaj", "upload.type.boshqa": "Boshqa", "upload.type.otherPh": "Turini kiriting",
@@ -557,7 +557,7 @@
           "upload.imagesLabel": "Photos or a video (1–3 photos, or one video up to 10s)",
           "upload.dropDefault": "Click to choose photos/video or drop them here — up to 3 photos, or one video up to 10s",
           "upload.dropChosen": "{n}/{max} photos chosen — click to add more",
-          "upload.dropFull": "3 photos chosen — shown as a collage",
+          "upload.dropFull": "3 photos chosen — the first is the cover, swipe to see the rest",
           "upload.titleLabel": "Title", "upload.titlePh": "e.g. \"Autumn landscape\"",
           "upload.typeLabel": "Type", "upload.type.rasm": "Painting / drawing", "upload.type.haykal": "Sculpture",
           "upload.type.mulaj": "Model", "upload.type.boshqa": "Other", "upload.type.otherPh": "Enter the type",
@@ -926,7 +926,7 @@
           "upload.imagesLabel": "照片或视频（1至3张照片，或1段最长10秒的视频）",
           "upload.dropDefault": "点击选择照片/视频或拖放到此处 — 最多3张照片，或1段最长10秒的视频",
           "upload.dropChosen": "已选择 {n}/{max} 张照片 — 点击继续添加",
-          "upload.dropFull": "已选择3张照片 — 将以拼图形式展示",
+          "upload.dropFull": "已选择3张照片 — 第一张为封面，点击可查看其余照片",
           "upload.titleLabel": "标题", "upload.titlePh": "例如：《秋日风景》",
           "upload.typeLabel": "类型", "upload.type.rasm": "绘画", "upload.type.haykal": "雕塑",
           "upload.type.mulaj": "模型", "upload.type.boshqa": "其他", "upload.type.otherPh": "请输入类型",
@@ -1309,7 +1309,7 @@
           "upload.imagesLabel": "फ़ोटो या वीडियो (1 से 3 फ़ोटो, या 10 सेकंड तक का एक वीडियो)",
           "upload.dropDefault": "फ़ोटो/वीडियो चुनने के लिए क्लिक करें या यहाँ छोड़ें — 3 फ़ोटो तक, या 10 सेकंड तक का एक वीडियो",
           "upload.dropChosen": "{n}/{max} फ़ोटो चुनी गईं — और जोड़ने के लिए क्लिक करें",
-          "upload.dropFull": "3 फ़ोटो चुनी गईं — कोलाज के रूप में दिखेंगी",
+          "upload.dropFull": "3 फ़ोटो चुनी गईं — पहली कवर होगी, बाकी टैप करने पर दिखेंगी",
           "upload.titleLabel": "शीर्षक", "upload.titlePh": "उदाहरण: «शरद ऋतु का दृश्य»",
           "upload.typeLabel": "प्रकार", "upload.type.rasm": "पेंटिंग / चित्र", "upload.type.haykal": "मूर्ति",
           "upload.type.mulaj": "मॉडल", "upload.type.boshqa": "अन्य", "upload.type.otherPh": "प्रकार दर्ज करें",
@@ -1692,7 +1692,7 @@
           "upload.imagesLabel": "Fotos o un video (de 1 a 3 fotos, o un video de hasta 10 segundos)",
           "upload.dropDefault": "Haz clic para elegir fotos/video o arrástralos aquí — hasta 3 fotos, o un video de hasta 10 segundos",
           "upload.dropChosen": "{n}/{max} fotos elegidas — haz clic para añadir más",
-          "upload.dropFull": "3 fotos elegidas — se mostrarán como collage",
+          "upload.dropFull": "3 fotos elegidas — la primera será la portada, toca para ver el resto",
           "upload.titleLabel": "Título", "upload.titlePh": "p. ej.: «Paisaje de otoño»",
           "upload.typeLabel": "Tipo", "upload.type.rasm": "Pintura / dibujo", "upload.type.haykal": "Escultura",
           "upload.type.mulaj": "Maqueta", "upload.type.boshqa": "Otro", "upload.type.otherPh": "Escribe el tipo",
@@ -2075,7 +2075,7 @@
           "upload.imagesLabel": "صور أو فيديو (من 1 إلى 3 صور، أو فيديو واحد حتى 10 ثوانٍ)",
           "upload.dropDefault": "اضغط لاختيار صور/فيديو أو اسحبها هنا — حتى 3 صور، أو فيديو واحد حتى 10 ثوانٍ",
           "upload.dropChosen": "تم اختيار {n}/{max} صور — اضغط لإضافة المزيد",
-          "upload.dropFull": "تم اختيار 3 صور — ستُعرض كصورة مجمّعة",
+          "upload.dropFull": "تم اختيار 3 صور — الأولى ستكون الغلاف، اضغط لرؤية الباقي",
           "upload.titleLabel": "العنوان", "upload.titlePh": "مثال: «منظر الخريف»",
           "upload.typeLabel": "النوع", "upload.type.rasm": "لوحة / رسم", "upload.type.haykal": "منحوتة",
           "upload.type.mulaj": "مجسم", "upload.type.boshqa": "أخرى", "upload.type.otherPh": "أدخل النوع",
@@ -2458,7 +2458,7 @@
           "upload.imagesLabel": "Фото или видео (от 1 до 3 фото, или одно видео до 10 секунд)",
           "upload.dropDefault": "Нажмите, чтобы выбрать фото/видео, или перетащите сюда — до 3 фото, или одно видео до 10 секунд",
           "upload.dropChosen": "{n}/{max} фото выбрано — нажмите, чтобы добавить ещё",
-          "upload.dropFull": "Выбрано 3 фото — показываются как коллаж",
+          "upload.dropFull": "Выбрано 3 фото — первое станет обложкой, остальные откроются по клику",
           "upload.titleLabel": "Заголовок", "upload.titlePh": "например: «Осенний пейзаж»",
           "upload.typeLabel": "Тип", "upload.type.rasm": "Картина / рисунок", "upload.type.haykal": "Скульптура",
           "upload.type.mulaj": "Макет", "upload.type.boshqa": "Другое", "upload.type.otherPh": "Укажите тип",
@@ -2916,7 +2916,19 @@
         IS_TELEGRAM = true;
 
         tg.ready();
-        tg.expand(); // ilovani to'liq ekran balandligida ochish
+        tg.expand(); // ilovani to'liq ekran balandligida ochish (mobil klientlar uchun)
+
+        // Bot API 8.0+ metodi: ilovani Telegram oynasining BUTUN maydoniga
+        // yoyadi — bu ayniqsa Telegram Desktop'da muhim, chunki u yerda
+        // oddiy expand() kichik, o'zgarmas o'lchamdagi popup oynada qolib
+        // ketishi mumkin edi (faqat balandlikni emas, butun ekranni egallaydi).
+        // Eski klient versiyalarida bu metod yo'q — shu sabab avval mavjudligi
+        // tekshiriladi, aks holda xatolik chiqmaydi.
+        try {
+          if (typeof tg.isVersionAtLeast !== 'function' || tg.isVersionAtLeast('8.0')) {
+            if (typeof tg.requestFullscreen === 'function') tg.requestFullscreen();
+          }
+        } catch (e) { /* eski Telegram versiyasida bo'lmasligi mumkin */ }
 
         document.documentElement.classList.add('tg-app');
 
@@ -3494,6 +3506,18 @@
           $('#feedList').classList.toggle('shop-mode', isShop);
           $$('.feed-view-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === mode));
           localStorage.setItem('madein_feed_view', mode);
+          // "Do'kon" rejimi kartalarni ATAYLAB bir xil kvadrat qiladi —
+          // shu sabab tabiiy nisbat uchun avval JS orqali qo'yilgan
+          // inline uslub tozalanadi (Lenta'ga qaytilganda esa qayta
+          // hisoblanadi, quyida).
+          $$('#feedList .feed-thumb').forEach(thumb => {
+            if (isShop) {
+              thumb.style.aspectRatio = '';
+            } else {
+              const media = thumb.querySelector('img, video');
+              if (media) window.__fitMediaCard(media);
+            }
+          });
         }
         $$('.feed-view-btn').forEach(btn => {
           btn.addEventListener('click', () => applyFeedViewMode(btn.dataset.view));
@@ -3602,6 +3626,7 @@
         $('#imageViewerModal').addEventListener('click', (e) => { if (e.target === $('#imageViewerModal')) closeImageViewer(); });
         $('#imageViewerPrev').addEventListener('click', () => imageViewerStep(-1));
         $('#imageViewerNext').addEventListener('click', () => imageViewerStep(1));
+        bindImageViewerSwipe();
         $('#closeVideoViewer').addEventListener('click', closeVideoViewer);
         $('#videoViewerModal').addEventListener('click', (e) => { if (e.target === $('#videoViewerModal')) closeVideoViewer(); });
         document.addEventListener('keydown', (e) => {
@@ -4602,21 +4627,51 @@
         return workImages(w);
       }
 
+      /* Kartadagi (feed/profil) medianing tabiiy o'lchamiga qarab konteyner
+         nisbatini moslashtiradi — Instagram'dagidek, rasm/video hech qachon
+         qattiq belgilangan qutiga majburan siqilmaydi. Juda cho'zilgan
+         (juda tor yoki juda keng) medialar Instagram qabul qilgan chegaralar
+         bilan cheklanadi (4:5 dan 1.91:1 gacha), aks holda karta g'ayritabiiy
+         darajada baland yoki past bo'lib ketishi mumkin. */
+      const MEDIA_MIN_RATIO = 4 / 5;   // eng "baland" portret
+      const MEDIA_MAX_RATIO = 1.91;    // eng "keng" landshaft
+      function fitMediaCard(el) {
+        const container = el.closest('.work-thumb, .feed-thumb');
+        if (!container) return;
+        // "Do'kon" rejimida (shop-mode) barcha kartalar ATAYLAB bir xil
+        // kvadrat (1:1) bo'lishi kerak — katalog ko'rinishini buzmaslik
+        // uchun bu holatda tabiiy nisbatga moslashtirilmaydi.
+        if (container.closest('.shop-mode')) return;
+        const w = el.tagName === 'VIDEO' ? el.videoWidth : el.naturalWidth;
+        const h = el.tagName === 'VIDEO' ? el.videoHeight : el.naturalHeight;
+        if (!w || !h) return;
+        const ratio = Math.max(MEDIA_MIN_RATIO, Math.min(MEDIA_MAX_RATIO, w / h));
+        container.style.aspectRatio = String(ratio);
+      }
+      window.__fitMediaCard = fitMediaCard;
+
+      /* Bitta karta = bitta media (Instagram uslubi). Ilgari bu yerda bir
+         nechta rasm bitta kartada yonma-yon "kollaj" qilib ko'rsatilardi —
+         endi faqat muqova (birinchi) rasm/video ko'rsatiladi, qolganlarini
+         ko'rish uchun foydalanuvchi ustiga bosadi va to'liq ekranli
+         ko'ruvchida (openImageViewer) keyingisiga o'tadi. Nechta medial
+         borligi burchakdagi hisoblagich orqali bildiriladi. */
       function collageHTML(images, alt, videoSrc, posterSrc) {
         if (videoSrc) {
           // autoplay yo'q — video faqat ekranda ko'rinib turgan paytda ijro etiladi
           // (pastdagi videoAutoplayObserver orqali), shu bilan batareya/protsessor tejaladi
           return `<div class="collage n-1 collage-video">
-            <video src="${videoSrc}"${posterSrc ? ` poster="${posterSrc}"` : ''} muted loop playsinline preload="metadata" data-autoplay-onview></video>
+            <video src="${videoSrc}"${posterSrc ? ` poster="${posterSrc}"` : ''} muted loop playsinline preload="metadata" data-autoplay-onview onloadedmetadata="window.__fitMediaCard(this)"></video>
             <div class="collage-count" aria-hidden="true">${videoIconSVG()}</div>
           </div>`;
         }
-        const imgs = images && images.length ? images.slice(0, 3) : [];
+        const imgs = images && images.length ? images : [];
+        if (!imgs.length) return `<div class="collage n-0"></div>`;
+        const cover = imgs[0];
         const badge = imgs.length > 1
           ? `<div class="collage-count" aria-hidden="true">${multiImageIconSVG()} ${imgs.length}</div>`
           : '';
-        return `<div class="collage n-${imgs.length}">${imgs.map(src =>
-          `<img src="${src}" alt="${escapeHtml(alt)}" loading="lazy">`).join('')}${badge}</div>`;
+        return `<div class="collage n-1"><img src="${cover}" alt="${escapeHtml(alt)}" loading="lazy" onload="window.__fitMediaCard(this)">${badge}</div>`;
       }
 
       /* Faqat ekranda ko'rinayotgan videolarni ijro etadi — ko'rinmay qolganda
@@ -7311,6 +7366,30 @@
         if (!IMAGE_VIEWER_IMAGES.length) return;
         IMAGE_VIEWER_INDEX = (IMAGE_VIEWER_INDEX + delta + IMAGE_VIEWER_IMAGES.length) % IMAGE_VIEWER_IMAGES.length;
         renderImageViewer();
+      }
+      /* Telefonda/planshetda barmoq bilan chapga-o'ngga suryib (Instagram
+         kabi) keyingi/oldingi rasmga o'tish. Faqat gorizontal svayp katta
+         bo'lganda ishga tushadi — vertikal skroll/pinch-zoom bilan
+         chalkashib ketmasligi uchun. */
+      function bindImageViewerSwipe() {
+        const stage = $('#imageViewerModal');
+        if (!stage) return;
+        let startX = 0, startY = 0, tracking = false;
+        stage.addEventListener('touchstart', (e) => {
+          if (e.touches.length !== 1) return;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          tracking = true;
+        }, { passive: true });
+        stage.addEventListener('touchend', (e) => {
+          if (!tracking) return;
+          tracking = false;
+          const dx = e.changedTouches[0].clientX - startX;
+          const dy = e.changedTouches[0].clientY - startY;
+          if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+            imageViewerStep(dx < 0 ? 1 : -1);
+          }
+        }, { passive: true });
       }
 
       /* ===================== TO'LIQ HAJMDAGI VIDEO KO'RUVCHI ===================== */
