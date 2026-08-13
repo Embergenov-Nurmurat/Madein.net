@@ -259,7 +259,7 @@
           "gate.desc.cart": "Savatga mahsulot qo'shish va buyurtma berish uchun ro'yxatdan o'ting.",
           "gate.desc.messages": "Sotuvchilarga to'g'ridan-to'g'ri xabar yozish uchun ro'yxatdan o'ting.",
           "gate.desc.profile": "O'z profilingiz va asarlaringizni boshqarish uchun ro'yxatdan o'ting.",
-          "theme.fabTitle": "Stilni o'zgartirish", "theme.title": "Sayt stili",
+          "theme.fabTitle": "Stilni o'zgartirish", "theme.title": "Sayt stili", "theme.quickToggleAria": "Tungi/Yorug' rejimni almashtirish",
           "theme.tungi": "Tungi", "theme.yorug": "Yorug'", "theme.cyberpunk": "Cyberpunk", "theme.cyberpunkBlue": "Cyberpunk ko'k", "theme.cyberpunkYellow": "Cyberpunk sariq", "theme.liquidGlass": "Liquid Glass (shisha)", "theme.custom": "Maxsus",
           "theme.customPick": "O'zingiz rang tanlang",
           "admin.nav": "Administrator burchagi",
@@ -342,7 +342,7 @@
           "admin.stat.comments": "Kommentlar",
           "admin.stat.openReports": "Ochiq shikoyatlar",
           "admin.stat.banMute": "Ban/Mut",
-          "admin.analytics.label": "Statistika paneli", "admin.analytics.salesTitle": "Savdo hajmi (valyuta bo'yicha)", "admin.analytics.topSellersTitle": "Eng ko'p sotuvchilar", "admin.analytics.growthTitle": "Oxirgi 14 kunlik o'sish", "admin.analytics.dau": "Kunlik faol (24s)", "admin.analytics.wau": "Haftalik faol (7 kun)", "admin.analytics.mau": "Oylik faol (30 kun)", "admin.analytics.totalOrders": "Jami buyurtmalar", "admin.analytics.currency": "Valyuta", "admin.analytics.paidTotal": "To'langan", "admin.analytics.paidCount": "Soni", "admin.analytics.allTotal": "Jami (barcha)", "admin.analytics.seller": "Sotuvchi", "admin.analytics.revenue": "Daromad", "admin.analytics.orders": "To'langan/Jami", "admin.analytics.noData": "Hozircha ma'lumot yo'q", "admin.analytics.usersShort": "foydalanuvchi", "admin.analytics.worksShort": "asar", "admin.analytics.ordersShort": "buyurtma",
+          "admin.analytics.label": "Statistika paneli", "admin.analytics.salesTitle": "Savdo hajmi (valyuta bo'yicha)", "admin.analytics.topSellersTitle": "Eng ko'p sotuvchilar", "admin.analytics.growthTitle": "Oxirgi 14 kunlik o'sish", "admin.analytics.revenueTitle": "Oxirgi 14 kunlik buyurtma/daromad", "admin.analytics.dau": "Kunlik faol (24s)", "admin.analytics.wau": "Haftalik faol (7 kun)", "admin.analytics.mau": "Oylik faol (30 kun)", "admin.analytics.totalOrders": "Jami buyurtmalar", "admin.analytics.currency": "Valyuta", "admin.analytics.paidTotal": "To'langan", "admin.analytics.paidCount": "Soni", "admin.analytics.allTotal": "Jami (barcha)", "admin.analytics.seller": "Sotuvchi", "admin.analytics.revenue": "Daromad", "admin.analytics.orders": "To'langan/Jami", "admin.analytics.noData": "Hozircha ma'lumot yo'q", "admin.analytics.usersShort": "foydalanuvchi", "admin.analytics.worksShort": "asar", "admin.analytics.ordersShort": "buyurtma",
           "admin.report.typeWork": "Asar",
           "admin.report.typeUser": "Foydalanuvchi",
           "admin.report.subjectWork": "Asar: \"{title}\"",
@@ -628,7 +628,7 @@
           "gate.desc.cart": "Sign up to save items to your cart and check out.",
           "gate.desc.messages": "Sign up to message sellers directly.",
           "gate.desc.profile": "Sign up to manage your own profile and works.",
-          "theme.fabTitle": "Change style", "theme.title": "Site style",
+          "theme.fabTitle": "Change style", "theme.title": "Site style", "theme.quickToggleAria": "Toggle dark/light mode",
           "theme.tungi": "Night", "theme.yorug": "Light", "theme.cyberpunk": "Cyberpunk", "theme.cyberpunkBlue": "Cyberpunk blue", "theme.cyberpunkYellow": "Cyberpunk yellow", "theme.liquidGlass": "Liquid Glass", "theme.custom": "Custom",
           "theme.customPick": "Pick your own color",
           "admin.nav": "Admin corner",
@@ -711,7 +711,7 @@
           "admin.stat.comments": "Comments",
           "admin.stat.openReports": "Open reports",
           "admin.stat.banMute": "Ban/Mute",
-          "admin.analytics.label": "Analytics dashboard", "admin.analytics.salesTitle": "Sales volume (by currency)", "admin.analytics.topSellersTitle": "Top sellers", "admin.analytics.growthTitle": "Last 14 days growth", "admin.analytics.dau": "Daily active (24h)", "admin.analytics.wau": "Weekly active (7d)", "admin.analytics.mau": "Monthly active (30d)", "admin.analytics.totalOrders": "Total orders", "admin.analytics.currency": "Currency", "admin.analytics.paidTotal": "Paid", "admin.analytics.paidCount": "Count", "admin.analytics.allTotal": "Total (all)", "admin.analytics.seller": "Seller", "admin.analytics.revenue": "Revenue", "admin.analytics.orders": "Paid/Total", "admin.analytics.noData": "No data yet", "admin.analytics.usersShort": "users", "admin.analytics.worksShort": "works", "admin.analytics.ordersShort": "orders",
+          "admin.analytics.label": "Analytics dashboard", "admin.analytics.salesTitle": "Sales volume (by currency)", "admin.analytics.topSellersTitle": "Top sellers", "admin.analytics.growthTitle": "Last 14 days growth", "admin.analytics.revenueTitle": "Last 14 days orders/revenue", "admin.analytics.dau": "Daily active (24h)", "admin.analytics.wau": "Weekly active (7d)", "admin.analytics.mau": "Monthly active (30d)", "admin.analytics.totalOrders": "Total orders", "admin.analytics.currency": "Currency", "admin.analytics.paidTotal": "Paid", "admin.analytics.paidCount": "Count", "admin.analytics.allTotal": "Total (all)", "admin.analytics.seller": "Seller", "admin.analytics.revenue": "Revenue", "admin.analytics.orders": "Paid/Total", "admin.analytics.noData": "No data yet", "admin.analytics.usersShort": "users", "admin.analytics.worksShort": "works", "admin.analytics.ordersShort": "orders",
           "admin.report.typeWork": "Work",
           "admin.report.typeUser": "User",
           "admin.report.subjectWork": "Work: \"{title}\"",
@@ -977,7 +977,7 @@
           "gate.desc.cart": "注册后即可将商品加入购物车并结账。",
           "gate.desc.messages": "注册后即可直接给卖家发消息。",
           "gate.desc.profile": "注册后即可管理您自己的主页和作品。",
-          "theme.fabTitle": "更改样式", "theme.title": "网站样式",
+          "theme.fabTitle": "更改样式", "theme.title": "网站样式", "theme.quickToggleAria": "切换深色/浅色模式",
           "theme.tungi": "夜间", "theme.yorug": "明亮", "theme.cyberpunk": "赛博朋克", "theme.cyberpunkBlue": "赛博朋克蓝", "theme.cyberpunkYellow": "赛博朋克黄", "theme.liquidGlass": "液态玻璃", "theme.custom": "自定义",
           "theme.customPick": "选择您自己的颜色",
           "admin.nav": "管理员角",
@@ -1060,7 +1060,7 @@
           "admin.stat.comments": "评论",
           "admin.stat.openReports": "待处理举报",
           "admin.stat.banMute": "封禁/禁言",
-          "admin.analytics.label": "统计仪表盘", "admin.analytics.salesTitle": "销售额（按货币）", "admin.analytics.topSellersTitle": "顶级卖家", "admin.analytics.growthTitle": "近14天增长", "admin.analytics.dau": "日活跃(24小时)", "admin.analytics.wau": "周活跃(7天)", "admin.analytics.mau": "月活跃(30天)", "admin.analytics.totalOrders": "订单总数", "admin.analytics.currency": "货币", "admin.analytics.paidTotal": "已支付", "admin.analytics.paidCount": "数量", "admin.analytics.allTotal": "总计(全部)", "admin.analytics.seller": "卖家", "admin.analytics.revenue": "收入", "admin.analytics.orders": "已付/总数", "admin.analytics.noData": "暂无数据", "admin.analytics.usersShort": "用户", "admin.analytics.worksShort": "作品", "admin.analytics.ordersShort": "订单",
+          "admin.analytics.label": "统计仪表盘", "admin.analytics.salesTitle": "销售额（按货币）", "admin.analytics.topSellersTitle": "顶级卖家", "admin.analytics.growthTitle": "近14天增长", "admin.analytics.revenueTitle": "近14天订单/收入", "admin.analytics.dau": "日活跃(24小时)", "admin.analytics.wau": "周活跃(7天)", "admin.analytics.mau": "月活跃(30天)", "admin.analytics.totalOrders": "订单总数", "admin.analytics.currency": "货币", "admin.analytics.paidTotal": "已支付", "admin.analytics.paidCount": "数量", "admin.analytics.allTotal": "总计(全部)", "admin.analytics.seller": "卖家", "admin.analytics.revenue": "收入", "admin.analytics.orders": "已付/总数", "admin.analytics.noData": "暂无数据", "admin.analytics.usersShort": "用户", "admin.analytics.worksShort": "作品", "admin.analytics.ordersShort": "订单",
           "admin.report.typeWork": "作品",
           "admin.report.typeUser": "用户",
           "admin.report.subjectWork": "作品：《{title}》",
@@ -1360,7 +1360,7 @@
           "gate.desc.cart": "कार्ट में आइटम सहेजने और चेकआउट करने के लिए साइन अप करें।",
           "gate.desc.messages": "विक्रेताओं को सीधे संदेश भेजने के लिए साइन अप करें।",
           "gate.desc.profile": "अपनी प्रोफ़ाइल और कार्यों को प्रबंधित करने के लिए साइन अप करें।",
-          "theme.fabTitle": "शैली बदलें", "theme.title": "साइट शैली",
+          "theme.fabTitle": "शैली बदलें", "theme.title": "साइट शैली", "theme.quickToggleAria": "रात्रि/उजला मोड बदलें",
           "theme.tungi": "रात्रि", "theme.yorug": "उजला", "theme.cyberpunk": "साइबरपंक", "theme.cyberpunkBlue": "साइबरपंक नीला", "theme.cyberpunkYellow": "साइबरपंक पीला", "theme.liquidGlass": "लिक्विड ग्लास", "theme.custom": "कस्टम",
           "theme.customPick": "अपना रंग चुनें",
           "admin.nav": "प्रशासक कोना",
@@ -1443,7 +1443,7 @@
           "admin.stat.comments": "टिप्पणियाँ",
           "admin.stat.openReports": "खुली शिकायतें",
           "admin.stat.banMute": "बैन/म्यूट",
-          "admin.analytics.label": "एनालिटिक्स डैशबोर्ड", "admin.analytics.salesTitle": "बिक्री मात्रा (मुद्रा अनुसार)", "admin.analytics.topSellersTitle": "शीर्ष विक्रेता", "admin.analytics.growthTitle": "पिछले 14 दिनों की वृद्धि", "admin.analytics.dau": "दैनिक सक्रिय (24घं)", "admin.analytics.wau": "साप्ताहिक सक्रिय (7 दिन)", "admin.analytics.mau": "मासिक सक्रिय (30 दिन)", "admin.analytics.totalOrders": "कुल ऑर्डर", "admin.analytics.currency": "मुद्रा", "admin.analytics.paidTotal": "भुगतान किया गया", "admin.analytics.paidCount": "संख्या", "admin.analytics.allTotal": "कुल (सभी)", "admin.analytics.seller": "विक्रेता", "admin.analytics.revenue": "आय", "admin.analytics.orders": "भुगतान/कुल", "admin.analytics.noData": "अभी तक डेटा नहीं है", "admin.analytics.usersShort": "उपयोगकर्ता", "admin.analytics.worksShort": "कृतियाँ", "admin.analytics.ordersShort": "ऑर्डर",
+          "admin.analytics.label": "एनालिटिक्स डैशबोर्ड", "admin.analytics.salesTitle": "बिक्री मात्रा (मुद्रा अनुसार)", "admin.analytics.topSellersTitle": "शीर्ष विक्रेता", "admin.analytics.growthTitle": "पिछले 14 दिनों की वृद्धि", "admin.analytics.revenueTitle": "पिछले 14 दिनों के ऑर्डर/आय", "admin.analytics.dau": "दैनिक सक्रिय (24घं)", "admin.analytics.wau": "साप्ताहिक सक्रिय (7 दिन)", "admin.analytics.mau": "मासिक सक्रिय (30 दिन)", "admin.analytics.totalOrders": "कुल ऑर्डर", "admin.analytics.currency": "मुद्रा", "admin.analytics.paidTotal": "भुगतान किया गया", "admin.analytics.paidCount": "संख्या", "admin.analytics.allTotal": "कुल (सभी)", "admin.analytics.seller": "विक्रेता", "admin.analytics.revenue": "आय", "admin.analytics.orders": "भुगतान/कुल", "admin.analytics.noData": "अभी तक डेटा नहीं है", "admin.analytics.usersShort": "उपयोगकर्ता", "admin.analytics.worksShort": "कृतियाँ", "admin.analytics.ordersShort": "ऑर्डर",
           "admin.report.typeWork": "कृति",
           "admin.report.typeUser": "उपयोगकर्ता",
           "admin.report.subjectWork": "कृति: \"{title}\"",
@@ -1743,7 +1743,7 @@
           "gate.desc.cart": "Regístrate para guardar artículos en tu carrito y pagar.",
           "gate.desc.messages": "Regístrate para enviar mensajes directamente a los vendedores.",
           "gate.desc.profile": "Regístrate para gestionar tu propio perfil y tus obras.",
-          "theme.fabTitle": "Cambiar estilo", "theme.title": "Estilo del sitio",
+          "theme.fabTitle": "Cambiar estilo", "theme.title": "Estilo del sitio", "theme.quickToggleAria": "Alternar modo oscuro/claro",
           "theme.tungi": "Nocturno", "theme.yorug": "Claro", "theme.cyberpunk": "Cyberpunk", "theme.cyberpunkBlue": "Cyberpunk azul", "theme.cyberpunkYellow": "Cyberpunk amarillo", "theme.liquidGlass": "Vidrio líquido", "theme.custom": "Personalizado",
           "theme.customPick": "Elige tu propio color",
           "admin.nav": "Rincón del administrador",
@@ -1826,7 +1826,7 @@
           "admin.stat.comments": "Comentarios",
           "admin.stat.openReports": "Denuncias abiertas",
           "admin.stat.banMute": "Ban/Mute",
-          "admin.analytics.label": "Panel de analíticas", "admin.analytics.salesTitle": "Volumen de ventas (por moneda)", "admin.analytics.topSellersTitle": "Mejores vendedores", "admin.analytics.growthTitle": "Crecimiento de los últimos 14 días", "admin.analytics.dau": "Activos diarios (24h)", "admin.analytics.wau": "Activos semanales (7d)", "admin.analytics.mau": "Activos mensuales (30d)", "admin.analytics.totalOrders": "Pedidos totales", "admin.analytics.currency": "Moneda", "admin.analytics.paidTotal": "Pagado", "admin.analytics.paidCount": "Cantidad", "admin.analytics.allTotal": "Total (todo)", "admin.analytics.seller": "Vendedor", "admin.analytics.revenue": "Ingresos", "admin.analytics.orders": "Pagados/Total", "admin.analytics.noData": "Aún no hay datos", "admin.analytics.usersShort": "usuarios", "admin.analytics.worksShort": "obras", "admin.analytics.ordersShort": "pedidos",
+          "admin.analytics.label": "Panel de analíticas", "admin.analytics.salesTitle": "Volumen de ventas (por moneda)", "admin.analytics.topSellersTitle": "Mejores vendedores", "admin.analytics.growthTitle": "Crecimiento de los últimos 14 días", "admin.analytics.revenueTitle": "Pedidos/ingresos de los últimos 14 días", "admin.analytics.dau": "Activos diarios (24h)", "admin.analytics.wau": "Activos semanales (7d)", "admin.analytics.mau": "Activos mensuales (30d)", "admin.analytics.totalOrders": "Pedidos totales", "admin.analytics.currency": "Moneda", "admin.analytics.paidTotal": "Pagado", "admin.analytics.paidCount": "Cantidad", "admin.analytics.allTotal": "Total (todo)", "admin.analytics.seller": "Vendedor", "admin.analytics.revenue": "Ingresos", "admin.analytics.orders": "Pagados/Total", "admin.analytics.noData": "Aún no hay datos", "admin.analytics.usersShort": "usuarios", "admin.analytics.worksShort": "obras", "admin.analytics.ordersShort": "pedidos",
           "admin.report.typeWork": "Obra",
           "admin.report.typeUser": "Usuario",
           "admin.report.subjectWork": "Obra: \"{title}\"",
@@ -2126,7 +2126,7 @@
           "gate.desc.cart": "سجّل للاحتفاظ بالعناصر في سلتك وإتمام الشراء.",
           "gate.desc.messages": "سجّل لمراسلة البائعين مباشرة.",
           "gate.desc.profile": "سجّل لإدارة ملفك الشخصي وأعمالك.",
-          "theme.fabTitle": "تغيير النمط", "theme.title": "نمط الموقع",
+          "theme.fabTitle": "تغيير النمط", "theme.title": "نمط الموقع", "theme.quickToggleAria": "تبديل الوضع الداكن/الفاتح",
           "theme.tungi": "ليلي", "theme.yorug": "فاتح", "theme.cyberpunk": "سايبربانك", "theme.cyberpunkBlue": "سايبربانك أزرق", "theme.cyberpunkYellow": "سايبربانك أصفر", "theme.liquidGlass": "الزجاج السائل", "theme.custom": "مخصص",
           "theme.customPick": "اختر لونك الخاص",
           "admin.nav": "زاوية المشرف",
@@ -2209,7 +2209,7 @@
           "admin.stat.comments": "التعليقات",
           "admin.stat.openReports": "بلاغات مفتوحة",
           "admin.stat.banMute": "حظر/كتم",
-          "admin.analytics.label": "لوحة التحليلات", "admin.analytics.salesTitle": "حجم المبيعات (حسب العملة)", "admin.analytics.topSellersTitle": "أفضل البائعين", "admin.analytics.growthTitle": "نمو آخر 14 يومًا", "admin.analytics.dau": "نشط يوميًا (24س)", "admin.analytics.wau": "نشط أسبوعيًا (7 أيام)", "admin.analytics.mau": "نشط شهريًا (30 يومًا)", "admin.analytics.totalOrders": "إجمالي الطلبات", "admin.analytics.currency": "العملة", "admin.analytics.paidTotal": "مدفوع", "admin.analytics.paidCount": "العدد", "admin.analytics.allTotal": "الإجمالي (الكل)", "admin.analytics.seller": "البائع", "admin.analytics.revenue": "الإيرادات", "admin.analytics.orders": "مدفوع/الإجمالي", "admin.analytics.noData": "لا توجد بيانات بعد", "admin.analytics.usersShort": "مستخدمين", "admin.analytics.worksShort": "أعمال", "admin.analytics.ordersShort": "طلبات",
+          "admin.analytics.label": "لوحة التحليلات", "admin.analytics.salesTitle": "حجم المبيعات (حسب العملة)", "admin.analytics.topSellersTitle": "أفضل البائعين", "admin.analytics.growthTitle": "نمو آخر 14 يومًا", "admin.analytics.revenueTitle": "طلبات/إيرادات آخر 14 يومًا", "admin.analytics.dau": "نشط يوميًا (24س)", "admin.analytics.wau": "نشط أسبوعيًا (7 أيام)", "admin.analytics.mau": "نشط شهريًا (30 يومًا)", "admin.analytics.totalOrders": "إجمالي الطلبات", "admin.analytics.currency": "العملة", "admin.analytics.paidTotal": "مدفوع", "admin.analytics.paidCount": "العدد", "admin.analytics.allTotal": "الإجمالي (الكل)", "admin.analytics.seller": "البائع", "admin.analytics.revenue": "الإيرادات", "admin.analytics.orders": "مدفوع/الإجمالي", "admin.analytics.noData": "لا توجد بيانات بعد", "admin.analytics.usersShort": "مستخدمين", "admin.analytics.worksShort": "أعمال", "admin.analytics.ordersShort": "طلبات",
           "admin.report.typeWork": "عمل",
           "admin.report.typeUser": "مستخدم",
           "admin.report.subjectWork": "العمل: \"{title}\"",
@@ -2509,7 +2509,7 @@
           "gate.desc.cart": "Зарегистрируйтесь, чтобы добавлять товары в корзину и оформлять заказ.",
           "gate.desc.messages": "Зарегистрируйтесь, чтобы писать продавцам напрямую.",
           "gate.desc.profile": "Зарегистрируйтесь, чтобы управлять своим профилем и работами.",
-          "theme.fabTitle": "Изменить стиль", "theme.title": "Стиль сайта",
+          "theme.fabTitle": "Изменить стиль", "theme.title": "Стиль сайта", "theme.quickToggleAria": "Переключить тёмный/светлый режим",
           "theme.tungi": "Ночной", "theme.yorug": "Светлый", "theme.cyberpunk": "Киберпанк", "theme.cyberpunkBlue": "Киберпанк синий", "theme.cyberpunkYellow": "Киберпанк жёлтый", "theme.liquidGlass": "Жидкое стекло", "theme.custom": "Свой",
           "theme.customPick": "Выберите свой цвет",
           "admin.nav": "Уголок администратора",
@@ -2592,7 +2592,7 @@
           "admin.stat.comments": "Комментарии",
           "admin.stat.openReports": "Открытые жалобы",
           "admin.stat.banMute": "Бан/Мут",
-          "admin.analytics.label": "Панель аналитики", "admin.analytics.salesTitle": "Объём продаж (по валюте)", "admin.analytics.topSellersTitle": "Топ продавцов", "admin.analytics.growthTitle": "Рост за последние 14 дней", "admin.analytics.dau": "Активны за сутки (24ч)", "admin.analytics.wau": "Активны за неделю (7д)", "admin.analytics.mau": "Активны за месяц (30д)", "admin.analytics.totalOrders": "Всего заказов", "admin.analytics.currency": "Валюта", "admin.analytics.paidTotal": "Оплачено", "admin.analytics.paidCount": "Кол-во", "admin.analytics.allTotal": "Всего (все)", "admin.analytics.seller": "Продавец", "admin.analytics.revenue": "Выручка", "admin.analytics.orders": "Оплачено/Всего", "admin.analytics.noData": "Пока нет данных", "admin.analytics.usersShort": "пользователей", "admin.analytics.worksShort": "работ", "admin.analytics.ordersShort": "заказов",
+          "admin.analytics.label": "Панель аналитики", "admin.analytics.salesTitle": "Объём продаж (по валюте)", "admin.analytics.topSellersTitle": "Топ продавцов", "admin.analytics.growthTitle": "Рост за последние 14 дней", "admin.analytics.revenueTitle": "Заказы/выручка за последние 14 дней", "admin.analytics.dau": "Активны за сутки (24ч)", "admin.analytics.wau": "Активны за неделю (7д)", "admin.analytics.mau": "Активны за месяц (30д)", "admin.analytics.totalOrders": "Всего заказов", "admin.analytics.currency": "Валюта", "admin.analytics.paidTotal": "Оплачено", "admin.analytics.paidCount": "Кол-во", "admin.analytics.allTotal": "Всего (все)", "admin.analytics.seller": "Продавец", "admin.analytics.revenue": "Выручка", "admin.analytics.orders": "Оплачено/Всего", "admin.analytics.noData": "Пока нет данных", "admin.analytics.usersShort": "пользователей", "admin.analytics.worksShort": "работ", "admin.analytics.ordersShort": "заказов",
           "admin.report.typeWork": "Работа",
           "admin.report.typeUser": "Пользователь",
           "admin.report.subjectWork": "Работа: «{title}»",
@@ -2878,6 +2878,42 @@
         $('#authScreen').classList.add('hidden');
         showBannedScreen({ bannedUntil: data.until, banReason: data.reason });
       }
+      /* fetch() orqali yuklashda progress kuzatib bo'lmaydi (asosan eski
+         brauzerlarda), shu sabab katta fayllar (rasm/video) yuborilganda
+         XMLHttpRequest ishlatiladi — bu foydalanuvchiga necha foizi
+         yuklanganini real vaqtda ko'rsatish imkonini beradi. Xatoliklarni
+         qayta ishlash (banned holat, kod->tarjima) api() bilan bir xil. */
+      function apiUploadWithProgress(path, formData, onProgress) {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', path);
+          xhr.withCredentials = true;
+          if (xhr.upload && onProgress) {
+            xhr.upload.addEventListener('progress', (e) => {
+              if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+            });
+          }
+          xhr.addEventListener('load', () => {
+            let data = null;
+            try { data = JSON.parse(xhr.responseText); } catch (e) { /* no body */ }
+            if (xhr.status === 403 && data && data.banned) {
+              handleBannedNow(data);
+            }
+            if (xhr.status < 200 || xhr.status >= 300) {
+              const err = new Error(translateApiError(data));
+              err.code = data && data.code;
+              err.status = xhr.status;
+              reject(err);
+              return;
+            }
+            resolve(data);
+          });
+          xhr.addEventListener('error', () => reject(new Error(t('common.serverError'))));
+          xhr.addEventListener('abort', () => reject(new Error(t('common.serverError'))));
+          xhr.send(formData);
+        });
+      }
+
       function apiJSON(path, method, body) {
         return api(path, {
           method,
@@ -3315,6 +3351,10 @@
         $('#guestBanner').classList.toggle('hidden', !IS_GUEST);
         updateAdminNavVisibility();
         updateMuteBanner();
+        // "O'zim" (profil) hali yuklanmagan bo'lsa ham, foydalanuvchi darhol
+        // shu bo'limga o'tib qolishi mumkin — bo'sh ekran ko'rinmasligi
+        // uchun ma'lumot kelguncha skeleton ko'rsatiladi.
+        showGridSkeleton('#profileGrid');
 
         if (IS_GUEST) {
           WORKS = [];
@@ -3627,6 +3667,7 @@
         $('#imageViewerPrev').addEventListener('click', () => imageViewerStep(-1));
         $('#imageViewerNext').addEventListener('click', () => imageViewerStep(1));
         bindImageViewerSwipe();
+        initPullToRefresh();
         $('#closeVideoViewer').addEventListener('click', closeVideoViewer);
         $('#videoViewerModal').addEventListener('click', (e) => { if (e.target === $('#videoViewerModal')) closeVideoViewer(); });
         document.addEventListener('keydown', (e) => {
@@ -3802,6 +3843,16 @@
         $('#customColorInput').addEventListener('input', async (e) => {
           currentTheme.mode = 'custom';
           currentTheme.custom = e.target.value;
+          applyTheme(currentTheme);
+          await persistTheme();
+        });
+
+        /* Navbar'dagi tezkor Tungi/Yorug' almashtirgich — to'liq stil
+           panelini ochmasdan, bir bosishda ikki asosiy rejim orasida
+           o'tish uchun. Agar joriy tema boshqa (cyberpunk/liquid-glass/
+           maxsus) bo'lsa, birinchi bosishda "Tungi"ga qaytariladi. */
+        $('#navThemeToggleBtn').addEventListener('click', async () => {
+          currentTheme.mode = currentTheme.mode === 'yorug' ? 'tungi' : 'yorug';
           applyTheme(currentTheme);
           await persistTheme();
         });
@@ -4033,6 +4084,21 @@
             const label = g.date.slice(5); // MM-DD
             return `<div class="admin-growth-bar-wrap" title="${label}: +${g.newUsers} ${t('admin.analytics.usersShort')}, +${g.newWorks} ${t('admin.analytics.worksShort')}, ${g.ordersCount} ${t('admin.analytics.ordersShort')}">
           <div class="admin-growth-bar" style="height:${heightPct}%"></div>
+          <div class="admin-growth-bar-label">${label}</div>
+        </div>`;
+          }).join('');
+
+          // Kunlik buyurtmalar soni va (so'mdagi) daromad — alohida grafik,
+          // chunki bu foydalanuvchi/ish o'sishidan mustaqil ravishda savdo
+          // dinamikasini ko'rsatadi (admin uchun tezkor "bugun qanday
+          // ketyapti" ko'rinishi).
+          const maxRevenue = Math.max(1, ...a.growth.map(g => g.revenueUZS));
+          $('#adminRevenueChart').innerHTML = a.growth.map(g => {
+            const heightPct = Math.max(3, Math.round((g.revenueUZS / maxRevenue) * 100));
+            const label = g.date.slice(5); // MM-DD
+            const revenueStr = fmtPrice(g.revenueUZS, 'UZS');
+            return `<div class="admin-growth-bar-wrap" title="${label}: ${g.ordersCount} ${t('admin.analytics.ordersShort')}, ${revenueStr}">
+          <div class="admin-growth-bar admin-revenue-bar" style="height:${heightPct}%"></div>
           <div class="admin-growth-bar-label">${label}</div>
         </div>`;
           }).join('');
@@ -4515,7 +4581,8 @@
         $('#upAvatar').innerHTML = '?';
         $('#upBio').textContent = '';
         $('#upContact').innerHTML = '';
-        $('#upGrid').innerHTML = '<div class="feed-spinner" style="margin:30px auto;"></div>';
+        $('#upGrid').innerHTML = '';
+        showGridSkeleton('#upGrid');
         try {
           const data = await api('/api/users/' + encodeURIComponent(username));
           renderUserProfile(data.profile, data.works || []);
@@ -4658,10 +4725,13 @@
          borligi burchakdagi hisoblagich orqali bildiriladi. */
       function collageHTML(images, alt, videoSrc, posterSrc) {
         if (videoSrc) {
-          // autoplay yo'q — video faqat ekranda ko'rinib turgan paytda ijro etiladi
-          // (pastdagi videoAutoplayObserver orqali), shu bilan batareya/protsessor tejaladi
+          // src ATAYLAB darhol qo'yilmaydi (data-src'da saqlanadi) — video
+          // fayli faqat foydalanuvchi shu kartaga yaqinlashganda so'raladi
+          // (pastdagi videoLazyObserver), aks holda lentada o'nlab video
+          // bir vaqtda internetdan yuklana boshlagan bo'lardi. Ijro esa
+          // faqat haqiqatan ekranda ko'ringanda boshlanadi (videoAutoplayObserver).
           return `<div class="collage n-1 collage-video">
-            <video src="${videoSrc}"${posterSrc ? ` poster="${posterSrc}"` : ''} muted loop playsinline preload="metadata" data-autoplay-onview onloadedmetadata="window.__fitMediaCard(this)"></video>
+            <video data-src="${videoSrc}"${posterSrc ? ` poster="${posterSrc}"` : ''} muted loop playsinline preload="none" data-autoplay-onview onloadedmetadata="window.__fitMediaCard(this)"></video>
             <div class="collage-count" aria-hidden="true">${videoIconSVG()}</div>
           </div>`;
         }
@@ -4673,6 +4743,24 @@
           : '';
         return `<div class="collage n-1"><img src="${cover}" alt="${escapeHtml(alt)}" loading="lazy" onload="window.__fitMediaCard(this)">${badge}</div>`;
       }
+
+      /* Video faylining o'zi hali "uzoqda" (ekrandan ancha pastda/tepada)
+         bo'lganda internetdan yuklab olinmasin (<video> uchun brauzerlarda
+         img kabi tabiiy loading="lazy" mavjud emas) — shu sabab src atributi
+         boshida umuman qo'yilmaydi. Foydalanuvchi shu kartaga (hali to'liq
+         ko'rinmasa ham, taxminan bir ekran oldin) yaqinlashganda src
+         beriladi, shunda u aynan kerak bo'lganda tayyor turadi. */
+      const videoLazyObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting && video.dataset.src) {
+            video.src = video.dataset.src;
+            video.removeAttribute('data-src');
+            video.load();
+            videoLazyObserver.unobserve(video);
+          }
+        });
+      }, { threshold: 0, rootMargin: '800px 0px' });
 
       /* Faqat ekranda ko'rinayotgan videolarni ijro etadi — ko'rinmay qolganda
          to'xtatadi. Shu tarzda ko'plab video postlar bir vaqtda ishlab,
@@ -4689,7 +4777,10 @@
       }, { threshold: 0.4 });
 
       function observeAutoplayVideos(root) {
-        root.querySelectorAll('video[data-autoplay-onview]').forEach(v => videoAutoplayObserver.observe(v));
+        root.querySelectorAll('video[data-autoplay-onview]').forEach(v => {
+          videoAutoplayObserver.observe(v);
+          if (v.dataset.src) videoLazyObserver.observe(v);
+        });
       }
       function multiImageIconSVG() {
         return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="14" height="14" rx="2"></rect><path d="M7 21h11a2 2 0 0 0 2-2V8"></path></svg>`;
@@ -4913,18 +5004,7 @@
         }
         const thumb = card.querySelector('.feed-thumb');
         if (thumb) {
-          thumb.addEventListener('click', () => {
-            const src = ALL_ITEMS_BY_ID[id];
-            if (src && src.video) {
-              openVideoViewer(src.video, src.poster, src);
-            } else {
-              const images = src ? workImages(src) : Array.from(thumb.querySelectorAll('img')).map(i => i.src);
-              openImageViewer(images, 0);
-            }
-            api('/api/works/' + id + '/view', { method: 'POST' }).then(res => {
-              if (src) src.viewsCount = res.viewsCount;
-            }).catch(() => {});
-          });
+          bindThumbTapEvents(thumb, id);
         }
         const cartBtn = card.querySelector('.cart-btn');
         if (cartBtn) cartBtn.addEventListener('click', guarded(() => toggleCart(id), 'cart'));
@@ -5272,6 +5352,19 @@
 
       function showFeedSkeleton() { const list = $('#feedList'); if (!list || list.children.length) return; list.innerHTML = `<div class="feed-skeleton-wrap" aria-label="Loading"><article class="feed-skeleton-card"><div class="skeleton-block skeleton-image"></div><div class="skeleton-block skeleton-line"></div><div class="skeleton-block skeleton-line short"></div></article><article class="feed-skeleton-card"><div class="skeleton-block skeleton-image"></div><div class="skeleton-block skeleton-line"></div><div class="skeleton-block skeleton-line short"></div></article><article class="feed-skeleton-card"><div class="skeleton-block skeleton-image"></div><div class="skeleton-block skeleton-line"></div><div class="skeleton-block skeleton-line short"></div></article></div>`; }
 
+      /* Profil/to'plam kabi kvadratsimon "gallery-grid" ko'rinishlari uchun
+         yuklanish paytidagi skeleton — feed skeletoniga o'xshash, lekin
+         karta shakli grid ko'rinishiga mos. Faqat konteyner bo'sh bo'lsa
+         chiziladi (haqiqiy kontent ustidan bosib chiqmaydi). */
+      function showGridSkeleton(sel, count) {
+        const el = $(sel);
+        if (!el || el.children.length) return;
+        const n = count || 6;
+        el.innerHTML = Array.from({ length: n }).map(() =>
+          `<div class="work-card grid-skeleton-card"><div class="skeleton-block skeleton-image"></div></div>`
+        ).join('');
+      }
+
       function resetAndReloadFeed() {
         FEED = [];
         feedOffset = 0;
@@ -5279,7 +5372,66 @@
         $('#feedList').innerHTML = '';
         $('#feedEnd').classList.add('hidden');
         showFeedSkeleton();
-        loadFeedPage();
+        return loadFeedPage();
+      }
+
+      /* Instagram/Telegram'dagi kabi — Lenta (Bosh sahifa) tepasida
+         bo'lganda pastga tortilsa, lenta qaytadan yuklanadi. Faqat sahifa
+         ENG TEPADA (scroll = 0) va "Lenta" ko'rinishi faol bo'lganda
+         ishlaydi, aks holda oddiy vertikal skroll bilan chalkashib
+         ketmaydi. */
+      function initPullToRefresh() {
+        const indicator = $('#pullToRefreshIndicator');
+        const homeView = $('#homeView');
+        if (!indicator || !homeView) return;
+        const PULL_THRESHOLD = 66;
+        const MAX_PULL = 100;
+        let startY = 0, pulling = false, refreshing = false;
+
+        document.addEventListener('touchstart', (e) => {
+          if (refreshing || pulling) return;
+          if (!homeView.classList.contains('active')) return;
+          if ((window.scrollY || document.documentElement.scrollTop) > 2) return;
+          if (e.touches.length !== 1) return;
+          startY = e.touches[0].clientY;
+          pulling = true;
+          indicator.classList.remove('ptr-snap');
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+          if (!pulling || refreshing) return;
+          const dy = e.touches[0].clientY - startY;
+          if (dy <= 0 || (window.scrollY || document.documentElement.scrollTop) > 2) { return; }
+          const pull = Math.min(dy * 0.5, MAX_PULL);
+          indicator.style.height = pull + 'px';
+          indicator.style.opacity = String(Math.min(pull / PULL_THRESHOLD, 1));
+          indicator.classList.toggle('ptr-ready', pull >= PULL_THRESHOLD);
+        }, { passive: true });
+
+        function endPull() {
+          if (!pulling || refreshing) { pulling = false; return; }
+          pulling = false;
+          indicator.classList.add('ptr-snap');
+          const pulledEnough = indicator.classList.contains('ptr-ready');
+          if (pulledEnough) {
+            refreshing = true;
+            indicator.classList.add('ptr-spinning');
+            indicator.style.height = '48px';
+            indicator.style.opacity = '1';
+            Promise.resolve(resetAndReloadFeed()).finally(() => {
+              indicator.classList.remove('ptr-spinning', 'ptr-ready');
+              indicator.style.height = '0px';
+              indicator.style.opacity = '0';
+              refreshing = false;
+            });
+          } else {
+            indicator.classList.remove('ptr-ready');
+            indicator.style.height = '0px';
+            indicator.style.opacity = '0';
+          }
+        }
+        document.addEventListener('touchend', endPull, { passive: true });
+        document.addEventListener('touchcancel', endPull, { passive: true });
       }
 
       async function loadFeedPage() {
@@ -5311,6 +5463,61 @@
           });
         }, { rootMargin: '400px' });
         feedScrollObserver.observe($('#feedSentinel'));
+      }
+
+      /* Instagram uslubidagi ikki marta bosib (double-tap) yoqtirish.
+         Bitta bosish — rasm/videoni to'liq ochadi; ikkinchisi (250ms
+         ichida) esa ochilishning oldini olib, "layk" qo'yadi va katta
+         yurak animatsiyasini ko'rsatadi. Agar allaqachon yoqtirilgan
+         bo'lsa, ikkinchi bosish layk holatini o'zgartirmaydi (Instagram'da
+         ham xuddi shunday) — faqat yurak animatsiyasi qaytadan ko'rsatiladi. */
+      function bindThumbTapEvents(thumb, id) {
+        let tapCount = 0;
+        let tapTimer = null;
+        const TAP_DELAY = 250;
+        thumb.addEventListener('click', (e) => {
+          tapCount++;
+          if (tapCount === 1) {
+            tapTimer = setTimeout(() => {
+              tapCount = 0;
+              openThumbMedia(id, thumb);
+            }, TAP_DELAY);
+          } else {
+            clearTimeout(tapTimer);
+            tapCount = 0;
+            doubleTapLikeThumb(id, thumb);
+          }
+        });
+      }
+
+      function openThumbMedia(id, thumb) {
+        const src = ALL_ITEMS_BY_ID[id];
+        if (src && src.video) {
+          openVideoViewer(src.video, src.poster, src);
+        } else {
+          const images = src ? workImages(src) : Array.from(thumb.querySelectorAll('img')).map(i => i.src);
+          openImageViewer(images, 0);
+        }
+        api('/api/works/' + id + '/view', { method: 'POST' }).then(res => {
+          if (src) src.viewsCount = res.viewsCount;
+        }).catch(() => {});
+      }
+
+      function doubleTapLikeThumb(id, thumb) {
+        if (IS_GUEST) { openGateModal(); return; }
+        const item = ALL_ITEMS_BY_ID[id] || FEED.find(w => w.id === id);
+        if (item && !item.likedByMe) toggleLike(id);
+        showHeartBurst(thumb);
+      }
+
+      function showHeartBurst(thumb) {
+        const old = thumb.querySelector('.thumb-heart-burst');
+        if (old) old.remove();
+        const burst = document.createElement('div');
+        burst.className = 'thumb-heart-burst';
+        burst.innerHTML = likeIconSVG();
+        thumb.appendChild(burst);
+        burst.addEventListener('animationend', () => burst.remove());
       }
 
       async function toggleLike(id) {
@@ -7235,7 +7442,18 @@
         fd.append('desc', $('#workDesc').value.trim());
         fd.append('tags', $('#workTags').value.trim());
         try {
-          const data = await api('/api/works', { method: 'POST', body: fd });
+          const submitBtn = $('#uploadSubmitBtn');
+          const progressWrap = $('#uploadProgressWrap');
+          const progressFill = $('#uploadProgressFill');
+          const progressText = $('#uploadProgressText');
+          submitBtn.disabled = true;
+          progressWrap.classList.remove('hidden');
+          progressFill.style.width = '0%';
+          progressText.textContent = '0%';
+          const data = await apiUploadWithProgress('/api/works', fd, (pct) => {
+            progressFill.style.width = pct + '%';
+            progressText.textContent = pct + '%';
+          });
           WORKS.push(data.work);
           closeUploadModal();
           renderGrids();
@@ -7244,6 +7462,9 @@
         } catch (err) {
           errEl.textContent = err.message || t('upload.errGeneric');
           errEl.classList.add('show');
+        } finally {
+          $('#uploadSubmitBtn').disabled = false;
+          $('#uploadProgressWrap').classList.add('hidden');
         }
       }
 
@@ -7266,7 +7487,12 @@
         $('#lightboxImg').className = 'lightbox-collage';
         if (w.video) {
           const videoEl = $('#lightboxImg').querySelector('video');
-          if (videoEl) { videoEl.controls = true; videoEl.loop = false; videoEl.play().catch(() => {}); }
+          if (videoEl) {
+            // Lightbox foydalanuvchi ANIQ shu postni ochish uchun bosgan —
+            // demak "uzoqdan yaqinlashish" kutilmaydi, video darhol yuklanadi.
+            if (videoEl.dataset.src) { videoEl.src = videoEl.dataset.src; videoEl.removeAttribute('data-src'); videoEl.load(); }
+            videoEl.controls = true; videoEl.loop = false; videoEl.play().catch(() => {});
+          }
         }
         $('#lightboxTitle').textContent = w.title;
         $('#lightboxDesc').textContent = w.desc || t('lightbox.noDesc');
@@ -7360,28 +7586,105 @@
         $('#imageViewerNext').classList.toggle('hidden', !multi);
         $('#imageViewerCounter').classList.toggle('hidden', !multi);
         if (multi) $('#imageViewerCounter').textContent = (IMAGE_VIEWER_INDEX + 1) + ' / ' + IMAGE_VIEWER_IMAGES.length;
+        resetImageViewerZoom();
       }
-      function closeImageViewer() { $('#imageViewerModal').classList.remove('open'); }
+      function closeImageViewer() { $('#imageViewerModal').classList.remove('open'); resetImageViewerZoom(); }
       function imageViewerStep(delta) {
         if (!IMAGE_VIEWER_IMAGES.length) return;
         IMAGE_VIEWER_INDEX = (IMAGE_VIEWER_INDEX + delta + IMAGE_VIEWER_IMAGES.length) % IMAGE_VIEWER_IMAGES.length;
         renderImageViewer();
       }
+
+      /* ===== Kattalashtirish (pinch-to-zoom) va surish (pan) =====
+         Ikki barmoq bilan siqib/kengaytirib kattalashtiriladi (Instagram/
+         Telegram'dagi rasm ko'ruvchi kabi). Kattalashtirilgan holatda bitta
+         barmoq bilan surish (pan) ishlaydi; oddiy (1x) holatda esa bitta
+         barmoq bilan chapga/o'ngga surish avvalgidek keyingi/oldingi
+         rasmga o'tkazadi. Ikki marta bosish (double-tap) tez almashtirish
+         uchun 1x va 2.5x orasida almashtiradi. */
+      const VIEWER_MIN_SCALE = 1;
+      const VIEWER_MAX_SCALE = 4;
+      let viewerScale = 1, viewerPanX = 0, viewerPanY = 0;
+
+      function applyViewerTransform(withTransition) {
+        const img = $('#imageViewerImg');
+        if (!img) return;
+        img.style.transition = withTransition ? 'transform .2s ease' : 'none';
+        img.style.transform = `translate(${viewerPanX}px, ${viewerPanY}px) scale(${viewerScale})`;
+        img.classList.toggle('zoomed', viewerScale > 1.01);
+      }
+      function resetImageViewerZoom() {
+        viewerScale = 1; viewerPanX = 0; viewerPanY = 0;
+        applyViewerTransform(false);
+      }
+      function clampScale(s) { return Math.max(VIEWER_MIN_SCALE, Math.min(VIEWER_MAX_SCALE, s)); }
+
       /* Telefonda/planshetda barmoq bilan chapga-o'ngga suryib (Instagram
          kabi) keyingi/oldingi rasmga o'tish. Faqat gorizontal svayp katta
          bo'lganda ishga tushadi — vertikal skroll/pinch-zoom bilan
          chalkashib ketmasligi uchun. */
       function bindImageViewerSwipe() {
         const stage = $('#imageViewerModal');
-        if (!stage) return;
-        let startX = 0, startY = 0, tracking = false;
+        const img = $('#imageViewerImg');
+        if (!stage || !img) return;
+
+        let startX = 0, startY = 0, tracking = false;   // bitta barmoq: svayp (1x holatda)
+        let panning = false, panStartX = 0, panStartY = 0, panOrigX = 0, panOrigY = 0; // bitta barmoq: surish (zoom holatda)
+        let pinching = false, pinchStartDist = 0, pinchStartScale = 1;
+
+        function touchDist(t0, t1) {
+          const dx = t0.clientX - t1.clientX, dy = t0.clientY - t1.clientY;
+          return Math.hypot(dx, dy);
+        }
+
         stage.addEventListener('touchstart', (e) => {
-          if (e.touches.length !== 1) return;
-          startX = e.touches[0].clientX;
-          startY = e.touches[0].clientY;
-          tracking = true;
+          if (e.touches.length === 2) {
+            pinching = true; tracking = false; panning = false;
+            pinchStartDist = touchDist(e.touches[0], e.touches[1]);
+            pinchStartScale = viewerScale;
+          } else if (e.touches.length === 1) {
+            if (viewerScale > 1.01) {
+              panning = true;
+              panStartX = e.touches[0].clientX;
+              panStartY = e.touches[0].clientY;
+              panOrigX = viewerPanX;
+              panOrigY = viewerPanY;
+              img.classList.add('panning');
+            } else {
+              startX = e.touches[0].clientX;
+              startY = e.touches[0].clientY;
+              tracking = true;
+            }
+          }
         }, { passive: true });
+
+        stage.addEventListener('touchmove', (e) => {
+          if (pinching && e.touches.length === 2) {
+            e.preventDefault();
+            const dist = touchDist(e.touches[0], e.touches[1]);
+            viewerScale = clampScale(pinchStartScale * (dist / pinchStartDist));
+            applyViewerTransform(false);
+          } else if (panning && e.touches.length === 1) {
+            e.preventDefault();
+            viewerPanX = panOrigX + (e.touches[0].clientX - panStartX);
+            viewerPanY = panOrigY + (e.touches[0].clientY - panStartY);
+            applyViewerTransform(false);
+          }
+        }, { passive: false });
+
         stage.addEventListener('touchend', (e) => {
+          if (pinching) {
+            pinching = false;
+            img.classList.remove('panning');
+            if (viewerScale < 1.05) resetImageViewerZoom();
+            else applyViewerTransform(true);
+            return;
+          }
+          if (panning) {
+            panning = false;
+            img.classList.remove('panning');
+            return;
+          }
           if (!tracking) return;
           tracking = false;
           const dx = e.changedTouches[0].clientX - startX;
@@ -7390,7 +7693,27 @@
             imageViewerStep(dx < 0 ? 1 : -1);
           }
         }, { passive: true });
+
+        /* Ikki marta bosish — tezkor kattalashtirish/kichraytirish (mobil
+           uchun manual aniqlash, desktop uchun tabiiy dblclick). */
+        let lastTapAt = 0;
+        function toggleZoomAt() {
+          if (viewerScale > 1.01) {
+            resetImageViewerZoom();
+          } else {
+            viewerScale = 2.5;
+            applyViewerTransform(true);
+          }
+        }
+        img.addEventListener('touchend', (e) => {
+          if (e.changedTouches.length !== 1) return;
+          const now = Date.now();
+          if (now - lastTapAt < 300) { toggleZoomAt(); lastTapAt = 0; }
+          else lastTapAt = now;
+        });
+        img.addEventListener('dblclick', toggleZoomAt);
       }
+
 
       /* ===================== TO'LIQ HAJMDAGI VIDEO KO'RUVCHI ===================== */
       function openVideoViewer(src, poster, work) {

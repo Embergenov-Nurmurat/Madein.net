@@ -233,6 +233,10 @@
           <button type="button" class="nav-search-close-btn" id="navSearchCloseBtn" aria-label="Yopish" data-i18n-aria="search.closeAria">&times;</button>
         </div>
         <button class="btn btn-primary btn-sm upload-plus-btn" id="openUploadBtn" data-i18n="nav.newWork" data-i18n-aria="nav.newWorkAria" aria-label="Yangi ish qo'shish">+</button>
+        <button type="button" class="nav-theme-toggle-btn" id="navThemeToggleBtn" aria-label="Tungi/Yorug' rejim" data-i18n-aria="theme.quickToggleAria" title="Tungi/Yorug' rejim">
+          <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none"><path d="M20.5 14.5a8.5 8.5 0 1 1-10-10 7 7 0 0 0 10 10Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2.4M12 19.1v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
         <div class="avatar-menu" id="avatarMenu">
           <button class="avatar-btn" id="avatarBtn">
             <div class="avatar-circle" id="avatarInitials">?</div>
@@ -319,6 +323,9 @@
             </label>
             <button type="button" class="btn btn-ghost btn-sm" id="feedClearFiltersBtn" data-i18n="filter.clear">Tozalash</button>
           </div>
+        </div>
+        <div class="ptr-indicator" id="pullToRefreshIndicator" aria-hidden="true">
+          <div class="ptr-spinner"></div>
         </div>
         <div id="feedList" class="feed-list"></div>
         <div id="feedSentinel" class="feed-sentinel">
@@ -650,6 +657,10 @@
           <div class="admin-analytics-card-title" data-i18n="admin.analytics.growthTitle">Oxirgi 14 kunlik o'sish</div>
           <div id="adminGrowthChart" class="admin-growth-chart"></div>
         </div>
+        <div class="admin-analytics-card">
+          <div class="admin-analytics-card-title" data-i18n="admin.analytics.revenueTitle">Oxirgi 14 kunlik buyurtma/daromad</div>
+          <div id="adminRevenueChart" class="admin-growth-chart"></div>
+        </div>
 
         <div id="adminReportsSection">
           <div class="section-label" data-i18n="admin.reportsLabel">Shikoyatlar</div>
@@ -798,7 +809,11 @@
           <div class="field-hint" data-i18n="upload.tagsHint">Vergul bilan ajrating — teglar odamlarga asaringizni topishga yordam beradi</div>
         </div>
         <div class="form-error" id="uploadError"></div>
-        <button type="submit" class="btn btn-primary btn-block" data-i18n="upload.save">Saqlash</button>
+        <div class="upload-progress-wrap hidden" id="uploadProgressWrap">
+          <div class="upload-progress-bar"><div class="upload-progress-fill" id="uploadProgressFill"></div></div>
+          <div class="upload-progress-text" id="uploadProgressText">0%</div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="uploadSubmitBtn" data-i18n="upload.save">Saqlash</button>
       </form>
     </div>
   </div>

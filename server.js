@@ -586,9 +586,39 @@ app.set('trust proxy', 1); // ko'p hosting (Render/Railway/Heroku) proxy orqasid
 app.use(compression()); // javoblarni gzip bilan siqib, sahifalarni tezroq yuklaydi
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: false, limit: '1mb' })); // Click webhooklari form-urlencoded yuboradi
+
+/* SESSION_SECRET sessiya cookie'larini kriptografik imzolash uchun
+   ishlatiladi — agar u standart/oldindan ma'lum qiymatda qolib ketsa,
+   tashqi kishi sessiya cookie'sini soxtalashtirib, boshqa foydalanuvchi
+   nomidan kirishi (session hijacking) MUMKIN. Shu sabab:
+   - "production"da bu jiddiy xavfsizlik kamchiligi bo'lgani uchun server
+     ATAYLAB ishga tushmaydi (xatolik bilan to'xtaydi) — sokin ishlab
+     qolishdan ko'ra darhol to'xtatib, e'tiborni tortish afzalroq;
+   - boshqa muhitlarda (development/test) esa faqat ogohlantirish chiqadi,
+     ishlash davom etadi. */
+const SESSION_SECRET_DEFAULT = 'iltimos-buni-production-da-ozgartiring';
+const SESSION_SECRET = process.env.SESSION_SECRET || SESSION_SECRET_DEFAULT;
+// Aniq "hali almashtirilmagan" ekanini bildiruvchi so'zlar (masalan
+// .env.example'dagi tayyor namuna qiymati) — uzunligi yetarli bo'lsa ham,
+// bunday matn haqiqiy tasodifiy maxfiy kalit emas, shu sabab alohida
+// tekshiriladi.
+const SESSION_SECRET_PLACEHOLDER_RE = /replace[_-]?me|change[_-]?me|your[_-]?secret|example|placeholder|o['\u2019]?zgartiring/i;
+const SESSION_SECRET_IS_WEAK = !process.env.SESSION_SECRET
+  || process.env.SESSION_SECRET === SESSION_SECRET_DEFAULT
+  || process.env.SESSION_SECRET.length < 16
+  || SESSION_SECRET_PLACEHOLDER_RE.test(process.env.SESSION_SECRET);
+if (SESSION_SECRET_IS_WEAK) {
+  if (process.env.NODE_ENV === 'production') {
+    console.error("XATOLIK: SESSION_SECRET sozlanmagan yoki juda zaif (production'da bu jiddiy xavfsizlik muammosi — sessiyalar soxtalashtirilishi mumkin). .env faylida SESSION_SECRET'ni kamida 32 belgili tasodifiy qatorga o'zgartiring (masalan: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\"), so'ng serverni qayta ishga tushiring.");
+    process.exit(1);
+  } else {
+    console.warn('DIQQAT: SESSION_SECRET sozlanmagan yoki zaif — faqat development/test uchun maqbul, production\'ga chiqarishdan oldin albatta o\'zgartiring.');
+  }
+}
+
 app.use(session({
   store: new FileStore({ path: SESSIONS_DIR, logFn: () => {} }),
-  secret: process.env.SESSION_SECRET || 'iltimos-buni-production-da-ozgartiring',
+  secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
