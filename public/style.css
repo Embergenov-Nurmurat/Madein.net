@@ -58,32 +58,44 @@
     }
 
     body[data-theme="tungi"] {
-      --bg: #131319;
-      --bg-alt: #191922;
-      --surface: #1e1f2a;
-      --surface-2: #252634;
-      --text: #efe9db;
-      --text-dim: #9995a8;
-      --accent: #e2543f;
-      --accent-2: #d9a441;
-      --border: rgba(239, 233, 219, 0.1);
+      /* Ilgari sof qora-siyoh fon edi — endi issiq "ustaxona kechasi"
+         kayfiyati: to'q jigarrang-uglisimon fon, misdek porlaydigan
+         asosiy rang (kuydirilgan mis/cho'g' rangi) va patina (eskirgan
+         mis/bronza) yashil-moviysi ikkinchi rang — bular birgalikda
+         qo'lda ishlangan buyumlar olamiga (mis, keramika, temirchilik)
+         yaqinroq, generik "qora fon + neon" uslubidan farqli. */
+      --bg: #15130f;
+      --bg-alt: #1c1912;
+      --surface: #221e16;
+      --surface-2: #2a2419;
+      --text: #f3ead8;
+      --text-dim: #a89a80;
+      --accent: #e0672f;
+      --accent-2: #3f9179;
+      --border: rgba(243, 234, 219, 0.1);
       --stamp-ink: var(--accent);
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
       --glow: 0 0 0 rgba(0, 0, 0, 0);
     }
 
     body[data-theme="yorug"] {
-      --bg: #f1ead9;
-      --bg-alt: #e9dfc8;
-      --surface: #fffdf8;
-      --surface-2: #f6efe0;
-      --text: #241c13;
-      --text-dim: #7a6f5c;
-      --accent: #b23a2e;
-      --accent-2: #1f2a44;
-      --border: rgba(36, 28, 19, 0.12);
+      /* Ilgari sarg'ish-krem fon edi (AI-uslubidagi "iliq krem + terrakota"
+         andozasiga juda yaqin ko'rinardi) — endi sovuqroq, neytralroq
+         "bo'yalmagan kanop mato" (linen) foni, terrakota esa kuydirilgan
+         gil rangiga aniqlashtirildi, ikkinchi rang esa to'q indigo-patina
+         (an'anaviy indigo bo'yash texnikasiga ishora) — tungi tema bilan
+         "patina" oilasi orqali bog'lanadi. */
+      --bg: #f4efe1;
+      --bg-alt: #eae0c9;
+      --surface: #fffdf9;
+      --surface-2: #f7efdd;
+      --text: #231d13;
+      --text-dim: #776c55;
+      --accent: #c1502e;
+      --accent-2: #2d4a63;
+      --border: rgba(35, 29, 19, 0.12);
       --stamp-ink: var(--accent);
-      --shadow: 0 16px 40px rgba(36, 28, 19, 0.12);
+      --shadow: 0 16px 40px rgba(35, 29, 19, 0.12);
       --glow: 0 0 0 rgba(0, 0, 0, 0);
     }
 
@@ -414,10 +426,23 @@
       padding: 32px 20px;
       overflow: hidden;
       background:
-        radial-gradient(900px 620px at 12% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 60%),
-        radial-gradient(760px 640px at 90% 100%, color-mix(in srgb, var(--accent-2) 20%, transparent), transparent 60%),
-        radial-gradient(500px 500px at 50% 50%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 70%),
+        radial-gradient(900px 620px at 12% 0%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 60%),
+        radial-gradient(760px 640px at 90% 100%, color-mix(in srgb, var(--accent-2) 22%, transparent), transparent 60%),
+        radial-gradient(560px 560px at 50% 45%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 70%),
         var(--bg);
+    }
+
+    /* Juda nozik "qog'oz tolasi" g'ijimi — fonni tekis, sun'iy gradient
+       ko'rinishidan qutqarib, qo'lda ishlangan buyumlar olamiga xos
+       moddiylik (tactility) beradi. */
+    .auth-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .5;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
     }
 
     .auth-bg-decor {
@@ -441,38 +466,42 @@
       border-radius: 50%;
     }
 
+    /* Muhr (stamp/hallmark) atrofidagi tishli chegaraga o'xshash halqa —
+       pochta markasi perforatsiyasidan ilhomlangan. */
     .auth-bg-decor::after {
       content: '';
       position: absolute;
       inset: 130px;
-      border: 1px dashed var(--border);
       border-radius: 50%;
+      background-image: repeating-conic-gradient(var(--border) 0deg 4deg, transparent 4deg 12deg);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+      mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
     }
 
     .auth-blob {
       position: absolute;
       border-radius: 50%;
-      filter: blur(60px);
-      opacity: .5;
+      filter: blur(64px);
+      opacity: .55;
       pointer-events: none;
-      animation: blobFloat 14s ease-in-out infinite;
+      animation: blobFloat 16s ease-in-out infinite;
     }
 
     .auth-blob.b1 {
-      width: 260px;
-      height: 260px;
+      width: 280px;
+      height: 280px;
       top: 8%;
       left: 8%;
-      background: color-mix(in srgb, var(--accent) 55%, transparent);
+      background: color-mix(in srgb, var(--accent) 60%, transparent);
     }
 
     .auth-blob.b2 {
-      width: 220px;
-      height: 220px;
+      width: 240px;
+      height: 240px;
       bottom: 10%;
       right: 10%;
-      background: color-mix(in srgb, var(--accent-2) 55%, transparent);
-      animation-delay: -6s;
+      background: color-mix(in srgb, var(--accent-2) 60%, transparent);
+      animation-delay: -7s;
     }
 
     @keyframes blobFloat {
@@ -483,7 +512,7 @@
       }
 
       50% {
-        transform: translate(24px, -18px) scale(1.12);
+        transform: translate(26px, -20px) scale(1.14);
       }
     }
 
@@ -517,6 +546,13 @@
       right: 0;
       height: 4px;
       background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      background-size: 200% 100%;
+      animation: sealShimmer 5s ease-in-out infinite;
+    }
+
+    @keyframes sealShimmer {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 0%; }
     }
 
     @keyframes cardIn {
@@ -565,6 +601,47 @@
       align-items: center;
       gap: 14px;
       margin-bottom: 10px;
+      position: relative;
+    }
+
+    /* "Muhr bosilishi" (stamp impression) — sahifa ochilganda logotip
+       oddiy paydo bo'lish o'rniga, xuddi jonli muhr qog'ozga bosilayotgandek
+       tepadan burchak bilan tushib, joyiga "o'tirib qoladi". Orqasida esa
+       siyoh halqasi tarqalib, muhr izini taqlid qiladi. */
+    .auth-logo-row::before {
+      content: '';
+      position: absolute;
+      top: 46px;
+      left: 50%;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 1.5px solid var(--accent);
+      transform: translate(-50%, -50%) scale(.3);
+      opacity: 0;
+      pointer-events: none;
+      animation: inkRing .9s cubic-bezier(.16, 1, .3, 1) .15s both;
+    }
+
+    @keyframes inkRing {
+      0% { transform: translate(-50%, -50%) scale(.3); opacity: 0; }
+      35% { opacity: .5; }
+      100% { transform: translate(-50%, -50%) scale(1.35); opacity: 0; }
+    }
+
+    .auth-logo-mark {
+      width: 92px;
+      height: 92px;
+      object-fit: contain;
+      display: block;
+      animation: stampPress .6s cubic-bezier(.34, 1.1, .4, 1) both;
+      transform-origin: 50% 30%;
+    }
+
+    @keyframes stampPress {
+      0% { transform: translateY(-40px) rotate(-14deg) scale(1.5); opacity: 0; }
+      60% { transform: translateY(2px) rotate(3deg) scale(.96); opacity: 1; }
+      100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
     }
 
     .auth-wordmark {
@@ -573,6 +650,12 @@
       font-size: 34px;
       letter-spacing: .5px;
       text-align: center;
+      animation: fadeUp .5s ease .35s both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .auth-wordmark span {
@@ -586,6 +669,7 @@
       margin-top: 2px;
       margin-bottom: 28px;
       line-height: 1.5;
+      animation: fadeUp .5s ease .42s both;
     }
 
     .auth-tabs {
@@ -595,6 +679,7 @@
       padding: 4px;
       margin-bottom: 26px;
       position: relative;
+      animation: fadeUp .5s ease .48s both;
     }
 
     .auth-tabs button {
@@ -622,7 +707,7 @@
       left: 4px;
       width: calc(50% - 4px);
       border-radius: 999px;
-      background: var(--accent);
+      background: linear-gradient(120deg, var(--accent), color-mix(in srgb, var(--accent) 75%, var(--accent-2)));
       transition: transform .35s cubic-bezier(.65, 0, .35, 1);
     }
 
@@ -635,7 +720,40 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
+      animation: formSlideIn .4s cubic-bezier(.16, 1, .3, 1) both;
     }
+
+    @keyframes formSlideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Auth kartasidagi maydonlarga fokus tushganda, oddiy soya o'rniga
+       markazdan chizib chiqadigan "siyoh chizig'i" (ink underline) —
+       qalam bilan chizilayotgandek, tegishli maydon ostidan paydo bo'ladi. */
+    .auth-card .input-wrap {
+      position: relative;
+    }
+
+    .auth-card .input-wrap::after {
+      content: '';
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 5px;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transform: scaleX(0);
+      transform-origin: 50% 50%;
+      transition: transform .4s cubic-bezier(.65, 0, .35, 1);
+      pointer-events: none;
+    }
+
+    .auth-card .input-wrap:focus-within::after {
+      transform: scaleX(1);
+    }
+
 
     .auth-form.hidden {
       display: none;
