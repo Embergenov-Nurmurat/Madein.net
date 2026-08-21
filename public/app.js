@@ -43,7 +43,7 @@
           "nav.home": "Bosh sahifa", "nav.profile": "Profil", "nav.messages": "Xabarlar",
           "nav.newWork": "+", "nav.newWorkAria": "Yangi ish qo'shish", "nav.myProfile": "Profilim", "nav.logout": "Chiqish",
           "nav.register": "Ro'yxatdan o'tish",
-          "push.enable": "🔔 Bildirishnomalarni yoqish", "push.disable": "🔕 Bildirishnomalarni o'chirish",
+          "push.enable": "Bildirishnomalarni yoqish", "push.disable": "Bildirishnomalarni o'chirish",
           "push.unsupported": "Bu brauzer push xabarnomalarni qo'llab-quvvatlamaydi",
           "push.permissionDenied": "Bildirishnomalarga ruxsat berilmadi. Buni brauzer sozlamalaridan o'zgartirishingiz mumkin.",
           "push.notConfigured": "Push xabarnomalar hozircha serverda sozlanmagan",
@@ -72,7 +72,7 @@
           "feed.sale": "Sotuvda", "feed.expo": "Ko'rgazma",
           "profile.stat.total": "Jami", "profile.stat.sale": "Sotuvda", "profile.stat.expo": "Ko'rgazmada",
           "profile.editBtn": "Sozlamalar",
-          "profile.edit.title": "Profil ma'lumotlari", "settings.viewModeTitle": "Bosh sahifa ko'rinishi:", "profile.edit.changeAvatar": "Rasm tanlash",
+          "profile.edit.title": "Profil ma'lumotlari", "settings.cat.profile": "Profil ma'lumotlari", "settings.cat.appearance": "Ko'rinish", "settings.cat.security": "Xavfsizlik", "settings.cat.privacy": "Maxfiylik", "settings.cat.notifications": "Bildirishnomalar", "settings.viewModeTitle": "Bosh sahifa ko'rinishi:", "profile.edit.changeAvatar": "Rasm tanlash",
           "profile.edit.avatarHint": "JPG yoki PNG, 8MB gacha",
           "profile.edit.fullname": "To'liq ism", "profile.edit.email": "Email",
           "profile.edit.bio": "Bio", "profile.edit.bioPh": "O'zingiz haqingizda qisqacha...",
@@ -170,12 +170,12 @@
           "err.notEnoughStock": "Faqat {n} dona mavjud",
           "err.videoTooLong": "Video juda uzun (maksimal {n} soniya)",
           /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
-          "chat.preview.photo": "📷 Rasm",
-          "chat.preview.video": "🎥 Video",
+          "chat.preview.photo": "Rasm",
+          "chat.preview.video": "Video",
           "chat.preview.circle": "⭕ Video xabar",
-          "chat.preview.voice": "🎙️ Ovozli xabar",
-          "chat.preview.file": "📎 Fayl",
-          "chat.preview.order": "🛒 Yangi buyurtma",
+          "chat.preview.voice": "Ovozli xabar",
+          "chat.preview.file": "Fayl",
+          "chat.preview.order": "Yangi buyurtma",
           "chat.order.title": "Buyurtma berildi",
           "chat.order.more": "+ yana {n} ta",
           "chat.voiceAria": "Ovozli xabar", "chat.circleAria": "Video xabar",
@@ -215,12 +215,12 @@
           "lightbox.workTagFallback": "Asar",
           "comments.title": "Komentlar", "comments.ph": "Koment yozing...", "comments.send": "Yuborish",
           "reviews.title": "Sharhlar", "reviews.empty": "Hali sharhlar yo'q.", "reviews.ph": "Sharhingizni yozing (ixtiyoriy)...",
-          "orders.btn": "📦 Buyurtmalarim", "orders.title": "Buyurtmalarim", "orders.asBuyer": "Xarid qilganlarim", "orders.asSeller": "Sotganlarim", "orders.empty": "Hozircha buyurtmalar yo'q.",
+          "orders.btn": "Buyurtmalarim", "orders.title": "Buyurtmalarim", "orders.asBuyer": "Xarid qilganlarim", "orders.asSeller": "Sotganlarim", "orders.empty": "Hozircha buyurtmalar yo'q.",
           "order.status.placed": "Berildi", "order.status.confirmed": "Tasdiqlandi", "order.status.shipped": "Jo'natildi", "order.status.completed": "Yakunlandi", "order.status.cancelled": "Bekor qilindi",
           "order.tracking": "Kuzatuv raqami", "order.trackingPh": "Kuzatuv raqami", "order.update": "Yangilash",
-          "wishlist.btn": "🤍 Xohishlar", "wishlist.title": "Xohishlar ro'yxati", "wishlist.empty": "Xohishlar ro'yxati bo'sh.", "wishlist.remove": "Olib tashlash",
-          "sellerStats.btn": "📊 Statistika", "sellerStats.title": "Statistika", "sellerStats.works": "Asarlar", "sellerStats.views": "Ko'rishlar", "sellerStats.likes": "Layklar", "sellerStats.completed": "Yakunlangan", "sellerStats.pending": "Kutilmoqda", "sellerStats.revenue": "Daromad", "sellerStats.topWorks": "Eng ko'p ko'rilganlar",
-          "collections.btn": "🗂️ To'plamlar", "collections.title": "To'plamlar", "collections.namePh": "To'plam nomi...", "collections.create": "Yaratish", "collections.empty": "Hali to'plamlar yo'q.", "collections.itemsCount": "ta asar", "collections.addBtn": "🗂️ To'plamga qo'shish", "collections.noItems": "Bu to'plamda hali asar yo'q.",
+          "wishlist.btn": "Xohishlar", "wishlist.title": "Xohishlar ro'yxati", "wishlist.empty": "Xohishlar ro'yxati bo'sh.", "wishlist.remove": "Olib tashlash",
+          "sellerStats.btn": "Statistika", "sellerStats.title": "Statistika", "sellerStats.works": "Asarlar", "sellerStats.views": "Ko'rishlar", "sellerStats.likes": "Layklar", "sellerStats.completed": "Yakunlangan", "sellerStats.pending": "Kutilmoqda", "sellerStats.revenue": "Daromad", "sellerStats.topWorks": "Eng ko'p ko'rilganlar",
+          "collections.btn": "To'plamlar", "collections.title": "To'plamlar", "collections.namePh": "To'plam nomi...", "collections.create": "Yaratish", "collections.empty": "Hali to'plamlar yo'q.", "collections.itemsCount": "ta asar", "collections.addBtn": "To'plamga qo'shish", "collections.noItems": "Bu to'plamda hali asar yo'q.",
           "comments.empty": "Hali komentlar yo'q. Birinchi bo'lib yozing!",
           "comments.loading": "Yuklanmoqda...", "comments.loadFail": "Komentlarni yuklab bo'lmadi.",
           "comments.delete": "O'chirish",
@@ -436,7 +436,7 @@
           "feed.sale": "For sale", "feed.expo": "On display",
           "profile.stat.total": "Total", "profile.stat.sale": "For sale", "profile.stat.expo": "On display",
           "profile.editBtn": "Settings",
-          "profile.edit.title": "Profile details", "settings.viewModeTitle": "Home page view:", "profile.edit.changeAvatar": "Choose photo",
+          "profile.edit.title": "Profile details", "settings.cat.profile": "Profile info", "settings.cat.appearance": "Appearance", "settings.cat.security": "Security", "settings.cat.privacy": "Privacy", "settings.cat.notifications": "Notifications", "settings.viewModeTitle": "Home page view:", "profile.edit.changeAvatar": "Choose photo",
           "profile.edit.avatarHint": "JPG or PNG, up to 8MB",
           "profile.edit.fullname": "Full name", "profile.edit.email": "Email",
           "profile.edit.bio": "Bio", "profile.edit.bioPh": "A short line about yourself...",
@@ -534,12 +534,12 @@
           "err.notEnoughStock": "Only {n} left in stock",
           "err.videoTooLong": "Video is too long (maximum {n} seconds)",
           /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
-          "chat.preview.photo": "📷 Photo",
-          "chat.preview.video": "🎥 Video",
+          "chat.preview.photo": "Photo",
+          "chat.preview.video": "Video",
           "chat.preview.circle": "⭕ Video message",
-          "chat.preview.voice": "🎙️ Voice message",
-          "chat.preview.file": "📎 File",
-          "chat.preview.order": "🛒 New order",
+          "chat.preview.voice": "Voice message",
+          "chat.preview.file": "File",
+          "chat.preview.order": "New order",
           "chat.order.title": "Order placed",
           "chat.order.more": "+ {n} more",
           "chat.voiceAria": "Voice message", "chat.circleAria": "Video message",
@@ -563,7 +563,7 @@
           "upload.type.mulaj": "Model", "upload.type.boshqa": "Other", "upload.type.otherPh": "Enter the type",
           "upload.statusLabel": "Status", "upload.status.expo": "Display only", "upload.status.sale": "For sale",
           "upload.priceLabel": "Price", "upload.currencyLabel": "Currency", "upload.pricePh": "e.g. 150000",
-          "push.enable": "🔔 Enable notifications", "push.disable": "🔕 Disable notifications",
+          "push.enable": "Enable notifications", "push.disable": "Disable notifications",
           "push.unsupported": "This browser doesn't support push notifications",
           "push.permissionDenied": "Notification permission was denied. You can change this in your browser settings.",
           "push.notConfigured": "Push notifications aren't configured on the server yet",
@@ -584,12 +584,12 @@
           "lightbox.workTagFallback": "Work",
           "comments.title": "Comments", "comments.ph": "Write a comment...", "comments.send": "Send",
           "reviews.title": "Reviews", "reviews.empty": "No reviews yet.", "reviews.ph": "Write a review (optional)...",
-          "orders.btn": "📦 My Orders", "orders.title": "My Orders", "orders.asBuyer": "Purchases", "orders.asSeller": "Sales", "orders.empty": "No orders yet.",
+          "orders.btn": "My Orders", "orders.title": "My Orders", "orders.asBuyer": "Purchases", "orders.asSeller": "Sales", "orders.empty": "No orders yet.",
           "order.status.placed": "Placed", "order.status.confirmed": "Confirmed", "order.status.shipped": "Shipped", "order.status.completed": "Completed", "order.status.cancelled": "Cancelled",
           "order.tracking": "Tracking number", "order.trackingPh": "Tracking number", "order.update": "Update",
-          "wishlist.btn": "🤍 Wishlist", "wishlist.title": "Wishlist", "wishlist.empty": "Your wishlist is empty.", "wishlist.remove": "Remove",
-          "sellerStats.btn": "📊 Stats", "sellerStats.title": "Stats", "sellerStats.works": "Works", "sellerStats.views": "Views", "sellerStats.likes": "Likes", "sellerStats.completed": "Completed", "sellerStats.pending": "Pending", "sellerStats.revenue": "Revenue", "sellerStats.topWorks": "Top performing",
-          "collections.btn": "🗂️ Collections", "collections.title": "Collections", "collections.namePh": "Collection name...", "collections.create": "Create", "collections.empty": "No collections yet.", "collections.itemsCount": "items", "collections.addBtn": "🗂️ Add to collection", "collections.noItems": "No works in this collection yet.",
+          "wishlist.btn": "Wishlist", "wishlist.title": "Wishlist", "wishlist.empty": "Your wishlist is empty.", "wishlist.remove": "Remove",
+          "sellerStats.btn": "Stats", "sellerStats.title": "Stats", "sellerStats.works": "Works", "sellerStats.views": "Views", "sellerStats.likes": "Likes", "sellerStats.completed": "Completed", "sellerStats.pending": "Pending", "sellerStats.revenue": "Revenue", "sellerStats.topWorks": "Top performing",
+          "collections.btn": "Collections", "collections.title": "Collections", "collections.namePh": "Collection name...", "collections.create": "Create", "collections.empty": "No collections yet.", "collections.itemsCount": "items", "collections.addBtn": "Add to collection", "collections.noItems": "No works in this collection yet.",
           "comments.empty": "No comments yet. Be the first to write one!",
           "comments.loading": "Loading...", "comments.loadFail": "Couldn't load comments.",
           "comments.delete": "Delete",
@@ -805,7 +805,7 @@
           "feed.sale": "出售中", "feed.expo": "展览中",
           "profile.stat.total": "总数", "profile.stat.sale": "出售中", "profile.stat.expo": "展览中",
           "profile.editBtn": "设置",
-          "profile.edit.title": "个人资料信息", "settings.viewModeTitle": "首页显示方式：", "profile.edit.changeAvatar": "选择照片",
+          "profile.edit.title": "个人资料信息", "settings.cat.profile": "个人资料", "settings.cat.appearance": "外观", "settings.cat.security": "安全", "settings.cat.privacy": "隐私", "settings.cat.notifications": "通知", "settings.viewModeTitle": "首页显示方式：", "profile.edit.changeAvatar": "选择照片",
           "profile.edit.avatarHint": "JPG 或 PNG，最大 8MB",
           "profile.edit.fullname": "全名", "profile.edit.email": "邮箱",
           "profile.edit.bio": "简介", "profile.edit.bioPh": "简单介绍一下自己...",
@@ -903,12 +903,12 @@
           "err.notEnoughStock": "仅剩 {n} 件",
           "err.videoTooLong": "视频过长（最长 {n} 秒）",
           /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
-          "chat.preview.photo": "📷 图片",
-          "chat.preview.video": "🎥 视频",
+          "chat.preview.photo": "图片",
+          "chat.preview.video": "视频",
           "chat.preview.circle": "⭕ 视频消息",
-          "chat.preview.voice": "🎙️ 语音消息",
-          "chat.preview.file": "📎 文件",
-          "chat.preview.order": "🛒 新订单",
+          "chat.preview.voice": "语音消息",
+          "chat.preview.file": "文件",
+          "chat.preview.order": "新订单",
           "chat.order.title": "订单已下达",
           "chat.order.more": "+ 还有 {n} 件",
           "chat.voiceAria": "语音消息", "chat.circleAria": "视频消息",
@@ -932,7 +932,7 @@
           "upload.type.mulaj": "模型", "upload.type.boshqa": "其他", "upload.type.otherPh": "请输入类型",
           "upload.statusLabel": "状态", "upload.status.expo": "仅展示", "upload.status.sale": "出售中",
           "upload.priceLabel": "价格", "upload.currencyLabel": "货币", "upload.pricePh": "例如：150000",
-          "push.enable": "🔔 开启通知", "push.disable": "🔕 关闭通知",
+          "push.enable": "开启通知", "push.disable": "关闭通知",
           "push.unsupported": "该浏览器不支持推送通知",
           "push.permissionDenied": "通知权限被拒绝。您可以在浏览器设置中更改此设置。",
           "push.notConfigured": "服务器尚未配置推送通知",
@@ -953,12 +953,12 @@
           "lightbox.workTagFallback": "作品",
           "comments.title": "评论", "comments.ph": "写评论...", "comments.send": "发送",
           "reviews.title": "评价", "reviews.empty": "暂无评价。", "reviews.ph": "写下您的评价（可选）...",
-          "orders.btn": "📦 我的订单", "orders.title": "我的订单", "orders.asBuyer": "我购买的", "orders.asSeller": "我卖出的", "orders.empty": "暂无订单。",
+          "orders.btn": "我的订单", "orders.title": "我的订单", "orders.asBuyer": "我购买的", "orders.asSeller": "我卖出的", "orders.empty": "暂无订单。",
           "order.status.placed": "已下单", "order.status.confirmed": "已确认", "order.status.shipped": "已发货", "order.status.completed": "已完成", "order.status.cancelled": "已取消",
           "order.tracking": "追踪号", "order.trackingPh": "追踪号", "order.update": "更新",
-          "wishlist.btn": "🤍 心愿单", "wishlist.title": "心愿单", "wishlist.empty": "您的心愿单是空的。", "wishlist.remove": "移除",
-          "sellerStats.btn": "📊 统计", "sellerStats.title": "统计", "sellerStats.works": "作品数", "sellerStats.views": "浏览量", "sellerStats.likes": "点赞数", "sellerStats.completed": "已完成", "sellerStats.pending": "待处理", "sellerStats.revenue": "收入", "sellerStats.topWorks": "表现最佳",
-          "collections.btn": "🗂️ 收藏集", "collections.title": "收藏集", "collections.namePh": "收藏集名称...", "collections.create": "创建", "collections.empty": "暂无收藏集。", "collections.itemsCount": "件作品", "collections.addBtn": "🗂️ 添加到收藏集", "collections.noItems": "此收藏集暂无作品。",
+          "wishlist.btn": "心愿单", "wishlist.title": "心愿单", "wishlist.empty": "您的心愿单是空的。", "wishlist.remove": "移除",
+          "sellerStats.btn": "统计", "sellerStats.title": "统计", "sellerStats.works": "作品数", "sellerStats.views": "浏览量", "sellerStats.likes": "点赞数", "sellerStats.completed": "已完成", "sellerStats.pending": "待处理", "sellerStats.revenue": "收入", "sellerStats.topWorks": "表现最佳",
+          "collections.btn": "收藏集", "collections.title": "收藏集", "collections.namePh": "收藏集名称...", "collections.create": "创建", "collections.empty": "暂无收藏集。", "collections.itemsCount": "件作品", "collections.addBtn": "添加到收藏集", "collections.noItems": "此收藏集暂无作品。",
           "comments.empty": "还没有评论，快来抢沙发吧！",
           "comments.loading": "加载中...", "comments.loadFail": "评论加载失败。",
           "comments.delete": "删除",
@@ -1188,7 +1188,7 @@
           "feed.sale": "बिक्री के लिए", "feed.expo": "प्रदर्शन में",
           "profile.stat.total": "कुल", "profile.stat.sale": "बिक्री के लिए", "profile.stat.expo": "प्रदर्शन में",
           "profile.editBtn": "सेटिंग्स",
-          "profile.edit.title": "प्रोफ़ाइल जानकारी", "settings.viewModeTitle": "होम पेज दृश्य:", "profile.edit.changeAvatar": "फ़ोटो चुनें",
+          "profile.edit.title": "प्रोफ़ाइल जानकारी", "settings.cat.profile": "प्रोफ़ाइल जानकारी", "settings.cat.appearance": "रूप-रंग", "settings.cat.security": "सुरक्षा", "settings.cat.privacy": "गोपनीयता", "settings.cat.notifications": "सूचनाएं", "settings.viewModeTitle": "होम पेज दृश्य:", "profile.edit.changeAvatar": "फ़ोटो चुनें",
           "profile.edit.avatarHint": "JPG या PNG, 8MB तक",
           "profile.edit.fullname": "पूरा नाम", "profile.edit.email": "ईमेल",
           "profile.edit.bio": "बायो", "profile.edit.bioPh": "अपने बारे में संक्षेप में लिखें...",
@@ -1286,12 +1286,12 @@
           "err.notEnoughStock": "केवल {n} बचे हैं",
           "err.videoTooLong": "वीडियो बहुत लंबा है (अधिकतम {n} सेकंड)",
           /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
-          "chat.preview.photo": "📷 फोटो",
-          "chat.preview.video": "🎥 वीडियो",
+          "chat.preview.photo": "फोटो",
+          "chat.preview.video": "वीडियो",
           "chat.preview.circle": "⭕ वीडियो संदेश",
-          "chat.preview.voice": "🎙️ वॉइस संदेश",
-          "chat.preview.file": "📎 फ़ाइल",
-          "chat.preview.order": "🛒 नया ऑर्डर",
+          "chat.preview.voice": "वॉइस संदेश",
+          "chat.preview.file": "फ़ाइल",
+          "chat.preview.order": "नया ऑर्डर",
           "chat.order.title": "ऑर्डर दिया गया",
           "chat.order.more": "+ {n} और",
           "chat.voiceAria": "वॉइस संदेश", "chat.circleAria": "वीडियो संदेश",
@@ -1315,7 +1315,7 @@
           "upload.type.mulaj": "मॉडल", "upload.type.boshqa": "अन्य", "upload.type.otherPh": "प्रकार दर्ज करें",
           "upload.statusLabel": "स्थिति", "upload.status.expo": "केवल प्रदर्शन", "upload.status.sale": "बिक्री के लिए",
           "upload.priceLabel": "मूल्य", "upload.currencyLabel": "मुद्रा", "upload.pricePh": "उदाहरण: 150000",
-          "push.enable": "🔔 सूचनाएं चालू करें", "push.disable": "🔕 सूचनाएं बंद करें",
+          "push.enable": "सूचनाएं चालू करें", "push.disable": "सूचनाएं बंद करें",
           "push.unsupported": "यह ब्राउज़र पुश सूचनाओं का समर्थन नहीं करता",
           "push.permissionDenied": "सूचना की अनुमति अस्वीकार कर दी गई। आप इसे ब्राउज़र सेटिंग्स में बदल सकते हैं।",
           "push.notConfigured": "सर्वर पर पुश सूचनाएं अभी तक कॉन्फ़िगर नहीं की गई हैं",
@@ -1336,12 +1336,12 @@
           "lightbox.workTagFallback": "कृति",
           "comments.title": "टिप्पणियाँ", "comments.ph": "टिप्पणी लिखें...", "comments.send": "भेजें",
           "reviews.title": "समीक्षाएं", "reviews.empty": "अभी तक कोई समीक्षा नहीं।", "reviews.ph": "अपनी समीक्षा लिखें (वैकल्पिक)...",
-          "orders.btn": "📦 मेरे ऑर्डर", "orders.title": "मेरे ऑर्डर", "orders.asBuyer": "मेरी खरीदारी", "orders.asSeller": "मेरी बिक्री", "orders.empty": "अभी तक कोई ऑर्डर नहीं।",
+          "orders.btn": "मेरे ऑर्डर", "orders.title": "मेरे ऑर्डर", "orders.asBuyer": "मेरी खरीदारी", "orders.asSeller": "मेरी बिक्री", "orders.empty": "अभी तक कोई ऑर्डर नहीं।",
           "order.status.placed": "दिया गया", "order.status.confirmed": "पुष्टि हुई", "order.status.shipped": "भेज दिया गया", "order.status.completed": "पूर्ण", "order.status.cancelled": "रद्द",
           "order.tracking": "ट्रैकिंग नंबर", "order.trackingPh": "ट्रैकिंग नंबर", "order.update": "अपडेट करें",
-          "wishlist.btn": "🤍 इच्छा सूची", "wishlist.title": "इच्छा सूची", "wishlist.empty": "आपकी इच्छा सूची खाली है।", "wishlist.remove": "हटाएं",
-          "sellerStats.btn": "📊 आंकड़े", "sellerStats.title": "आंकड़े", "sellerStats.works": "कृतियाँ", "sellerStats.views": "व्यूज़", "sellerStats.likes": "लाइक्स", "sellerStats.completed": "पूर्ण", "sellerStats.pending": "लंबित", "sellerStats.revenue": "आय", "sellerStats.topWorks": "सबसे अच्छा प्रदर्शन",
-          "collections.btn": "🗂️ संग्रह", "collections.title": "संग्रह", "collections.namePh": "संग्रह का नाम...", "collections.create": "बनाएं", "collections.empty": "अभी तक कोई संग्रह नहीं।", "collections.itemsCount": "कृतियाँ", "collections.addBtn": "🗂️ संग्रह में जोड़ें", "collections.noItems": "इस संग्रह में अभी तक कोई कृति नहीं है।",
+          "wishlist.btn": "इच्छा सूची", "wishlist.title": "इच्छा सूची", "wishlist.empty": "आपकी इच्छा सूची खाली है।", "wishlist.remove": "हटाएं",
+          "sellerStats.btn": "आंकड़े", "sellerStats.title": "आंकड़े", "sellerStats.works": "कृतियाँ", "sellerStats.views": "व्यूज़", "sellerStats.likes": "लाइक्स", "sellerStats.completed": "पूर्ण", "sellerStats.pending": "लंबित", "sellerStats.revenue": "आय", "sellerStats.topWorks": "सबसे अच्छा प्रदर्शन",
+          "collections.btn": "संग्रह", "collections.title": "संग्रह", "collections.namePh": "संग्रह का नाम...", "collections.create": "बनाएं", "collections.empty": "अभी तक कोई संग्रह नहीं।", "collections.itemsCount": "कृतियाँ", "collections.addBtn": "संग्रह में जोड़ें", "collections.noItems": "इस संग्रह में अभी तक कोई कृति नहीं है।",
           "comments.empty": "अभी तक कोई टिप्पणी नहीं। पहले आप लिखें!",
           "comments.loading": "लोड हो रहा है...", "comments.loadFail": "टिप्पणियाँ लोड नहीं हो सकीं।",
           "comments.delete": "हटाएं",
@@ -1571,7 +1571,7 @@
           "feed.sale": "En venta", "feed.expo": "En exhibición",
           "profile.stat.total": "Total", "profile.stat.sale": "En venta", "profile.stat.expo": "En exhibición",
           "profile.editBtn": "Ajustes",
-          "profile.edit.title": "Datos del perfil", "settings.viewModeTitle": "Vista de la página principal:", "profile.edit.changeAvatar": "Elegir foto",
+          "profile.edit.title": "Datos del perfil", "settings.cat.profile": "Datos del perfil", "settings.cat.appearance": "Apariencia", "settings.cat.security": "Seguridad", "settings.cat.privacy": "Privacidad", "settings.cat.notifications": "Notificaciones", "settings.viewModeTitle": "Vista de la página principal:", "profile.edit.changeAvatar": "Elegir foto",
           "profile.edit.avatarHint": "JPG o PNG, hasta 8MB",
           "profile.edit.fullname": "Nombre completo", "profile.edit.email": "Correo electrónico",
           "profile.edit.bio": "Biografía", "profile.edit.bioPh": "Cuéntanos algo breve sobre ti...",
@@ -1669,12 +1669,12 @@
           "err.notEnoughStock": "Solo quedan {n} unidades",
           "err.videoTooLong": "El video es demasiado largo (máximo {n} segundos)",
           /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
-          "chat.preview.photo": "📷 Foto",
-          "chat.preview.video": "🎥 Video",
+          "chat.preview.photo": "Foto",
+          "chat.preview.video": "Video",
           "chat.preview.circle": "⭕ Videomensaje",
-          "chat.preview.voice": "🎙️ Mensaje de voz",
-          "chat.preview.file": "📎 Archivo",
-          "chat.preview.order": "🛒 Nuevo pedido",
+          "chat.preview.voice": "Mensaje de voz",
+          "chat.preview.file": "Archivo",
+          "chat.preview.order": "Nuevo pedido",
           "chat.order.title": "Pedido realizado",
           "chat.order.more": "+ {n} más",
           "chat.voiceAria": "Mensaje de voz", "chat.circleAria": "Videomensaje",
@@ -1698,7 +1698,7 @@
           "upload.type.mulaj": "Maqueta", "upload.type.boshqa": "Otro", "upload.type.otherPh": "Escribe el tipo",
           "upload.statusLabel": "Estado", "upload.status.expo": "Solo exhibición", "upload.status.sale": "En venta",
           "upload.priceLabel": "Precio", "upload.currencyLabel": "Moneda", "upload.pricePh": "ej: 150000",
-          "push.enable": "🔔 Activar notificaciones", "push.disable": "🔕 Desactivar notificaciones",
+          "push.enable": "Activar notificaciones", "push.disable": "Desactivar notificaciones",
           "push.unsupported": "Este navegador no admite notificaciones push",
           "push.permissionDenied": "Se denegó el permiso de notificaciones. Puedes cambiarlo en la configuración del navegador.",
           "push.notConfigured": "Las notificaciones push aún no están configuradas en el servidor",
@@ -1719,12 +1719,12 @@
           "lightbox.workTagFallback": "Obra",
           "comments.title": "Comentarios", "comments.ph": "Escribe un comentario...", "comments.send": "Enviar",
           "reviews.title": "Reseñas", "reviews.empty": "Aún no hay reseñas.", "reviews.ph": "Escribe tu reseña (opcional)...",
-          "orders.btn": "📦 Mis pedidos", "orders.title": "Mis pedidos", "orders.asBuyer": "Mis compras", "orders.asSeller": "Mis ventas", "orders.empty": "Aún no hay pedidos.",
+          "orders.btn": "Mis pedidos", "orders.title": "Mis pedidos", "orders.asBuyer": "Mis compras", "orders.asSeller": "Mis ventas", "orders.empty": "Aún no hay pedidos.",
           "order.status.placed": "Realizado", "order.status.confirmed": "Confirmado", "order.status.shipped": "Enviado", "order.status.completed": "Completado", "order.status.cancelled": "Cancelado",
           "order.tracking": "Número de seguimiento", "order.trackingPh": "Número de seguimiento", "order.update": "Actualizar",
-          "wishlist.btn": "🤍 Lista de deseos", "wishlist.title": "Lista de deseos", "wishlist.empty": "Tu lista de deseos está vacía.", "wishlist.remove": "Quitar",
-          "sellerStats.btn": "📊 Estadísticas", "sellerStats.title": "Estadísticas", "sellerStats.works": "Obras", "sellerStats.views": "Vistas", "sellerStats.likes": "Me gusta", "sellerStats.completed": "Completados", "sellerStats.pending": "Pendientes", "sellerStats.revenue": "Ingresos", "sellerStats.topWorks": "Mejor rendimiento",
-          "collections.btn": "🗂️ Colecciones", "collections.title": "Colecciones", "collections.namePh": "Nombre de la colección...", "collections.create": "Crear", "collections.empty": "Aún no hay colecciones.", "collections.itemsCount": "obras", "collections.addBtn": "🗂️ Añadir a colección", "collections.noItems": "Aún no hay obras en esta colección.",
+          "wishlist.btn": "Lista de deseos", "wishlist.title": "Lista de deseos", "wishlist.empty": "Tu lista de deseos está vacía.", "wishlist.remove": "Quitar",
+          "sellerStats.btn": "Estadísticas", "sellerStats.title": "Estadísticas", "sellerStats.works": "Obras", "sellerStats.views": "Vistas", "sellerStats.likes": "Me gusta", "sellerStats.completed": "Completados", "sellerStats.pending": "Pendientes", "sellerStats.revenue": "Ingresos", "sellerStats.topWorks": "Mejor rendimiento",
+          "collections.btn": "Colecciones", "collections.title": "Colecciones", "collections.namePh": "Nombre de la colección...", "collections.create": "Crear", "collections.empty": "Aún no hay colecciones.", "collections.itemsCount": "obras", "collections.addBtn": "Añadir a colección", "collections.noItems": "Aún no hay obras en esta colección.",
           "comments.empty": "Aún no hay comentarios. ¡Sé el primero en escribir uno!",
           "comments.loading": "Cargando...", "comments.loadFail": "No se pudieron cargar los comentarios.",
           "comments.delete": "Eliminar",
@@ -1954,7 +1954,7 @@
           "feed.sale": "للبيع", "feed.expo": "للعرض",
           "profile.stat.total": "الإجمالي", "profile.stat.sale": "للبيع", "profile.stat.expo": "للعرض",
           "profile.editBtn": "الإعدادات",
-          "profile.edit.title": "بيانات الملف الشخصي", "settings.viewModeTitle": "طريقة عرض الصفحة الرئيسية:", "profile.edit.changeAvatar": "اختيار صورة",
+          "profile.edit.title": "بيانات الملف الشخصي", "settings.cat.profile": "بيانات الملف الشخصي", "settings.cat.appearance": "المظهر", "settings.cat.security": "الأمان", "settings.cat.privacy": "الخصوصية", "settings.cat.notifications": "الإشعارات", "settings.viewModeTitle": "طريقة عرض الصفحة الرئيسية:", "profile.edit.changeAvatar": "اختيار صورة",
           "profile.edit.avatarHint": "JPG أو PNG، حتى 8 ميغابايت",
           "profile.edit.fullname": "الاسم الكامل", "profile.edit.email": "البريد الإلكتروني",
           "profile.edit.bio": "نبذة", "profile.edit.bioPh": "اكتب نبذة قصيرة عن نفسك...",
@@ -2052,12 +2052,12 @@
           "err.notEnoughStock": "لم يتبقَّ سوى {n}",
           "err.videoTooLong": "الفيديو طويل جدًا (الحد الأقصى {n} ثانية)",
           /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
-          "chat.preview.photo": "📷 صورة",
-          "chat.preview.video": "🎥 فيديو",
+          "chat.preview.photo": "صورة",
+          "chat.preview.video": "فيديو",
           "chat.preview.circle": "⭕ رسالة فيديو",
-          "chat.preview.voice": "🎙️ رسالة صوتية",
-          "chat.preview.file": "📎 ملف",
-          "chat.preview.order": "🛒 طلب جديد",
+          "chat.preview.voice": "رسالة صوتية",
+          "chat.preview.file": "ملف",
+          "chat.preview.order": "طلب جديد",
           "chat.order.title": "تم تقديم الطلب",
           "chat.order.more": "+ {n} أخرى",
           "chat.voiceAria": "رسالة صوتية", "chat.circleAria": "رسالة فيديو",
@@ -2081,7 +2081,7 @@
           "upload.type.mulaj": "مجسم", "upload.type.boshqa": "أخرى", "upload.type.otherPh": "أدخل النوع",
           "upload.statusLabel": "الحالة", "upload.status.expo": "للعرض فقط", "upload.status.sale": "للبيع",
           "upload.priceLabel": "السعر", "upload.currencyLabel": "العملة", "upload.pricePh": "مثال: 150000",
-          "push.enable": "🔔 تفعيل الإشعارات", "push.disable": "🔕 إيقاف الإشعارات",
+          "push.enable": "تفعيل الإشعارات", "push.disable": "إيقاف الإشعارات",
           "push.unsupported": "هذا المتصفح لا يدعم الإشعارات الفورية",
           "push.permissionDenied": "تم رفض إذن الإشعارات. يمكنك تغيير ذلك من إعدادات المتصفح.",
           "push.notConfigured": "الإشعارات الفورية غير مُهيّأة على الخادم بعد",
@@ -2102,12 +2102,12 @@
           "lightbox.workTagFallback": "عمل",
           "comments.title": "التعليقات", "comments.ph": "اكتب تعليقًا...", "comments.send": "إرسال",
           "reviews.title": "التقييمات", "reviews.empty": "لا توجد تقييمات بعد.", "reviews.ph": "اكتب تقييمك (اختياري)...",
-          "orders.btn": "📦 طلباتي", "orders.title": "طلباتي", "orders.asBuyer": "مشترياتي", "orders.asSeller": "مبيعاتي", "orders.empty": "لا توجد طلبات بعد.",
+          "orders.btn": "طلباتي", "orders.title": "طلباتي", "orders.asBuyer": "مشترياتي", "orders.asSeller": "مبيعاتي", "orders.empty": "لا توجد طلبات بعد.",
           "order.status.placed": "تم الطلب", "order.status.confirmed": "تم التأكيد", "order.status.shipped": "تم الشحن", "order.status.completed": "مكتمل", "order.status.cancelled": "ملغى",
           "order.tracking": "رقم التتبع", "order.trackingPh": "رقم التتبع", "order.update": "تحديث",
-          "wishlist.btn": "🤍 قائمة الرغبات", "wishlist.title": "قائمة الرغبات", "wishlist.empty": "قائمة رغباتك فارغة.", "wishlist.remove": "إزالة",
-          "sellerStats.btn": "📊 الإحصائيات", "sellerStats.title": "الإحصائيات", "sellerStats.works": "الأعمال", "sellerStats.views": "المشاهدات", "sellerStats.likes": "الإعجابات", "sellerStats.completed": "مكتملة", "sellerStats.pending": "قيد الانتظار", "sellerStats.revenue": "الإيرادات", "sellerStats.topWorks": "الأفضل أداءً",
-          "collections.btn": "🗂️ المجموعات", "collections.title": "المجموعات", "collections.namePh": "اسم المجموعة...", "collections.create": "إنشاء", "collections.empty": "لا توجد مجموعات بعد.", "collections.itemsCount": "عمل", "collections.addBtn": "🗂️ أضف إلى المجموعة", "collections.noItems": "لا توجد أعمال في هذه المجموعة بعد.",
+          "wishlist.btn": "قائمة الرغبات", "wishlist.title": "قائمة الرغبات", "wishlist.empty": "قائمة رغباتك فارغة.", "wishlist.remove": "إزالة",
+          "sellerStats.btn": "الإحصائيات", "sellerStats.title": "الإحصائيات", "sellerStats.works": "الأعمال", "sellerStats.views": "المشاهدات", "sellerStats.likes": "الإعجابات", "sellerStats.completed": "مكتملة", "sellerStats.pending": "قيد الانتظار", "sellerStats.revenue": "الإيرادات", "sellerStats.topWorks": "الأفضل أداءً",
+          "collections.btn": "المجموعات", "collections.title": "المجموعات", "collections.namePh": "اسم المجموعة...", "collections.create": "إنشاء", "collections.empty": "لا توجد مجموعات بعد.", "collections.itemsCount": "عمل", "collections.addBtn": "أضف إلى المجموعة", "collections.noItems": "لا توجد أعمال في هذه المجموعة بعد.",
           "comments.empty": "لا توجد تعليقات بعد. كن أول من يكتب!",
           "comments.loading": "جارٍ التحميل...", "comments.loadFail": "تعذّر تحميل التعليقات.",
           "comments.delete": "حذف",
@@ -2337,7 +2337,7 @@
           "feed.sale": "Продаётся", "feed.expo": "На выставке",
           "profile.stat.total": "Всего", "profile.stat.sale": "Продаётся", "profile.stat.expo": "На выставке",
           "profile.editBtn": "Настройки",
-          "profile.edit.title": "Данные профиля", "settings.viewModeTitle": "Вид главной страницы:", "profile.edit.changeAvatar": "Выбрать фото",
+          "profile.edit.title": "Данные профиля", "settings.cat.profile": "Данные профиля", "settings.cat.appearance": "Внешний вид", "settings.cat.security": "Безопасность", "settings.cat.privacy": "Конфиденциальность", "settings.cat.notifications": "Уведомления", "settings.viewModeTitle": "Вид главной страницы:", "profile.edit.changeAvatar": "Выбрать фото",
           "profile.edit.avatarHint": "JPG или PNG, до 8 МБ",
           "profile.edit.fullname": "Полное имя", "profile.edit.email": "Email",
           "profile.edit.bio": "О себе", "profile.edit.bioPh": "Короткая строка о себе...",
@@ -2435,12 +2435,12 @@
           "err.notEnoughStock": "Осталось только {n} шт.",
           "err.videoTooLong": "Видео слишком длинное (максимум {n} секунд)",
           /* ---- suhbatlar ro'yxatidagi so'nggi xabar önizlemesi (media turlari) ---- */
-          "chat.preview.photo": "📷 Фото",
-          "chat.preview.video": "🎥 Видео",
+          "chat.preview.photo": "Фото",
+          "chat.preview.video": "Видео",
           "chat.preview.circle": "⭕ Видеосообщение",
-          "chat.preview.voice": "🎙️ Голосовое сообщение",
-          "chat.preview.file": "📎 Файл",
-          "chat.preview.order": "🛒 Новый заказ",
+          "chat.preview.voice": "Голосовое сообщение",
+          "chat.preview.file": "Файл",
+          "chat.preview.order": "Новый заказ",
           "chat.order.title": "Заказ оформлен",
           "chat.order.more": "+ ещё {n}",
           "chat.voiceAria": "Голосовое сообщение", "chat.circleAria": "Видеосообщение",
@@ -2464,7 +2464,7 @@
           "upload.type.mulaj": "Макет", "upload.type.boshqa": "Другое", "upload.type.otherPh": "Укажите тип",
           "upload.statusLabel": "Статус", "upload.status.expo": "Только показ", "upload.status.sale": "Продаётся",
           "upload.priceLabel": "Цена", "upload.currencyLabel": "Валюта", "upload.pricePh": "например: 150000",
-          "push.enable": "🔔 Включить уведомления", "push.disable": "🔕 Отключить уведомления",
+          "push.enable": "Включить уведомления", "push.disable": "Отключить уведомления",
           "push.unsupported": "Этот браузер не поддерживает push-уведомления",
           "push.permissionDenied": "Доступ к уведомлениям запрещён. Вы можете изменить это в настройках браузера.",
           "push.notConfigured": "Push-уведомления пока не настроены на сервере",
@@ -2485,12 +2485,12 @@
           "lightbox.workTagFallback": "Работа",
           "comments.title": "Комментарии", "comments.ph": "Написать комментарий...", "comments.send": "Отправить",
           "reviews.title": "Отзывы", "reviews.empty": "Пока нет отзывов.", "reviews.ph": "Напишите отзыв (необязательно)...",
-          "orders.btn": "📦 Мои заказы", "orders.title": "Мои заказы", "orders.asBuyer": "Мои покупки", "orders.asSeller": "Мои продажи", "orders.empty": "Пока нет заказов.",
+          "orders.btn": "Мои заказы", "orders.title": "Мои заказы", "orders.asBuyer": "Мои покупки", "orders.asSeller": "Мои продажи", "orders.empty": "Пока нет заказов.",
           "order.status.placed": "Оформлен", "order.status.confirmed": "Подтверждён", "order.status.shipped": "Отправлен", "order.status.completed": "Завершён", "order.status.cancelled": "Отменён",
           "order.tracking": "Номер отслеживания", "order.trackingPh": "Номер отслеживания", "order.update": "Обновить",
-          "wishlist.btn": "🤍 Избранное", "wishlist.title": "Избранное", "wishlist.empty": "Список избранного пуст.", "wishlist.remove": "Убрать",
-          "sellerStats.btn": "📊 Статистика", "sellerStats.title": "Статистика", "sellerStats.works": "Работы", "sellerStats.views": "Просмотры", "sellerStats.likes": "Лайки", "sellerStats.completed": "Завершено", "sellerStats.pending": "В ожидании", "sellerStats.revenue": "Доход", "sellerStats.topWorks": "Лучшие работы",
-          "collections.btn": "🗂️ Коллекции", "collections.title": "Коллекции", "collections.namePh": "Название коллекции...", "collections.create": "Создать", "collections.empty": "Пока нет коллекций.", "collections.itemsCount": "работ", "collections.addBtn": "🗂️ Добавить в коллекцию", "collections.noItems": "В этой коллекции пока нет работ.",
+          "wishlist.btn": "Избранное", "wishlist.title": "Избранное", "wishlist.empty": "Список избранного пуст.", "wishlist.remove": "Убрать",
+          "sellerStats.btn": "Статистика", "sellerStats.title": "Статистика", "sellerStats.works": "Работы", "sellerStats.views": "Просмотры", "sellerStats.likes": "Лайки", "sellerStats.completed": "Завершено", "sellerStats.pending": "В ожидании", "sellerStats.revenue": "Доход", "sellerStats.topWorks": "Лучшие работы",
+          "collections.btn": "Коллекции", "collections.title": "Коллекции", "collections.namePh": "Название коллекции...", "collections.create": "Создать", "collections.empty": "Пока нет коллекций.", "collections.itemsCount": "работ", "collections.addBtn": "Добавить в коллекцию", "collections.noItems": "В этой коллекции пока нет работ.",
           "comments.empty": "Комментариев пока нет. Будьте первым!",
           "comments.loading": "Загрузка...", "comments.loadFail": "Не удалось загрузить комментарии.",
           "comments.delete": "Удалить",
@@ -2813,12 +2813,15 @@
         } catch (e) { /* jim o'tkazamiz */ }
       }
 
+      const PUSH_BELL_ON_SVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px; margin-right:5px;"><path d="M6 10.5a6 6 0 0 1 12 0c0 3.6 1 5 1.8 5.9H4.2C5 15.5 6 14.1 6 10.5Z"/><path d="M9.6 19a2.5 2.5 0 0 0 4.8 0"/></svg>';
+      const PUSH_BELL_OFF_SVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px; margin-right:5px;"><path d="M6 10.5a6 6 0 0 1 12 0c0 3.6 1 5 1.8 5.9H4.2C5 15.5 6 14.1 6 10.5Z"/><path d="M9.6 19a2.5 2.5 0 0 0 4.8 0"/><path d="M4 4l16 16"/></svg>';
+
       function updatePushToggleUI(state) {
         const btn = $('#pushToggleBtn');
         if (!btn) return;
         if (state === 'unsupported') { btn.classList.add('hidden'); return; }
         btn.classList.remove('hidden');
-        btn.textContent = state === 'subscribed' ? t('push.disable') : t('push.enable');
+        btn.innerHTML = (state === 'subscribed' ? PUSH_BELL_OFF_SVG : PUSH_BELL_ON_SVG) + t(state === 'subscribed' ? 'push.disable' : 'push.enable');
         btn.dataset.state = state;
       }
 
@@ -4115,7 +4118,7 @@
         return `
       <div class="admin-report-card ${r.status === 'resolved' ? 'resolved' : ''}" data-id="${r.id}">
         <div class="admin-report-head">
-          <span class="admin-report-type">${r.type === 'work' ? '🖼️ ' + t('admin.report.typeWork') : '👤 ' + t('admin.report.typeUser')}</span>
+          <span class="admin-report-type">${r.type === 'work' ? '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:4px;"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.3" cy="9.5" r="1.4"/><path d="m4.5 16.5 4.8-4.8a1.7 1.7 0 0 1 2.4 0l1.6 1.6"/><path d="m12.5 15.5 2.3-2.3a1.7 1.7 0 0 1 2.4 0l2.3 2.3"/></svg>' + t('admin.report.typeWork') : '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:4px;"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-6.2 7-6.2s7 2.6 7 6.2"/></svg>' + t('admin.report.typeUser')}</span>
           <span class="admin-report-date">${date}</span>
         </div>
         <div class="admin-report-body">
@@ -4612,12 +4615,12 @@
         if (!profile.isSelf) {
           contactBits.push(`<button class="btn ${profile.isFollowing ? 'btn-ghost' : 'btn-primary'} btn-sm" id="upFollowBtn" data-username="${escapeHtml(profile.username)}" data-following="${profile.isFollowing ? '1' : '0'}">${profile.isFollowing ? t('follow.unsubscribeBtn') : t('follow.subscribeBtn')}</button>`);
         }
-        if (profile.phone) contactBits.push(`<div class="user-profile-contact-item">📞 ${escapeHtml(profile.phone)}</div>`);
+        if (profile.phone) contactBits.push(`<div class="user-profile-contact-item"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:5px;"><path d="M6.5 4h3l1.4 4-2 1.5a11.5 11.5 0 0 0 5.6 5.6l1.5-2 4 1.4v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 6.2 2 2 0 0 1 6.5 4Z"/></svg>${escapeHtml(profile.phone)}</div>`);
         if (profile.social) {
           const href = /^https?:\/\//i.test(profile.social) ? profile.social : 'https://' + profile.social;
-          contactBits.push(`<div class="user-profile-contact-item">🔗 <a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(profile.social)}</a></div>`);
+          contactBits.push(`<div class="user-profile-contact-item"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:5px;"><path d="M9.5 14.5 14.5 9.5"/><path d="M11 7.5 12.5 6a3 3 0 1 1 4.2 4.2l-1.5 1.5"/><path d="M13 16.5 11.5 18a3 3 0 1 1-4.2-4.2l1.5-1.5"/></svg><a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(profile.social)}</a></div>`);
         }
-        if (profile.email) contactBits.push(`<div class="user-profile-contact-item">✉️ ${escapeHtml(profile.email)}</div>`);
+        if (profile.email) contactBits.push(`<div class="user-profile-contact-item"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:5px;"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4.5 7 7.5 5.5L19.5 7"/></svg>${escapeHtml(profile.email)}</div>`);
         if (!CURRENT_USER || profile.username !== CURRENT_USER.username) {
           contactBits.push(`<button class="btn btn-primary btn-sm" id="upContactSellerBtn">${t('userProfile.contactBtn')}</button>`);
           contactBits.push(`<button class="report-link" id="upReportBtn">${t('report.action')}</button>`);
@@ -4820,7 +4823,7 @@
         if (!works.length) {
           el.innerHTML = `
         <div class="empty-state">
-          <div class="empty-stamp">🖌️</div>
+          <div class="empty-stamp"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c-2.4 0-4.2 1.7-4.2 4 0 1.5.8 2.4.8 3.4 0 .7-.5 1-1.2 1.4-1.6.9-3.4 2.4-3.4 5A3.7 3.7 0 0 0 7.7 21c1.3 0 2-.6 2-1.5 0-.7-.5-1-.5-1.8 0-1 .9-1.7 2-1.7h1.6c1.1 0 2 .7 2 1.7 0 .8-.5 1.1-.5 1.8 0 .9.7 1.5 2 1.5a3.7 3.7 0 0 0 3.7-3.7c0-2.6-1.8-4.1-3.4-5-.7-.4-1.2-.7-1.2-1.4 0-1 .8-1.9.8-3.4 0-2.3-1.8-4-4.2-4Z"/></svg></div>
           <h3>${t('feed.empty.title')}</h3>
           <p>${t('profile.empty.desc')}</p>
         </div>`;
@@ -4974,7 +4977,7 @@
         if (!list.children.length) {
           list.innerHTML = `
         <div class="empty-state">
-          <div class="empty-stamp">🖼️</div>
+          <div class="empty-stamp"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="13" rx="2"/><circle cx="9" cy="10" r="1.3"/><path d="m5.5 16 4.7-4.7a1.7 1.7 0 0 1 2.4 0l1.6 1.6"/><path d="m12.5 15 2.3-2.3a1.7 1.7 0 0 1 2.4 0l1.8 1.8"/></svg></div>
           <h3>${t('feed.empty.title')}</h3>
           <p>${t('feed.empty.desc')}</p>
         </div>`;
@@ -5253,7 +5256,7 @@
           if (!items.length) {
             list.innerHTML = `
           <div class="empty-state">
-            <div class="empty-stamp">🛒</div>
+            <div class="empty-stamp"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h2.5l1.6 10.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6l1.1-6.4H7.3"/><circle cx="10" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg></div>
             <h3>${t('cart.empty.title')}</h3>
             <p>${t('cart.empty.desc')}</p>
           </div>`;
@@ -5829,7 +5832,7 @@
           const s = await api('/api/seller/stats');
           const revenueLines = Object.entries(s.revenueByCurrency).map(([cur, amt]) => fmtPrice(amt, cur)).join(', ') || '—';
           const topWorksHTML = s.topWorks.slice(0, 5).map(w => `
-            <div class="stat-row"><span>${escapeHtml(w.title)}</span><span>${t('feed.viewsAria')}: ${w.views} · ♥ ${w.likes}</span></div>
+            <div class="stat-row"><span>${escapeHtml(w.title)}</span><span>${t('feed.viewsAria')}: ${w.views} · <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><path d="M12 20s-7.2-4.4-9.4-9C1 7.6 2.7 4.6 6 4.2c2-.2 3.6.9 4.9 2.6.4.5.6.9.9 1.4l.2.4.2-.4c.3-.5.5-.9.9-1.4C14.4 5.1 16 4 18 4.2c3.3.4 5 3.4 3.4 6.8-2.2 4.6-9.4 9-9.4 9Z"/></svg> ${w.likes}</span></div>
           `).join('');
           $('#sellerStatsBody').innerHTML = `
             <div class="seller-stats-grid">
@@ -5862,7 +5865,7 @@
         const thumbs = c.works.slice(0, 4).map(w => `<img src="${escapeHtml(w.image || '')}" alt="" loading="lazy">`).join('');
         return `
       <div class="collection-card" data-id="${c.id}" role="button" tabindex="0">
-        <div class="collection-card-thumbs">${thumbs || `<div class="collection-empty-thumb">🗂️</div>`}</div>
+        <div class="collection-card-thumbs">${thumbs || `<div class="collection-empty-thumb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5 5 5.2h5l1.3 1.8H20.5v11.6a1.4 1.4 0 0 1-1.4 1.4H4.9a1.4 1.4 0 0 1-1.4-1.4Z"/></svg></div>`}</div>
         <div class="collection-card-body">
           <div class="collection-card-name">${escapeHtml(c.name)}</div>
           <div class="collection-card-count">${c.works.length} ${t('collections.itemsCount')}</div>
@@ -6069,9 +6072,9 @@
         '😀','😁','😂','🤣','😊','😍','😘','😉','😎','🤩',
         '🙂','🙃','😇','🥳','😅','😜','🤪','😏','😌','😴',
         '🤔','🤗','🙄','😐','😢','😭','😡','😱','🥺','😳',
-        '👍','👎','👏','🙌','🙏','💪','👌','✌️','🤝','👋',
-        '❤️','🧡','💛','💚','💙','💜','🖤','🤍','💔','💯',
-        '🔥','✨','⭐','🎉','🎊','🎁','🌸','🌹','☀️','🌙'
+        '👍','👎','👏','🙌','🙏','💪','👌','✌','🤝','👋',
+        '❤','🧡','💛','💚','💙','💜','🖤','🤍','💔','💯',
+        '🔥','✨','⭐','🎉','🎊','🎁','🌸','🌹','☀','🌙'
       ];
       let emojiPickerBuilt = false;
       function buildEmojiPicker() {
@@ -6505,22 +6508,46 @@
           case 'video': return t('chat.preview.video');
           case 'circle': return t('chat.preview.circle');
           case 'voice': return t('chat.preview.voice');
-          case 'file': return '📎 ' + (fileName || t('chat.preview.file'));
+          case 'file': return fileName || t('chat.preview.file');
           case 'order': return t('chat.preview.order');
           default: return '';
         }
       }
 
+      /* Suhbat önizlemesi oldiga qo'yiladigan kichik SVG ikonka (rasm/video/
+         ovozli xabar/fayl/buyurtma/qo'ng'iroq turlarini ажратиш uchun). */
+      function previewIconSvg(kind) {
+        const base = 'viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:4px; flex-shrink:0;"';
+        switch (kind) {
+          case 'photo':
+          case 'circle':
+            return `<svg ${base}><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.3" cy="9.5" r="1.4"/><path d="m4.5 16.5 4.8-4.8a1.7 1.7 0 0 1 2.4 0l1.6 1.6"/><path d="m12.5 15.5 2.3-2.3a1.7 1.7 0 0 1 2.4 0l2.3 2.3"/></svg>`;
+          case 'video':
+            return `<svg ${base}><rect x="3" y="6.5" width="12" height="11" rx="2"/><path d="m15 10.5 5.5-3.2v9.4L15 13.5"/></svg>`;
+          case 'voice':
+            return `<svg ${base}><rect x="9.5" y="3.5" width="5" height="9" rx="2.5"/><path d="M6.5 11.5a5.5 5.5 0 0 0 11 0"/><path d="M12 17v3.5"/></svg>`;
+          case 'file':
+            return `<svg ${base}><path d="M17.5 8.5 9.9 16.1a3 3 0 0 1-4.2-4.2l7.9-7.9a2 2 0 0 1 2.8 2.8l-7.7 7.7a1 1 0 0 1-1.4-1.4l6.9-6.9"/></svg>`;
+          case 'order':
+            return `<svg ${base}><path d="M4 6h2.5l1.6 10.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6l1.1-6.4H7.3"/><circle cx="10" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>`;
+          case 'call':
+            return `<svg ${base}><path d="M6.5 4h3l1.4 4-2 1.5a11.5 11.5 0 0 0 5.6 5.6l1.5-2 4 1.4v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 6.2 2 2 0 0 1 6.5 4Z"/></svg>`;
+          default:
+            return '';
+        }
+      }
+
       function conversationItemHTML(c) {
+        const previewIcon = previewIconSvg(c.lastCallStatus ? 'call' : (c.lastMessageType && c.lastMessageType !== 'text' ? c.lastMessageType : ''));
         const previewText = c.lastCallStatus
-          ? ('📞 ' + callStatusPreviewText(c.lastCallStatus))
+          ? callStatusPreviewText(c.lastCallStatus)
           : (c.lastMessageType && c.lastMessageType !== 'text' ? messageTypePreviewText(c.lastMessageType, c.lastFileName) : (c.lastMessage || ''));
         return `
       <div class="conversation-item ${c.unread ? 'unread' : ''}" data-username="${escapeHtml(c.username)}">
         <div class="conversation-avatar">${avatarInner(c.avatar, c.fullname || c.username)}</div>
         <div class="conversation-body">
           <div class="conversation-name">${escapeHtml(c.fullname || c.username)}</div>
-          <div class="conversation-preview">${escapeHtml(c.lastFrom === (CURRENT_USER && CURRENT_USER.username) ? t('messages.you') + ': ' + previewText : previewText)}</div>
+          <div class="conversation-preview">${previewIcon}${escapeHtml(c.lastFrom === (CURRENT_USER && CURRENT_USER.username) ? t('messages.you') + ': ' + previewText : previewText)}</div>
         </div>
         <div class="conversation-meta">
           <div class="conversation-time">${c.updatedAt ? fmtChatTime(c.updatedAt) : ''}</div>
@@ -6537,7 +6564,7 @@
           if (!items.length) {
             list.innerHTML = `
           <div class="empty-state">
-            <div class="empty-stamp">💬</div>
+            <div class="empty-stamp"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18.5V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H9l-5 4Z"/></svg></div>
             <h3>${t('messages.empty.title')}</h3>
             <p>${t('messages.empty.desc')}</p>
           </div>`;
@@ -6564,7 +6591,7 @@
         return `
       <div class="chat-bubble-row ${mine ? 'me' : ''}">
         <div class="chat-bubble">
-          ${m.workTitle ? `<div style="font-size:11.5px;opacity:.8;margin-bottom:3px;">🖼️ ${escapeHtml(m.workTitle)}</div>` : ''}
+          ${m.workTitle ? `<div style="font-size:11.5px;opacity:.8;margin-bottom:3px;"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:3px;"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.3" cy="9.5" r="1.4"/><path d="m4.5 16.5 4.8-4.8a1.7 1.7 0 0 1 2.4 0l1.6 1.6"/><path d="m12.5 15.5 2.3-2.3a1.7 1.7 0 0 1 2.4 0l2.3 2.3"/></svg>${escapeHtml(m.workTitle)}</div>` : ''}
           ${escapeHtml(m.text)}
           <span class="chat-bubble-time">${fmtChatTime(m.createdAt)}</span>
         </div>
@@ -6833,7 +6860,7 @@
         return `
       <div class="chat-bubble-row ${mine ? 'me' : ''}">
         <a href="${escapeHtml(m.url)}" download="${escapeHtml(m.fileName || '')}" target="_blank" rel="noopener" class="chat-bubble chat-file-msg">
-          <div class="chat-file-icon">📎</div>
+          <div class="chat-file-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 8.5 9.9 16.1a3 3 0 0 1-4.2-4.2l7.9-7.9a2 2 0 0 1 2.8 2.8l-7.7 7.7a1 1 0 0 1-1.4-1.4l6.9-6.9"/></svg></div>
           <div class="chat-file-info">
             <div class="chat-file-name">${escapeHtml(m.fileName || 'Fayl')}</div>
             <div class="chat-file-size">${size}</div>
@@ -6854,7 +6881,7 @@
       <div class="chat-bubble-row ${mine ? 'me' : ''}">
         <div class="chat-bubble chat-order-msg">
           <div class="chat-order-head">
-            <span class="chat-order-icon">🛒</span>
+            <span class="chat-order-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h2.5l1.6 10.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6l1.1-6.4H7.3"/><circle cx="10" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg></span>
             <span class="chat-order-title">${t('chat.order.title')}</span>
           </div>
           <div class="chat-order-items">

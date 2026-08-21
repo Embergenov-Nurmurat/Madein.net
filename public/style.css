@@ -64,18 +64,18 @@
          mis/bronza) yashil-moviysi ikkinchi rang — bular birgalikda
          qo'lda ishlangan buyumlar olamiga (mis, keramika, temirchilik)
          yaqinroq, generik "qora fon + neon" uslubidan farqli. */
-      --bg: #15130f;
-      --bg-alt: #1c1912;
-      --surface: #221e16;
-      --surface-2: #2a2419;
-      --text: #f3ead8;
-      --text-dim: #a89a80;
-      --accent: #e0672f;
-      --accent-2: #3f9179;
-      --border: rgba(243, 234, 219, 0.1);
+      --bg: #16120e;
+      --bg-alt: #1d1811;
+      --surface: #241d15;
+      --surface-2: #2c2419;
+      --text: #f2e8d6;
+      --text-dim: #ab9c84;
+      --accent: #dd7b3c;
+      --accent-2: #57ad8e;
+      --border: rgba(242, 232, 214, 0.1);
       --stamp-ink: var(--accent);
       --shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
-      --glow: 0 0 0 rgba(0, 0, 0, 0);
+      --glow: 0 0 22px rgba(221, 123, 60, 0.28);
     }
 
     body[data-theme="yorug"] {
@@ -85,18 +85,18 @@
          gil rangiga aniqlashtirildi, ikkinchi rang esa to'q indigo-patina
          (an'anaviy indigo bo'yash texnikasiga ishora) — tungi tema bilan
          "patina" oilasi orqali bog'lanadi. */
-      --bg: #f4efe1;
-      --bg-alt: #eae0c9;
-      --surface: #fffdf9;
-      --surface-2: #f7efdd;
-      --text: #231d13;
-      --text-dim: #776c55;
-      --accent: #c1502e;
-      --accent-2: #2d4a63;
-      --border: rgba(35, 29, 19, 0.12);
+      --bg: #faf6ec;
+      --bg-alt: #f1e8d2;
+      --surface: #fffefb;
+      --surface-2: #f8f1e0;
+      --text: #241d15;
+      --text-dim: #7a6f59;
+      --accent: #c15a2a;
+      --accent-2: #2b5578;
+      --border: rgba(36, 29, 21, 0.12);
       --stamp-ink: var(--accent);
       --shadow: 0 16px 40px rgba(35, 29, 19, 0.12);
-      --glow: 0 0 0 rgba(0, 0, 0, 0);
+      --glow: 0 0 20px rgba(193, 90, 42, 0.18);
     }
 
     body[data-theme="cyberpunk"] {
@@ -4155,6 +4155,7 @@
       align-items: center;
       justify-content: center;
       font-size: 15px;
+      color: var(--accent);
       flex-shrink: 0;
     }
 
@@ -5115,6 +5116,60 @@
     .profile-edit-card h4 {
       font-size: 14px;
       font-weight: 800;
+    }
+
+    /* ============ SETTINGS CATEGORIES ============ */
+    .settings-category {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 20px 20px;
+    }
+
+    .settings-category-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-category-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      font-size: 16px;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 16%, var(--surface-2));
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent);
+    }
+
+    .settings-category-icon svg {
+      display: block;
+    }
+
+    .settings-category-header h5 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      color: var(--text);
+    }
+
+    .settings-category-body {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .settings-category-body > .privacy-block:first-child {
+      border-top: none;
+      padding-top: 0;
     }
 
     .edit-actions {
