@@ -57,45 +57,24 @@
       --transition-theme: background-color .5s ease, color .5s ease, border-color .5s ease, box-shadow .5s ease;
     }
 
-    body[data-theme="tungi"] {
-      /* Ilgari asosiy rang "kuydirilgan mis" (to'q sarg'ish-apelsin) edi —
-         juda ko'p joyda takrorlanganda bir xilday va "sabzirang" bo'lib
-         ko'rinardi. Endi asosiy rang patina (eskirgan mis/bronza) yashil-
-         moviysi, ikkinchi rang esa jez/oltin sarg'ish — bu ham "ustaxona"
-         kayfiyatini saqlaydi, ham apelsin rangidan butunlay uzoqlashadi. */
-      --bg: #16120e;
-      --bg-alt: #1d1811;
-      --surface: #241d15;
-      --surface-2: #2c2419;
-      --text: #f2e8d6;
-      --text-dim: #ab9c84;
-      --accent: #4bb0a0;
-      --accent-2: #d3a24c;
-      --border: rgba(242, 232, 214, 0.1);
+    body[data-theme="tungi"],
+    body[data-theme="cyberpunk-blue"] {
+      /* Endi "Tungi" (kecha) rejimi cyberpunk-ko'k palitrasi bilan bir xil:
+         chuqur to'q ko'k fon + neon ko'k asosiy rang, binafsha ikkinchi
+         rang. Alohida "Cyberpunk ko'k" varianti ham stil panelida qoladi —
+         u ham xuddi shu qiymatlarni beradi. */
+      --bg: #05070f;
+      --bg-alt: #090d1a;
+      --surface: #0d1424;
+      --surface-2: #121b32;
+      --text: #e7f2ff;
+      --text-dim: #7f93b8;
+      --accent: #00aaff;
+      --accent-2: #7c3aed;
+      --border: rgba(0, 200, 255, 0.14);
       --stamp-ink: var(--accent);
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
-      --glow: 0 0 22px rgba(75, 176, 160, 0.28);
-    }
-
-    body[data-theme="yorug"] {
-      /* Ilgari sarg'ish-krem fon edi (AI-uslubidagi "iliq krem + terrakota"
-         andozasiga juda yaqin ko'rinardi) — endi sovuqroq, neytralroq
-         "bo'yalmagan kanop mato" (linen) foni, terrakota esa kuydirilgan
-         gil rangiga aniqlashtirildi, ikkinchi rang esa to'q indigo-patina
-         (an'anaviy indigo bo'yash texnikasiga ishora) — tungi tema bilan
-         "patina" oilasi orqali bog'lanadi. */
-      --bg: #faf6ec;
-      --bg-alt: #f1e8d2;
-      --surface: #fffefb;
-      --surface-2: #f8f1e0;
-      --text: #241d15;
-      --text-dim: #7a6f59;
-      --accent: #c15a2a;
-      --accent-2: #2b5578;
-      --border: rgba(36, 29, 21, 0.12);
-      --stamp-ink: var(--accent);
-      --shadow: 0 16px 40px rgba(35, 29, 19, 0.12);
-      --glow: 0 0 20px rgba(193, 90, 42, 0.18);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      --glow: 0 0 24px rgba(0, 170, 255, 0.4);
     }
 
     body[data-theme="cyberpunk"] {
@@ -158,7 +137,8 @@
     }
 
     /* ============ LIQUID GLASS THEME (iOS-style) ============ */
-    body[data-theme="liquid-glass"] {
+    body[data-theme="liquid-glass"] ,
+    body[data-theme="yorug"] {
       --bg: #e4e8f1;
       --bg-alt: #dde3ee;
       --surface: rgba(255, 255, 255, 0.52);
@@ -182,7 +162,8 @@
        blur has something soft & colourful to refract. Static on purpose —
        animating `filter` on a fullscreen layer is very expensive and was
        causing the whole site to lag. */
-    body[data-theme="liquid-glass"]::after {
+    body[data-theme="liquid-glass"]::after ,
+    body[data-theme="yorug"]::after {
       content: '';
       position: fixed;
       inset: 0;
@@ -200,20 +181,35 @@
        on screen at a time. Safe for performance since there's no long
        repeating list of them to blur simultaneously while scrolling. */
     body[data-theme="liquid-glass"] .navbar,
+    body[data-theme="yorug"] .navbar,
     body[data-theme="liquid-glass"] .gate-modal,
+    body[data-theme="yorug"] .gate-modal,
     body[data-theme="liquid-glass"] .dropdown,
+    body[data-theme="yorug"] .dropdown,
     body[data-theme="liquid-glass"] .modal,
+    body[data-theme="yorug"] .modal,
     body[data-theme="liquid-glass"] .theme-panel,
+    body[data-theme="yorug"] .theme-panel,
     body[data-theme="liquid-glass"] .theme-fab,
+    body[data-theme="yorug"] .theme-fab,
     body[data-theme="liquid-glass"] .cart-summary,
+    body[data-theme="yorug"] .cart-summary,
     body[data-theme="liquid-glass"] .auth-card,
+    body[data-theme="yorug"] .auth-card,
     body[data-theme="liquid-glass"] .profile-edit-card,
+    body[data-theme="yorug"] .profile-edit-card,
     body[data-theme="liquid-glass"] .incall-banner,
+    body[data-theme="yorug"] .incall-banner,
     body[data-theme="liquid-glass"] .feed-search-wrap input,
+    body[data-theme="yorug"] .feed-search-wrap input,
     body[data-theme="liquid-glass"] .feed-filter-bar select,
+    body[data-theme="yorug"] .feed-filter-bar select,
     body[data-theme="liquid-glass"] .input-wrap input,
+    body[data-theme="yorug"] .input-wrap input,
     body[data-theme="liquid-glass"] .input-wrap textarea,
-    body[data-theme="liquid-glass"] .btn-guest {
+    body[data-theme="yorug"] .input-wrap textarea,
+    body[data-theme="liquid-glass"] .btn-guest ,
+    body[data-theme="yorug"] .btn-guest {
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       box-shadow: var(--shadow), var(--glass-hl);
@@ -225,53 +221,77 @@
        of these while scrolling is what caused the lag, so they only get
        a plain translucent background + border, no backdrop-filter. */
     body[data-theme="liquid-glass"] .admin-user-row,
+    body[data-theme="yorug"] .admin-user-row,
     body[data-theme="liquid-glass"] .icon-btn,
+    body[data-theme="yorug"] .icon-btn,
     body[data-theme="liquid-glass"] .avatar-btn,
+    body[data-theme="yorug"] .avatar-btn,
     body[data-theme="liquid-glass"] .privacy-note,
+    body[data-theme="yorug"] .privacy-note,
     body[data-theme="liquid-glass"] .work-card,
+    body[data-theme="yorug"] .work-card,
     body[data-theme="liquid-glass"] .feed-card,
+    body[data-theme="yorug"] .feed-card,
     body[data-theme="liquid-glass"] .admin-stat-card,
+    body[data-theme="yorug"] .admin-stat-card,
     body[data-theme="liquid-glass"] .admin-report-card,
+    body[data-theme="yorug"] .admin-report-card,
     body[data-theme="liquid-glass"] .conversation-item,
+    body[data-theme="yorug"] .conversation-item,
     body[data-theme="liquid-glass"] .substat,
+    body[data-theme="yorug"] .substat,
     body[data-theme="liquid-glass"] .cart-item,
+    body[data-theme="yorug"] .cart-item,
     body[data-theme="liquid-glass"] .chip,
-    body[data-theme="liquid-glass"] .btn-secondary {
+    body[data-theme="yorug"] .chip,
+    body[data-theme="liquid-glass"] .btn-secondary ,
+    body[data-theme="yorug"] .btn-secondary {
       box-shadow: var(--shadow-light), var(--glass-hl-light);
       border: 1px solid var(--border);
     }
 
-    body[data-theme="liquid-glass"] .btn-primary {
+    body[data-theme="liquid-glass"] .btn-primary ,
+    body[data-theme="yorug"] .btn-primary {
       background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 92%, white 8%), var(--accent-2));
       box-shadow: var(--glow), var(--glass-hl-light);
       border: 1px solid rgba(255, 255, 255, 0.45);
     }
 
-    body[data-theme="liquid-glass"] .btn-ghost {
+    body[data-theme="liquid-glass"] .btn-ghost ,
+    body[data-theme="yorug"] .btn-ghost {
       background: rgba(255, 255, 255, 0.4);
       border: 1px solid var(--border);
     }
 
-    body[data-theme="liquid-glass"] .btn-guest {
+    body[data-theme="liquid-glass"] .btn-guest ,
+    body[data-theme="yorug"] .btn-guest {
       background: rgba(255, 255, 255, 0.16);
     }
 
     /* text/form-heavy panels need a much more opaque backing than the
        decorative chrome, since they often sit over the dark modal scrim */
     body[data-theme="liquid-glass"] .modal,
+    body[data-theme="yorug"] .modal,
     body[data-theme="liquid-glass"] .gate-modal,
+    body[data-theme="yorug"] .gate-modal,
     body[data-theme="liquid-glass"] .auth-card,
+    body[data-theme="yorug"] .auth-card,
     body[data-theme="liquid-glass"] .profile-edit-card,
+    body[data-theme="yorug"] .profile-edit-card,
     body[data-theme="liquid-glass"] .dropdown,
-    body[data-theme="liquid-glass"] .theme-panel {
+    body[data-theme="yorug"] .dropdown,
+    body[data-theme="liquid-glass"] .theme-panel ,
+    body[data-theme="yorug"] .theme-panel {
       background: var(--surface-read);
     }
 
-    body[data-theme="liquid-glass"] ::selection {
+    body[data-theme="liquid-glass"] ::selection ,
+    body[data-theme="yorug"] ::selection {
       background: rgba(10, 132, 255, 0.28);
     }
 
-    body[data-theme="liquid-glass"] .auth-blob {
+    body[data-theme="liquid-glass"] .auth-blob ,
+    body[data-theme="yorug"] .auth-blob {
       filter: blur(60px) saturate(180%);
       opacity: .6;
     }
